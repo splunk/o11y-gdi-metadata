@@ -393,7 +393,7 @@ Navigators:
       - Gke pod
     importQualifiers: container/memory/request_utilization (service =  kubernetes);
   Lambda functions:
-    category_display_name: AWS
+    category_display_name: Amazon Web Services
     associated_dashboards:
       aggregated: Lambda (AWS) overview
       instance: Lambda (AWS) function
