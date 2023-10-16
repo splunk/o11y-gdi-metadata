@@ -54,17 +54,17 @@ Dashboards:
       =  AWS/ApiGateway);  OR IntegrationLatency (namespace =  AWS/ApiGateway);  OR
       4XXError (namespace =  AWS/ApiGateway);  OR 5XXError (namespace =  AWS/ApiGateway);  OR
       CacheHitCount (namespace =  AWS/ApiGateway);  OR CacheMissCount (namespace =  AWS/ApiGateway);
-  API Resource:
+  API objects:
+    dashboard_group: Kong
+    view_support: N/A
+    importQualifiers: gauge.kong.database.reachable (plugin =  kong);
+  API resource:
     dashboard_group: AWS API Gateway
     view_support: N/A
     importQualifiers: Count (namespace =  AWS/ApiGateway);  OR Latency (namespace
       =  AWS/ApiGateway);  OR IntegrationLatency (namespace =  AWS/ApiGateway);  OR
       4XXError (namespace =  AWS/ApiGateway);  OR 5XXError (namespace =  AWS/ApiGateway);  OR
       CacheHitCount (namespace =  AWS/ApiGateway);  OR CacheMissCount (namespace =  AWS/ApiGateway);
-  API objects:
-    dashboard_group: Kong
-    view_support: N/A
-    importQualifiers: gauge.kong.database.reachable (plugin =  kong);
   APM entitlements:
     dashboard_group: Organization metrics
     view_support: N/A
@@ -1694,6 +1694,16 @@ Dashboards:
     dashboard_group: SAP HANA
     view_support: N/A
     importQualifiers: sap.hana.host.cpu.user (*);
+  Tanzu AS host:
+    dashboard_group: VMware Tanzu AS
+    view_support: N/A
+    importQualifiers: system_metrics_agent.system_cpu_sys (*);  OR rep.ContainerCount
+      (*);
+  Tanzu AS overview:
+    dashboard_group: VMware Tanzu AS
+    view_support: N/A
+    importQualifiers: system_metrics_agent.system_cpu_sys (*);  OR rep.ContainerCount
+      (*);
   Telegraf:
     dashboard_group: Infrastructure (Telegraf)
     view_support: N/A
