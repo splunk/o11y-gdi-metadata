@@ -607,13 +607,13 @@ Dashboards:
     view_support: N/A
     importQualifiers: sf.org.subscription.datapointsPerMinute (*);
   Database:
-    dashboard_group: PostgreSQL(Smart Agent)
+    dashboard_group: PostgreSQL(OTel)
     view_support: N/A
-    importQualifiers: pg_numbackends (plugin =  postgresql);
+    importQualifiers: postgresql.backends (*);  OR postgresql.db_size (*);
   Databases:
-    dashboard_group: PostgreSQL(Smart Agent)
+    dashboard_group: PostgreSQL(OTel)
     view_support: N/A
-    importQualifiers: pg_numbackends (plugin =  postgresql);
+    importQualifiers: postgresql.backends (*);  OR postgresql.db_size (*);
   Datanode:
     dashboard_group: Hadoop HDFS
     view_support: N/A
@@ -725,13 +725,15 @@ Dashboards:
     importQualifiers: HealthyHostCount (namespace =  AWS/ELB) & (stat =  mean) & (LoadBalancerName
       =  *);
   ESX-Host:
-    dashboard_group: vSphere
-    view_support: instance
-    importQualifiers: vsphere.cpu_usage_percent (*);
+    dashboard_group: vSphere (legacy)
+    view_support: N/A
+    importQualifiers: cpu.usage.average (metric_source =  vsphere);  OR mem.usage.average
+      (metric_source =  vsphere);
   ESX-Hosts:
-    dashboard_group: vSphere
-    view_support: aggregated
-    importQualifiers: vsphere.cpu_usage_percent (*);
+    dashboard_group: vSphere (legacy)
+    view_support: N/A
+    importQualifiers: cpu.usage.average (metric_source =  vsphere);  OR mem.usage.average
+      (metric_source =  vsphere);
   ElastiCache:
     dashboard_group: AWS ElastiCache
     view_support: aggregated
@@ -953,17 +955,17 @@ Dashboards:
     view_support: N/A
     importQualifiers: heroku.memory_quota (*);
   Host:
-    dashboard_group: PostgreSQL(OTel)
-    view_support: N/A
-    importQualifiers: postgresql.backends (*);  OR postgresql.db_size (*);
+    dashboard_group: Data Center Hosts
+    view_support: instance
+    importQualifiers: cpu.utilization (*);
   Host with agent installed:
     dashboard_group: Hosts with agent installed
     view_support: N/A
     importQualifiers: cpu.utilization (*);
   Hosts:
-    dashboard_group: PostgreSQL(OTel)
-    view_support: N/A
-    importQualifiers: postgresql.backends (*);  OR postgresql.db_size (*);
+    dashboard_group: Data Center Hosts
+    view_support: aggregated
+    importQualifiers: cpu.utilization (*);
   Hosts with agent installed:
     dashboard_group: Hosts with agent installed
     view_support: N/A
@@ -1059,7 +1061,7 @@ Dashboards:
       (sf_key =  kubernetes_pod_uid);
   K8s containers:
     dashboard_group: Kubernetes
-    view_support: aggregated
+    view_support: instance
     importQualifiers: container.cpu.time (sf_key =  k8s.pod.uid);  OR container_cpu_utilization
       (sf_key =  kubernetes_pod_uid);
   K8s control plane logs:
@@ -1533,13 +1535,13 @@ Dashboards:
     view_support: N/A
     importQualifiers: demo.trans.count (*);
   Service:
-    dashboard_group: APM java services
+    dashboard_group: SAP HANA
     view_support: N/A
-    importQualifiers: runtime.jvm.classes.loaded (*);
+    importQualifiers: sap.hana.host.cpu.user (*);
   Service endpoint:
-    dashboard_group: APM java services
+    dashboard_group: APM .NET services
     view_support: N/A
-    importQualifiers: runtime.jvm.classes.loaded (*);
+    importQualifiers: process.runtime.dotnet.gc.heap.size (*);
   Service objects:
     dashboard_group: Kong
     view_support: N/A
@@ -1720,13 +1722,15 @@ Dashboards:
     importQualifiers: tcp.bytes (source.workload.name =  *);  OR tcp.bytes (dest.workload.name
       =  *);
   VM:
-    dashboard_group: vSphere
-    view_support: instance
-    importQualifiers: vsphere.cpu_usage_percent (*);
+    dashboard_group: vSphere (legacy)
+    view_support: N/A
+    importQualifiers: cpu.usage.average (metric_source =  vsphere);  OR mem.usage.average
+      (metric_source =  vsphere);
   VMs:
-    dashboard_group: vSphere
-    view_support: aggregated
-    importQualifiers: vsphere.cpu_usage_percent (*);
+    dashboard_group: vSphere (legacy)
+    view_support: N/A
+    importQualifiers: cpu.usage.average (metric_source =  vsphere);  OR mem.usage.average
+      (metric_source =  vsphere);
   Varnish:
     dashboard_group: Varnish
     view_support: N/A
@@ -1772,9 +1776,10 @@ Dashboards:
     view_support: N/A
     importQualifiers: counter.etcd.leader.counts.success (plugin =  etcd);
   vCenter:
-    dashboard_group: vSphere
-    view_support: instance
-    importQualifiers: vsphere.cpu_usage_percent (*);
+    dashboard_group: vSphere (legacy)
+    view_support: N/A
+    importQualifiers: cpu.usage.average (metric_source =  vsphere);  OR mem.usage.average
+      (metric_source =  vsphere);
   vCenters:
     dashboard_group: vSphere
     view_support: aggregated
