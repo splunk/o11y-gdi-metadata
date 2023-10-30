@@ -313,7 +313,7 @@ Navigators:
       - K8s containers
       instance:
       - K8s container
-    importQualifiers: k8s.container.ready (sf_key =  k8s.container.name);
+    importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);
   K8s nodes:
     category_display_name: Kubernetes
     associated_dashboards:
@@ -332,7 +332,7 @@ Navigators:
       instance:
       - K8s pod
       - K8s containers
-    importQualifiers: k8s.pod.phase (sf_key =  k8s.pod.uid);
+    importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);
   K8s workloads:
     category_display_name: Kubernetes
     associated_dashboards:
