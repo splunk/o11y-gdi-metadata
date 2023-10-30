@@ -1042,33 +1042,45 @@ Dashboards:
   K8s cluster:
     dashboard_group: Kubernetes
     view_support: N/A
-    importQualifiers: container.cpu.time (sf_key =  k8s.pod.uid);  OR container_cpu_utilization
-      (sf_key =  kubernetes_pod_uid);
+    importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);  OR k8s.pod.phase
+      (sf_key =  k8s.workload.name);  OR kubernetes.pod_phase (sf_key =  kubernetes_workload_name);  OR
+      container_cpu_utilization (sf_key =  kubernetes_pod_uid);  OR container.cpu.time
+      (sf_key =  k8s.pod.uid);
   K8s cluster services:
     dashboard_group: Kubernetes
     view_support: N/A
-    importQualifiers: container.cpu.time (sf_key =  k8s.pod.uid);  OR container_cpu_utilization
-      (sf_key =  kubernetes_pod_uid);
+    importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);  OR k8s.pod.phase
+      (sf_key =  k8s.workload.name);  OR kubernetes.pod_phase (sf_key =  kubernetes_workload_name);  OR
+      container_cpu_utilization (sf_key =  kubernetes_pod_uid);  OR container.cpu.time
+      (sf_key =  k8s.pod.uid);
   K8s clusters:
     dashboard_group: Kubernetes
     view_support: aggregated
-    importQualifiers: container.cpu.time (sf_key =  k8s.pod.uid);  OR container_cpu_utilization
-      (sf_key =  kubernetes_pod_uid);
+    importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);  OR k8s.pod.phase
+      (sf_key =  k8s.workload.name);  OR kubernetes.pod_phase (sf_key =  kubernetes_workload_name);  OR
+      container_cpu_utilization (sf_key =  kubernetes_pod_uid);  OR container.cpu.time
+      (sf_key =  k8s.pod.uid);
   K8s container:
     dashboard_group: Kubernetes
     view_support: instance
-    importQualifiers: container.cpu.time (sf_key =  k8s.pod.uid);  OR container_cpu_utilization
-      (sf_key =  kubernetes_pod_uid);
+    importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);  OR k8s.pod.phase
+      (sf_key =  k8s.workload.name);  OR kubernetes.pod_phase (sf_key =  kubernetes_workload_name);  OR
+      container_cpu_utilization (sf_key =  kubernetes_pod_uid);  OR container.cpu.time
+      (sf_key =  k8s.pod.uid);
   K8s containers:
     dashboard_group: Kubernetes
     view_support: instance
-    importQualifiers: container.cpu.time (sf_key =  k8s.pod.uid);  OR container_cpu_utilization
-      (sf_key =  kubernetes_pod_uid);
+    importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);  OR k8s.pod.phase
+      (sf_key =  k8s.workload.name);  OR kubernetes.pod_phase (sf_key =  kubernetes_workload_name);  OR
+      container_cpu_utilization (sf_key =  kubernetes_pod_uid);  OR container.cpu.time
+      (sf_key =  k8s.pod.uid);
   K8s control plane logs:
     dashboard_group: Kubernetes
     view_support: N/A
-    importQualifiers: container.cpu.time (sf_key =  k8s.pod.uid);  OR container_cpu_utilization
-      (sf_key =  kubernetes_pod_uid);
+    importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);  OR k8s.pod.phase
+      (sf_key =  k8s.workload.name);  OR kubernetes.pod_phase (sf_key =  kubernetes_workload_name);  OR
+      container_cpu_utilization (sf_key =  kubernetes_pod_uid);  OR container.cpu.time
+      (sf_key =  k8s.pod.uid);
   K8s metrics adapter:
     dashboard_group: SignalFx k8s metric adapter
     view_support: N/A
@@ -1076,53 +1088,73 @@ Dashboards:
   K8s node:
     dashboard_group: Kubernetes
     view_support: instance
-    importQualifiers: container.cpu.time (sf_key =  k8s.pod.uid);  OR container_cpu_utilization
-      (sf_key =  kubernetes_pod_uid);
+    importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);  OR k8s.pod.phase
+      (sf_key =  k8s.workload.name);  OR kubernetes.pod_phase (sf_key =  kubernetes_workload_name);  OR
+      container_cpu_utilization (sf_key =  kubernetes_pod_uid);  OR container.cpu.time
+      (sf_key =  k8s.pod.uid);
   K8s node logs:
     dashboard_group: Kubernetes
     view_support: N/A
-    importQualifiers: container.cpu.time (sf_key =  k8s.pod.uid);  OR container_cpu_utilization
-      (sf_key =  kubernetes_pod_uid);
+    importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);  OR k8s.pod.phase
+      (sf_key =  k8s.workload.name);  OR kubernetes.pod_phase (sf_key =  kubernetes_workload_name);  OR
+      container_cpu_utilization (sf_key =  kubernetes_pod_uid);  OR container.cpu.time
+      (sf_key =  k8s.pod.uid);
   K8s nodes:
     dashboard_group: Kubernetes
     view_support: aggregated
-    importQualifiers: container.cpu.time (sf_key =  k8s.pod.uid);  OR container_cpu_utilization
-      (sf_key =  kubernetes_pod_uid);
+    importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);  OR k8s.pod.phase
+      (sf_key =  k8s.workload.name);  OR kubernetes.pod_phase (sf_key =  kubernetes_workload_name);  OR
+      container_cpu_utilization (sf_key =  kubernetes_pod_uid);  OR container.cpu.time
+      (sf_key =  k8s.pod.uid);
   K8s operations:
     dashboard_group: Kubernetes
     view_support: N/A
-    importQualifiers: container.cpu.time (sf_key =  k8s.pod.uid);  OR container_cpu_utilization
-      (sf_key =  kubernetes_pod_uid);
+    importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);  OR k8s.pod.phase
+      (sf_key =  k8s.workload.name);  OR kubernetes.pod_phase (sf_key =  kubernetes_workload_name);  OR
+      container_cpu_utilization (sf_key =  kubernetes_pod_uid);  OR container.cpu.time
+      (sf_key =  k8s.pod.uid);
   K8s overview:
     dashboard_group: Kubernetes
     view_support: N/A
-    importQualifiers: container.cpu.time (sf_key =  k8s.pod.uid);  OR container_cpu_utilization
-      (sf_key =  kubernetes_pod_uid);
+    importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);  OR k8s.pod.phase
+      (sf_key =  k8s.workload.name);  OR kubernetes.pod_phase (sf_key =  kubernetes_workload_name);  OR
+      container_cpu_utilization (sf_key =  kubernetes_pod_uid);  OR container.cpu.time
+      (sf_key =  k8s.pod.uid);
   K8s pod:
     dashboard_group: Kubernetes
     view_support: instance
-    importQualifiers: container.cpu.time (sf_key =  k8s.pod.uid);  OR container_cpu_utilization
-      (sf_key =  kubernetes_pod_uid);
+    importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);  OR k8s.pod.phase
+      (sf_key =  k8s.workload.name);  OR kubernetes.pod_phase (sf_key =  kubernetes_workload_name);  OR
+      container_cpu_utilization (sf_key =  kubernetes_pod_uid);  OR container.cpu.time
+      (sf_key =  k8s.pod.uid);
   K8s pod logs:
     dashboard_group: Kubernetes
     view_support: N/A
-    importQualifiers: container.cpu.time (sf_key =  k8s.pod.uid);  OR container_cpu_utilization
-      (sf_key =  kubernetes_pod_uid);
+    importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);  OR k8s.pod.phase
+      (sf_key =  k8s.workload.name);  OR kubernetes.pod_phase (sf_key =  kubernetes_workload_name);  OR
+      container_cpu_utilization (sf_key =  kubernetes_pod_uid);  OR container.cpu.time
+      (sf_key =  k8s.pod.uid);
   K8s pods:
     dashboard_group: Kubernetes
     view_support: instance
-    importQualifiers: container.cpu.time (sf_key =  k8s.pod.uid);  OR container_cpu_utilization
-      (sf_key =  kubernetes_pod_uid);
+    importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);  OR k8s.pod.phase
+      (sf_key =  k8s.workload.name);  OR kubernetes.pod_phase (sf_key =  kubernetes_workload_name);  OR
+      container_cpu_utilization (sf_key =  kubernetes_pod_uid);  OR container.cpu.time
+      (sf_key =  k8s.pod.uid);
   K8s workload:
     dashboard_group: Kubernetes
     view_support: instance
-    importQualifiers: container.cpu.time (sf_key =  k8s.pod.uid);  OR container_cpu_utilization
-      (sf_key =  kubernetes_pod_uid);
+    importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);  OR k8s.pod.phase
+      (sf_key =  k8s.workload.name);  OR kubernetes.pod_phase (sf_key =  kubernetes_workload_name);  OR
+      container_cpu_utilization (sf_key =  kubernetes_pod_uid);  OR container.cpu.time
+      (sf_key =  k8s.pod.uid);
   K8s workloads:
     dashboard_group: Kubernetes
     view_support: aggregated
-    importQualifiers: container.cpu.time (sf_key =  k8s.pod.uid);  OR container_cpu_utilization
-      (sf_key =  kubernetes_pod_uid);
+    importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);  OR k8s.pod.phase
+      (sf_key =  k8s.workload.name);  OR kubernetes.pod_phase (sf_key =  kubernetes_workload_name);  OR
+      container_cpu_utilization (sf_key =  kubernetes_pod_uid);  OR container.cpu.time
+      (sf_key =  k8s.pod.uid);
   Key capacity indicators:
     dashboard_group: Cloud foundry
     view_support: N/A
