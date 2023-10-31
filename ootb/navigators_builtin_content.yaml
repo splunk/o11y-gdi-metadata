@@ -184,11 +184,12 @@ Navigators:
     importQualifiers: gauge.nodes.system.cpu_utilization_rate (plugin =  couchbase)
       & (sf_key =  node);
   DynamoDB:
-    category_display_name: AWS
+    category_display_name: Amazon Web Services
     associated_dashboards:
       aggregated:
       - AWS DynamoDB
-      instance: N/A
+      instance:
+      - AWS DynamoDB
     importQualifiers: SuccessfulRequestLatency (sf_key =  TableName);
   EBS:
     category_display_name: AWS
