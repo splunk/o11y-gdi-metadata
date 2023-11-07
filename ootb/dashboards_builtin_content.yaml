@@ -387,11 +387,16 @@ Dashboards:
     dashboard_group: Traefik
     view_support: aggregated
     importQualifiers: traefik_entrypoint_requests_total (*);
+  BigQuery:
+    dashboard_group: Google cloud BigQuery
+    view_support: instance
+    importQualifiers: query/count (service =  bigquery) & (project_id =  *);  OR job/num_in_flight
+      (service =  bigquery) & (project_id =  *);
   BigQuery overview:
     dashboard_group: Google cloud BigQuery
-    view_support: N/A
-    importQualifiers: query/count (service =  bigquery);  OR slots/total_available
-      (service =  bigquery);
+    view_support: aggregated
+    importQualifiers: query/count (service =  bigquery) & (project_id =  *);  OR job/num_in_flight
+      (service =  bigquery) & (project_id =  *);
   Bigtable cluster:
     dashboard_group: Google Cloud Bigtable
     view_support: instance
