@@ -91,6 +91,15 @@ Navigators:
       - Azure batch account
     importQualifiers: CoreCount (resource_type =  Microsoft.Batch/batchAccounts) &
       (primary_aggregation_type =  true);
+  Cloud BigQuery:
+    category_display_name: Google Cloud Platform
+    associated_dashboards:
+      aggregated:
+      - BigQuery overview
+      instance:
+      - BigQuery
+    importQualifiers: query/count (service =  bigquery) & (project_id =  *);  OR job/num_in_flight
+      (service =  bigquery) & (project_id =  *);
   Cloud bigtable:
     category_display_name: Google Cloud Platform
     associated_dashboards:
