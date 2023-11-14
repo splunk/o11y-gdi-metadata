@@ -624,11 +624,18 @@ Dashboards:
     view_support: N/A
     importQualifiers: gauge.hadoop-datanode-fs-capacity (plugin =  GenericJMX);  OR
       gauge.hadoop-namenode-max-heap (plugin =  GenericJMX);
+  Datastore:
+    dashboard_group: Google Cloud Datastore
+    view_support: instance
+    importQualifiers: entity/read_sizes (service =  datastore) & (monitored_resource
+      =  datastore_request) & (project_id =  *);  OR api/request_count (service =  datastore)
+      & (monitored_resource =  datastore_request) & (project_id =  *);
   Datastore overview:
     dashboard_group: Google Cloud Datastore
-    view_support: N/A
-    importQualifiers: entity/read_sizes (service =  datastore);  OR api/request_count
-      (service =  datastore);
+    view_support: aggregated
+    importQualifiers: entity/read_sizes (service =  datastore) & (monitored_resource
+      =  datastore_request) & (project_id =  *);  OR api/request_count (service =  datastore)
+      & (monitored_resource =  datastore_request) & (project_id =  *);
   Devices:
     dashboard_group: Conviva
     view_support: N/A
