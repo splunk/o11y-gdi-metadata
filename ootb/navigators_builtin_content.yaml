@@ -109,6 +109,16 @@ Navigators:
       - Bigtable cluster
       - Bigtable table
     importQualifiers: cluster/cpu_load (sf_key =  gcp_id);
+  Cloud datastore:
+    category_display_name: Google Cloud Platform
+    associated_dashboards:
+      aggregated:
+      - Datastore overview
+      instance:
+      - Datastore
+    importQualifiers: entity/read_sizes (service =  datastore) & (monitored_resource
+      =  datastore_request) & (project_id =  *);  OR api/request_count (service =  datastore)
+      & (monitored_resource =  datastore_request) & (project_id =  *);
   Cloud functions:
     category_display_name: Google Cloud Platform
     associated_dashboards:
