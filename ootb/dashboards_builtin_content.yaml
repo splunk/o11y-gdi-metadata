@@ -105,7 +105,7 @@ Dashboards:
       & (ClusterIdentifier =  *);
   AWS Redshift logs:
     dashboard_group: AWS Redshift
-    view_support: N/A
+    view_support: aggregated
     importQualifiers: CPUUtilization (namespace =  AWS/Redshift) & (stat =  mean)
       & (ClusterIdentifier =  *);
   AWS Redshift overview:
@@ -250,7 +250,7 @@ Dashboards:
       =  true) & (resource_type =  Microsoft.EventHub/namespaces);
   Azure Event Hubs logs:
     dashboard_group: Azure Event Hubs
-    view_support: N/A
+    view_support: aggregated
     importQualifiers: SuccessfulRequests (primary_aggregation_type =  true) & (resource_type
       =  Microsoft.EventHub/namespaces);  OR IncomingRequests (primary_aggregation_type
       =  true) & (resource_type =  Microsoft.EventHub/namespaces);
@@ -311,7 +311,7 @@ Dashboards:
       & (primary_aggregation_type =  true);
   Azure VM Scale Sets logs:
     dashboard_group: Azure VM Scale Sets
-    view_support: N/A
+    view_support: aggregated
     importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets)
       & (primary_aggregation_type =  true);
   Azure Virtual Machine:
@@ -351,7 +351,7 @@ Dashboards:
       (primary_aggregation_type =  true);
   Azure batch account logs:
     dashboard_group: Azure batch
-    view_support: N/A
+    view_support: aggregated
     importQualifiers: CoreCount (resource_type =  Microsoft.Batch/batchAccounts) &
       (primary_aggregation_type =  true);
   Azure batch accounts:
@@ -733,7 +733,7 @@ Dashboards:
       =  *);
   ELB logs:
     dashboard_group: AWS ELB
-    view_support: N/A
+    view_support: aggregated
     importQualifiers: HealthyHostCount (namespace =  AWS/ELB) & (stat =  mean) & (LoadBalancerName
       =  *);
   ESX-Host:
@@ -1106,7 +1106,7 @@ Dashboards:
       (sf_key =  k8s.pod.uid);
   K8s node logs:
     dashboard_group: Kubernetes
-    view_support: N/A
+    view_support: aggregated
     importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);  OR k8s.pod.phase
       (sf_key =  k8s.workload.name);  OR kubernetes.pod_phase (sf_key =  kubernetes_workload_name);  OR
       container_cpu_utilization (sf_key =  kubernetes_pod_uid);  OR container.cpu.time
@@ -1141,7 +1141,7 @@ Dashboards:
       (sf_key =  k8s.pod.uid);
   K8s pod logs:
     dashboard_group: Kubernetes
-    view_support: N/A
+    view_support: instance
     importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);  OR k8s.pod.phase
       (sf_key =  k8s.workload.name);  OR kubernetes.pod_phase (sf_key =  kubernetes_workload_name);  OR
       container_cpu_utilization (sf_key =  kubernetes_pod_uid);  OR container.cpu.time
@@ -1501,7 +1501,7 @@ Dashboards:
     importQualifiers: pg_numbackends (plugin =  postgresql);
   RDS MySQL and MariaDB logs:
     dashboard_group: AWS RDS
-    view_support: N/A
+    view_support: aggregated
     importQualifiers: CPUUtilization (namespace =  AWS/RDS) & (stat =  mean) & (DBInstanceIdentifier
       =  *);
   RDS instance:
