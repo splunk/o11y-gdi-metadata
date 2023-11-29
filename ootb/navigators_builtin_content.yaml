@@ -83,10 +83,11 @@ Navigators:
       =  Microsoft.Web/sites);  OR azure.function.invocations (is_Azure_Function =  true)
       & (metric_source =  azure_function_wrapper);
   Batch accounts:
-    category_display_name: Azure
+    category_display_name: Microsoft Azure
     associated_dashboards:
       aggregated:
       - Azure batch accounts
+      - Azure batch account logs
       instance:
       - Azure batch account
     importQualifiers: CoreCount (resource_type =  Microsoft.Batch/batchAccounts) &
@@ -236,10 +237,11 @@ Navigators:
       - ECS (AWS) cluster
     importQualifiers: CPUUtilization (sf_key =  ClusterName);
   ELB:
-    category_display_name: AWS
+    category_display_name: Amazon Web Services
     associated_dashboards:
       aggregated:
       - ELB instances
+      - ELB logs
       instance:
       - ELB instance
     importQualifiers: RequestCount (sf_key =  LoadBalancerName);
@@ -288,10 +290,11 @@ Navigators:
       - Elasticsearch node
     importQualifiers: '*.indices.indexing.index-total (plugin =  elasticsearch);'
   Event hubs:
-    category_display_name: Azure
+    category_display_name: Microsoft Azure
     associated_dashboards:
       aggregated:
       - Azure Event Hubs
+      - Azure Event Hubs logs
       instance:
       - Azure Event Hub
     importQualifiers: SuccessfulRequests (primary_aggregation_type =  true) & (resource_type
@@ -340,9 +343,11 @@ Navigators:
       aggregated:
       - K8s nodes
       - K8s clusters
+      - K8s node logs
       instance:
       - K8s node
       - K8s pods
+      - K8s node logs
     importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);
   K8s pods:
     category_display_name: Kubernetes
@@ -352,6 +357,7 @@ Navigators:
       instance:
       - K8s pod
       - K8s containers
+      - K8s pod logs
     importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);
   K8s workloads:
     category_display_name: Kubernetes
@@ -523,10 +529,11 @@ Navigators:
     importQualifiers: oracledb.processes.usage (sf_key =  oracledb.instance.name)
       & (sf_key =  host.name);
   RDS:
-    category_display_name: AWS
+    category_display_name: Amazon Web Services
     associated_dashboards:
       aggregated:
       - RDS instances
+      - RDS MySQL and MariaDB logs
       instance:
       - RDS instance
       - Engine specifics
@@ -556,10 +563,11 @@ Navigators:
       - Redis instance
     importQualifiers: bytes.used_memory (plugin =  redis_info);
   Redshift:
-    category_display_name: AWS
+    category_display_name: Amazon Web Services
     associated_dashboards:
       aggregated:
       - AWS Redshift overview
+      - AWS Redshift logs
       instance:
       - AWS Redshift
     importQualifiers: CPUUtilization (namespace =  AWS/Redshift);
@@ -629,10 +637,11 @@ Navigators:
       - EntryPoint
     importQualifiers: traefik_entrypoint_requests_total (sf_key =  entrypoint);
   VM scale sets:
-    category_display_name: Azure
+    category_display_name: Microsoft Azure
     associated_dashboards:
       aggregated:
       - Azure VM Scale Sets
+      - Azure VM Scale Sets logs
       instance:
       - Azure VM Scale Set
     importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets)
