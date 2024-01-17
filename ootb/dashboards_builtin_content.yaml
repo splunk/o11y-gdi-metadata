@@ -65,6 +65,12 @@ Dashboards:
       =  AWS/ApiGateway);  OR IntegrationLatency (namespace =  AWS/ApiGateway);  OR
       4XXError (namespace =  AWS/ApiGateway);  OR 5XXError (namespace =  AWS/ApiGateway);  OR
       CacheHitCount (namespace =  AWS/ApiGateway);  OR CacheMissCount (namespace =  AWS/ApiGateway);
+  APM / IMM:
+    dashboard_group: Executive Level
+    view_support: N/A
+    importQualifiers: service.request.count (sf_environment =  *) & (sf_service =  *);  OR
+      sf.org.numLogsReceivedByToken (*);  OR rum.page_view.count (*);  OR rum.page_view.count
+      (sf_ua_browsername =  *);  OR sf.org.apm.numContainers (*);
   APM entitlements:
     dashboard_group: Organization metrics
     view_support: N/A
@@ -83,6 +89,11 @@ Dashboards:
     view_support: aggregated
     importQualifiers: HealthyHostCount (namespace =  AWS/ApplicationELB) & (stat =  count)
       & (LoadBalancer =  *);
+  AWS ALB logs:
+    dashboard_group: AWS ALB
+    view_support: N/A
+    importQualifiers: HealthyHostCount (namespace =  AWS/ApplicationELB) & (stat =  count)
+      & (LoadBalancer =  *);
   AWS AutoScaling group:
     dashboard_group: AWS AutoScaling
     view_support: instance
@@ -98,6 +109,26 @@ Dashboards:
     view_support: aggregated
     importQualifiers: SuccessfulRequestLatency (namespace =  AWS/DynamoDB) & (stat
       =  mean);
+  AWS Gateway LB instance:
+    dashboard_group: AWS Gateway LB
+    view_support: N/A
+    importQualifiers: ConsumedLCUs (namespace =  AWS/GatewayELB) & (stat =  sum);
+  AWS Gateway LB instances:
+    dashboard_group: AWS Gateway LB
+    view_support: N/A
+    importQualifiers: ConsumedLCUs (namespace =  AWS/GatewayELB) & (stat =  sum);
+  AWS NLB instance:
+    dashboard_group: AWS NLB
+    view_support: N/A
+    importQualifiers: ActiveFlowCount (namespace =  AWS/NetworkELB) & (stat =  mean);
+  AWS NLB instances:
+    dashboard_group: AWS NLB
+    view_support: N/A
+    importQualifiers: ActiveFlowCount (namespace =  AWS/NetworkELB) & (stat =  mean);
+  AWS NLB logs:
+    dashboard_group: AWS NLB
+    view_support: N/A
+    importQualifiers: ActiveFlowCount (namespace =  AWS/NetworkELB) & (stat =  mean);
   AWS Redshift:
     dashboard_group: AWS Redshift
     view_support: instance
@@ -469,6 +500,30 @@ Dashboards:
     dashboard_group: Organization metrics
     view_support: N/A
     importQualifiers: sf.org.subscription.customMetrics (*);
+  Cloud run job:
+    dashboard_group: Google Cloud Run
+    view_support: N/A
+    importQualifiers: container/cpu/utilizations (service =  run);
+  Cloud run jobs:
+    dashboard_group: Google Cloud Run
+    view_support: N/A
+    importQualifiers: container/cpu/utilizations (service =  run);
+  Cloud run service:
+    dashboard_group: Google Cloud Run
+    view_support: N/A
+    importQualifiers: container/cpu/utilizations (service =  run);
+  Cloud run services:
+    dashboard_group: Google Cloud Run
+    view_support: N/A
+    importQualifiers: container/cpu/utilizations (service =  run);
+  Cloud task:
+    dashboard_group: Google Cloud Tasks
+    view_support: N/A
+    importQualifiers: queue/depth (service =  cloudtasks);
+  Cloud tasks overview:
+    dashboard_group: Google Cloud Tasks
+    view_support: N/A
+    importQualifiers: queue/depth (service =  cloudtasks);
   CloudFront distribution:
     dashboard_group: AWS CloudFront
     view_support: instance
@@ -661,6 +716,22 @@ Dashboards:
     dashboard_group: Docker
     view_support: N/A
     importQualifiers: cpu.usage.total (plugin =  docker);
+  DocumentDB cluster:
+    dashboard_group: AWS DocumentDB
+    view_support: N/A
+    importQualifiers: CPUUtilization (namespace =  AWS/DocDB) & (stat =  mean);
+  DocumentDB clusters:
+    dashboard_group: AWS DocumentDB
+    view_support: N/A
+    importQualifiers: CPUUtilization (namespace =  AWS/DocDB) & (stat =  mean);
+  DocumentDB instance:
+    dashboard_group: AWS DocumentDB
+    view_support: N/A
+    importQualifiers: CPUUtilization (namespace =  AWS/DocDB) & (stat =  mean);
+  DocumentDB instances:
+    dashboard_group: AWS DocumentDB
+    view_support: N/A
+    importQualifiers: CPUUtilization (namespace =  AWS/DocDB) & (stat =  mean);
   EBS volume:
     dashboard_group: AWS EBS
     view_support: instance
@@ -924,6 +995,14 @@ Dashboards:
     dashboard_group: Google Kubernetes Engine
     view_support: instance
     importQualifiers: container/memory/request_utilization (*);
+  Google Cloud SQL:
+    dashboard_group: Google Cloud SQL
+    view_support: N/A
+    importQualifiers: database/cpu/utilization (database_id =  *) & (service =  cloudsql);
+  Google Cloud SQL Instance:
+    dashboard_group: Google Cloud SQL
+    view_support: N/A
+    importQualifiers: database/cpu/utilization (database_id =  *) & (service =  cloudsql);
   HAProxy backend:
     dashboard_group: HAProxy
     view_support: N/A
@@ -1245,11 +1324,23 @@ Dashboards:
     view_support: N/A
     importQualifiers: ConcurrentExecutions (namespace =  AWS/Lambda) & (stat =  sum);  OR
       function.invocations (metric_source =  lambda_wrapper);
+  License usage overview:
+    dashboard_group: Executive Level
+    view_support: N/A
+    importQualifiers: service.request.count (sf_environment =  *) & (sf_service =  *);  OR
+      sf.org.numLogsReceivedByToken (*);  OR rum.page_view.count (*);  OR rum.page_view.count
+      (sf_ua_browsername =  *);  OR sf.org.apm.numContainers (*);
   Log Observer data usage:
     dashboard_group: Log Observer usage
     view_support: N/A
     importQualifiers: sf.org.log.grossMessageBytesReceived (*);  OR sf.org.log.numMessageBytesReceived
       (*);
+  Logs:
+    dashboard_group: Executive Level
+    view_support: N/A
+    importQualifiers: service.request.count (sf_environment =  *) & (sf_service =  *);  OR
+      sf.org.numLogsReceivedByToken (*);  OR rum.page_view.count (*);  OR rum.page_view.count
+      (sf_ua_browsername =  *);  OR sf.org.apm.numContainers (*);
   Logstash:
     dashboard_group: Logstash
     view_support: N/A
@@ -1514,6 +1605,12 @@ Dashboards:
     view_support: aggregated
     importQualifiers: CPUUtilization (namespace =  AWS/RDS) & (stat =  mean) & (DBInstanceIdentifier
       =  *);
+  RUM:
+    dashboard_group: Executive Level
+    view_support: N/A
+    importQualifiers: service.request.count (sf_environment =  *) & (sf_service =  *);  OR
+      sf.org.numLogsReceivedByToken (*);  OR rum.page_view.count (*);  OR rum.page_view.count
+      (sf_ua_browsername =  *);  OR sf.org.apm.numContainers (*);
   RabbitMQ:
     dashboard_group: RabbitMQ
     view_support: aggregated
@@ -1760,6 +1857,12 @@ Dashboards:
     dashboard_group: OpenStack
     view_support: N/A
     importQualifiers: gauge.openstack.nova.hypervisor.vcpus (plugin =  openstack);
+  Token usage:
+    dashboard_group: Executive Level
+    view_support: N/A
+    importQualifiers: service.request.count (sf_environment =  *) & (sf_service =  *);  OR
+      sf.org.numLogsReceivedByToken (*);  OR rum.page_view.count (*);  OR rum.page_view.count
+      (sf_ua_browsername =  *);  OR sf.org.apm.numContainers (*);
   UDP:
     dashboard_group: Network explorer dashboards
     view_support: instance
@@ -1775,6 +1878,18 @@ Dashboards:
     view_support: aggregated
     importQualifiers: tcp.bytes (source.workload.name =  *);  OR tcp.bytes (dest.workload.name
       =  *);
+  Userpool:
+    dashboard_group: AWS Cognito
+    view_support: instance
+    importQualifiers: SignUpSuccesses (namespace =  AWS/Cognito) & (stat =  count)
+      & (UserPool =  *);  OR SignInSuccesses (namespace =  AWS/Cognito) & (stat =  count)
+      & (UserPool =  *);
+  Userpools:
+    dashboard_group: AWS Cognito
+    view_support: aggregated
+    importQualifiers: SignUpSuccesses (namespace =  AWS/Cognito) & (stat =  count)
+      & (UserPool =  *);  OR SignInSuccesses (namespace =  AWS/Cognito) & (stat =  count)
+      & (UserPool =  *);
   VM:
     dashboard_group: vSphere (legacy)
     view_support: N/A
