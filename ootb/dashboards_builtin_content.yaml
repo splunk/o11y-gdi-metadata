@@ -211,10 +211,10 @@ Dashboards:
     view_support: N/A
     importQualifiers: Used % (metric_source =  AppDynamics);
   Application:
-    dashboard_group: Go memory
+    dashboard_group: Hadoop YARN
     view_support: N/A
-    importQualifiers: memstats.sys (*);  OR memstats.heap_sys (*);  OR memstats.heap_inuse
-      (*);
+    importQualifiers: gauge.hadoop.resource.manager.apps.progress (plugin =  apache_hadoop);  OR
+      gauge.hadoop.cluster.metrics.apps_submitted (plugin =  apache_hadoop);
   Application - (i) running jobs:
     dashboard_group: Apache spark applications
     view_support: N/A
@@ -235,6 +235,11 @@ Dashboards:
     dashboard_group: Apache spark applications
     view_support: N/A
     importQualifiers: gauge.spark.num_running_jobs (plugin =  apache_spark);
+  Application - Go memory:
+    dashboard_group: Go memory
+    view_support: N/A
+    importQualifiers: memstats.sys (*);  OR memstats.heap_sys (*);  OR memstats.heap_inuse
+      (*);
   Applications:
     dashboard_group: Go memory
     view_support: N/A
@@ -493,6 +498,11 @@ Dashboards:
     importQualifiers: api/request_count (service =  storage);  OR network/sent_bytes_count
       (service =  storage);
   Cloud controller:
+    dashboard_group: VMware Tanzu AS
+    view_support: N/A
+    importQualifiers: system_metrics_agent.system_cpu_sys (*);  OR rep.ContainerCount
+      (*);
+  Cloud controller - Cloud foundry:
     dashboard_group: Cloud foundry
     view_support: N/A
     importQualifiers: system.cpu.sys (*);  OR rep.ContainerCount (*);
@@ -667,10 +677,22 @@ Dashboards:
     view_support: N/A
     importQualifiers: sf.org.subscription.datapointsPerMinute (*);
   Database:
+    dashboard_group: PostgreSQL (New)
+    view_support: N/A
+    importQualifiers: postgres_sessions (*);
+  Database - PostgreSQL(OTel):
     dashboard_group: PostgreSQL(OTel)
     view_support: N/A
     importQualifiers: postgresql.backends (*);  OR postgresql.db_size (*);
+  Database - PostgreSQL(Smart Agent):
+    dashboard_group: PostgreSQL(Smart Agent)
+    view_support: N/A
+    importQualifiers: pg_numbackends (plugin =  postgresql);
   Databases:
+    dashboard_group: PostgreSQL(Smart Agent)
+    view_support: N/A
+    importQualifiers: pg_numbackends (plugin =  postgresql);
+  Databases - PostgreSQL(OTel):
     dashboard_group: PostgreSQL(OTel)
     view_support: N/A
     importQualifiers: postgresql.backends (*);  OR postgresql.db_size (*);
@@ -697,10 +719,20 @@ Dashboards:
     importQualifiers: conviva.quality_metriclens.total_attempts (*);  OR conviva.attempts
       (*);
   Diego:
+    dashboard_group: VMware Tanzu AS
+    view_support: N/A
+    importQualifiers: system_metrics_agent.system_cpu_sys (*);  OR rep.ContainerCount
+      (*);
+  Diego - Cloud foundry:
     dashboard_group: Cloud foundry
     view_support: N/A
     importQualifiers: system.cpu.sys (*);  OR rep.ContainerCount (*);
   Diego cell:
+    dashboard_group: VMware Tanzu AS
+    view_support: N/A
+    importQualifiers: system_metrics_agent.system_cpu_sys (*);  OR rep.ContainerCount
+      (*);
+  Diego cell - Cloud foundry:
     dashboard_group: Cloud foundry
     view_support: N/A
     importQualifiers: system.cpu.sys (*);  OR rep.ContainerCount (*);
@@ -808,11 +840,19 @@ Dashboards:
     importQualifiers: HealthyHostCount (namespace =  AWS/ELB) & (stat =  mean) & (LoadBalancerName
       =  *);
   ESX-Host:
+    dashboard_group: vSphere
+    view_support: instance
+    importQualifiers: vsphere.cpu_usage_percent (*);
+  ESX-Host - vSphere (legacy):
     dashboard_group: vSphere (legacy)
     view_support: N/A
     importQualifiers: cpu.usage.average (metric_source =  vsphere);  OR mem.usage.average
       (metric_source =  vsphere);
   ESX-Hosts:
+    dashboard_group: vSphere
+    view_support: aggregated
+    importQualifiers: vsphere.cpu_usage_percent (*);
+  ESX-Hosts - vSphere (legacy):
     dashboard_group: vSphere (legacy)
     view_support: N/A
     importQualifiers: cpu.usage.average (metric_source =  vsphere);  OR mem.usage.average
@@ -890,6 +930,10 @@ Dashboards:
     view_support: N/A
     importQualifiers: gauge.bucket.basic.diskUsed (plugin =  couchbase);
   Engagement:
+    dashboard_group: Organization metrics
+    view_support: N/A
+    importQualifiers: sf.org.subscription.customMetrics (*);
+  Engagement - Organization:
     dashboard_group: Organization
     view_support: N/A
     importQualifiers: sf.org.subscription.datapointsPerMinute (*);
@@ -945,6 +989,11 @@ Dashboards:
     view_support: N/A
     importQualifiers: upstream_rq_completed (mesh =  *) & (_exists_ !=  plugin);
   Firehose:
+    dashboard_group: VMware Tanzu AS
+    view_support: N/A
+    importQualifiers: system_metrics_agent.system_cpu_sys (*);  OR rep.ContainerCount
+      (*);
+  Firehose - Cloud foundry:
     dashboard_group: Cloud foundry
     view_support: N/A
     importQualifiers: system.cpu.sys (*);  OR rep.ContainerCount (*);
@@ -1046,17 +1095,39 @@ Dashboards:
     view_support: N/A
     importQualifiers: heroku.memory_quota (*);
   Host:
+    dashboard_group: SAP HANA
+    view_support: N/A
+    importQualifiers: sap.hana.host.cpu.user (*);
+  Host - Data Center Hosts:
     dashboard_group: Data Center Hosts
     view_support: instance
     importQualifiers: cpu.utilization (*);
+  Host - MySQL(OTEL):
+    dashboard_group: MySQL(OTEL)
+    view_support: N/A
+    importQualifiers: mysql.operation (operation =  *) & (host.name =  *);  OR mysql.commands
+      (host.name =  *) & (command =  *);
+  Host - PostgreSQL(OTel):
+    dashboard_group: PostgreSQL(OTel)
+    view_support: N/A
+    importQualifiers: postgresql.backends (*);  OR postgresql.db_size (*);
   Host with agent installed:
     dashboard_group: Hosts with agent installed
     view_support: N/A
     importQualifiers: cpu.utilization (*);
   Hosts:
+    dashboard_group: MySQL(OTEL)
+    view_support: N/A
+    importQualifiers: mysql.operation (operation =  *) & (host.name =  *);  OR mysql.commands
+      (host.name =  *) & (command =  *);
+  Hosts - Data Center Hosts:
     dashboard_group: Data Center Hosts
     view_support: aggregated
     importQualifiers: cpu.utilization (*);
+  Hosts - PostgreSQL(OTel):
+    dashboard_group: PostgreSQL(OTel)
+    view_support: N/A
+    importQualifiers: postgresql.backends (*);  OR postgresql.db_size (*);
   Hosts with agent installed:
     dashboard_group: Hosts with agent installed
     view_support: N/A
@@ -1247,6 +1318,11 @@ Dashboards:
       container_cpu_utilization (sf_key =  kubernetes_pod_uid);  OR container.cpu.time
       (sf_key =  k8s.pod.uid);
   Key capacity indicators:
+    dashboard_group: VMware Tanzu AS
+    view_support: N/A
+    importQualifiers: system_metrics_agent.system_cpu_sys (*);  OR rep.ContainerCount
+      (*);
+  Key capacity indicators - Cloud foundry:
     dashboard_group: Cloud foundry
     view_support: N/A
     importQualifiers: system.cpu.sys (*);  OR rep.ContainerCount (*);
@@ -1531,6 +1607,38 @@ Dashboards:
     importQualifiers: oracledb.processes.usage (sf_key =  oracledb.instance.name)
       & (sf_key =  host.name);
   Overview:
+    dashboard_group: Conviva
+    view_support: N/A
+    importQualifiers: conviva.quality_metriclens.total_attempts (*);  OR conviva.attempts
+      (*);
+  Overview - AWS API Gateway:
+    dashboard_group: AWS API Gateway
+    view_support: N/A
+    importQualifiers: Count (namespace =  AWS/ApiGateway);  OR Latency (namespace
+      =  AWS/ApiGateway);  OR IntegrationLatency (namespace =  AWS/ApiGateway);  OR
+      4XXError (namespace =  AWS/ApiGateway);  OR 5XXError (namespace =  AWS/ApiGateway);  OR
+      CacheHitCount (namespace =  AWS/ApiGateway);  OR CacheMissCount (namespace =  AWS/ApiGateway);
+  Overview - GitLab:
+    dashboard_group: GitLab
+    view_support: aggregated
+    importQualifiers: sidekiq_queue_size (host.name =  *);  OR sidekiq_queue_latency
+      (host.name =  *);  OR grpc_server_handled_total (host.name =  *);  OR gitlab_workhorse_http_request_duration_seconds
+      (host.name =  *);  OR nginx_vts_server_requests_total (host.name =  *);
+  Overview - Hadoop HDFS:
+    dashboard_group: Hadoop HDFS
+    view_support: N/A
+    importQualifiers: gauge.hadoop-datanode-fs-capacity (plugin =  GenericJMX);  OR
+      gauge.hadoop-namenode-max-heap (plugin =  GenericJMX);
+  Overview - MongoDB atlas:
+    dashboard_group: MongoDB atlas
+    view_support: N/A
+    importQualifiers: connections.current (*);  OR opcounter.query (*);  OR mongodbatlas.process.connections
+      (*);
+  Overview - SAP HANA:
+    dashboard_group: SAP HANA
+    view_support: N/A
+    importQualifiers: sap.hana.host.cpu.user (*);
+  Overview - Traefik:
     dashboard_group: Traefik
     view_support: N/A
     importQualifiers: traefik_entrypoint_requests_total (*);
@@ -1583,6 +1691,10 @@ Dashboards:
     importQualifiers: subscription/backlog_bytes (service =  pubsub);  OR subscription/oldest_unacked_message_age
       (service =  pubsub);  OR topic/send_request_count (service =  pubsub);
   Queries:
+    dashboard_group: PostgreSQL (New)
+    view_support: N/A
+    importQualifiers: postgres_sessions (*);
+  Queries - PostgreSQL(Smart Agent):
     dashboard_group: PostgreSQL(Smart Agent)
     view_support: N/A
     importQualifiers: pg_numbackends (plugin =  postgresql);
@@ -1650,9 +1762,19 @@ Dashboards:
     view_support: N/A
     importQualifiers: gauge.kong.database.reachable (plugin =  kong);
   Router:
+    dashboard_group: Google Cloud Router
+    view_support: instance
+    importQualifiers: bgp/sent_routes_count (service =  router);  OR bgp/received_routes_count
+      (service =  router);
+  Router - Cloud foundry:
     dashboard_group: Cloud foundry
     view_support: N/A
     importQualifiers: system.cpu.sys (*);  OR rep.ContainerCount (*);
+  Router - VMware Tanzu AS:
+    dashboard_group: VMware Tanzu AS
+    view_support: N/A
+    importQualifiers: system_metrics_agent.system_cpu_sys (*);  OR rep.ContainerCount
+      (*);
   Router Overview:
     dashboard_group: Google Cloud Router
     view_support: aggregated
@@ -1676,13 +1798,49 @@ Dashboards:
     view_support: N/A
     importQualifiers: demo.trans.count (*);
   Service:
-    dashboard_group: SAP HANA
+    dashboard_group: APM services
     view_support: N/A
-    importQualifiers: sap.hana.host.cpu.user (*);
-  Service endpoint:
+    importQualifiers: spans.count (sf_environment =  *);
+  Service - APM .NET services:
     dashboard_group: APM .NET services
     view_support: N/A
     importQualifiers: process.runtime.dotnet.gc.heap.size (*);
+  Service - APM NodeJS services:
+    dashboard_group: APM NodeJS services
+    view_support: N/A
+    importQualifiers: nodejs.memory.heap.total (*);
+  Service - APM java services:
+    dashboard_group: APM java services
+    view_support: N/A
+    importQualifiers: runtime.jvm.classes.loaded (*);
+  Service - SAP HANA:
+    dashboard_group: SAP HANA
+    view_support: N/A
+    importQualifiers: sap.hana.host.cpu.user (*);
+  "Service - \xB5APM PG":
+    dashboard_group: "\xB5APM PG"
+    view_support: N/A
+    importQualifiers: spans.count (service =  *);
+  Service endpoint:
+    dashboard_group: APM services
+    view_support: N/A
+    importQualifiers: spans.count (sf_environment =  *);
+  Service endpoint - APM .NET services:
+    dashboard_group: APM .NET services
+    view_support: N/A
+    importQualifiers: process.runtime.dotnet.gc.heap.size (*);
+  Service endpoint - APM NodeJS services:
+    dashboard_group: APM NodeJS services
+    view_support: N/A
+    importQualifiers: nodejs.memory.heap.total (*);
+  Service endpoint - APM java services:
+    dashboard_group: APM java services
+    view_support: N/A
+    importQualifiers: runtime.jvm.classes.loaded (*);
+  "Service endpoint - \xB5APM PG":
+    dashboard_group: "\xB5APM PG"
+    view_support: N/A
+    importQualifiers: spans.count (service =  *);
   Service objects:
     dashboard_group: Kong
     view_support: N/A
@@ -1891,11 +2049,19 @@ Dashboards:
       & (UserPool =  *);  OR SignInSuccesses (namespace =  AWS/Cognito) & (stat =  count)
       & (UserPool =  *);
   VM:
+    dashboard_group: vSphere
+    view_support: instance
+    importQualifiers: vsphere.cpu_usage_percent (*);
+  VM - vSphere (legacy):
     dashboard_group: vSphere (legacy)
     view_support: N/A
     importQualifiers: cpu.usage.average (metric_source =  vsphere);  OR mem.usage.average
       (metric_source =  vsphere);
   VMs:
+    dashboard_group: vSphere
+    view_support: aggregated
+    importQualifiers: vsphere.cpu_usage_percent (*);
+  VMs - vSphere (legacy):
     dashboard_group: vSphere (legacy)
     view_support: N/A
     importQualifiers: cpu.usage.average (metric_source =  vsphere);  OR mem.usage.average
@@ -1945,6 +2111,10 @@ Dashboards:
     view_support: N/A
     importQualifiers: counter.etcd.leader.counts.success (plugin =  etcd);
   vCenter:
+    dashboard_group: vSphere
+    view_support: instance
+    importQualifiers: vsphere.cpu_usage_percent (*);
+  vCenter - vSphere (legacy):
     dashboard_group: vSphere (legacy)
     view_support: N/A
     importQualifiers: cpu.usage.average (metric_source =  vsphere);  OR mem.usage.average
