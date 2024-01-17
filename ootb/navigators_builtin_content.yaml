@@ -160,6 +160,16 @@ Navigators:
       instance:
       - CloudFront distribution
     importQualifiers: Requests (sf_key =  DistributionId);
+  Cognito:
+    category_display_name: Amazon Web Services
+    associated_dashboards:
+      aggregated:
+      - Userpools
+      instance:
+      - Userpool
+    importQualifiers: SignUpSuccesses (namespace =  AWS/Cognito) & (stat =  count)
+      & (UserPool =  *);  OR SignInSuccesses (namespace =  AWS/Cognito) & (stat =  count)
+      & (UserPool =  *);
   Compute engine:
     category_display_name: Google Cloud Platform
     associated_dashboards:
