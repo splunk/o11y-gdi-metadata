@@ -83,14 +83,24 @@ Navigators:
       =  Microsoft.Web/sites);  OR azure.function.invocations (is_Azure_Function =  true)
       & (metric_source =  azure_function_wrapper);
   Batch accounts:
-    category_display_name: Azure
+    category_display_name: Microsoft Azure
     associated_dashboards:
       aggregated:
       - Azure batch accounts
+      - Azure batch account logs
       instance:
       - Azure batch account
     importQualifiers: CoreCount (resource_type =  Microsoft.Batch/batchAccounts) &
       (primary_aggregation_type =  true);
+  Cloud BigQuery:
+    category_display_name: Google Cloud Platform
+    associated_dashboards:
+      aggregated:
+      - BigQuery overview
+      instance:
+      - BigQuery
+    importQualifiers: query/count (service =  bigquery) & (project_id =  *);  OR job/num_in_flight
+      (service =  bigquery) & (project_id =  *);
   Cloud bigtable:
     category_display_name: Google Cloud Platform
     associated_dashboards:
@@ -100,6 +110,16 @@ Navigators:
       - Bigtable cluster
       - Bigtable table
     importQualifiers: cluster/cpu_load (sf_key =  gcp_id);
+  Cloud datastore:
+    category_display_name: Google Cloud Platform
+    associated_dashboards:
+      aggregated:
+      - Datastore overview
+      instance:
+      - Datastore
+    importQualifiers: entity/read_sizes (service =  datastore) & (monitored_resource
+      =  datastore_request) & (project_id =  *);  OR api/request_count (service =  datastore)
+      & (monitored_resource =  datastore_request) & (project_id =  *);
   Cloud functions:
     category_display_name: Google Cloud Platform
     associated_dashboards:
@@ -140,6 +160,16 @@ Navigators:
       instance:
       - CloudFront distribution
     importQualifiers: Requests (sf_key =  DistributionId);
+  Cognito:
+    category_display_name: Amazon Web Services
+    associated_dashboards:
+      aggregated:
+      - Userpools
+      instance:
+      - Userpool
+    importQualifiers: SignUpSuccesses (namespace =  AWS/Cognito) & (stat =  count)
+      & (UserPool =  *);  OR SignInSuccesses (namespace =  AWS/Cognito) & (stat =  count)
+      & (UserPool =  *);
   Compute engine:
     category_display_name: Google Cloud Platform
     associated_dashboards:
@@ -184,11 +214,12 @@ Navigators:
     importQualifiers: gauge.nodes.system.cpu_utilization_rate (plugin =  couchbase)
       & (sf_key =  node);
   DynamoDB:
-    category_display_name: AWS
+    category_display_name: Amazon Web Services
     associated_dashboards:
       aggregated:
       - AWS DynamoDB
-      instance: N/A
+      instance:
+      - AWS DynamoDB
     importQualifiers: SuccessfulRequestLatency (sf_key =  TableName);
   EBS:
     category_display_name: AWS
@@ -216,10 +247,11 @@ Navigators:
       - ECS (AWS) cluster
     importQualifiers: CPUUtilization (sf_key =  ClusterName);
   ELB:
-    category_display_name: AWS
+    category_display_name: Amazon Web Services
     associated_dashboards:
       aggregated:
       - ELB instances
+      - ELB logs
       instance:
       - ELB instance
     importQualifiers: RequestCount (sf_key =  LoadBalancerName);
@@ -268,10 +300,11 @@ Navigators:
       - Elasticsearch node
     importQualifiers: '*.indices.indexing.index-total (plugin =  elasticsearch);'
   Event hubs:
-    category_display_name: Azure
+    category_display_name: Microsoft Azure
     associated_dashboards:
       aggregated:
       - Azure Event Hubs
+      - Azure Event Hubs logs
       instance:
       - Azure Event Hub
     importQualifiers: SuccessfulRequests (primary_aggregation_type =  true) & (resource_type
@@ -313,16 +346,18 @@ Navigators:
       - K8s containers
       instance:
       - K8s container
-    importQualifiers: k8s.container.ready (sf_key =  k8s.container.name);
+    importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);
   K8s nodes:
     category_display_name: Kubernetes
     associated_dashboards:
       aggregated:
       - K8s nodes
       - K8s clusters
+      - K8s node logs
       instance:
       - K8s node
       - K8s pods
+      - K8s node logs
     importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);
   K8s pods:
     category_display_name: Kubernetes
@@ -332,7 +367,8 @@ Navigators:
       instance:
       - K8s pod
       - K8s containers
-    importQualifiers: k8s.pod.phase (sf_key =  k8s.pod.uid);
+      - K8s pod logs
+    importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);
   K8s workloads:
     category_display_name: Kubernetes
     associated_dashboards:
@@ -393,7 +429,7 @@ Navigators:
       - Gke pod
     importQualifiers: container/memory/request_utilization (service =  kubernetes);
   Lambda functions:
-    category_display_name: AWS
+    category_display_name: Amazon Web Services
     associated_dashboards:
       aggregated: Lambda (AWS) overview
       instance: Lambda (AWS) function
@@ -503,10 +539,11 @@ Navigators:
     importQualifiers: oracledb.processes.usage (sf_key =  oracledb.instance.name)
       & (sf_key =  host.name);
   RDS:
-    category_display_name: AWS
+    category_display_name: Amazon Web Services
     associated_dashboards:
       aggregated:
       - RDS instances
+      - RDS MySQL and MariaDB logs
       instance:
       - RDS instance
       - Engine specifics
@@ -536,10 +573,11 @@ Navigators:
       - Redis instance
     importQualifiers: bytes.used_memory (plugin =  redis_info);
   Redshift:
-    category_display_name: AWS
+    category_display_name: Amazon Web Services
     associated_dashboards:
       aggregated:
       - AWS Redshift overview
+      - AWS Redshift logs
       instance:
       - AWS Redshift
     importQualifiers: CPUUtilization (namespace =  AWS/Redshift);
@@ -609,10 +647,11 @@ Navigators:
       - EntryPoint
     importQualifiers: traefik_entrypoint_requests_total (sf_key =  entrypoint);
   VM scale sets:
-    category_display_name: Azure
+    category_display_name: Microsoft Azure
     associated_dashboards:
       aggregated:
       - Azure VM Scale Sets
+      - Azure VM Scale Sets logs
       instance:
       - Azure VM Scale Set
     importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets)
