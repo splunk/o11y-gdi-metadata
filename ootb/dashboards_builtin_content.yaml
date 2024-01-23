@@ -487,6 +487,18 @@ Dashboards:
     view_support: N/A
     importQualifiers: conviva.quality_metriclens.total_attempts (*);  OR conviva.attempts
       (*);
+  Cloud NAT:
+    dashboard_group: Google Cloud NAT
+    view_support: N/A
+    importQualifiers: nat/allocated_ports (monitored_resource =  nat_gateway) & (gateway_name
+      =  *);  OR nat/port_usage (monitored_resource =  nat_gateway) & (gateway_name
+      =  *);
+  Cloud NAT overview:
+    dashboard_group: Google Cloud NAT
+    view_support: N/A
+    importQualifiers: nat/allocated_ports (monitored_resource =  nat_gateway) & (gateway_name
+      =  *);  OR nat/port_usage (monitored_resource =  nat_gateway) & (gateway_name
+      =  *);
   Cloud Storage bucket:
     dashboard_group: Google Cloud Storage
     view_support: instance
@@ -1201,6 +1213,16 @@ Dashboards:
     dashboard_group: Jenkins
     view_support: N/A
     importQualifiers: gauge.jenkins.node.online.status (plugin =  jenkins);
+  Jira:
+    dashboard_group: JIRA
+    view_support: N/A
+    importQualifiers: jira_all_users_gauge (service.name =  jira) & (host.name =  *);  OR
+      jira_active_users_gauge (service.name =  jira) & (host.name =  *);
+  Jira overview:
+    dashboard_group: JIRA
+    view_support: N/A
+    importQualifiers: jira_all_users_gauge (service.name =  jira) & (host.name =  *);  OR
+      jira_active_users_gauge (service.name =  jira) & (host.name =  *);
   K8s cluster:
     dashboard_group: Kubernetes
     view_support: N/A
