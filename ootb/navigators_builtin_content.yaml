@@ -310,6 +310,31 @@ Navigators:
     importQualifiers: SuccessfulRequests (primary_aggregation_type =  true) & (resource_type
       =  Microsoft.EventHub/namespaces);  OR IncomingRequests (primary_aggregation_type
       =  true) & (resource_type =  Microsoft.EventHub/namespaces);
+  GKE clusters:
+    category_display_name: Google Cloud Platform
+    associated_dashboards:
+      aggregated:
+      - Cluster overview
+      instance:
+      - GKE node
+      - GKE pod
+    importQualifiers: container/memory/request_utilization (service =  kubernetes);
+  GKE nodes:
+    category_display_name: Google Cloud Platform
+    associated_dashboards:
+      aggregated:
+      - GKE node
+      instance:
+      - GKE node
+    importQualifiers: container/memory/request_utilization (service =  kubernetes);
+  GKE pods:
+    category_display_name: Google Cloud Platform
+    associated_dashboards:
+      aggregated:
+      - GKE pod
+      instance:
+      - GKE pod
+    importQualifiers: container/memory/request_utilization (service =  kubernetes);
   GitLab:
     category_display_name: CI/CD
     associated_dashboards:
@@ -419,15 +444,6 @@ Navigators:
       instance:
       - Kinesis Stream
     importQualifiers: GetRecords.Latency (namespace =  AWS/Kinesis);
-  Kubernetes engine:
-    category_display_name: Google Cloud Platform
-    associated_dashboards:
-      aggregated:
-      - Cluster overview
-      instance:
-      - GKE node
-      - Gke pod
-    importQualifiers: container/memory/request_utilization (service =  kubernetes);
   Lambda functions:
     category_display_name: Amazon Web Services
     associated_dashboards:
