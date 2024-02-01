@@ -1038,6 +1038,10 @@ Dashboards:
     dashboard_group: Google Kubernetes Engine
     view_support: instance
     importQualifiers: container/memory/request_utilization (*);
+  GKE pod:
+    dashboard_group: Google Kubernetes Engine
+    view_support: aggregated
+    importQualifiers: container/memory/request_utilization (*);
   Garden container:
     dashboard_group: Cloud foundry
     view_support: N/A
@@ -1052,10 +1056,6 @@ Dashboards:
     importQualifiers: sidekiq_queue_size (host.name =  *);  OR sidekiq_queue_latency
       (host.name =  *);  OR grpc_server_handled_total (host.name =  *);  OR gitlab_workhorse_http_request_duration_seconds
       (host.name =  *);  OR nginx_vts_server_requests_total (host.name =  *);
-  Gke pod:
-    dashboard_group: Google Kubernetes Engine
-    view_support: instance
-    importQualifiers: container/memory/request_utilization (*);
   Google Cloud SQL:
     dashboard_group: Google Cloud SQL
     view_support: N/A
