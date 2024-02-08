@@ -694,7 +694,7 @@ Dashboards:
     importQualifiers: postgres_sessions (*);
   Database - PostgreSQL(OTel):
     dashboard_group: PostgreSQL(OTel)
-    view_support: N/A
+    view_support: instance
     importQualifiers: postgresql.backends (*);  OR postgresql.db_size (*);
   Database - PostgreSQL(Smart Agent):
     dashboard_group: PostgreSQL(Smart Agent)
@@ -706,7 +706,7 @@ Dashboards:
     importQualifiers: pg_numbackends (plugin =  postgresql);
   Databases - PostgreSQL(OTel):
     dashboard_group: PostgreSQL(OTel)
-    view_support: N/A
+    view_support: aggregated
     importQualifiers: postgresql.backends (*);  OR postgresql.db_size (*);
   Datanode:
     dashboard_group: Hadoop HDFS
@@ -1121,7 +1121,7 @@ Dashboards:
       (host.name =  *) & (command =  *);
   Host - PostgreSQL(OTel):
     dashboard_group: PostgreSQL(OTel)
-    view_support: N/A
+    view_support: instance
     importQualifiers: postgresql.backends (*);  OR postgresql.db_size (*);
   Host with agent installed:
     dashboard_group: Hosts with agent installed
@@ -1138,7 +1138,7 @@ Dashboards:
     importQualifiers: cpu.utilization (*);
   Hosts - PostgreSQL(OTel):
     dashboard_group: PostgreSQL(OTel)
-    view_support: N/A
+    view_support: aggregated
     importQualifiers: postgresql.backends (*);  OR postgresql.db_size (*);
   Hosts with agent installed:
     dashboard_group: Hosts with agent installed
