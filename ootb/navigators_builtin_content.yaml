@@ -554,6 +554,22 @@ Navigators:
       - Oracle DB sessions
     importQualifiers: oracledb.processes.usage (sf_key =  oracledb.instance.name)
       & (sf_key =  host.name);
+  PostgreSQL databases:
+    category_display_name: Datastores
+    associated_dashboards:
+      aggregated:
+      - Databases
+      instance:
+      - Database
+    importQualifiers: postgresql.backends (*);  OR postgresql.db_size (*);
+  PostgreSQL hosts:
+    category_display_name: Datastores
+    associated_dashboards:
+      aggregated:
+      - Hosts
+      instance:
+      - Host
+    importQualifiers: postgresql.backends (*);  OR postgresql.db_size (*);
   RDS:
     category_display_name: Amazon Web Services
     associated_dashboards:
