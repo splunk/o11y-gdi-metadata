@@ -382,7 +382,7 @@ Dashboards:
       & (primary_aggregation_type =  true);  OR cpu.utilization (cloud.provider =  azure);
   Azure Virtual Machines logs:
     dashboard_group: Azure Virtual Machines
-    view_support: N/A
+    view_support: aggregated
     importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachines)
       & (primary_aggregation_type =  true);  OR Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets/virtualMachines)
       & (primary_aggregation_type =  true);  OR cpu.utilization (cloud.provider =  azure);
