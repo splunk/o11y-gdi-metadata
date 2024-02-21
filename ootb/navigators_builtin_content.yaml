@@ -689,10 +689,13 @@ Navigators:
     importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets)
       & (primary_aggregation_type =  true);
   Virtual machines:
-    category_display_name: Azure
+    category_display_name: Microsoft Azure
     associated_dashboards:
-      aggregated: Azure virtual machines
-      instance: Azure virtual machine
+      aggregated:
+      - Azure Virtual Machines
+      - Azure Virtual Machines logs
+      instance:
+      - Azure Virtual Machine
     importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachines);  OR
       cpu.utilization (cloud.provider =  azure);  OR Percentage CPU (resource_type
       =  Microsoft.Compute/virtualMachineScaleSets/virtualMachines);
