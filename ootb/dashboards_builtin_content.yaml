@@ -1123,7 +1123,7 @@ Dashboards:
   Host - MySQL(OTEL):
     dashboard_group: MySQL(OTEL)
     view_support: N/A
-    importQualifiers: mysql.operation (operation =  *) & (host.name =  *);  OR mysql.commands
+    importQualifiers: mysql.operations (operation =  *) & (host.name =  *);  OR mysql.commands
       (host.name =  *) & (command =  *);
   Host - PostgreSQL(OTel):
     dashboard_group: PostgreSQL(OTel)
@@ -1136,7 +1136,7 @@ Dashboards:
   Hosts:
     dashboard_group: MySQL(OTEL)
     view_support: N/A
-    importQualifiers: mysql.operation (operation =  *) & (host.name =  *);  OR mysql.commands
+    importQualifiers: mysql.operations (operation =  *) & (host.name =  *);  OR mysql.commands
       (host.name =  *) & (command =  *);
   Hosts - Data Center Hosts:
     dashboard_group: Data Center Hosts
