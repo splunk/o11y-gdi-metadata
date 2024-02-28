@@ -1760,10 +1760,20 @@ Dashboards:
     view_support: instance
     importQualifiers: gauge.node.uptime (plugin =  rabbitmq);
   Redis instance:
+    dashboard_group: Redis(OTEL)
+    view_support: N/A
+    importQualifiers: redis.cpu.time (host.name =  *);  OR redis.uptime (host.name
+      =  *);
+  Redis instance - Redis:
     dashboard_group: Redis
     view_support: instance
     importQualifiers: bytes.used_memory (plugin =  redis_info);
   Redis instances:
+    dashboard_group: Redis(OTEL)
+    view_support: N/A
+    importQualifiers: redis.cpu.time (host.name =  *);  OR redis.uptime (host.name
+      =  *);
+  Redis instances - Redis:
     dashboard_group: Redis
     view_support: aggregated
     importQualifiers: bytes.used_memory (plugin =  redis_info);
