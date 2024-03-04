@@ -72,16 +72,27 @@ Navigators:
       instance:
       - AWS AutoScaling group
     importQualifiers: GroupTotalInstances (stat =  mean) & (namespace =  AWS/AutoScaling);
-  Azure functions:
-    category_display_name: Azure
+  Azure Functions (SignalFx Wrapper):
+    category_display_name: Microsoft Azure
     associated_dashboards:
-      aggregated: Azure function apps
-      instance: Azure function app
+      aggregated:
+      - (SignalFx) Azure Functions (deprecated)
+      instance:
+      - (SignalFx) Azure Function (deprecated)
+    importQualifiers: azure.function.invocations (sf_key =  azure_function_name);  OR
+      azure.function.errors (sf_key =  azure_function_name);  OR azure.function.duration
+      (sf_key =  azure_function_name);
+  Azure functions:
+    category_display_name: Microsoft Azure
+    associated_dashboards:
+      aggregated:
+      - (Azure) Function Apps
+      instance:
+      - (Azure) Function App
     importQualifiers: FunctionExecutionCount (is_Azure_Function =  true) & (primary_aggregation_type
       =  true) & (resource_type =  Microsoft.Web/sites);  OR FunctionExecutionUnits
       (is_Azure_Function =  true) & (primary_aggregation_type =  true) & (resource_type
-      =  Microsoft.Web/sites);  OR azure.function.invocations (is_Azure_Function =  true)
-      & (metric_source =  azure_function_wrapper);
+      =  Microsoft.Web/sites);
   Batch accounts:
     category_display_name: Microsoft Azure
     associated_dashboards:
@@ -123,8 +134,10 @@ Navigators:
   Cloud functions:
     category_display_name: Google Cloud Platform
     associated_dashboards:
-      aggregated: GCF overview
-      instance: GCF function
+      aggregated:
+      - GCF (stackdriver) overview
+      instance:
+      - GCF (stackdriver) function
     importQualifiers: function/execution_count (sf_key =  function_name);  OR function/user_memory_bytes
       (sf_key =  function_name);  OR function/execution_times (sf_key =  function_name);
   Cloud router:
@@ -447,8 +460,11 @@ Navigators:
   Lambda functions:
     category_display_name: Amazon Web Services
     associated_dashboards:
-      aggregated: Lambda (AWS) overview
-      instance: Lambda (AWS) function
+      aggregated:
+      - Lambda (AWS) overview
+      - Lambda logs
+      instance:
+      - Lambda (AWS) function
     importQualifiers: Invocations (sf_key =  FunctionName);  OR Errors (sf_key =  FunctionName);  OR
       Throttles (sf_key =  FunctionName);  OR function.invocations (sf_key =  aws_function_name);
   Logic apps:
