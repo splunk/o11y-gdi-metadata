@@ -1,7 +1,7 @@
 Dashboards:
   (Azure) Function App:
     dashboard_group: Azure Functions
-    view_support: N/A
+    view_support: instance
     importQualifiers: FunctionExecutionCount (resource_type =  Microsoft.Web/sites)
       & (is_Azure_Function =  true) & (primary_aggregation_type =  true);  OR FunctionExecutionUnits
       (resource_type =  Microsoft.Web/sites) & (is_Azure_Function =  true) & (primary_aggregation_type
@@ -9,23 +9,23 @@ Dashboards:
       =  azure_function_wrapper);
   (Azure) Function Apps:
     dashboard_group: Azure Functions
-    view_support: N/A
+    view_support: aggregated
     importQualifiers: FunctionExecutionCount (resource_type =  Microsoft.Web/sites)
       & (is_Azure_Function =  true) & (primary_aggregation_type =  true);  OR FunctionExecutionUnits
       (resource_type =  Microsoft.Web/sites) & (is_Azure_Function =  true) & (primary_aggregation_type
       =  true);  OR azure.function.invocations (is_Azure_Function =  true) & (metric_source
       =  azure_function_wrapper);
-  (SignalFx) Azure Function:
+  (SignalFx) Azure Function (deprecated):
     dashboard_group: Azure Functions
-    view_support: N/A
+    view_support: instance
     importQualifiers: FunctionExecutionCount (resource_type =  Microsoft.Web/sites)
       & (is_Azure_Function =  true) & (primary_aggregation_type =  true);  OR FunctionExecutionUnits
       (resource_type =  Microsoft.Web/sites) & (is_Azure_Function =  true) & (primary_aggregation_type
       =  true);  OR azure.function.invocations (is_Azure_Function =  true) & (metric_source
       =  azure_function_wrapper);
-  (SignalFx) Azure Functions:
+  (SignalFx) Azure Functions (deprecated):
     dashboard_group: Azure Functions
-    view_support: N/A
+    view_support: aggregated
     importQualifiers: FunctionExecutionCount (resource_type =  Microsoft.Web/sites)
       & (is_Azure_Function =  true) & (primary_aggregation_type =  true);  OR FunctionExecutionUnits
       (resource_type =  Microsoft.Web/sites) & (is_Azure_Function =  true) & (primary_aggregation_type
@@ -1016,23 +1016,23 @@ Dashboards:
     view_support: N/A
     importQualifiers: system.cpu.sys (*);  OR rep.ContainerCount (*);
   GCF (SignalFx) function:
-    dashboard_group: Google Cloud Functions
+    dashboard_group: Google Cloud Functions (SignalFx)
     view_support: N/A
-    importQualifiers: function/execution_count (service =  cloudfunctions);  OR function/user_memory_bytes
-      (service =  cloudfunctions);
+    importQualifiers: function.invocations (metric_source =  gcf_wrapper);  OR function.duration
+      (metric_source =  gcf_wrapper);
   GCF (SignalFx) overview:
-    dashboard_group: Google Cloud Functions
+    dashboard_group: Google Cloud Functions (SignalFx)
     view_support: N/A
-    importQualifiers: function/execution_count (service =  cloudfunctions);  OR function/user_memory_bytes
-      (service =  cloudfunctions);
+    importQualifiers: function.invocations (metric_source =  gcf_wrapper);  OR function.duration
+      (metric_source =  gcf_wrapper);
   GCF (stackdriver) function:
     dashboard_group: Google Cloud Functions
-    view_support: N/A
+    view_support: instance
     importQualifiers: function/execution_count (service =  cloudfunctions);  OR function/user_memory_bytes
       (service =  cloudfunctions);
   GCF (stackdriver) overview:
     dashboard_group: Google Cloud Functions
-    view_support: N/A
+    view_support: aggregated
     importQualifiers: function/execution_count (service =  cloudfunctions);  OR function/user_memory_bytes
       (service =  cloudfunctions);
   GCP:
@@ -1408,14 +1408,14 @@ Dashboards:
     view_support: aggregated
     importQualifiers: ConcurrentExecutions (namespace =  AWS/Lambda) & (stat =  sum);  OR
       function.invocations (metric_source =  lambda_wrapper);
-  Lambda (SignalFx) function:
+  Lambda (SignalFx) function (deprecated):
     dashboard_group: AWS Lambda
-    view_support: instance
+    view_support: N/A
     importQualifiers: ConcurrentExecutions (namespace =  AWS/Lambda) & (stat =  sum);  OR
       function.invocations (metric_source =  lambda_wrapper);
-  Lambda (SignalFx) overview:
+  Lambda (SignalFx) overview (deprecated):
     dashboard_group: AWS Lambda
-    view_support: aggregated
+    view_support: N/A
     importQualifiers: ConcurrentExecutions (namespace =  AWS/Lambda) & (stat =  sum);  OR
       function.invocations (metric_source =  lambda_wrapper);
   Lambda extension:
@@ -1425,7 +1425,7 @@ Dashboards:
       function.invocations (metric_source =  lambda_wrapper);
   Lambda logs:
     dashboard_group: AWS Lambda
-    view_support: N/A
+    view_support: aggregated
     importQualifiers: ConcurrentExecutions (namespace =  AWS/Lambda) & (stat =  sum);  OR
       function.invocations (metric_source =  lambda_wrapper);
   License usage overview:
