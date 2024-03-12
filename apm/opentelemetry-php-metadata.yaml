@@ -1,0 +1,769 @@
+component: OpenTelemetry PHP instrumentation
+version: 1.0.0
+dependencies:
+  - name: OpenTelemetry PHP SDK
+    source_href: https://github.com/open-telemetry/opentelemetry-php
+    version: 1.0.8
+    stability: stable
+  - name: OpenTelemetry PHP auto-instrumentation extension
+    source_href: https://github.com/open-telemetry/opentelemetry-php-instrumentation
+    version: 1.0.1
+    stability: stable
+settings:
+  - env: OTEL_SDK_DISABLED
+    description: If true, disable the OpenTelemetry SDK. Defaults to false.
+    default: 'false'
+    type: boolean
+    category: general
+  - env: OTEL_TRACES_EXPORTER
+    description: Comma-separated list of exporters to be used for tracing. Default
+      is `otlp`. `none` means no autoconfigured exporter.
+    default: otlp
+    type: string
+    category: exporter
+  - env: OTEL_METRICS_EXPORTER
+    description: Comma-separated list of exporters to be used for metrics. Default
+      is `otlp`. `none` means no autoconfigured exporter.
+    default: otlp
+    type: string
+    category: exporter
+  - env: OTEL_LOGS_EXPORTER
+    description: Comma-separated list of exporters to be used for logs. Default
+      is `otlp`. `none` means no autoconfigured exporter.
+    default: otlp
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_ENDPOINT
+    description: The OTLP traces, metrics, and logs endpoint to connect to. Must be
+      a URL with a scheme of either http or https based on the use of TLS. If protocol
+      is http/protobuf the version and signal will be appended to the path (e.g. v1/traces,
+      v1/metrics, or v1/logs). Default is http://localhost:4317 when protocol is grpc,
+      and http://localhost:4318/v1/{signal} when protocol is http/protobuf.
+    default: 'http://localhost:4317'
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+    description: The OTLP traces endpoint to connect to. Must be a URL with a scheme
+      of either http or https based on the use of TLS. Default is http://localhost:4317
+      when protocol is grpc, and http://localhost:4318/v1/traces when protocol is
+      http/protobuf.
+    default: 'http://localhost:4317'
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_METRICS_ENDPOINT
+    description: The OTLP metrics endpoint to connect to. Must be a URL with a scheme
+      of either http or https based on the use of TLS. Default is http://localhost:4317
+      when protocol is grpc, and http://localhost:4318/v1/metrics when protocol is
+      http/protobuf.
+    default: 'http://localhost:4318/v1/metrics'
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_LOGS_ENDPOINT
+    description: The OTLP logs endpoint to connect to. Must be a URL with a scheme
+      of either http or https based on the use of TLS. Default is http://localhost:4317
+      when protocol is grpc, and http://localhost:4318/v1/logs when protocol is http/protobuf.
+    default: 'http://localhost:4317'
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_INSECURE
+    description: If true, allow TLS credentials verification to fail for trace, metric, and log requests. Default is false.
+    default: 'false'
+    type: boolean
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_TRACES_INSECURE
+    description: If true, allow TLS credentials verification to fail for trace requests. Default is false.
+    default: 'false'
+    type: boolean
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_METRICS_INSECURE
+    description: If true, allow TLS credentials verification to fail for metric requests. Default is false.
+    default: 'false'
+    type: boolean
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_LOGS_INSECURE
+    description: If true, allow TLS credentials verification to fail for log requests. Default is false.
+    default: 'false'
+    type: boolean
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_CERTIFICATE
+    description: The path to the file containing trusted certificates to use when
+      verifying an OTLP trace, metric, or log server's TLS credentials. The file should
+      contain one or more X.509 certificates in PEM format. By default the host platform's
+      trusted root certificates are used.
+    default: ''
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_TRACES_CERTIFICATE
+    description: The path to the file containing trusted certificates to use when
+      verifying an OTLP trace server's TLS credentials. The file should contain one
+      or more X.509 certificates in PEM format. By default the host platform's trusted
+      root certificates are used.
+    default: ''
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_METRICS_CERTIFICATE
+    description: The path to the file containing trusted certificates to use when
+      verifying an OTLP metric server's TLS credentials. The file should contain one
+      or more X.509 certificates in PEM format. By default the host platform's trusted
+      root certificates are used.
+    default: ''
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_TRACES_CERTIFICATE
+    description: The path to the file containing trusted certificates to use when
+      verifying an OTLP log server's TLS credentials. The file should contain one
+      or more X.509 certificates in PEM format. By default the host platform's trusted
+      root certificates are used.
+    default: ''
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_HEADERS
+    description: Comma-separated list of key-value pairs to pass as request headers on
+      OTLP trace, metric, and log requests.
+    default: ''
+    type: string0
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_TRACES_HEADERS
+    description: Comma-separated list of key-value pairs to pass as request headers on
+      OTLP trace requests.
+    default: ''
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_METRICS_HEADERS
+    description: Comma-separated list of key-value pairs to pass as request headers on
+      OTLP metrics requests.
+    default: ''
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_LOGS_HEADERS
+    description: Comma-separated list of key-value pairs to pass as request headers on
+      OTLP logs requests.
+    default: ''
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_COMPRESSION
+    description: The compression type to use on OTLP trace, metric, and log requests.
+      Options include gzip. By default no compression will be used.
+    default: ''
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_TRACES_COMPRESSION
+    description: The compression type to use on OTLP trace requests. Options include
+      gzip. By default no compression will be used.
+    default: ''
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_METRICS_COMPRESSION
+    description: The compression type to use on OTLP metric requests. Options include
+      gzip. By default no compression will be used.
+    default: ''
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_LOGS_COMPRESSION
+    description: The compression type to use on OTLP log requests. Options include
+      gzip. By default no compression will be used.
+    default: ''
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_TIMEOUT
+    description: The maximum waiting time, in seconds, allowed to send each OTLP
+      trace, metric, and log batch. Default is 10.
+    default: '10'
+    type: int
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_TRACES_TIMEOUT
+    description: The maximum waiting time, in seconds, allowed to send each OTLP
+      trace batch. Default is 10.
+    default: '10'
+    type: int
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_METRICS_TIMEOUT
+    description: The maximum waiting time, in seconds, allowed to send each OTLP
+      metric batch. Default is 10.
+    default: '10'
+    type: int
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_LOGS_TIMEOUT
+    description: The maximum waiting time, in seconds, allowed to send each OTLP
+      log batch. Default is 10.
+    default: '10'
+    type: int
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_PROTOCOL
+    description: The transport protocol to use on OTLP trace, metric, and log requests.
+      Options include grpc and http/protobuf.
+    default: http/protobuf
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_TRACES_PROTOCOL
+    description: The transport protocol to use on OTLP trace requests. Options include
+      grpc and http/protobuf.
+    default: http/protobuf
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_METRICS_PROTOCOL
+    description: The transport protocol to use on OTLP metric requests. Options include
+      grpc and http/protobuf.
+    default: http/protobuf
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_LOGS_PROTOCOL
+    description: The transport protocol to use on OTLP log requests. Options include
+      grpc and http/protobuf.
+    default: http/protobuf
+    type: string
+    category: exporter
+  - env: OTEL_PROPAGATORS
+    description: Comma-separated list of propagators for the tracer. The default value is `tracecontext,baggage`. Supported values are `tracecontext`, `baggage`, `b3`, `b3multi`, `cloudtrace`, `cloudtrace-oneway`, `jaeger`, `jaeger-baggage`.
+    default: 'tracecontext,baggage'
+    type: string
+    category: trace propagation
+  - env: OTEL_TRACES_SAMPLER
+    description: Sampler to use. The default value is `parentbased_always_on`. Supported values are `always_on`, `always_off`, `traceidratio`, `parentbased_always_on`, `parentbased_always_off`, and `parentbased_traceidratio`.
+    default: 'parentbased_always_on'
+    type: string
+    category: sampler
+  - env: OTEL_TRACES_SAMPLER_ARG
+    description: Semicolon-separated list of rules for the `rules` sampler. The default value is `1.0` for `parentbased_always_on`.
+    default: '1.0'
+    type: string
+    category: sampler
+  - env: OTEL_SERVICE_NAME
+    description: Name of the service or application you're instrumenting. Takes precedence over the service name defined in the `OTEL_RESOURCE_ATTRIBUTES` variable.
+    default: ''
+    type: string
+    category: instrumentation
+  - env: OTEL_RESOURCE_ATTRIBUTES
+    description: Comma-separated list of resource attributes added to every reported span. For example, `key1=val1,key2=val2`.
+    default: ''
+    type: string
+    category: instrumentation
+  - env: OTEL_LOG_LEVEL
+    description: Sets the logging level for instrumentation log messages. Possible values are `none`, `error`, `warn`, `info`, and `debug`. The default value is `info`. Can't be set using the web.config or app.config files.
+    default: 'info'
+    type: string
+    category: diagnostic logging
+  - env: OTEL_ATTRIBUTE_COUNT_LIMIT
+    description: The maximum number of attributes. Applies to spans, span events,
+      span links, and logs. Default is 128.
+    default: '128'
+    type: int
+    category: instrumentation
+  - env: OTEL_ATTRIBUTE_VALUE_LENGTH_LIMIT
+    description: Maximum length of strings for attribute values. Values larger than the limit are truncated. Default value is infinite. Empty values are treated as infinity.
+    default: ''
+    type: int
+    category: instrumentation
+  - env: OTEL_LINK_ATTRIBUTE_COUNT_LIMIT
+    description: The maximum number of attributes allowed for links. Applies to span links. Default is 128.
+    default: '128'
+    type: int
+    category: instrumentation
+  - env: OTEL_EVENT_ATTRIBUTE_COUNT_LIMIT
+    description: The maximum number of attributes allowed for events. Applies to span events. Default is 128.
+    default: '128'
+    type: int
+    category: instrumentation
+  - env: OTEL_SPAN_ATTRIBUTE_COUNT_LIMIT
+    description: The maximum number of attributes per span. Takes precedence over
+      OTEL_ATTRIBUTE_COUNT_LIMIT. Default is 128.
+    default: '128'
+    type: int
+    category: instrumentation
+  - env: OTEL_SPAN_ATTRIBUTE_VALUE_LENGTH_LIMIT
+    description: The maximum length of span attribute values. Takes precedence over
+      OTEL_ATTRIBUTE_VALUE_LENGTH_LIMIT. Default is unlimited.
+    default: ''
+    type: int
+    category: instrumentation
+  - env: OTEL_SPAN_EVENT_COUNT_LIMIT
+    description: Maximum number of events per span. Default is 128.
+    default: '128'
+    type: int
+    category: instrumentation
+  - env: OTEL_SPAN_LINK_COUNT_LIMIT
+    description: Maximum number of links per span. Default is 128.
+    default: '128'
+    type: int
+    category: instrumentation
+  - env: OTEL_BSP_SCHEDULE_DELAY
+    description: Delay interval (in milliseconds) between two consecutive exports in batch span processor. Default is 5000.
+    default: '5000'
+    type: int
+    category: exporter
+  - env: OTEL_BSP_EXPORT_TIMEOUT
+    description: Maximum allowed time (in milliseconds) to export data in batch span processor. Default is 30000.
+    default: '30000'
+    type: int
+    category: exporter
+  - env: OTEL_BSP_MAX_QUEUE_SIZE
+    description: Maximum queue size in batch span processor. Default is 2048.
+    default: '2048'
+    type: int
+    category: exporter
+  - env: OTEL_BSP_MAX_EXPORT_BATCH_SIZE
+    description: Maximum batch size in batch span processor. Default is 512.
+    default: '512'
+    type: int
+    category: exporter
+  - env: OTEL_METRICS_EXEMPLAR_FILTER
+    description: The filter for exemplar sampling. Possible values are `with_sampled_trace`, `all` and `none`. Default is `with_sampled_trace`.
+    default: 'with_sampled_trace'
+    type: string
+    category: general
+  - env: OTEL_METRIC_EXPORT_INTERVAL
+    description: The interval, in milliseconds, between the start of two export attempts. Default is 60000.
+    default: '60000'
+    type: int
+    category: exporter
+  - env: OTEL_METRIC_EXPORT_TIMEOUT
+    description: Maximum allowed time, in millisecond, to export metric data. Default is 30000.
+    default: '30000'
+    type: int
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
+    description: The preferred output aggregation temporality. Options include `delta`,
+      `lowmemory`, and `cumulative`. If `cumulative`, all instruments will have cumulative
+      temporality. If `delta`, counter (sync and async) and histograms will be delta,
+      up down counters (sync and async) will be cumulative. If `lowmemory`, sync counter
+      and histograms will be delta, async counter and up down counters (sync and async)
+      will be cumulative. Default is `cumulative`.
+    default: 'cumulative'
+    type: string
+    category: exporter
+  - env: OTEL_LOGRECORD_ATTRIBUTE_COUNT_LIMIT
+    description: The maximum number of attributes per log record. Takes precedence over
+      OTEL_ATTRIBUTE_COUNT_LIMIT. Default is 128.
+    default: '128'
+    type: int
+    category: instrumentation
+  - env: OTEL_LOGRECORD_ATTRIBUTE_VALUE_LENGTH_LIMIT
+    description: The maximum length of log record attribute values. Takes precedence over
+      OTEL_ATTRIBUTE_VALUE_LENGTH_LIMIT. Default is unlimited.
+    default: ''
+    type: int
+    category: instrumentation
+  - env: OTEL_BLRP_SCHEDULE_DELAY
+    description: Delay interval (in milliseconds) between two consecutive exports in batch log record processor. Default is 5000.
+    default: '5000'
+    type: int
+    category: exporter
+  - env: OTEL_BLRP_EXPORT_TIMEOUT
+    description: Maximum allowed time (in milliseconds) to export data in batch log record processor. Default is 30000.
+    default: '30000'
+    type: int
+    category: exporter
+  - env: OTEL_BLRP_MAX_QUEUE_SIZE
+    description: Maximum queue size in batch log record processor. Default is 2048.
+    default: '2048'
+    type: int
+    category: exporter
+  - env: OTEL_BLRP_MAX_EXPORT_BATCH_SIZE
+    description: Maximum batch size in batch log record processor. Default is 512.
+    default: '512'
+    type: int
+    category: exporter
+  - env: OTEL_EXPORTER_ZIPKIN_ENDPOINT
+    description: The Zipkin endpoint to connect to. Default is http://localhost:9411/api/v2/spans.
+      Currently only HTTP is supported.
+    default: 'http://localhost:9411/api/v2/spans'
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_ZIPKIN_TIMEOUT
+    description: Maximum time (in milliseconds) the Zipkin exporter will wait for each batch export. Default is 10000.
+    default: '10000'
+    type: int
+    category: exporter
+  - env: OTEL_PHP_TRACES_PROCESSOR
+    description: Default span processor if not explicitly created via SDK. Default is `batch`.
+    default: 'batch'
+    type: string
+    category: general
+  - env: OTEL_PHP_LOGS_PROCESSOR
+    description: Default log record processor if not explicitly created via SDK. Default is `batch`.
+    default: 'batch'
+    type: string
+    category: general
+  - env: OTEL_PHP_LOG_DESTINATION
+    description: Destination for internal logs of OpenTelemetry. Possible values are `none`, `stderr`, `stdout`, `psr3`, `debug` and `default`. Using `default` uses `psr3` if available, but falls back to `error_log` otherwise. The default value is `default`.
+    default: 'default'
+    type: string
+    category: general
+  - env: OTEL_PHP_DETECTORS
+    description: Comma-separated list of detectors to use for resource detection. Possible values are `all`, `env`, `host`, `os`, `process`, `process_runtime`, `sdk`, `sdk_provided`, `composer` and `none`. Default is `all`.
+    default: 'all'
+    type: string
+    category: general
+  - env: OTEL_PHP_AUTOLOAD_ENABLED
+    description: If true, automatically initialize SDK during autoloading. Default is false.
+    default: 'false'
+    type: boolean
+    category: general
+  - env: OTEL_PHP_INTERNAL_METRICS_ENABLED
+    description: If true, the SDK emits its own metrics, such as batch span and log processor state. Default is false.
+    default: 'false'
+    type: boolean
+    category: general
+  - env: OTEL_PHP_DISABLED_INSTRUMENTATIONS
+    description: Comma-separated list of instrumentations to disable. Value to use to disable a specific module is provided by the documentation of that module. Default is empty.
+    default: ''
+    type: string
+    category: general
+  - env: OTEL_PHP_EXCLUDED_URLS
+    description: Comma-separated list of URL regex patterns (matched against `$_SERVER['REQUEST_URI']`) where SDK autoloading will be disabled. Default is empty.
+    default: ''
+    type: string
+    category: general
+instrumentations:
+  - keys:
+      - opentelemetry-auto-codeigniter
+    instrumented_components:
+      - name: CodeIgniter
+        supported_versions: 4.0 or higher
+    description: OpenTelemetry auto-instrumentation for CodeIgniter
+    stability:  
+    support: community
+    dependencies:
+      - name: open-telemetry/opentelemetry-auto-codeigniter
+        source_href: https://github.com/open-telemetry/opentelemetry-php-contrib/tree/main/src/Instrumentation/CodeIgniter
+        package_href: https://packagist.org/packages/open-telemetry/opentelemetry-auto-codeigniter
+        version: 0.0.7
+        stability: experimental
+    signals:
+      - traces: []
+  - keys:
+      - opentelemetry-auto-ext-amqp
+    instrumented_components:
+      - name: PHP ext-amqp extension
+        supported_versions: PHP 8.2 or higher
+    description: OpenTelemetry auto-instrumentation for ext-amqp
+    stability: experimental
+    support: community
+    dependencies:
+      - name: open-telemetry/opentelemetry-auto-ext-amqp
+        source_href: https://github.com/open-telemetry/opentelemetry-php-contrib/tree/main/src/Instrumentation/ExtAmqp
+        package_href: https://packagist.org/packages/open-telemetry/opentelemetry-auto-ext-amqp
+        version: 0.0.3
+        stability: experimental
+    signals:
+      - traces: []
+  - keys:
+      - opentelemetry-auto-guzzle
+    instrumented_components:
+      - name: Guzzle
+        supported_versions: 7.0 or higher
+    description: OpenTelemetry auto-instrumentation for Guzzle
+    stability: experimental
+    support: community
+    dependencies:
+      - name: open-telemetry/opentelemetry-auto-guzzle
+        source_href: https://github.com/open-telemetry/opentelemetry-php-contrib/tree/main/src/Instrumentation/Guzzle
+        package_href: https://packagist.org/packages/open-telemetry/opentelemetry-auto-guzzle
+        version: 0.0.1
+        stability: experimental
+    signals:
+      - traces: []
+  - keys:
+      - opentelemetry-auto-http-async
+    instrumented_components:
+      - name: HTTPlug Async Client
+        supported_versions: 2.0 or higher
+    description: OpenTelemetry auto-instrumentation for HTTPlug async clients
+    stability: beta
+    support: community
+    dependencies:
+      - name: open-telemetry/opentelemetry-auto-http-async
+        source_href: https://github.com/open-telemetry/opentelemetry-php-contrib/tree/main/src/Instrumentation/HttpAsyncClient
+        package_href: https://packagist.org/packages/open-telemetry/opentelemetry-auto-http-async
+        version: 1.0.0beta4
+        stability: beta
+    signals:
+      - traces: []
+  - keys:
+      - opentelemetry-auto-io
+    instrumented_components:
+      - name: PHP built-in IO functions
+        supported_versions: PHP 8.2 or higher
+    description: OpenTelemetry auto-instrumentation for IO
+    stability: experimental
+    support: community
+    dependencies:
+      - name: open-telemetry/opentelemetry-auto-io
+        source_href: https://github.com/open-telemetry/opentelemetry-php-contrib/tree/main/src/Instrumentation/IO
+        package_href: https://packagist.org/packages/open-telemetry/opentelemetry-auto-io
+        version: 0.0.11
+        stability: experimental
+    signals:
+      - traces: []
+  - keys:
+      - opentelemetry-auto-laravel
+    instrumented_components:
+      - name: Laravel
+        supported_versions: 6.0 or higher
+    description: OpenTelemetry auto-instrumentation for Laravel
+    stability: experimental
+    support: community
+    dependencies:
+      - name: open-telemetry/opentelemetry-auto-laravel
+        source_href: https://github.com/open-telemetry/opentelemetry-php-contrib/tree/main/src/Instrumentation/Laravel
+        package_href: https://packagist.org/packages/open-telemetry/opentelemetry-auto-laravel
+        version: 0.0.22
+        stability: experimental
+    signals:
+      - traces: []
+  - keys:
+      - opentelemetry-auto-mongodb
+    instrumented_components:
+      - name: MongoDB
+        supported_versions: 1.15 or higher
+    description: OpenTelemetry auto-instrumentation for MongoDB
+    stability: experimental
+    support: community
+    dependencies:
+      - name: open-telemetry/opentelemetry-auto-mongodb
+        source_href: https://github.com/open-telemetry/opentelemetry-php-contrib/tree/main/src/Instrumentation/MongoDB
+        package_href: https://packagist.org/packages/open-telemetry/opentelemetry-auto-mongodb
+        version: 0.0.5
+        stability: experimental
+    signals:
+      - traces: []
+  - keys:
+      - opentelemetry-auto-openai-php
+    instrumented_components:
+      - name: openai-php/client
+        supported_versions: 0.1 or higher
+    description: OpenTelemetry auto-instrumentation for openai-php/client
+    stability: experimental
+    support: community
+    dependencies:
+      - name: open-telemetry/opentelemetry-auto-openai-php
+        source_href: https://github.com/open-telemetry/opentelemetry-php-contrib/tree/main/src/Instrumentation/OpenAIPHP
+        package_href: https://packagist.org/packages/open-telemetry/opentelemetry-auto-openai-php
+        version: 0.0.1
+        stability: experimental
+    signals:
+      - traces: []
+  - keys:
+      - opentelemetry-auto-pdo
+    instrumented_components:
+      - name: PHP PDO extension
+        supported_versions: PHP 8.2 or higher
+    description: OpenTelemetry auto-instrumentation for PDO
+    stability: experimental
+    support: community
+    dependencies:
+      - name: open-telemetry/opentelemetry-auto-pdo
+        source_href: https://github.com/open-telemetry/opentelemetry-php-contrib/tree/main/src/Instrumentation/PDO
+        package_href: https://packagist.org/packages/open-telemetry/opentelemetry-auto-pdo
+        version: 0.0.12
+        stability: experimental
+    signals:
+      - traces: []
+  - keys:
+      - opentelemetry-auto-psr3
+    instrumented_components:
+      - name: PSR-3
+        supported_versions: 1.0 or higher
+    description: OpenTelemetry auto-instrumentation for PSR-3 (Logger Interface)
+    stability: experimental
+    support: community
+    dependencies:
+      - name: open-telemetry/opentelemetry-auto-psr3
+        source_href: https://github.com/open-telemetry/opentelemetry-php-contrib/tree/main/src/Instrumentation/Psr3
+        package_href: https://packagist.org/packages/open-telemetry/opentelemetry-auto-psr3
+        version: 0.0.6
+        stability: experimental
+    signals:
+      - logs: []
+  - keys:
+      - opentelemetry-auto-psr14
+    instrumented_components:
+      - name: PSR-14
+        supported_versions: 1.0 or higher
+    description: OpenTelemetry auto-instrumentation for PSR-14 (Event Dispatcher)
+    stability: experimental
+    support: community
+    dependencies:
+      - name: open-telemetry/opentelemetry-auto-psr14
+        source_href: https://github.com/open-telemetry/opentelemetry-php-contrib/tree/main/src/Instrumentation/Psr14
+        package_href: https://packagist.org/packages/open-telemetry/opentelemetry-auto-psr14
+        version: 0.0.2
+        stability: experimental
+    signals:
+      - traces: []
+  - keys:
+      - opentelemetry-auto-psr15
+    instrumented_components:
+      - name: PSR-15
+        supported_versions: 1.0 or higher
+    description: OpenTelemetry auto-instrumentation for PSR-15 (HTTP Server Request Handlers)
+    stability: stable
+    support: community
+    dependencies:
+      - name: open-telemetry/opentelemetry-auto-psr15
+        source_href: https://github.com/open-telemetry/opentelemetry-php-contrib/tree/main/src/Instrumentation/Psr15
+        package_href: https://packagist.org/packages/open-telemetry/opentelemetry-auto-psr15
+        version: 1.0.4
+        stability: stable
+    signals:
+      - traces: []
+  - keys:
+      - opentelemetry-auto-psr18
+    instrumented_components:
+      - name: PSR-18
+        supported_versions: 1.0 or higher
+    description: OpenTelemetry auto-instrumentation for PSR-18 (HTTP Client)
+    stability: stable
+    support: community
+    dependencies:
+      - name: open-telemetry/opentelemetry-auto-psr18
+        source_href: https://github.com/open-telemetry/opentelemetry-php-contrib/tree/main/src/Instrumentation/Psr18
+        package_href: https://packagist.org/packages/open-telemetry/opentelemetry-auto-psr18
+        version: 1.0.3
+        stability: stable
+    signals:
+      - traces: []
+  - keys:
+      - opentelemetry-auto-slim
+    instrumented_components:
+      - name: Slim
+        supported_versions: 4.0 or higher
+    description: OpenTelemetry auto-instrumentation for Slim Framework
+    stability: stable
+    support: community
+    dependencies:
+      - name: open-telemetry/opentelemetry-auto-slim
+        source_href: https://github.com/open-telemetry/opentelemetry-php-contrib/tree/main/src/Instrumentation/Slim
+        package_href: https://packagist.org/packages/open-telemetry/opentelemetry-auto-slim
+        version: 1.0.4
+        stability: stable
+    signals:
+      - traces: []
+  - keys:
+      - opentelemetry-auto-symfony
+    instrumented_components:
+      - name: Symfony
+        supported_versions: 5.4 or higher
+    description: OpenTelemetry auto-instrumentation for Symfony
+    stability: beta
+    support: community
+    dependencies:
+      - name: open-telemetry/opentelemetry-auto-symfony
+        source_href: https://github.com/open-telemetry/opentelemetry-php-contrib/tree/main/src/Instrumentation/Symfony
+        package_href: https://packagist.org/packages/open-telemetry/opentelemetry-auto-symfony
+        version: 1.0.0beta22
+        stability: beta
+    signals:
+      - traces: []
+  - keys:
+      - opentelemetry-auto-wordpress
+    instrumented_components:
+      - name: WordPress
+        supported_versions: unspecified
+    description: OpenTelemetry auto-instrumentation for Wordpress
+    stability: experimental
+    support: community
+    dependencies:
+      - name: open-telemetry/opentelemetry-auto-wordpress
+        source_href: https://github.com/open-telemetry/opentelemetry-php-contrib/tree/main/src/Instrumentation/Wordpress
+        package_href: https://packagist.org/packages/open-telemetry/opentelemetry-auto-wordpress
+        version: 0.0.15
+        stability: experimental
+    signals:
+      - traces: []
+  - keys:
+      - opentelemetry-auto-yii
+    instrumented_components:
+      - name: Yii
+        supported_versions: 2.0.13 or higher
+    description: OpenTelemetry auto-instrumentation for Yii
+    stability: experimental
+    support: community
+    dependencies:
+      - name: open-telemetry/opentelemetry-auto-yii
+        source_href: https://github.com/open-telemetry/opentelemetry-php-contrib/tree/main/src/Instrumentation/Yii
+        package_href: https://packagist.org/packages/open-telemetry/opentelemetry-auto-yii
+        version: 0.0.4
+        stability: experimental
+    signals:
+      - traces: []
+resource_detectors:
+  - key: CONTAINER
+    description: Container resource detector.
+    attributes:
+      - id: container.id
+    stability: stable
+    support: community
+    dependencies:
+      - name: open-telemetry/detector-container
+        source_href: https://github.com/open-telemetry/opentelemetry-php-contrib/tree/main/src/ResourceDetectors/Container
+        package_href: https://packagist.org/packages/open-telemetry/detector-container
+        version: 1.0.0
+        stability: stable
+  - key: ENV
+    description: Environment resource detector, adds resource attributes from OTEL_RESOURCE_ATTRIBUTES environment variable.
+    attributes:
+      - id: service.name
+    stability: stable
+    support: community
+    dependencies: []
+  - key: HOST
+    description: Host resource detector.
+    attributes:
+      - id: host.arch
+      - id: host.name
+    stability: stable
+    support: community
+    dependencies: []
+  - key: OS
+    description: Operating system resource detector.
+    attributes:
+      - id: os.description
+      - id: os.name
+      - id: os.type
+      - id: os.version
+    stability: stable
+    support: community
+    dependencies: []
+  - key: PROCESS
+    description: Process resource detector.
+    attributes:
+      - id: process.executable.path
+      - id: process.pid
+    stability: stable
+    support: community
+    dependencies: []
+  - key: PROCESS_RUNTIME
+    description: Process runtime resource detector.
+    attributes:
+      - id: process.runtime.name
+      - id: process.runtime.version
+    stability: stable
+    support: community
+    dependencies: []
+  - key: SDK
+    description: SDK resource detector.
+    attributes:
+      - id: telemetry.distro.name
+      - id: telemetry.distro.version
+      - id: telemetry.sdk.language
+      - id: telemetry.sdk.name
+      - id: telemetry.sdk.version
+    stability: stable
+    support: community
+    dependencies: []
+  - key: SDK_PROVIDED
+    description: SDK provided resource detector.
+    attributes:
+      - id: service.name
+    stability: stable
+    support: community
+    dependencies: []
+  - key: COMPOSER
+    description: Composer resource detector.
+    attributes:
+      - id: service.name
+      - id: service.version
+    stability: stable
+    support: community
+    dependencies: []
