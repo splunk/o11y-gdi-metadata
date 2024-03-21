@@ -473,10 +473,34 @@ Dashboards:
     dashboard_group: Kafka
     view_support: instance
     importQualifiers: counter.kafka.produce.total-time.count (plugin =  GenericJMX);
+  Broker (Default):
+    dashboard_group: Amazon MSK
+    view_support: N/A
+    importQualifiers: ActiveControllerCount (namespace =  AWS/Kafka) & (stat =  sum)
+      & (Cluster_Name =  *);  OR GlobalPartitionCount (namespace =  AWS/Kafka) & (stat
+      =  sum) & (Cluster_Name =  *);
+  Broker (PER_BROKER):
+    dashboard_group: Amazon MSK
+    view_support: N/A
+    importQualifiers: ActiveControllerCount (namespace =  AWS/Kafka) & (stat =  sum)
+      & (Cluster_Name =  *);  OR GlobalPartitionCount (namespace =  AWS/Kafka) & (stat
+      =  sum) & (Cluster_Name =  *);
   Brokers:
     dashboard_group: Kafka
     view_support: aggregated
     importQualifiers: counter.kafka.produce.total-time.count (plugin =  GenericJMX);
+  Brokers (Default):
+    dashboard_group: Amazon MSK
+    view_support: N/A
+    importQualifiers: ActiveControllerCount (namespace =  AWS/Kafka) & (stat =  sum)
+      & (Cluster_Name =  *);  OR GlobalPartitionCount (namespace =  AWS/Kafka) & (stat
+      =  sum) & (Cluster_Name =  *);
+  Brokers (PER_BROKER):
+    dashboard_group: Amazon MSK
+    view_support: N/A
+    importQualifiers: ActiveControllerCount (namespace =  AWS/Kafka) & (stat =  sum)
+      & (Cluster_Name =  *);  OR GlobalPartitionCount (namespace =  AWS/Kafka) & (stat
+      =  sum) & (Cluster_Name =  *);
   Browser app health:
     dashboard_group: RUM applications
     view_support: N/A
@@ -579,6 +603,12 @@ Dashboards:
     importQualifiers: Requests (namespace =  AWS/CloudFront) & (stat =  sum);  OR
       BytesDownloaded (namespace =  AWS/CloudFront) & (stat =  sum);  OR BytesUploaded
       (namespace =  AWS/CloudFront) & (stat =  sum);
+  Cluster:
+    dashboard_group: Amazon MSK
+    view_support: N/A
+    importQualifiers: ActiveControllerCount (namespace =  AWS/Kafka) & (stat =  sum)
+      & (Cluster_Name =  *);  OR GlobalPartitionCount (namespace =  AWS/Kafka) & (stat
+      =  sum) & (Cluster_Name =  *);
   Cluster overview:
     dashboard_group: Google Kubernetes Engine
     view_support: aggregated
@@ -587,6 +617,12 @@ Dashboards:
     dashboard_group: Smart Gateway
     view_support: N/A
     importQualifiers: traces.totalUnique (cluster =  *);
+  Clusters:
+    dashboard_group: Amazon MSK
+    view_support: N/A
+    importQualifiers: ActiveControllerCount (namespace =  AWS/Kafka) & (stat =  sum)
+      & (Cluster_Name =  *);  OR GlobalPartitionCount (namespace =  AWS/Kafka) & (stat
+      =  sum) & (Cluster_Name =  *);
   Compute Engine instance:
     dashboard_group: Google Compute Engine
     view_support: N/A
@@ -2074,6 +2110,18 @@ Dashboards:
     importQualifiers: service.request.count (sf_environment =  *) & (sf_service =  *);  OR
       sf.org.numLogsReceivedByToken (*);  OR rum.page_view.count (*);  OR rum.page_view.count
       (sf_ua_browsername =  *);  OR sf.org.apm.numContainers (*);
+  Topic:
+    dashboard_group: Amazon MSK
+    view_support: N/A
+    importQualifiers: ActiveControllerCount (namespace =  AWS/Kafka) & (stat =  sum)
+      & (Cluster_Name =  *);  OR GlobalPartitionCount (namespace =  AWS/Kafka) & (stat
+      =  sum) & (Cluster_Name =  *);
+  Topics:
+    dashboard_group: Amazon MSK
+    view_support: N/A
+    importQualifiers: ActiveControllerCount (namespace =  AWS/Kafka) & (stat =  sum)
+      & (Cluster_Name =  *);  OR GlobalPartitionCount (namespace =  AWS/Kafka) & (stat
+      =  sum) & (Cluster_Name =  *);
   UDP:
     dashboard_group: Network explorer dashboards
     view_support: instance
