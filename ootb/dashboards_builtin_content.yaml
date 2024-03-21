@@ -643,6 +643,11 @@ Dashboards:
     view_support: N/A
     importQualifiers: instance/cpu/utilization (service =  compute);  OR cpu.utilization
       (cloud.provider =  gcp);
+  Compute Engine logs:
+    dashboard_group: Google Compute Engine
+    view_support: N/A
+    importQualifiers: instance/cpu/utilization (service =  compute);  OR cpu.utilization
+      (cloud.provider =  gcp);
   Connections:
     dashboard_group: SAP HANA
     view_support: N/A
