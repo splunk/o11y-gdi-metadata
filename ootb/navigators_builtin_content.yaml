@@ -1,6 +1,6 @@
 Navigators:
   ALB instances:
-    category_display_name: AWS
+    category_display_name: Amazon Web Services
     associated_dashboards:
       aggregated:
       - AWS ALB instances
@@ -55,7 +55,7 @@ Navigators:
       - App Engine system
     importQualifiers: http/server/response_count (sf_key =  gcp_id) & (sf_key =  version_id);
   App services:
-    category_display_name: Azure
+    category_display_name: Microsoft Azure
     associated_dashboards:
       aggregated:
       - Azure App services
@@ -65,7 +65,7 @@ Navigators:
       & (primary_aggregation_type =  true);  OR BytesReceived (is_Azure_Function =  false)
       & (resource_type =  Microsoft.Web/sites) & (primary_aggregation_type =  true);
   Autoscaling groups:
-    category_display_name: AWS
+    category_display_name: Amazon Web Services
     associated_dashboards:
       aggregated:
       - AWS AutoScaling groups
@@ -166,7 +166,7 @@ Navigators:
       - Cloud Storage bucket
     importQualifiers: network/received_bytes_count (sf_key =  gcp_id);
   CloudFront distributions:
-    category_display_name: AWS
+    category_display_name: Amazon Web Services
     associated_dashboards:
       aggregated:
       - CloudFront distributions
@@ -186,8 +186,8 @@ Navigators:
   Compute engine:
     category_display_name: Google Cloud Platform
     associated_dashboards:
-      aggregated: Compute engine instances
-      instance: Compute engine instance
+      aggregated: []
+      instance: []
     importQualifiers: instance/cpu/utilization (service =  compute) & (sf_key =  gcp_id);  OR
       cpu.utilization (cloud.provider =  gcp);
   Container engine:
@@ -235,7 +235,7 @@ Navigators:
       - AWS DynamoDB
     importQualifiers: SuccessfulRequestLatency (sf_key =  TableName);
   EBS:
-    category_display_name: AWS
+    category_display_name: Amazon Web Services
     associated_dashboards:
       aggregated:
       - EBS volumes
@@ -243,7 +243,7 @@ Navigators:
       - EBS volume
     importQualifiers: VolumeWriteOps (sf_key =  VolumeId);
   EC2:
-    category_display_name: AWS
+    category_display_name: Amazon Web Services
     associated_dashboards:
       aggregated:
       - EC2 instances
@@ -252,7 +252,7 @@ Navigators:
     importQualifiers: CPUUtilization (sf_key =  InstanceId);  OR cpu.utilization (cloud.provider
       =  aws);
   ECS:
-    category_display_name: AWS
+    category_display_name: Amazon Web Services
     associated_dashboards:
       aggregated:
       - ECS (AWS)
@@ -269,7 +269,7 @@ Navigators:
       - ELB instance
     importQualifiers: RequestCount (sf_key =  LoadBalancerName);
   ElastiCache:
-    category_display_name: AWS
+    category_display_name: Amazon Web Services
     associated_dashboards:
       aggregated:
       - ElastiCache
@@ -278,7 +278,7 @@ Navigators:
       - ElastiCache node
     importQualifiers: CurrConnections (sf_key =  CacheNodeId);
   Elastic pools:
-    category_display_name: Azure
+    category_display_name: Microsoft Azure
     associated_dashboards:
       aggregated:
       - Elastic pools
@@ -442,7 +442,7 @@ Navigators:
       - Producer
     importQualifiers: gauge.kafka.producer.response-rate (hostHasService =  kafka_producer);
   Kinesis analytics:
-    category_display_name: AWS
+    category_display_name: Amazon Web Services
     associated_dashboards:
       aggregated:
       - Kinesis Analytics overview
@@ -450,7 +450,7 @@ Navigators:
       - Kinesis Analytics
     importQualifiers: Bytes (namespace =  AWS/KinesisAnalytics);
   Kinesis streams:
-    category_display_name: AWS
+    category_display_name: Amazon Web Services
     associated_dashboards:
       aggregated:
       - Kinesis Streams overview
@@ -468,7 +468,7 @@ Navigators:
     importQualifiers: Invocations (sf_key =  FunctionName);  OR Errors (sf_key =  FunctionName);  OR
       Throttles (sf_key =  FunctionName);  OR function.invocations (sf_key =  aws_function_name);
   Logic apps:
-    category_display_name: Azure
+    category_display_name: Microsoft Azure
     associated_dashboards:
       aggregated:
       - Azure Logic Apps
@@ -552,7 +552,7 @@ Navigators:
       - HTTP - Outbound
     importQualifiers: tcp.bytes (source.workload.name =  *);
   OpsWorks:
-    category_display_name: AWS
+    category_display_name: Amazon Web Services
     associated_dashboards:
       aggregated:
       - OpsWorks overview
@@ -605,7 +605,7 @@ Navigators:
       - RabbitMQ node
     importQualifiers: gauge.node.uptime (plugin =  rabbitmq);
   Redis cache:
-    category_display_name: Azure
+    category_display_name: Microsoft Azure
     associated_dashboards:
       aggregated:
       - Azure redis caches
@@ -630,7 +630,7 @@ Navigators:
       - AWS Redshift
     importQualifiers: CPUUtilization (namespace =  AWS/Redshift);
   Route53:
-    category_display_name: AWS
+    category_display_name: Amazon Web Services
     associated_dashboards:
       aggregated:
       - Route 53
@@ -638,7 +638,7 @@ Navigators:
       - Route 53 healthcheck
     importQualifiers: HealthCheckStatus (namespace =  AWS/Route53) & (stat =  lower);
   S3 buckets:
-    category_display_name: AWS
+    category_display_name: Amazon Web Services
     associated_dashboards:
       aggregated:
       - AWS S3 buckets
@@ -647,7 +647,7 @@ Navigators:
     importQualifiers: BytesUploaded (namespace =  AWS/S3);  OR BytesDownloaded (namespace
       =  AWS/S3);
   SNS topics:
-    category_display_name: AWS
+    category_display_name: Amazon Web Services
     associated_dashboards:
       aggregated:
       - SNS
@@ -655,7 +655,7 @@ Navigators:
       - SNS
     importQualifiers: NumberOfMessagesPublished (sf_key =  TopicName);
   SQL database:
-    category_display_name: Azure
+    category_display_name: Microsoft Azure
     associated_dashboards:
       aggregated:
       - Azure SQL databases
@@ -663,7 +663,7 @@ Navigators:
       - Azure SQL database
     importQualifiers: dtu_consumption_percent (resource_type =  Microsoft.Sql/servers/databases);
   SQS queues:
-    category_display_name: AWS
+    category_display_name: Amazon Web Services
     associated_dashboards:
       aggregated:
       - SQS queues
@@ -671,7 +671,7 @@ Navigators:
       - SQS queue
     importQualifiers: NumberOfMessagesSent (sf_key =  QueueName);
   Storage:
-    category_display_name: Azure
+    category_display_name: Microsoft Azure
     associated_dashboards:
       aggregated:
       - Azure Storage accounts
