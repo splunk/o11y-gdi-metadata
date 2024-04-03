@@ -1935,6 +1935,14 @@ Dashboards:
     dashboard_group: "\xB5APM PG"
     view_support: N/A
     importQualifiers: spans.count (service =  *);
+  Service limit:
+    dashboard_group: AWS service limit
+    view_support: N/A
+    importQualifiers: ServiceLimitUsage (ServiceLimit =  *) & (ServiceName =  *);
+  Service limit overview:
+    dashboard_group: AWS service limit
+    view_support: N/A
+    importQualifiers: ServiceLimitUsage (ServiceLimit =  *) & (ServiceName =  *);
   Service objects:
     dashboard_group: Kong
     view_support: N/A
