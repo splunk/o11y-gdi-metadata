@@ -1442,6 +1442,20 @@ Dashboards:
     dashboard_group: Knative
     view_support: N/A
     importQualifiers: autoscaler_stable_request_concurrency (*);
+  Kong host:
+    dashboard_group: Kong Gateway
+    view_support: instance
+    importQualifiers: kong_http_requests_total (host.name =  *) & (route =  *) & (service
+      =  *);  OR kong_request_latency_ms_sum (host.name =  *) & (route =  *) & (service
+      =  *);  OR kong_bandwidth_bytes (host.name =  *) & (route =  *) & (service =  *);  OR
+      kong_memory_workers_lua_vms_bytes (host.name =  *);
+  Kong hosts:
+    dashboard_group: Kong Gateway
+    view_support: aggregated
+    importQualifiers: kong_http_requests_total (host.name =  *) & (route =  *) & (service
+      =  *);  OR kong_request_latency_ms_sum (host.name =  *) & (route =  *) & (service
+      =  *);  OR kong_bandwidth_bytes (host.name =  *) & (route =  *) & (service =  *);  OR
+      kong_memory_workers_lua_vms_bytes (host.name =  *);
   Kong server overview:
     dashboard_group: Kong
     view_support: N/A
@@ -1947,6 +1961,13 @@ Dashboards:
     dashboard_group: Kong
     view_support: N/A
     importQualifiers: gauge.kong.database.reachable (plugin =  kong);
+  Services:
+    dashboard_group: Kong Gateway
+    view_support: aggregated
+    importQualifiers: kong_http_requests_total (host.name =  *) & (route =  *) & (service
+      =  *);  OR kong_request_latency_ms_sum (host.name =  *) & (route =  *) & (service
+      =  *);  OR kong_bandwidth_bytes (host.name =  *) & (route =  *) & (service =  *);  OR
+      kong_memory_workers_lua_vms_bytes (host.name =  *);
   Shows:
     dashboard_group: Conviva
     view_support: N/A
