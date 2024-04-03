@@ -457,6 +457,18 @@ Navigators:
       instance:
       - Kinesis Stream
     importQualifiers: GetRecords.Latency (namespace =  AWS/Kinesis);
+  Kong Gateway:
+    category_display_name: Others
+    associated_dashboards:
+      aggregated:
+      - Kong hosts
+      - Services
+      instance:
+      - Kong host
+    importQualifiers: kong_http_requests_total (host.name =  *) & (route =  *) & (service
+      =  *);  OR kong_request_latency_ms_sum (host.name =  *) & (route =  *) & (service
+      =  *);  OR kong_bandwidth_bytes (host.name =  *) & (route =  *) & (service =  *);  OR
+      kong_memory_workers_lua_vms_bytes (host.name =  *);
   Lambda functions:
     category_display_name: Amazon Web Services
     associated_dashboards:
