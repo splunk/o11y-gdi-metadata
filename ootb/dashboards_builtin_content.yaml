@@ -1618,6 +1618,11 @@ Dashboards:
     dashboard_group: MySQL
     view_support: aggregated
     importQualifiers: threads.connected (plugin =  mysql);
+  MySQL summary:
+    dashboard_group: MySQL(OTEL)
+    view_support: N/A
+    importQualifiers: mysql.operations (operation =  *) & (host.name =  *);  OR mysql.commands
+      (host.name =  *) & (command =  *);
   NGINX server:
     dashboard_group: NGINX
     view_support: instance
@@ -1702,6 +1707,11 @@ Dashboards:
   Oracle DB sessions:
     dashboard_group: Oracle DB
     view_support: instance
+    importQualifiers: oracledb.processes.usage (sf_key =  oracledb.instance.name)
+      & (sf_key =  host.name);
+  Oracle summary:
+    dashboard_group: Oracle DB
+    view_support: N/A
     importQualifiers: oracledb.processes.usage (sf_key =  oracledb.instance.name)
       & (sf_key =  host.name);
   Overview:
