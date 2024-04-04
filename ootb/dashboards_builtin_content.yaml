@@ -1903,6 +1903,10 @@ Dashboards:
     view_support: aggregated
     importQualifiers: NumberOfMessagesPublished (namespace =  AWS/SNS) & (TopicName
       =  *) & (stat =  sum);
+  SQL server summary:
+    dashboard_group: Microsoft SQL server
+    view_support: N/A
+    importQualifiers: sqlserver_server_properties.db_online (plugin =  telegraf-sqlserver);
   SQS queue:
     dashboard_group: AWS SQS
     view_support: instance
