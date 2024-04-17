@@ -604,6 +604,10 @@ Dashboards:
       BytesDownloaded (namespace =  AWS/CloudFront) & (stat =  sum);  OR BytesUploaded
       (namespace =  AWS/CloudFront) & (stat =  sum);
   Cluster:
+    dashboard_group: vSphere
+    view_support: N/A
+    importQualifiers: vsphere.cpu_usage_percent (*);
+  Cluster - Amazon MSK:
     dashboard_group: Amazon MSK
     view_support: N/A
     importQualifiers: ActiveControllerCount (namespace =  AWS/Kafka) & (stat =  sum)
@@ -618,6 +622,10 @@ Dashboards:
     view_support: N/A
     importQualifiers: traces.totalUnique (cluster =  *);
   Clusters:
+    dashboard_group: vSphere
+    view_support: N/A
+    importQualifiers: vsphere.cpu_usage_percent (*);
+  Clusters - Amazon MSK:
     dashboard_group: Amazon MSK
     view_support: N/A
     importQualifiers: ActiveControllerCount (namespace =  AWS/Kafka) & (stat =  sum)
@@ -2267,6 +2275,10 @@ Dashboards:
   vCenter - vSphere:
     dashboard_group: vSphere
     view_support: instance
+    importQualifiers: vsphere.cpu_usage_percent (*);
+  vCenter logs:
+    dashboard_group: vSphere
+    view_support: N/A
     importQualifiers: vsphere.cpu_usage_percent (*);
   vCenters:
     dashboard_group: vSphere
