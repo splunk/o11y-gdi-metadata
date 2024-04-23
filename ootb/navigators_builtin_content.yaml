@@ -632,6 +632,14 @@ Navigators:
       instance:
       - Redis instance
     importQualifiers: bytes.used_memory (plugin =  redis_info);
+  Redis instances(OTEL):
+    category_display_name: Datastores
+    associated_dashboards:
+      aggregated:
+      - Redis instances
+      instance:
+      - Redis instance
+    importQualifiers: redis.keyspace.hits (redis.version =  *) & (host.name =  *);
   Redshift:
     category_display_name: Amazon Web Services
     associated_dashboards:
