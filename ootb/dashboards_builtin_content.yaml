@@ -1853,7 +1853,7 @@ Dashboards:
     importQualifiers: bytes.used_memory (plugin =  redis_info);
   Redis instance - Redis(OTEL):
     dashboard_group: Redis(OTEL)
-    view_support: N/A
+    view_support: instance
     importQualifiers: redis.cpu.time (host.name =  *);  OR redis.uptime (host.name
       =  *);
   Redis instances:
@@ -1862,7 +1862,7 @@ Dashboards:
     importQualifiers: bytes.used_memory (plugin =  redis_info);
   Redis instances - Redis(OTEL):
     dashboard_group: Redis(OTEL)
-    view_support: N/A
+    view_support: aggregated
     importQualifiers: redis.cpu.time (host.name =  *);  OR redis.uptime (host.name
       =  *);
   Replica sets:
