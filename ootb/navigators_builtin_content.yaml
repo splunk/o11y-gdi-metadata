@@ -376,16 +376,6 @@ Navigators:
       instance:
       - Java process
     importQualifiers: gauge.loaded_classes (plugin =  GenericJMX);
-  K8s workloads:
-    category_display_name: Kubernetes
-    associated_dashboards:
-      aggregated:
-      - K8s workloads
-      instance:
-      - K8s workload
-      - K8s pods
-    importQualifiers: k8s.pod.phase (sf_key =  k8s.workload.name);  OR kubernetes.pod_phase
-      (sf_key =  kubernetes_workload_name);
   Kafka brokers:
     category_display_name: Messaging
     associated_dashboards:
@@ -468,6 +458,16 @@ Navigators:
       - K8s containers
       - K8s pod logs
     importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);
+  Kubernetes workloads:
+    category_display_name: Kubernetes
+    associated_dashboards:
+      aggregated:
+      - K8s workloads
+      instance:
+      - K8s workload
+      - K8s pods
+    importQualifiers: k8s.pod.phase (sf_key =  k8s.workload.name);  OR kubernetes.pod_phase
+      (sf_key =  kubernetes_workload_name);
   Lambda functions:
     category_display_name: Amazon Web Services
     associated_dashboards:
