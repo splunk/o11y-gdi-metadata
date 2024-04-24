@@ -376,36 +376,6 @@ Navigators:
       instance:
       - Java process
     importQualifiers: gauge.loaded_classes (plugin =  GenericJMX);
-  K8s containers:
-    category_display_name: Kubernetes
-    associated_dashboards:
-      aggregated:
-      - K8s containers
-      instance:
-      - K8s container
-    importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);
-  K8s nodes:
-    category_display_name: Kubernetes
-    associated_dashboards:
-      aggregated:
-      - K8s nodes
-      - K8s clusters
-      - K8s node logs
-      instance:
-      - K8s node
-      - K8s pods
-      - K8s node logs
-    importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);
-  K8s pods:
-    category_display_name: Kubernetes
-    associated_dashboards:
-      aggregated:
-      - K8s pods
-      instance:
-      - K8s pod
-      - K8s containers
-      - K8s pod logs
-    importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);
   K8s workloads:
     category_display_name: Kubernetes
     associated_dashboards:
@@ -468,6 +438,36 @@ Navigators:
       =  *);  OR kong_request_latency_ms_sum (host.name =  *) & (route =  *) & (service
       =  *);  OR kong_bandwidth_bytes (host.name =  *) & (route =  *) & (service =  *);  OR
       kong_memory_workers_lua_vms_bytes (host.name =  *);
+  Kubernetes containers:
+    category_display_name: Kubernetes
+    associated_dashboards:
+      aggregated:
+      - K8s containers
+      instance:
+      - K8s container
+    importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);
+  Kubernetes nodes:
+    category_display_name: Kubernetes
+    associated_dashboards:
+      aggregated:
+      - K8s nodes
+      - K8s clusters
+      - K8s node logs
+      instance:
+      - K8s node
+      - K8s pods
+      - K8s node logs
+    importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);
+  Kubernetes pods:
+    category_display_name: Kubernetes
+    associated_dashboards:
+      aggregated:
+      - K8s pods
+      instance:
+      - K8s pod
+      - K8s containers
+      - K8s pod logs
+    importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);
   Lambda functions:
     category_display_name: Amazon Web Services
     associated_dashboards:
