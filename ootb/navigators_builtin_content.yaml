@@ -360,15 +360,14 @@ Navigators:
       (host.name =  *);  OR grpc_server_handled_total (host.name =  *);  OR gitlab_workhorse_http_request_duration_seconds
       (host.name =  *);  OR nginx_vts_server_requests_total (host.name =  *);
   Hosts:
-    category_display_name: Hosts
+    category_display_name: My Data Center
     associated_dashboards:
       aggregated:
       - Hosts
       instance:
       - Host
-    importQualifiers: cpu.utilization (sf_key =  host) & (sf_key !=  kubernetes_node)
-      & (sf_key !=  gcp_id) & (sf_key !=  azure_resource_id) & (sf_key !=  cloud.provider)
-      & (sf_key !=  AWSUniqueId);
+    importQualifiers: cpu.utilization (sf_key =  host) & (sf_key !=  gcp_id) & (sf_key
+      !=  azure_resource_id) & (sf_key !=  cloud.provider) & (sf_key !=  AWSUniqueId);
   JMX (collectd):
     category_display_name: Others
     associated_dashboards:
