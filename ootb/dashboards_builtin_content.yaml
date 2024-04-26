@@ -633,22 +633,22 @@ Dashboards:
       =  sum) & (Cluster_Name =  *);
   Compute Engine instance:
     dashboard_group: Google Compute Engine
-    view_support: N/A
+    view_support: instance
     importQualifiers: instance/cpu/utilization (service =  compute);  OR cpu.utilization
       (cloud.provider =  gcp);
   Compute Engine instance (StackDriver):
     dashboard_group: Google Compute Engine
-    view_support: N/A
+    view_support: instance
     importQualifiers: instance/cpu/utilization (service =  compute);  OR cpu.utilization
       (cloud.provider =  gcp);
   Compute Engine instances:
     dashboard_group: Google Compute Engine
-    view_support: N/A
+    view_support: aggregated
     importQualifiers: instance/cpu/utilization (service =  compute);  OR cpu.utilization
       (cloud.provider =  gcp);
   Compute Engine instances (StackDriver):
     dashboard_group: Google Compute Engine
-    view_support: N/A
+    view_support: aggregated
     importQualifiers: instance/cpu/utilization (service =  compute);  OR cpu.utilization
       (cloud.provider =  gcp);
   Compute Engine logs:
