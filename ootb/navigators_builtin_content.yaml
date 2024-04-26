@@ -186,8 +186,12 @@ Navigators:
   Compute engine:
     category_display_name: Google Cloud Platform
     associated_dashboards:
-      aggregated: []
-      instance: []
+      aggregated:
+      - Compute Engine instances
+      - Compute Engine instances (StackDriver)
+      instance:
+      - Compute Engine instance
+      - Compute Engine instance (StackDriver)
     importQualifiers: instance/cpu/utilization (service =  compute) & (sf_key =  gcp_id);  OR
       cpu.utilization (cloud.provider =  gcp);
   Container engine:
