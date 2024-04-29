@@ -109,6 +109,11 @@ Dashboards:
     view_support: aggregated
     importQualifiers: SuccessfulRequestLatency (namespace =  AWS/DynamoDB) & (stat
       =  mean);
+  AWS EC2 logs:
+    dashboard_group: AWS EC2
+    view_support: N/A
+    importQualifiers: CPUUtilization (namespace =  AWS/EC2) & (stat =  mean) & (InstanceId
+      =  *);  OR cpu.utilization (cloud.provider =  aws);
   AWS Gateway LB instance:
     dashboard_group: AWS Gateway LB
     view_support: N/A
