@@ -1183,7 +1183,8 @@ Dashboards:
   Host - Data Center Hosts:
     dashboard_group: Data Center Hosts
     view_support: instance
-    importQualifiers: cpu.utilization (*);
+    importQualifiers: cpu.utilization (host =  *) & (gcp_id !=  *) & (azure_resource_id
+      !=  *) & (cloud.provider !=  *) & (AWSUniqueId !=  *);
   Host - MySQL(OTEL):
     dashboard_group: MySQL(OTEL)
     view_support: N/A
@@ -1204,7 +1205,8 @@ Dashboards:
   Hosts - Data Center Hosts:
     dashboard_group: Data Center Hosts
     view_support: aggregated
-    importQualifiers: cpu.utilization (*);
+    importQualifiers: cpu.utilization (host =  *) & (gcp_id !=  *) & (azure_resource_id
+      !=  *) & (cloud.provider !=  *) & (AWSUniqueId !=  *);
   Hosts - MySQL(OTEL):
     dashboard_group: MySQL(OTEL)
     view_support: N/A
