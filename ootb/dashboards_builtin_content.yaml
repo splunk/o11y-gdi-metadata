@@ -2221,6 +2221,10 @@ Dashboards:
     dashboard_group: vSphere
     view_support: instance
     importQualifiers: vsphere.cpu_usage_percent (*);
+  VM logs:
+    dashboard_group: vSphere
+    view_support: N/A
+    importQualifiers: vsphere.cpu_usage_percent (*);
   VMs:
     dashboard_group: vSphere (legacy)
     view_support: N/A
