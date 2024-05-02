@@ -31,7 +31,7 @@ echo "REPO:            $repo"
 echo "LATEST VERSION:  $latest_version"
 
 if ! test -d yaml/$repo; then
-  echo "Skipping ${repo} as yaml/${repo} does not exist."
+  echo "Skipping ${repo} as ${repo}.yaml does not exist."
   exit 0
 fi
 
