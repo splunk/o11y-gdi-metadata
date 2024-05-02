@@ -30,12 +30,12 @@ latest_vers_no_v="${latest_version#v}" # Remove leading 'v'
 echo "REPO:            $repo"
 echo "LATEST VERSION:  $latest_version"
 
-if ! test -d yaml/$repo; then
+if ! test -d apm/$repo; then
   echo "Skipping ${repo} as ${repo}/metadata.yaml does not exist."
   exit 0
 fi
 
-version_file=yaml/$repo/version
+version_file=apm/$repo/version
 echo $latest_version > $version_file 
 
 if git diff --quiet "${version_file}"; then
