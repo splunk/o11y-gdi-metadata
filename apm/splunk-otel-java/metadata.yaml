@@ -1,0 +1,3584 @@
+component: Splunk Distribution of OpenTelemetry Java
+version: 2.3.0-alpha
+dependencies:
+  - name: OpenTelemetry Java
+    source_href: https://github.com/open-telemetry/opentelemetry-java
+    version: 1.37.0
+    stability: stable
+  - name: OpenTelemetry Instrumentation for Java
+    source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation
+    version: 2.3.0
+    stability: stable
+  - name: OpenTelemetry Java Contrib Resource Providers
+    source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/tree/main/resource-providers
+    version: 1.35.0-alpha
+    stability: experimental
+  - name: OpenTelemetry Java Contrib Samplers
+    source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/tree/main/samplers
+    version: 1.35.0-alpha
+    stability: experimental
+settings:
+  - env: OTEL_SDK_DISABLED
+    description: If true, disable the OpenTelemetry SDK. Defaults to false.
+    default: 'false'
+    type: boolean
+    category: general
+  - env: OTEL_TRACES_EXPORTER
+    description: List of exporters to be used for tracing, separated by commas. Default
+      is otlp. none means no autoconfigured exporter.
+    default: otlp
+    type: string
+    category: exporter
+  - env: OTEL_METRICS_EXPORTER
+    description: List of exporters to be used for tracing, separated by commas. Default
+      is otlp. none means no autoconfigured exporter.
+    default: otlp
+    type: string
+    category: exporter
+  - env: OTEL_LOGS_EXPORTER
+    description: List of exporters to be used for tracing, separated by commas. Default
+      is otlp. none means no autoconfigured exporter.
+    default: otlp
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_ENDPOINT
+    description: The OTLP traces, metrics, and logs endpoint to connect to. Must be
+      a URL with a scheme of either http or https based on the use of TLS. If protocol
+      is http/protobuf the version and signal will be appended to the path (e.g. v1/traces,
+      v1/metrics, or v1/logs). Default is http://localhost:4317 when protocol is grpc,
+      and http://localhost:4318/v1/{signal} when protocol is http/protobuf.
+    default: http://localhost:4317
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+    description: The OTLP traces endpoint to connect to. Must be a URL with a scheme
+      of either http or https based on the use of TLS. Default is http://localhost:4317
+      when protocol is grpc, and http://localhost:4318/v1/traces when protocol is
+      http/protobuf.
+    default: http://localhost:4317
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_METRICS_ENDPOINT
+    description: The OTLP metrics endpoint to connect to. Must be a URL with a scheme
+      of either http or https based on the use of TLS. Default is http://localhost:4317
+      when protocol is grpc, and http://localhost:4318/v1/metrics when protocol is
+      http/protobuf.
+    default: http://localhost:4318/v1/metrics
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_LOGS_ENDPOINT
+    description: The OTLP logs endpoint to connect to. Must be a URL with a scheme
+      of either http or https based on the use of TLS. Default is http://localhost:4317
+      when protocol is grpc, and http://localhost:4318/v1/logs when protocol is http/protobuf.
+    default: http://localhost:4317
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_CERTIFICATE
+    description: The path to the file containing trusted certificates to use when
+      verifying an OTLP trace, metric, or log server's TLS credentials. The file should
+      contain one or more X.509 certificates in PEM format. By default the host platform's
+      trusted root certificates are used.
+    default: ''
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_TRACES_CERTIFICATE
+    description: The path to the file containing trusted certificates to use when
+      verifying an OTLP trace server's TLS credentials. The file should contain one
+      or more X.509 certificates in PEM format. By default the host platform's trusted
+      root certificates are used.
+    default: ''
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_METRICS_CERTIFICATE
+    description: The path to the file containing trusted certificates to use when
+      verifying an OTLP metric server's TLS credentials. The file should contain one
+      or more X.509 certificates in PEM format. By default the host platform's trusted
+      root certificates are used.
+    default: ''
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_TRACES_CERTIFICATE
+    description: The path to the file containing trusted certificates to use when
+      verifying an OTLP log server's TLS credentials. The file should contain one
+      or more X.509 certificates in PEM format. By default the host platform's trusted
+      root certificates are used.
+    default: ''
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_CLIENT_KEY
+    description: The path to the file containing private client key to use when verifying
+      an OTLP trace, metric, or log client's TLS credentials. The file should contain
+      one private key PKCS8 PEM format. By default no client key is used.
+    default: ''
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_TRACES_CLIENT_KEY
+    description: The path to the file containing private client key to use when verifying
+      an OTLP trace client's TLS credentials. The file should contain one private
+      key PKCS8 PEM format. By default no client key file is used.
+    default: ''
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_METRICS_CLIENT_KEY
+    description: The path to the file containing private client key to use when verifying
+      an OTLP metric client's TLS credentials. The file should contain one private
+      key PKCS8 PEM format. By default no client key file is used.
+    default: ''
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_LOGS_CLIENT_KEY
+    description: The path to the file containing private client key to use when verifying
+      an OTLP log client's TLS credentials. The file should contain one private key
+      PKCS8 PEM format. By default no client key file is used.
+    default: ''
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_CLIENT_CERTIFICATE
+    description: The path to the file containing trusted certificates to use when
+      verifying an OTLP trace, metric, or log client's TLS credentials. The file should
+      contain one or more X.509 certificates in PEM format. By default no chain file
+      is used.
+    default: ''
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_TRACES_CLIENT_CERTIFICATE
+    description: The path to the file containing trusted certificates to use when
+      verifying an OTLP trace server's TLS credentials. The file should contain one
+      or more X.509 certificates in PEM format. By default no chain file is used.
+    default: ''
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_METRICS_CLIENT_CERTIFICATE
+    description: The path to the file containing trusted certificates to use when
+      verifying an OTLP metric server's TLS credentials. The file should contain one
+      or more X.509 certificates in PEM format. By default no chain file is used.
+    default: ''
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_LOGS_CLIENT_CERTIFICATE
+    description: The path to the file containing trusted certificates to use when
+      verifying an OTLP log server's TLS credentials. The file should contain one
+      or more X.509 certificates in PEM format. By default no chain file is used.
+    default: ''
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_HEADERS
+    description: Key-value pairs separated by commas to pass as request headers on
+      OTLP trace, metric, and log requests.
+    default: ''
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_TRACES_HEADERS
+    description: Key-value pairs separated by commas to pass as request headers on
+      OTLP trace requests.
+    default: ''
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_METRICS_HEADERS
+    description: Key-value pairs separated by commas to pass as request headers on
+      OTLP metrics requests.
+    default: ''
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_LOGS_HEADERS
+    description: Key-value pairs separated by commas to pass as request headers on
+      OTLP logs requests.
+    default: ''
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_COMPRESSION
+    description: The compression type to use on OTLP trace, metric, and log requests.
+      Options include gzip. By default no compression will be used.
+    default: ''
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_TRACES_COMPRESSION
+    description: The compression type to use on OTLP trace requests. Options include
+      gzip. By default no compression will be used.
+    default: ''
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_METRICS_COMPRESSION
+    description: The compression type to use on OTLP metric requests. Options include
+      gzip. By default no compression will be used.
+    default: ''
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_LOGS_COMPRESSION
+    description: The compression type to use on OTLP log requests. Options include
+      gzip. By default no compression will be used.
+    default: ''
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_TIMEOUT
+    description: The maximum waiting time, in milliseconds, allowed to send each OTLP
+      trace, metric, and log batch. Default is 10000.
+    default: '10000'
+    type: int
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_TRACES_TIMEOUT
+    description: The maximum waiting time, in milliseconds, allowed to send each OTLP
+      trace batch. Default is 10000.
+    default: '10000'
+    type: int
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_METRICS_TIMEOUT
+    description: The maximum waiting time, in milliseconds, allowed to send each OTLP
+      metric batch. Default is 10000.
+    default: '10000'
+    type: int
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_LOGS_TIMEOUT
+    description: The maximum waiting time, in milliseconds, allowed to send each OTLP
+      log batch. Default is 10000.
+    default: '10000'
+    type: int
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_PROTOCOL
+    description: The transport protocol to use on OTLP trace, metric, and log requests.
+      Options include grpc and http/protobuf.
+    default: http/protobuf
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_TRACES_PROTOCOL
+    description: The transport protocol to use on OTLP trace requests. Options include
+      grpc and http/protobuf.
+    default: http/protobuf
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_METRICS_PROTOCOL
+    description: The transport protocol to use on OTLP metric requests. Options include
+      grpc and http/protobuf.
+    default: http/protobuf
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_LOGS_PROTOCOL
+    description: The transport protocol to use on OTLP log requests. Options include
+      grpc and http/protobuf.
+    default: http/protobuf
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
+    description: The preferred output aggregation temporality. Options include DELTA,
+      LOWMEMORY, and CUMULATIVE. If CUMULATIVE, all instruments will have cumulative
+      temporality. If DELTA, counter (sync and async) and histograms will be delta,
+      up down counters (sync and async) will be cumulative. If LOWMEMORY, sync counter
+      and histograms will be delta, async counter and up down counters (sync and async)
+      will be cumulative. Default is CUMULATIVE.
+    default: CUMULATIVE
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_METRICS_DEFAULT_HISTOGRAM_AGGREGATION
+    description: The preferred default histogram aggregation. Options include BASE2_EXPONENTIAL_BUCKET_HISTOGRAM
+      and EXPLICIT_BUCKET_HISTOGRAM. Default is EXPLICIT_BUCKET_HISTOGRAM.
+    default: EXPLICIT_BUCKET_HISTOGRAM
+    type: string
+    category: exporter
+  - env: OTEL_EXPERIMENTAL_EXPORTER_OTLP_RETRY_ENABLED
+    description: If true, enable experimental retry support. Default is false.
+    default: 'false'
+    type: boolean
+    category: exporter
+  - env: OTEL_RESOURCE_ATTRIBUTES
+    description: 'Specify resource attributes in the following format: key1=val1,key2=val2,key3=val3'
+    default: ''
+    type: string
+    category: instrumentation
+  - env: OTEL_SERVICE_NAME
+    description: Specify logical service name. Takes precedence over service.name
+      defined with otel.resource.attributes
+    default: ''
+    type: string
+    category: instrumentation
+  - env: OTEL_EXPERIMENTAL_RESOURCE_DISABLED_KEYS
+    description: Specify resource attribute keys that are filtered.
+    default: ''
+    type: string
+    category: instrumentation
+  - env: OTEL_JAVA_ENABLED_RESOURCE_PROVIDERS
+    description: Enables one or more ResourceProvider types. If unset, all resource
+      providers are enabled.
+    default: ''
+    type: string
+    category: resource provider
+  - env: OTEL_JAVA_DISABLED_RESOURCE_PROVIDERS
+    description: Disables one or more ResourceProvider types.
+    default: ''
+    type: string
+    category: resource provider
+  - env: OTEL_ATTRIBUTE_VALUE_LENGTH_LIMIT
+    description: The maximum length of attribute values. Applies to spans and logs.
+      By default there is no limit.
+    default: ''
+    type: int
+    category: instrumentation
+  - env: OTEL_ATTRIBUTE_COUNT_LIMIT
+    description: The maximum number of attributes. Applies to spans, span events,
+      span links, and logs. Default is 128.
+    default: '128'
+    type: int
+    category: instrumentation
+  - env: OTEL_PROPAGATORS
+    description: The propagators to be used. Use a comma-separated list for multiple
+      propagators. Default is tracecontext,baggage (W3C).
+    default: tracecontext,baggage
+    type: string
+    category: general
+  - env: OTEL_EXPORTER_ZIPKIN_ENDPOINT
+    description: The Zipkin endpoint to connect to. Default is http://localhost:9411/api/v2/spans.
+      Currently only HTTP is supported.
+    default: http://localhost:9411/api/v2/spans
+    type: string
+    category: exporter
+  - env: OTEL_BSP_SCHEDULE_DELAY
+    description: The interval, in milliseconds, between two consecutive exports. Default
+      is 5000.
+    default: '5000'
+    type: int
+    category: general
+  - env: OTEL_BSP_MAX_QUEUE_SIZE
+    description: The maximum queue size. Default is 2048.
+    default: '2048'
+    type: int
+    category: general
+  - env: OTEL_BSP_MAX_EXPORT_BATCH_SIZE
+    description: The maximum batch size. Default is 512.
+    default: '512'
+    type: int
+    category: general
+  - env: OTEL_BSP_EXPORT_TIMEOUT
+    description: The maximum allowed time, in milliseconds, to export data. Default
+      is 30000.
+    default: '30000'
+    type: int
+    category: general
+  - env: OTEL_TRACES_SAMPLER
+    description: The sampler to use for tracing. Defaults to parentbased_always_on
+    default: always_on
+    type: string
+    category: general
+  - env: OTEL_TRACES_SAMPLER_ARG
+    description: An argument to the configured tracer if supported, for example a
+      ratio.
+    default: ''
+    type: string
+    category: general
+  - env: OTEL_SPAN_ATTRIBUTE_VALUE_LENGTH_LIMIT
+    description: The maximum length of span attribute values. Takes precedence over
+      otel.attribute.value.length.limit. By default there is no limit.
+    default: ''
+    type: int
+    category: instrumentation
+  - env: OTEL_SPAN_ATTRIBUTE_COUNT_LIMIT
+    description: The maximum number of attributes per span. Takes precedence over
+      otel.attribute.count.limit. Default is 128.
+    default: '128'
+    type: int
+    category: instrumentation
+  - env: OTEL_SPAN_EVENT_COUNT_LIMIT
+    description: The maximum number of events per span. Default is 128.
+    default: '128'
+    type: int
+    category: instrumentation
+  - env: OTEL_SPAN_LINK_COUNT_LIMIT
+    description: TThe maximum number of links per span. Default is 128.
+    default: '128'
+    type: int
+    category: instrumentation
+  - env: OTEL_METRICS_EXEMPLAR_FILTER
+    description: The filter for exemplar sampling. Can be ALWAYS_OFF, ALWAYS_ON or
+      TRACE_BASED. Default is TRACE_BASED.
+    default: TRACE_BASED
+    type: string
+    category: general
+  - env: OTEL_METRIC_EXPORT_INTERVAL
+    description: The interval, in milliseconds, between the start of two export attempts.
+      Default is 60000.
+    default: '60000'
+    type: int
+    category: exporter
+  - env: OTEL_EXPORTER_PROMETHEUS_PORT
+    description: The local port used to bind the prometheus metric server. Default
+      is 9464.
+    default: '9464'
+    type: int
+    category: exporter
+  - env: OTEL_EXPORTER_PROMETHEUS_HOST
+    description: The local address used to bind the prometheus metric server. Default
+      is 0.0.0.0.
+    default: 0.0.0.0
+    type: int
+    category: exporter
+  - env: OTEL_EXPERIMENTAL_METRICS_CARDINALITY_LIMIT
+    description: If set, configure experimental cardinality limit. The value dictates
+      the maximum number of distinct points per metric. Default is 2000.
+    default: '2000'
+    type: int
+    category: instrumentation
+  - env: OTEL_BLRP_SCHEDULE_DELAY
+    description: The interval, in milliseconds, between two consecutive exports. Default
+      is 1000.
+    default: '1000'
+    type: int
+    category: general
+  - env: OTEL_BLRP_MAX_QUEUE_SIZE
+    description: The maximum queue size. Default is 2048.
+    default: '2048'
+    type: int
+    category: general
+  - env: OTEL_BLRP_MAX_EXPORT_BATCH_SIZE
+    description: The maximum batch size. Default is 512.
+    default: '512'
+    type: int
+    category: general
+  - env: OTEL_BLRP_EXPORT_TIMEOUT
+    description: The maximum allowed time, in milliseconds, to export data. Default
+      is 30000.
+    default: '30000'
+    type: int
+    category: general
+  - env: OTEL_JAVAAGENT_CONFIGURATION_FILE
+    description: Path to valid Java properties file which contains the agent configuration.
+    default: ''
+    type: string
+    category: general
+  - env: OTEL_JAVAAGENT_EXTENSIONS
+    description: Path to an extension jar file or folder, containing jar files. If
+      pointing to a folder, every jar file in that folder will be treated as separate,
+      independent extension.
+    default: ''
+    type: string
+    category: general
+  - env: OTEL_JAVAAGENT_LOGGING
+    description: |-
+      The Java agent logging mode. The following 3 modes are supported:
+      simple: The agent will print out its logs using the standard error stream. Only INFO or higher logs will be printed. This is the default Java agent logging mode.
+      none: The agent will not log anything - not even its own version.
+      application: The agent will attempt to redirect its own logs to the instrumented application's slf4j logger. This works the best for simple one-jar applications that do not use multiple classloaders; Spring Boot apps are supported as well. The Java agent output logs can be further configured using the instrumented application's logging configuration (e.g. logback.xml or log4j2.xml). Make sure to test that this mode works for your application before running it in a production environment.
+    default: simple
+    type: string
+    category: general
+  - env: OTEL_INSTRUMENTATION_COMMON_PEER_SERVICE_MAPPING
+    description: Used to specify a mapping from host names or IP addresses to peer
+      services, as a comma-separated list of &lt;host_or_ip&gt;=&lt;user_assigned_name&gt;
+      pairs. The peer service is added as an attribute to a span whose host or IP
+      address match the mapping.
+    default: ''
+    type: string
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_COMMON_DB_STATEMENT_SANITIZER_ENABLED
+    description: Enables the DB statement sanitization.
+    default: 'true'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_HTTP_CLIENT_CAPTURE_REQUEST_HEADERS
+    description: A comma-separated list of HTTP header names. HTTP client instrumentations
+      will capture HTTP request header values for all configured header names.
+    default: ''
+    type: string
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_HTTP_CLIENT_CAPTURE_RESPONSE_HEADERS
+    description: A comma-separated list of HTTP header names. HTTP client instrumentations
+      will capture HTTP response header values for all configured header names.
+    default: ''
+    type: string
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_HTTP_SERVER_CAPTURE_REQUEST_HEADERS
+    description: A comma-separated list of HTTP header names. HTTP server instrumentations
+      will capture HTTP request header values for all configured header names.
+    default: ''
+    type: string
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_HTTP_SERVER_CAPTURE_RESPONSE_HEADERS
+    description: A comma-separated list of HTTP header names. HTTP server instrumentations
+      will capture HTTP response header values for all configured header names.
+    default: ''
+    type: string
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_SERVLET_EXPERIMENTAL_CAPTURE_REQUEST_PARAMETERS
+    description: A comma-separated list of request parameter names.
+    default: ''
+    type: string
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_RECEIVE_TELEMETRY_ENABLED
+    description: Enables the consumer message receive telemetry. Note that this will
+      cause the consumer side to start a new trace, with only a span link connecting
+      it to the producer trace.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_COMMON_ENDUSER_ENABLED
+    description: Common flag for enabling/disabling enduser attributes.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_COMMON_ENDUSER_ID_ENABLED
+    description: Determines whether to capture `enduser.id` semantic attribute.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_COMMON_ENDUSER_ROLE_ENABLED
+    description: Determines whether to capture `enduser.role` semantic attribute.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_COMMON_ENDUSER_SCOPE_ENABLED
+    description: Determines whether to capture `enduser.scope` semantic attribute.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_HTTP_CLIENT_EMIT_EXPERIMENTAL_TELEMETRY
+    description: Enables experimental http client telemetry.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_HTTP_SERVER_EMIT_EXPERIMENTAL_TELEMETRY
+    description: Enables experimental http server telemetry.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_COMMON_DEFAULT_ENABLED
+    description: Disable all instrumentations in the agent.
+    default: 'true'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_{NAME}_ENABLED
+    description: Suppresses agent instrumentation of specific library where `{NAME}`
+      is the corresponding instrumentation name.
+    default: ''
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_COMMON_EXPERIMENTAL_CONTROLLER_TELEMETRY_ENABLED
+    description: Enables the controller telemetry.
+    default: 'true'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_COMMON_EXPERIMENTAL_VIEW_TELEMETRY_ENABLED
+    description: Enables the view telemetry.
+    default: 'true'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_EXPERIMENTAL_SPAN_SUPPRESSION_STRATEGY
+    description: |
+      The Java agent span suppression strategy. The following 3 strategies are supported:
+      semconv: The agent will suppress duplicate semantic conventions. This is the default behavior of the Java agent.
+      span-kind: The agent will suppress spans with the same kind (except INTERNAL).
+      none: The agent will not suppress anything at all. We do not recommend using this option for anything other than debug purposes, as it generates lots of duplicate telemetry data.
+    default: semconv
+    type: string
+    category: instrumentation
+  - env: OTEL_JAVAAGENT_EXCLUDE_CLASSES
+    description: Suppresses all instrumentation for specific classes, format is "my.package.MyClass,my.package2.*".
+    default: ''
+    type: string
+    category: general
+  - env: OTEL_JAVAAGENT_EXCLUDE_CLASS_LOADERS
+    description: Ignore the specified class loaders, format is "my.package.MyClass,my.package2.".
+    default: ''
+    type: string
+    category: general
+  - env: OTEL_JAVAAGENT_EXPERIMENTAL_SECURITY_MANAGER_SUPPORT_ENABLED
+    description: 'Grant all privileges to agent code. Disclaimer: agent can provide
+      application means for escaping security manager sandbox. Do not usethis option
+      if your application relies on security manager to run untrusted code.'
+    default: 'false'
+    type: boolean
+    category: general
+  - env: OTEL_RESOURCE_PROVIDERS_AWS_ENABLED
+    description: Enables the AWS Resource Provider.
+    default: 'false'
+    type: boolean
+    category: resource provider
+  - env: OTEL_RESOURCE_PROVIDERS_GCP_ENABLED
+    description: Enables the GCP Resource Provider.
+    default: 'false'
+    type: boolean
+    category: resource provider
+  - env: SPLUNK_ACCESS_TOKEN
+    description: (Optional) Auth token allowing exporters to communicate directly
+      with the Splunk cloud, passed as X-SF-TOKEN header.
+    default: ''
+    type: string
+    category: general
+  - env: SPLUNK_REALM
+    description: The Splunk Observability Cloud realm where the telemetry should be
+      sent to. For example, us0 or us1. Defaults to none, which means that data goes
+      to a Splunk OpenTelemetry Collector deployed on localhost.
+    default: none
+    type: string
+    category: general
+  - env: SPLUNK_METRICS_ENABLED
+    description: Enables exporting splunk metrics.
+    default: 'false'
+    type: boolean
+    category: general
+  - env: SPLUNK_METRICS_FORCE_FULL_COMMANDLINE
+    description: Adds the full command line as a resource attribute for all metrics.
+      If false, commands longer than 255 characters are truncated.
+    default: 'false'
+    type: boolean
+    category: general
+  - env: SPLUNK_TRACE_RESPONSE_HEADER_ENABLED
+    description: Enables adding server trace information to HTTP response headers.
+      See this document for more information.
+    default: 'true'
+    type: boolean
+    category: general
+  - env: OTEL_INSTRUMENTATION_METHODS_INCLUDE
+    description: Same as adding @WithSpan annotation functionality for the target
+      method string, e.g. my.package.MyClass1[method1,method2];my.package.MyClass2[method3]
+    default: ''
+    type: string
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_OPENTELEMETRY_ANNOTATIONS_EXCLUDE_METHODS
+    description: Suppress @WithSpan instrumentation for specific methods, e.g. my.package.MyClass1[method1,method2];my.package.MyClass2[method3]
+    default: ''
+    type: string
+    category: instrumentation
+  - env: SPLUNK_PROFILER_ENABLED
+    description: Enables cpu profiler.
+    default: 'false'
+    type: boolean
+    category: profiler
+  - env: SPLUNK_PROFILER_DIRECTORY
+    description: Location of JFR files, defaults to System.getProperty("java.io.tmpdir").
+    default: value of System.getProperty("java.io.tmpdir")
+    type: string
+    category: profiler
+  - env: SPLUNK_PROFILER_RECORDING_DURATION
+    description: Recording unit duration.
+    default: 20s
+    type: string
+    category: profiler
+  - env: SPLUNK_PROFILER_KEEP_FILES
+    description: Leave JFR files on disk if true.
+    default: 'false'
+    type: boolean
+    category: profiler
+  - env: SPLUNK_PROFILER_LOGS_ENDPOINT
+    description: Where to send OTLP logs.
+    default: otel.exporter.otlp.endpoint or http://localhost:4317
+    type: string
+    category: profiler
+  - env: SPLUNK_PROFILER_CALL_STACK_INTERVAL
+    description: How often to sample call stacks.
+    default: 10000ms
+    type: string
+    category: profiler
+  - env: SPLUNK_PROFILER_MEMORY_ENABLED
+    description: Enables allocation profiler.
+    default: 'false'
+    type: boolean
+    category: profiler
+  - env: SPLUNK_PROFILER_MEMORY_EVENT_RATE
+    description: Allocation event rate.
+    default: 150/s
+    type: string
+    category: profiler
+  - env: SPLUNK_PROFILER_INCLUDE_INTERVAL_STACKS
+    description: Set to `true` to include stack traces of agent internal threads and
+      stack traces with only JDK internal frames.
+    default: 'false'
+    type: boolean
+    category: profiler
+  - env: SPLUNK_PROFILER_TRACING_STACKS_ONLY
+    description: Set to `true` to include only stack traces that are linked to a span
+      context.
+    default: 'false'
+    type: boolean
+    category: profiler
+  - env: SPLUNK_PROFILER_OTLP_PROTOCOL
+    description: The transport protocol to use on profiling OTLP log requests. Options
+      include grpc and http/protobuf.
+    default: http/protobuf
+    type: string
+    category: profiler
+  - env: OTEL_INSTRUMENTATION_AWS_SDK_EXPERIMENTAL_SPAN_ATTRIBUTES
+    description: Enable the capture of experimental span attributes.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_AWS_SDK_EXPERIMENTAL_USE_PROPAGATOR_FOR_MESSAGING
+    description: v2 only, inject into SNS/SQS attributes with configured propagator.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_AWS_SDK_EXPERIMENTAL_USE_PROPAGATOR_FOR_MESSAGING
+    description: v2 only, record errors returned by each individual HTTP request as
+      events for the SDK span.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_CAMEL_EXPERIMENTAL_SPAN_ATTRIBUTES
+    description: Enable the capture of experimental span attributes.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_COUCHBASE_EXPERIMENTAL_SPAN_ATTRIBUTES
+    description: Enables the capture of experimental span attributes (for version
+      2.6 and higher of this instrumentation).
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_ELASTICSEARCH_CAPTURE_SEARCH_QUERY
+    description: 'Enable the capture of search query bodies. Attention: Elasticsearch
+      queries may contain personal or sensitive information.'
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_ELASTICSEARCH_EXPERIMENTAL_SPAN_ATTRIBUTES
+    description: Enable the capture of experimental span attributes.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_GRAPHQL_QUERY_SANITIZER_ENABLED
+    description: Whether to remove sensitive information from query source that is
+      added as span attribute.
+    default: 'true'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_GRPC_EXPERIMENTAL_SPAN_ATTRIBUTES
+    description: Enable the capture of experimental span attributes.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_GRPC_CAPTURE_METADATA_CLIENT_REQUEST
+    description: A comma-separated list of request metadata keys. gRPC client instrumentation
+      will capture metadata values corresponding to configured keys as span attributes.
+    default: ''
+    type: string
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_GRPC_CAPTURE_METADATA_SERVER_REQUEST
+    description: A comma-separated list of request metadata keys. gRPC server instrumentation
+      will capture metadata values corresponding to configured keys as span attributes.
+    default: ''
+    type: string
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_GUAVA_EXPERIMENTAL_SPAN_ATTRIBUTES
+    description: Enable the capture of experimental span attributes.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_HIBERNATE_EXPERIMENTAL_SPAN_ATTRIBUTES
+    description: Enable the capture of experimental span attributes.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_HYSTRIX_EXPERIMENTAL_SPAN_ATTRIBUTES
+    description: Enable the capture of experimental span attributes.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_JAVA_UTIL_LOGGING_EXPERIMENTAL_LOG_ATTRIBUTES
+    description: Enable the capture of experimental log attributes `thread.name` and
+      `thread.id`.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_JAXRS_EXPERIMENTAL_SPAN_ATTRIBUTES
+    description: Enable the capture of experimental span attributes.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_JBOSS_LOGMANAGER_EXPERIMENTAL_LOG_ATTRIBUTES
+    description: Enable the capture of experimental log attributes.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_JBOSS_LOGMANAGER_EXPERIMENTAL_CAPTURE_MDC_ATTRIBUTES
+    description: Comma separated list of MDC attributes to capture. Use the wildcard
+      character `*` to capture all attributes.
+    default: ''
+    type: string
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_JDBC_STATEMENT_SANITIZER_ENABLED
+    description: EEnables the DB statement sanitization.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_JSP_EXPERIMENTAL_SPAN_ATTRIBUTES
+    description: Enable the capture of experimental span attributes.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_KAFKA_EXPERIMENTAL_SPAN_ATTRIBUTES
+    description: Enable the capture of experimental span attributes.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_KAFKA_PRODUCER_PROPAGATION_ENABLED
+    description: Enable context propagation for kafka message producer.
+    default: 'true'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_KAFKA_METRIC_REPORTER_ENABLED
+    description: Enable kafka consumer and producer metrics. Deprecated, disable instrumentation
+      with name `kafka-clients-metrics` instead.
+    default: 'true'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_KUBERNETES_CLIENT_EXPERIMENTAL_SPAN_ATTRIBUTES
+    description: Enable the capture of experimental span attributes.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_LETTUCE_EXPERIMENTAL_SPAN_ATTRIBUTES
+    description: Enable the capture of experimental span attributes.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_LOG4J_APPENDER_EXPERIMENTAL_LOG_ATTRIBUTES
+    description: Enable the capture of experimental log attributes `thread.name` and
+      `thread.id`.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_LOG4J_APPENDER_EXPERIMENTAL_CAPTURE_MAP_MESSAGE_ATTRIBUTES
+    description: Enable the capture of `MapMessage` attributes.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_LOG4J_APPENDER_EXPERIMENTAL_CAPTURE_MARKER_ATTRIBUTE
+    description: Enable the capture of Log4j markers as attributes.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_LOG4J_APPENDER_EXPERIMENTAL_CAPTURE_MDC_ATTRIBUTES
+    description: Comma separated list of context data attributes to capture. Use the
+      wildcard character `*` to capture all attributes.
+    default: ''
+    type: string
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_COMMON_MDC_RESOURCE_ATTRIBUTES
+    description: Comma separated list of resource attributes to expose through MDC.
+    default: ''
+    type: string
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_LOGBACK_APPENDER_EXPERIMENTAL_LOG_ATTRIBUTES
+    description: Enable the capture of experimental log attributes `thread.name` and
+      `thread.id`.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_LOGBACK_APPENDER_EXPERIMENTAL_CAPTURE_CODE_ATTRIBUTES
+    description: Enable the capture of [source code attributes](https://github.com/open-telemetry/semantic-conventions/blob/main/docs/general/attributes.md#source-code-attributes).
+      Note that capturing source code attributes at logging sites might add a performance
+      overhead.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_LOGBACK_APPENDER_EXPERIMENTAL_CAPTURE_MARKER_ATTRIBUTE
+    description: Enable the capture of Logback markers as attributes.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_LOGBACK_APPENDER_EXPERIMENTAL_CAPTURE_KEY_VALUE_PAIR_ATTRIBUTES
+    description: Enable the capture of Logback key value pairs as attributes.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_LOGBACK_APPENDER_EXPERIMENTAL_CAPTURE_LOGGER_CONTEXT_ATTRIBUTES
+    description: Enable the capture of Logback logger context properties as attributes.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_LOGBACK_APPENDER_EXPERIMENTAL_CAPTURE_MDC_ATTRIBUTES
+    description: Comma separated list of MDC attributes to capture. Use the wildcard
+      character `*` to capture all attributes.
+    default: ''
+    type: string
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_LOGBACK_MDC_ADD_BAGGAGE
+    description: Enable exposing baggage attributes through MDC.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_COMMON_MDC_RESOURCE_ATTRIBUTES
+    description: Comma separated list of resource attributes to expose through MDC.
+    default: ''
+    type: string
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_MICROMETER_BASE_TIME_UNIT
+    description: Set the base time unit for the OpenTelemetry `MeterRegistry` implementation.
+      <details><summary>Valid values</summary>`ns`, `nanoseconds`, `us`, `microseconds`,
+      `ms`, `milliseconds`, `s`, `seconds`, `min`, `minutes`, `h`, `hours`, `d`, `days`</details>
+    default: s
+    type: string
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_MICROMETER_PROMETHEUS_MODE_ENABLED
+    description: Enable the "Prometheus mode" this will simulate the behavior of Micrometer's
+      PrometheusMeterRegistry. The instruments will be renamed to match Micrometer
+      instrument naming, and the base time unit will be set to seconds.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_MICROMETER_HISTOGRAM_GAUGES_ENABLED
+    description: Enables the generation of gauge-based Micrometer histograms for `DistributionSummary`
+      and `Timer` instruments.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_MONGO_STATEMENT_SANITIZER_ENABLED
+    description: Enables the DB statement sanitization.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_NETTY_CONNECTION_TELEMETRY_ENABLED
+    description: Enable the creation of Connect and DNS spans by default for Netty
+      4.0 and higher instrumentation.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_NETTY_SSL_TELEMETRY_ENABLED
+    description: Enable SSL telemetry for Netty 4.0 and higher instrumentation.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_OPENTELEMETRY_ANNOTATIONS_EXCLUDE_METHODS
+    description: All methods to be excluded from auto-instrumentation by annotation-based
+      advices.
+    default: ''
+    type: string
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_OPENTELEMETRY_INSTRUMENTATION_ANNOTATIONS_EXCLUDE_METHODS
+    description: All methods to be excluded from auto-instrumentation by annotation-based
+      advices.
+    default: ''
+    type: string
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_OSHI_EXPERIMENTAL_METRICS_ENABLED
+    description: Enable the OSHI metrics.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_PULSAR_EXPERIMENTAL_SPAN_ATTRIBUTES
+    description: Enable the capture of experimental span attributes.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_QUARTZ_EXPERIMENTAL_SPAN_ATTRIBUTES
+    description: Enable the capture of experimental span attributes.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_RABBITMQ_EXPERIMENTAL_SPAN_ATTRIBUTES
+    description: Enable the capture of experimental span attributes.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_REACTOR_EXPERIMENTAL_SPAN_ATTRIBUTES
+    description: Enable the capture of experimental span attributes.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_REACTOR_NETTY_CONNECTION_TELEMETRY_ENABLED
+    description: Enable the creation of Connect and DNS spans by default.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_ROCKETMQ_CLIENT_EXPERIMENTAL_SPAN_ATTRIBUTES
+    description: Enable the capture of experimental span attributes.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_RUNTIME_TELEMETRY_EMIT_EXPERIMENTAL_TELEMETRY
+    description: Enable the capture of experimental metrics.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_RUNTIME_TELEMETRY_JAVA17_ENABLE_ALL
+    description: Enable the capture of all JFR based metrics.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_RUNTIME_TELEMETRY_JAVA17_ENABLED
+    description: Enable the capture of JFR based metrics.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_RUNTIME_TELEMETRY_PACKAGE_EMITTER_ENABLED
+    description: Enable creating events for JAR libraries used by the application.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_RUNTIME_TELEMETRY_PACKAGE_EMITTER_JARS_PER_SECOND
+    description: The number of JAR files processed per second.
+    default: '10'
+    type: int
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_RXJAVA_EXPERIMENTAL_SPAN_ATTRIBUTES
+    description: Enable the capture of experimental span attributes.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_SERVLET_EXPERIMENTAL_SPAN_ATTRIBUTES
+    description: Enable the capture of experimental span attributes.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_SPRING_BATCH_ITEM_ENABLED
+    description: Enable creating span for each item.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_SPRING_BATCH_EXPERIMENTAL_CHUNK_NEW_TRACE
+    description: Enable staring a new trace for each chunk.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_SPRING_SCHEDULING_EXPERIMENTAL_SPAN_ATTRIBUTES
+    description: Enable the capture of experimental span attributes for Spring Batch
+      version 3.0.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_SPRING_INTEGRATION_GLOBAL_CHANNEL_INTERCEPTOR_PATTERNS
+    description: An array of Spring channel name patterns that will be intercepted.
+      See [Spring Integration docs](https://docs.spring.io/spring-integration/reference/channel/configuration.html#global-channel-configuration-interceptors)
+      for more details.
+    default: '*'
+    type: string
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_SPRING_INTEGRATION_PRODUCER_ENABLED
+    description: Create producer spans when messages are sent to an output channel.
+      Enable when you're using a messaging library that doesn't have its own instrumentation
+      for generating producer spans. Note that the detection of output channels only
+      works for [Spring Cloud Stream](https://spring.io/projects/spring-cloud-stream)
+      `DirectWithAttributesChannel`.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_SPRING_SCHEDULING_EXPERIMENTAL_SPAN_ATTRIBUTES
+    description: Enable the capture of experimental span attributes for Spring Scheduling
+      version 3.1.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_SPRING_WEBFLUX_EXPERIMENTAL_SPAN_ATTRIBUTES
+    description: Enable the capture of experimental span attributes for Spring WebFlux
+      version 5.0.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_SPRING_WEBMVC_EXPERIMENTAL_SPAN_ATTRIBUTES
+    description: Enable the capture of experimental span attributes for Spring Web
+      MVC version 3.1.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_SPRING_CLOUD_GATEWAY_EXPERIMENTAL_SPAN_ATTRIBUTES
+    description: Enable the capture of experimental span attributes.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_SPRING_SECURITY_ENDUSER_ROLE_GRANTED_AUTHORITY_PREFIX
+    description: Prefix of granted authorities identifying roles to capture in the
+      `enduser.role` semantic attribute.
+    default: ROLE_
+    type: string
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_SPRING_SECURITY_ENDUSER_SCOPE_GRANTED_AUTHORITY_PREFIX
+    description: Prefix of granted authorities identifying scopes to capture in the
+      `enduser.scopes` semantic attribute.
+    default: SCOPE_
+    type: string
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_SPYMEMCACHED_EXPERIMENTAL_SPAN_ATTRIBUTES
+    description: Enable the capture of experimental span attributes.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_TWILIO_EXPERIMENTAL_SPAN_ATTRIBUTES
+    description: Enable the capture of experimental span attributes.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_INSTRUMENTATION_XXL_JOB_EXPERIMENTAL_SPAN_ATTRIBUTES
+    description: Enable the capture of experimental span attributes.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+metrics:
+  - instrumentation_scope_name: io.opentelemetry.sdk.trace
+    metric_name: queueSize
+    instrument: gauge
+    description: The number of items queued
+  - instrumentation_scope_name: io.opentelemetry.sdk.trace
+    metric_name: processedSpans
+    instrument: counter
+    description: The number of spans processed by the BatchSpanProcessor. [dropped=true
+      if they were dropped due to high throughput]
+  - instrumentation_scope_name: io.opentelemetry.sdk.logs
+    metric_name: queueSize
+    instrument: gauge
+    description: The number of items queued
+  - instrumentation_scope_name: io.opentelemetry.sdk.logs
+    metric_name: processedLogs
+    instrument: counter
+    description: The number of logs processed by the BatchLogRecordProcessor. [dropped=true
+      if they were dropped due to high throughput]
+  - metric_name: otlp.exporter.exported
+    instrument: counter
+    description: The number of items exported by the otlp exporter.
+  - metric_name: otlp.exporter.seen
+    instrument: counter
+    description: The number of items seen by the otlp exporter.
+instrumentations:
+  - keys:
+      - methods
+    instrumented_components:
+      - name: Additional methods tracing
+    stability: experimental
+    support: community
+  - keys:
+      - external-annotations
+    instrumented_components:
+      - name: Additional tracing annotations
+    stability: experimental
+    support: community
+  - keys:
+      - akka-actor
+    instrumented_components:
+      - name: Akka Actors
+        supported_versions: 2.3 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - akka-http
+    instrumented_components:
+      - name: Akka HTTP
+        supported_versions: 10.0 and higher
+    stability: experimental
+    support: community
+    signals:
+      - metrics:
+          - metric_name: http.client.request.duration
+            instrument: histogram
+            description: Duration of HTTP client requests.
+          - metric_name: http.client.request.body.size
+            instrument: histogram
+            description: Size of HTTP client request bodies (disabled by default).
+          - metric_name: http.client.request.body.size
+            instrument: histogram
+            description: Size of HTTP client request bodies (disabled by default).
+          - metric_name: http.server.request.duration
+            instrument: histogram
+            description: Duration of HTTP server requests.
+          - metric_name: http.server.active_requests
+            instrument: updowncounter
+            description: Number of active HTTP server requests (disabled by default).
+          - metric_name: http.server.request.body.size
+            instrument: histogram
+            description: Size of HTTP server request bodies (disabled by default).
+          - metric_name: http.server.request.body.size
+            instrument: histogram
+            description: Size of HTTP server response bodies (disabled by default).
+  - keys:
+      - axis2
+    instrumented_components:
+      - name: Apache Axis2
+        supported_versions: 1.6 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - camel
+    instrumented_components:
+      - name: Apache Camel
+        supported_versions: 2.20 to 3.0
+    stability: experimental
+    support: community
+  - keys:
+      - cxf
+    instrumented_components:
+      - name: Apache CXF JAX-RS
+        supported_versions: 3.2 and higher
+      - name: Apache CXF JAX-WS
+        supported_versions: 3.0 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - apache-dbcp
+    instrumented_components:
+      - name: Apache DBCP
+        supported_versions: 2.0 and higher
+    stability: experimental
+    support: community
+    signals:
+      - metrics:
+          - metric_name: db.client.connections.usage
+            instrument: updowncounter
+            description: The number of connections that are currently in state described
+              by the state attribute.
+          - metric_name: db.client.connections.idle.max
+            instrument: updowncounter
+            description: The maximum number of idle open connections allowed.
+          - metric_name: db.client.connections.idle.min
+            instrument: updowncounter
+            description: The minimum number of idle open connections allowed.
+          - metric_name: db.client.connections.max
+            instrument: updowncounter
+            description: The maximum number of open connections allowed.
+  - keys:
+      - apache-dubbo
+    instrumented_components:
+      - name: Apache DBCP
+        supported_versions: 2.7 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - apache-httpasyncclient
+    instrumented_components:
+      - name: Apache HttpAsyncClient
+        supported_versions: 4.1 and higher
+    stability: experimental
+    support: community
+    signals:
+      - metrics:
+          - metric_name: http.client.request.duration
+            instrument: histogram
+            description: Duration of HTTP client requests.
+          - metric_name: http.client.request.body.size
+            instrument: histogram
+            description: Size of HTTP client request bodies (disabled by default).
+          - metric_name: http.client.request.body.size
+            instrument: histogram
+            description: Size of HTTP client request bodies (disabled by default).
+  - keys:
+      - apache-httpclient
+    instrumented_components:
+      - name: Apache HttpClient
+        supported_versions: 2.0 and higher
+    stability: experimental
+    support: community
+    signals:
+      - metrics:
+          - metric_name: http.client.request.duration
+            instrument: histogram
+            description: Duration of HTTP client requests.
+          - metric_name: http.client.request.body.size
+            instrument: histogram
+            description: Size of HTTP client request bodies (disabled by default).
+          - metric_name: http.client.request.body.size
+            instrument: histogram
+            description: Size of HTTP client request bodies (disabled by default).
+  - keys:
+      - kafka
+      - kafka-clients-metrics
+    instrumented_components:
+      - name: Apache Kafka Producer/Consumer API
+        supported_versions: 0.11 and higher
+      - name: Apache Kafka Streams API
+        supported_versions: 0.11 and higher
+    description: Consult documentation of the used kafka version for the exact metrics
+      it generates.
+    stability: experimental
+    support: community
+    signals:
+      - metrics:
+          - metric_name: kafka.consumer.assigned_partitions
+            instrument: gauge
+            description: The number of partitions currently assigned to this consumer.
+          - metric_name: kafka.consumer.commit_latency_avg
+            instrument: gauge
+            description: The average time taken for a commit request.
+          - metric_name: kafka.consumer.commit_latency_max
+            instrument: gauge
+            description: The max time taken for a commit request.
+          - metric_name: kafka.consumer.commit_rate
+            instrument: gauge
+            description: The number of commit calls per second.
+          - metric_name: kafka.consumer.commit_total
+            instrument: counter
+            description: The total number of commit calls.
+          - metric_name: kafka.consumer.failed_rebalance_rate_per_hour
+            instrument: gauge
+            description: The number of failed rebalance events per hour.
+          - metric_name: kafka.consumer.failed_rebalance_total
+            instrument: counter
+            description: The total number of failed rebalance events.
+          - metric_name: kafka.consumer.heartbeat_rate
+            instrument: gauge
+            description: The number of heartbeats per second.
+          - metric_name: kafka.consumer.heartbeat_response_time_max
+            instrument: gauge
+            description: The max time taken to receive a response to a heartbeat request.
+          - metric_name: kafka.consumer.heartbeat_total
+            instrument: counter
+            description: The total number of heartbeats.
+          - metric_name: kafka.consumer.join_rate
+            instrument: gauge
+            description: The number of group joins per second.
+          - metric_name: kafka.consumer.join_time_avg
+            instrument: gauge
+            description: The average time taken for a group rejoin.
+          - metric_name: kafka.consumer.join_time_max
+            instrument: gauge
+            description: The max time taken for a group rejoin.
+          - metric_name: kafka.consumer.join_total
+            instrument: counter
+            description: The total number of group joins.
+          - metric_name: kafka.consumer.last_heartbeat_seconds_ago
+            instrument: gauge
+            description: The number of seconds since the last coordinator heartbeat
+              was sent.
+          - metric_name: kafka.consumer.last_rebalance_seconds_ago
+            instrument: gauge
+            description: The number of seconds since the last successful rebalance
+              event.
+          - metric_name: kafka.consumer.partition_assigned_latency_avg
+            instrument: gauge
+            description: The average time taken for a partition-assigned rebalance
+              listener callback.
+          - metric_name: kafka.consumer.partition_assigned_latency_max
+            instrument: gauge
+            description: The max time taken for a partition-assigned rebalance listener
+              callback.
+          - metric_name: kafka.consumer.partition_lost_latency_avg
+            instrument: gauge
+            description: The average time taken for a partition-lost rebalance listener
+              callback.
+          - metric_name: kafka.consumer.partition_lost_latency_max
+            instrument: gauge
+            description: The max time taken for a partition-lost rebalance listener
+              callback.
+          - metric_name: kafka.consumer.partition_revoked_latency_avg
+            instrument: gauge
+            description: The average time taken for a partition-revoked rebalance
+              listener callback.
+          - metric_name: kafka.consumer.partition_revoked_latency_max
+            instrument: gauge
+            description: The max time taken for a partition-revoked rebalance listener
+              callback.
+          - metric_name: kafka.consumer.rebalance_latency_avg
+            instrument: gauge
+            description: The average time taken for a group to complete a successful
+              rebalance, which may be composed of several failed re-trials until it
+              succeeded.
+          - metric_name: kafka.consumer.rebalance_latency_max
+            instrument: gauge
+            description: The max time taken for a group to complete a successful rebalance,
+              which may be composed of several failed re-trials until it succeeded.
+          - metric_name: kafka.consumer.rebalance_latency_total
+            instrument: counter
+            description: The total number of milliseconds this consumer has spent
+              in successful rebalances since creation.
+          - metric_name: kafka.consumer.rebalance_rate_per_hour
+            instrument: gauge
+            description: The number of successful rebalance events per hour, each
+              event is composed of several failed re-trials until it succeeded.
+          - metric_name: kafka.consumer.rebalance_total
+            instrument: counter
+            description: The total number of successful rebalance events, each event
+              is composed of several failed re-trials until it succeeded.
+          - metric_name: kafka.consumer.sync_rate
+            instrument: gauge
+            description: The number of group syncs per second.
+          - metric_name: kafka.consumer.sync_time_avg
+            instrument: gauge
+            description: The average time taken for a group sync.
+          - metric_name: kafka.consumer.sync_time_max
+            instrument: gauge
+            description: The max time taken for a group sync.
+          - metric_name: kafka.consumer.sync_total
+            instrument: counter
+            description: The total number of group syncs.
+          - metric_name: kafka.consumer.bytes_consumed_rate
+            instrument: gauge
+            description: The average number of bytes consumed per second.
+          - metric_name: kafka.consumer.bytes_consumed_total
+            instrument: counter
+            description: The total number of bytes consumed.
+          - metric_name: kafka.consumer.fetch_latency_avg
+            instrument: gauge
+            description: The average time taken for a fetch request.
+          - metric_name: kafka.consumer.fetch_latency_max
+            instrument: gauge
+            description: The max time taken for any fetch request.
+          - metric_name: kafka.consumer.fetch_rate
+            instrument: gauge
+            description: The number of fetch requests per second.
+          - metric_name: kafka.consumer.fetch_size_avg
+            instrument: gauge
+            description: The average number of bytes fetched per request.
+          - metric_name: kafka.consumer.fetch_size_max
+            instrument: gauge
+            description: The maximum number of bytes fetched per request.
+          - metric_name: kafka.consumer.fetch_throttle_time_avg
+            instrument: gauge
+            description: The average throttle time in ms.
+          - metric_name: kafka.consumer.fetch_throttle_time_max
+            instrument: gauge
+            description: The maximum throttle time in ms.
+          - metric_name: kafka.consumer.fetch_total
+            instrument: counter
+            description: The total number of fetch requests.
+          - metric_name: kafka.consumer.records_consumed_rate
+            instrument: gauge
+            description: The average number of records consumed per second.
+          - metric_name: kafka.consumer.records_consumed_total
+            instrument: counter
+            description: The total number of records consumed.
+          - metric_name: kafka.consumer.records_lag
+            instrument: gauge
+            description: The latest lag of the partition.
+          - metric_name: kafka.consumer.records_lag_avg
+            instrument: gauge
+            description: The average lag of the partition.
+          - metric_name: kafka.consumer.records_lag_max
+            instrument: gauge
+            description: 'The maximum lag in terms of number of records for any partition
+              in this window. NOTE: This is based on current offset and not committed
+              offset.'
+          - metric_name: kafka.consumer.records_lead
+            instrument: gauge
+            description: The latest lead of the partition.
+          - metric_name: kafka.consumer.records_lead_avg
+            instrument: gauge
+            description: The average lead of the partition.
+          - metric_name: kafka.consumer.records_lead_min
+            instrument: gauge
+            description: The minimum lead in terms of number of records for any partition
+              in this window.
+          - metric_name: kafka.consumer.records_per_request_avg
+            instrument: gauge
+            description: The average number of records in each request.
+          - metric_name: kafka.consumer.commit_sync_time_ns_total
+            instrument: counter
+            description: The total time the consumer has spent in commitSync in nanoseconds.
+          - metric_name: kafka.consumer.committed_time_ns_total
+            instrument: counter
+            description: The total time the consumer has spent in committed in nanoseconds.
+          - metric_name: kafka.consumer.connection_close_rate
+            instrument: gauge
+            description: The number of connections closed per second.
+          - metric_name: kafka.consumer.connection_close_total
+            instrument: counter
+            description: The total number of connections closed.
+          - metric_name: kafka.consumer.connection_count
+            instrument: gauge
+            description: The current number of active connections.
+          - metric_name: kafka.consumer.connection_creation_rate
+            instrument: gauge
+            description: The number of new connections established per second.
+          - metric_name: kafka.consumer.connection_creation_total
+            instrument: counter
+            description: The total number of new connections established.
+          - metric_name: kafka.consumer.failed_authentication_rate
+            instrument: gauge
+            description: The number of connections with failed authentication per
+              second.
+          - metric_name: kafka.consumer.failed_authentication_total
+            instrument: counter
+            description: The total number of connections with failed authentication.
+          - metric_name: kafka.consumer.failed_reauthentication_rate
+            instrument: gauge
+            description: The number of failed re-authentication of connections per
+              second.
+          - metric_name: kafka.consumer.failed_reauthentication_total
+            instrument: counter
+            description: The total number of failed re-authentication of connections.
+          - metric_name: kafka.consumer.io_ratio
+            instrument: gauge
+            description: ' *Deprecated* The fraction of time the I/O thread spent
+              doing I/O.'
+          - metric_name: kafka.consumer.io_time_ns_avg
+            instrument: gauge
+            description: The average length of time for I/O per select call in nanoseconds.
+          - metric_name: kafka.consumer.io_time_ns_total
+            instrument: counter
+            description: The total time the I/O thread spent doing I/O.
+          - metric_name: kafka.consumer.io_wait_ratio
+            instrument: gauge
+            description: '*Deprecated* The fraction of time the I/O thread spent waiting.'
+          - metric_name: kafka.consumer.io_wait_time_ns_avg
+            instrument: gauge
+            description: The average length of time the I/O thread spent waiting for
+              a socket ready for reads or writes in nanoseconds.
+          - metric_name: kafka.consumer.io_wait_time_ns_total
+            instrument: counter
+            description: The total time the I/O thread spent waiting
+          - metric_name: kafka.consumer.io_waittime_total
+            instrument: counter
+            description: '*Deprecated* The total time the I/O thread spent waiting.'
+          - metric_name: kafka.consumer.iotime_total
+            instrument: counter
+            description: '*Deprecated* The total time the I/O thread spent doing I/O.'
+          - metric_name: kafka.consumer.last_poll_seconds_ago
+            instrument: gauge
+            description: The number of seconds since the last poll() invocation.
+          - metric_name: kafka.consumer.network_io_rate
+            instrument: gauge
+            description: The number of network operations (reads or writes) on all
+              connections per second.
+          - metric_name: kafka.consumer.network_io_total
+            instrument: counter
+            description: The total number of network operations (reads or writes)
+              on all connections.
+          - metric_name: kafka.consumer.poll_idle_ratio_avg
+            instrument: gauge
+            description: The average fraction of time the consumer's poll() is idle
+              as opposed to waiting for the user code to process records.
+          - metric_name: kafka.consumer.reauthentication_latency_avg
+            instrument: gauge
+            description: The average latency observed due to re-authentication.
+          - metric_name: kafka.consumer.reauthentication_latency_max
+            instrument: gauge
+            description: The max latency observed due to re-authentication.
+          - metric_name: kafka.consumer.select_rate
+            instrument: gauge
+            description: The number of times the I/O layer checked for new I/O to
+              perform per second.
+          - metric_name: kafka.consumer.select_total
+            instrument: counter
+            description: The total number of times the I/O layer checked for new I/O
+              to perform.
+          - metric_name: kafka.consumer.successful_authentication_no_reauth_total
+            instrument: counter
+            description: The total number of connections with successful authentication
+              where the client does not support re-authentication.
+          - metric_name: kafka.consumer.successful_authentication_rate
+            instrument: gauge
+            description: The number of connections with successful authentication
+              per second.
+          - metric_name: kafka.consumer.successful_authentication_total
+            instrument: counter
+            description: The total number of connections with successful authentication.
+          - metric_name: kafka.consumer.successful_reauthentication_rate
+            instrument: gauge
+            description: The number of successful re-authentication of connections
+              per second.
+          - metric_name: kafka.consumer.successful_reauthentication_total
+            instrument: counter
+            description: The total number of successful re-authentication of connections.
+          - metric_name: kafka.consumer.time_between_poll_avg
+            instrument: gauge
+            description: The average delay between invocations of poll() in milliseconds.
+          - metric_name: kafka.consumer.time_between_poll_max
+            instrument: gauge
+            description: The max delay between invocations of poll() in milliseconds.
+          - metric_name: kafka.consumer.incoming_byte_rate
+            instrument: gauge
+            description: The number of bytes read off all sockets per second.
+          - metric_name: kafka.consumer.incoming_byte_total
+            instrument: counter
+            description: The total number of bytes read off all sockets.
+          - metric_name: kafka.consumer.outgoing_byte_rate
+            instrument: gauge
+            description: The number of outgoing bytes sent to all servers per second.
+          - metric_name: kafka.consumer.outgoing_byte_total
+            instrument: counter
+            description: The total number of outgoing bytes sent to all servers.
+          - metric_name: kafka.consumer.request_latency_avg
+            instrument: gauge
+            description: The average request latency in ms.
+          - metric_name: kafka.consumer.request_latency_max
+            instrument: gauge
+            description: The maximum request latency in ms.
+          - metric_name: kafka.consumer.request_rate
+            instrument: gauge
+            description: The number of requests sent per second.
+          - metric_name: kafka.consumer.request_size_avg
+            instrument: gauge
+            description: The average size of requests sent.
+          - metric_name: kafka.consumer.request_size_max
+            instrument: gauge
+            description: The maximum size of any request sent.
+          - metric_name: kafka.consumer.request_total
+            instrument: counter
+            description: The total number of requests sent.
+          - metric_name: kafka.consumer.response_rate
+            instrument: gauge
+            description: The number of responses received per second.
+          - metric_name: kafka.consumer.response_total
+            instrument: counter
+            description: The total number of responses received.
+          - metric_name: kafka.producer.batch_size_avg
+            instrument: gauge
+            description: The average number of bytes sent per partition per-request.
+          - metric_name: kafka.producer.batch_size_max
+            instrument: gauge
+            description: The max number of bytes sent per partition per-request.
+          - metric_name: kafka.producer.batch_split_rate
+            instrument: gauge
+            description: The average number of batch splits per second.
+          - metric_name: kafka.producer.batch_split_total
+            instrument: counter
+            description: The total number of batch splits.
+          - metric_name: kafka.producer.buffer_available_bytes
+            instrument: gauge
+            description: The total amount of buffer memory that is not being used
+              (either unallocated or in the free list).
+          - metric_name: kafka.producer.buffer_exhausted_rate
+            instrument: gauge
+            description: The average per-second number of record sends that are dropped
+              due to buffer exhaustion.
+          - metric_name: kafka.producer.buffer_exhausted_total
+            instrument: counter
+            description: The total number of record sends that are dropped due to
+              buffer exhaustion.
+          - metric_name: kafka.producer.buffer_total_bytes
+            instrument: gauge
+            description: The maximum amount of buffer memory the client can use (whether
+              or not it is currently used).
+          - metric_name: kafka.producer.bufferpool_wait_ratio
+            instrument: gauge
+            description: The fraction of time an appender waits for space allocation.
+          - metric_name: kafka.producer.bufferpool_wait_time_ns_total
+            instrument: counter
+            description: The total time in nanoseconds an appender waits for space
+              allocation.
+          - metric_name: kafka.producer.bufferpool_wait_time_total
+            instrument: counter
+            description: '*Deprecated* The total time an appender waits for space
+              allocation.'
+          - metric_name: kafka.producer.compression_rate_avg
+            instrument: gauge
+            description: The average compression rate of record batches.
+          - metric_name: kafka.producer.connection_close_rate
+            instrument: gauge
+            description: The number of connections closed per second.
+          - metric_name: kafka.producer.connection_close_total
+            instrument: counter
+            description: The total number of connections closed.
+          - metric_name: kafka.producer.connection_count
+            instrument: gauge
+            description: The current number of active connections.
+          - metric_name: kafka.producer.connection_creation_rate
+            instrument: gauge
+            description: The number of new connections established per second.
+          - metric_name: kafka.producer.connection_creation_total
+            instrument: counter
+            description: The total number of new connections established.
+          - metric_name: kafka.producer.failed_authentication_rate
+            instrument: gauge
+            description: The number of connections with failed authentication per
+              second.
+          - metric_name: kafka.producer.failed_authentication_total
+            instrument: counter
+            description: The total number of connections with failed authentication.
+          - metric_name: kafka.producer.failed_reauthentication_rate
+            instrument: gauge
+            description: The number of failed re-authentication of connections per
+              second.
+          - metric_name: kafka.producer.failed_reauthentication_total
+            instrument: counter
+            description: The total number of failed re-authentication of connections.
+          - metric_name: kafka.producer.flush_time_ns_total
+            instrument: counter
+            description: Total time producer has spent in flush in nanoseconds.
+          - metric_name: kafka.producer.io_ratio
+            instrument: gauge
+            description: '*Deprecated* The fraction of time the I/O thread spent doing
+              I/O.'
+          - metric_name: kafka.producer.io_time_ns_avg
+            instrument: gauge
+            description: The average length of time for I/O per select call in nanoseconds.
+          - metric_name: kafka.producer.io_time_ns_total
+            instrument: counter
+            description: The total time the I/O thread spent doing I/O.
+          - metric_name: kafka.producer.io_wait_ratio
+            instrument: gauge
+            description: '*Deprecated* The fraction of time the I/O thread spent waiting.'
+          - metric_name: kafka.producer.io_wait_time_ns_avg
+            instrument: gauge
+            description: The average length of time the I/O thread spent waiting for
+              a socket ready for reads or writes in nanoseconds.
+          - metric_name: kafka.producer.io_wait_time_ns_total
+            instrument: counter
+            description: The total time the I/O thread spent waiting.
+          - metric_name: kafka.producer.io_waittime_total
+            instrument: counter
+            description: '*Deprecated* The total time the I/O thread spent waiting.'
+          - metric_name: kafka.producer.iotime_total
+            instrument: counter
+            description: '*Deprecated* The total time the I/O thread spent doing I/O.'
+          - metric_name: kafka.producer.metadata_age
+            instrument: gauge
+            description: The age in seconds of the current producer metadata being
+              used.
+          - metric_name: kafka.producer.metadata_wait_time_ns_total
+            instrument: counter
+            description: Total time producer has spent waiting on topic metadata in
+              nanoseconds.
+          - metric_name: kafka.producer.network_io_rate
+            instrument: gauge
+            description: The number of network operations (reads or writes) on all
+              connections per second.
+          - metric_name: kafka.producer.network_io_total
+            instrument: counter
+            description: The total number of network operations (reads or writes)
+              on all connections.
+          - metric_name: kafka.producer.produce_throttle_time_avg
+            instrument: gauge
+            description: The average time in ms a request was throttled by a broker.
+          - metric_name: kafka.producer.produce_throttle_time_max
+            instrument: gauge
+            description: The maximum time in ms a request was throttled by a broker.
+          - metric_name: kafka.producer.reauthentication_latency_avg
+            instrument: gauge
+            description: The average latency observed due to re-authentication.
+          - metric_name: kafka.producer.reauthentication_latency_max
+            instrument: gauge
+            description: The max latency observed due to re-authentication.
+          - metric_name: kafka.producer.record_queue_time_avg
+            instrument: gauge
+            description: The average time in ms record batches spent in the send buffer.
+          - metric_name: kafka.producer.record_queue_time_max
+            instrument: gauge
+            description: The maximum time in ms record batches spent in the send buffer.
+          - metric_name: kafka.producer.record_size_avg
+            instrument: gauge
+            description: The average record size.
+          - metric_name: kafka.producer.record_size_max
+            instrument: gauge
+            description: The maximum record size.
+          - metric_name: kafka.producer.records_per_request_avg
+            instrument: gauge
+            description: The average number of records per request.
+          - metric_name: kafka.producer.requests_in_flight
+            instrument: gauge
+            description: The current number of in-flight requests awaiting a response.
+          - metric_name: kafka.producer.select_rate
+            instrument: gauge
+            description: The number of times the I/O layer checked for new I/O to
+              perform per second.
+          - metric_name: kafka.producer.select_total
+            instrument: counter
+            description: The total number of times the I/O layer checked for new I/O
+              to perform.
+          - metric_name: kafka.producer.successful_authentication_no_reauth_total
+            instrument: counter
+            description: The total number of connections with successful authentication
+              where the client does not support re-authentication.
+          - metric_name: kafka.producer.successful_authentication_rate
+            instrument: gauge
+            description: The number of connections with successful authentication
+              per second.
+          - metric_name: kafka.producer.successful_authentication_total
+            instrument: counter
+            description: The total number of connections with successful authentication.
+          - metric_name: kafka.producer.successful_reauthentication_rate
+            instrument: gauge
+            description: The number of successful re-authentication of connections
+              per second.
+          - metric_name: kafka.producer.successful_reauthentication_total
+            instrument: counter
+            description: The total number of successful re-authentication of connections.
+          - metric_name: kafka.producer.txn_abort_time_ns_total
+            instrument: counter
+            description: Total time producer has spent in abortTransaction in nanoseconds.
+          - metric_name: kafka.producer.txn_begin_time_ns_total
+            instrument: counter
+            description: Total time producer has spent in beginTransaction in nanoseconds.
+          - metric_name: kafka.producer.txn_commit_time_ns_total
+            instrument: counter
+            description: Total time producer has spent in commitTransaction in nanoseconds.
+          - metric_name: kafka.producer.txn_init_time_ns_total
+            instrument: counter
+            description: Total time producer has spent in initTransactions in nanoseconds.
+          - metric_name: kafka.producer.txn_send_offsets_time_ns_total
+            instrument: counter
+            description: Total time producer has spent in sendOffsetsToTransaction
+              in nanoseconds.
+          - metric_name: kafka.producer.waiting_threads
+            instrument: gauge
+            description: The number of user threads blocked waiting for buffer memory
+              to enqueue their records.
+          - metric_name: kafka.producer.incoming_byte_rate
+            instrument: gauge
+            description: The number of bytes read off all sockets per second.
+          - metric_name: kafka.producer.incoming_byte_total
+            instrument: counter
+            description: The total number of bytes read off all sockets.
+          - metric_name: kafka.producer.outgoing_byte_rate
+            instrument: gauge
+            description: The number of outgoing bytes sent to all servers per second.
+          - metric_name: kafka.producer.outgoing_byte_total
+            instrument: counter
+            description: The total number of outgoing bytes sent to all servers.
+          - metric_name: kafka.producer.request_latency_avg
+            instrument: gauge
+            description: The average request latency in ms.
+          - metric_name: kafka.producer.request_latency_max
+            instrument: gauge
+            description: The maximum request latency in ms.
+          - metric_name: kafka.producer.request_rate
+            instrument: gauge
+            description: The number of requests sent per second.
+          - metric_name: kafka.producer.request_size_avg
+            instrument: gauge
+            description: The average size of requests sent.
+          - metric_name: kafka.producer.request_size_max
+            instrument: gauge
+            description: The maximum size of any request sent.
+          - metric_name: kafka.producer.request_total
+            instrument: counter
+            description: The total number of requests sent.
+          - metric_name: kafka.producer.response_rate
+            instrument: gauge
+            description: The number of responses received per second.
+          - metric_name: kafka.producer.response_total
+            instrument: counter
+            description: The total number of responses received.
+          - metric_name: kafka.producer.byte_rate
+            instrument: gauge
+            description: The average number of bytes sent per second for a topic.
+          - metric_name: kafka.producer.byte_total
+            instrument: counter
+            description: The total number of bytes sent for a topic.
+          - metric_name: kafka.producer.compression_rate
+            instrument: gauge
+            description: The average compression rate of record batches for a topic.
+          - metric_name: kafka.producer.record_error_rate
+            instrument: gauge
+            description: The average per-second number of record sends that resulted
+              in errors.
+          - metric_name: kafka.producer.record_error_total
+            instrument: counter
+            description: The total number of record sends that resulted in errors.
+          - metric_name: kafka.producer.record_retry_rate
+            instrument: gauge
+            description: The average per-second number of retried record sends.
+          - metric_name: kafka.producer.record_retry_total
+            instrument: counter
+            description: The total number of retried record sends.
+          - metric_name: kafka.producer.record_send_rate
+            instrument: gauge
+            description: The average number of records sent per second.
+          - metric_name: kafka.producer.record_send_total
+            instrument: counter
+            description: The total number of records sent.
+  - keys:
+      - jsf-myfaces
+    instrumented_components:
+      - name: Apache MyFaces
+        supported_versions: 1.2 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - pekko-actor
+    instrumented_components:
+      - name: Apache Pekko Actors
+        supported_versions: 1.0 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - pekko-http
+    instrumented_components:
+      - name: Apache Pekko HTTP
+        supported_versions: 1.0 and higher
+    stability: experimental
+    support: community
+    signals:
+      - metrics:
+          - metric_name: http.client.request.duration
+            instrument: histogram
+            description: Duration of HTTP client requests.
+          - metric_name: http.client.request.body.size
+            instrument: histogram
+            description: Size of HTTP client request bodies (disabled by default).
+          - metric_name: http.client.request.body.size
+            instrument: histogram
+            description: Size of HTTP client request bodies (disabled by default).
+          - metric_name: http.server.request.duration
+            instrument: histogram
+            description: Duration of HTTP server requests.
+          - metric_name: http.server.active_requests
+            instrument: updowncounter
+            description: Number of active HTTP server requests (disabled by default).
+          - metric_name: http.server.request.body.size
+            instrument: histogram
+            description: Size of HTTP server request bodies (disabled by default).
+          - metric_name: http.server.request.body.size
+            instrument: histogram
+            description: Size of HTTP server response bodies (disabled by default).
+  - keys:
+      - pulsar
+    instrumented_components:
+      - name: Apache Pulsar
+        supported_versions: 2.8 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - rocketmq-client
+    instrumented_components:
+      - name: Apache RocketMQ gRPC/Protobuf-based Client
+        supported_versions: 5.0 and higher
+      - name: Apache RocketMQ Remoting-based Client
+        supported_versions: 4.8 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - struts
+    instrumented_components:
+      - name: Apache Struts 2
+        supported_versions: 2.3 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - tomcat
+    instrumented_components:
+      - name: Apache Tomcat
+        supported_versions: 7.0 and higher
+    stability: experimental
+    support: community
+    signals:
+      - metrics:
+          - metric_name: http.server.request.duration
+            instrument: histogram
+            description: Duration of HTTP server requests.
+          - metric_name: http.server.active_requests
+            instrument: updowncounter
+            description: Number of active HTTP server requests (disabled by default).
+          - metric_name: http.server.request.body.size
+            instrument: histogram
+            description: Size of HTTP server request bodies (disabled by default).
+          - metric_name: http.server.request.body.size
+            instrument: histogram
+            description: Size of HTTP server response bodies (disabled by default).
+  - keys:
+      - tapestry
+    instrumented_components:
+      - name: Apache Tapestry
+        supported_versions: 5.4 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - wicket
+    instrumented_components:
+      - name: Apache Wicket
+        supported_versions: 8.0 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - armeria
+    instrumented_components:
+      - name: Armeria
+        supported_versions: 1.3 and higher
+    stability: experimental
+    support: community
+    signals:
+      - metrics:
+          - metric_name: http.client.request.duration
+            instrument: histogram
+            description: Duration of HTTP client requests.
+          - metric_name: http.client.request.body.size
+            instrument: histogram
+            description: Size of HTTP client request bodies (disabled by default).
+          - metric_name: http.client.request.body.size
+            instrument: histogram
+            description: Size of HTTP client request bodies (disabled by default).
+          - metric_name: http.server.request.duration
+            instrument: histogram
+            description: Duration of HTTP server requests.
+          - metric_name: http.server.active_requests
+            instrument: updowncounter
+            description: Number of active HTTP server requests (disabled by default).
+          - metric_name: http.server.request.body.size
+            instrument: histogram
+            description: Size of HTTP server request bodies (disabled by default).
+          - metric_name: http.server.request.body.size
+            instrument: histogram
+            description: Size of HTTP server response bodies (disabled by default).
+  - keys:
+      - async-http-client
+    instrumented_components:
+      - name: AsyncHttpClient
+        supported_versions: 1.9 and higher
+    stability: experimental
+    support: community
+    signals:
+      - metrics:
+          - metric_name: http.client.request.duration
+            instrument: histogram
+            description: Duration of HTTP client requests.
+          - metric_name: http.client.request.body.size
+            instrument: histogram
+            description: Size of HTTP client request bodies (disabled by default).
+          - metric_name: http.client.request.body.size
+            instrument: histogram
+            description: Size of HTTP client request bodies (disabled by default).
+  - keys:
+      - aws-lambda
+    instrumented_components:
+      - name: AWS Lambda
+        supported_versions: 1.0 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - aws-sdk
+    instrumented_components:
+      - name: AWS SDK 1
+        supported_versions: 1.11 and higher
+      - name: AWS SDK 2
+        supported_versions: 2.2 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - azure-core
+    instrumented_components:
+      - name: Azure Core
+        supported_versions: 1.14 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - cassandra
+    instrumented_components:
+      - name: Cassandra Driver
+        supported_versions: 3.0 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - couchbase
+    instrumented_components:
+      - name: Couchbase Client
+        supported_versions: 2.0 to 3.0 and 3.1 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - c3p0
+    instrumented_components:
+      - name: c3p0
+        supported_versions: 0.9.2 and higher
+    stability: experimental
+    support: community
+    signals:
+      - metrics:
+          - metric_name: db.client.connections.usage
+            instrument: updowncounter
+            description: The number of connections that are currently in state described
+              by the state attribute.
+          - metric_name: db.client.connections.pending_requests
+            instrument: updowncounter
+            description: The number of pending requests for an open connection, cumulative
+              for the entire pool.
+  - keys:
+      - dropwizard-metrics
+    instrumented_components:
+      - name: Dropwizard Metrics
+        supported_versions: 4.0 and higher
+    description: Disabled by default
+    stability: experimental
+    support: community
+  - keys:
+      - dropwizard-views
+    instrumented_components:
+      - name: Dropwizard Views
+        supported_versions: 0.7 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - grizzly
+    instrumented_components:
+      - name: Eclipse Grizzly
+        supported_versions: 2.3 and higher
+    stability: experimental
+    support: community
+    signals:
+      - metrics:
+          - metric_name: http.server.request.duration
+            instrument: histogram
+            description: Duration of HTTP server requests.
+          - metric_name: http.server.active_requests
+            instrument: updowncounter
+            description: Number of active HTTP server requests (disabled by default).
+          - metric_name: http.server.request.body.size
+            instrument: histogram
+            description: Size of HTTP server request bodies (disabled by default).
+          - metric_name: http.server.request.body.size
+            instrument: histogram
+            description: Size of HTTP server response bodies (disabled by default).
+  - keys:
+      - jersey
+    instrumented_components:
+      - name: Eclipse Jersey
+        supported_versions: 2.0 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - jetty
+    instrumented_components:
+      - name: Eclipse Jetty
+        supported_versions: 8.0 and higher
+    stability: experimental
+    support: community
+    signals:
+      - metrics:
+          - metric_name: http.server.request.duration
+            instrument: histogram
+            description: Duration of HTTP server requests.
+          - metric_name: http.server.active_requests
+            instrument: updowncounter
+            description: Number of active HTTP server requests (disabled by default).
+          - metric_name: http.server.request.body.size
+            instrument: histogram
+            description: Size of HTTP server request bodies (disabled by default).
+          - metric_name: http.server.request.body.size
+            instrument: histogram
+            description: Size of HTTP server response bodies (disabled by default).
+  - keys:
+      - jetty-httpclient
+    instrumented_components:
+      - name: Eclipse Jetty HTTP Client
+        supported_versions: 9.2 to 10.0
+    stability: experimental
+    support: community
+    signals:
+      - metrics:
+          - metric_name: http.client.request.duration
+            instrument: histogram
+            description: Duration of HTTP client requests.
+          - metric_name: http.client.request.body.size
+            instrument: histogram
+            description: Size of HTTP client request bodies (disabled by default).
+          - metric_name: http.client.request.body.size
+            instrument: histogram
+            description: Size of HTTP client request bodies (disabled by default).
+  - keys:
+      - metro
+    instrumented_components:
+      - name: Eclipse Metro
+        supported_versions: 2.2 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - jsf-mojarra
+    instrumented_components:
+      - name: Eclipse Mojarra
+        supported_versions: 1.2 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - elasticsearch-api-client
+    instrumented_components:
+      - name: Elasticsearch API Client
+        supported_versions: 7.16 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - elasticsearch-rest
+    instrumented_components:
+      - name: Elasticsearch REST Client
+        supported_versions: 5.0 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - elasticsearch-transport
+    instrumented_components:
+      - name: Elasticsearch Transport Client
+        supported_versions: 5.0 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - finagle-http
+    instrumented_components:
+      - name: Finagle
+        supported_versions: 23.11 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - finatra
+    instrumented_components:
+      - name: Finatra
+        supported_versions: 2.9 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - geode
+    instrumented_components:
+      - name: Geode Client
+        supported_versions: 1.4 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - google-http-client
+    instrumented_components:
+      - name: Google HTTP Client
+        supported_versions: 1.19 and higher
+    stability: experimental
+    support: community
+    signals:
+      - metrics:
+          - metric_name: http.client.request.duration
+            instrument: histogram
+            description: Duration of HTTP client requests.
+          - metric_name: http.client.request.body.size
+            instrument: histogram
+            description: Size of HTTP client request bodies (disabled by default).
+          - metric_name: http.client.request.body.size
+            instrument: histogram
+            description: Size of HTTP client request bodies (disabled by default).
+  - keys:
+      - grails
+    instrumented_components:
+      - name: Grails
+        supported_versions: 3.0 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - graphql-java
+    instrumented_components:
+      - name: GaphQL Java
+        supported_versions: 12.0 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - grpc
+    instrumented_components:
+      - name: gRPC
+        supported_versions: 1.6 and higher
+    stability: experimental
+    support: community
+    signals:
+      - metrics:
+          - metric_name: rpc.client.duration
+            instrument: histogram
+            description: Measures the duration of outbound RPC.
+          - metric_name: rpc.server.duration
+            instrument: histogram
+            description: Measures the duration of inbound RPC.
+  - keys:
+      - guava
+    instrumented_components:
+      - name: Guava ListenableFuture
+        supported_versions: 0.9.2 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - gwt
+    instrumented_components:
+      - name: GWT
+        supported_versions: 0.9.2 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - hibernate
+    instrumented_components:
+      - name: Hibernate
+        supported_versions: 3.3 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - hibernate-reactive
+    instrumented_components:
+      - name: Hibernate Reactive
+        supported_versions: 1.0 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - hikaricp
+    instrumented_components:
+      - name: HikariCP
+        supported_versions: 3.0 and higher
+    stability: experimental
+    support: community
+    signals:
+      - metrics:
+          - metric_name: db.client.connections.usage
+            instrument: updowncounter
+            description: The number of connections that are currently in state described
+              by the state attribute.
+          - metric_name: db.client.connections.idle.min
+            instrument: updowncounter
+            description: The minimum number of idle open connections allowed.
+          - metric_name: db.client.connections.max
+            instrument: updowncounter
+            description: The maximum number of open connections allowed.
+          - metric_name: db.client.connections.pending_requests
+            instrument: updowncounter
+            description: The number of pending requests for an open connection, cumulative
+              for the entire pool.
+          - metric_name: db.client.connections.timeouts
+            instrument: counter
+            description: The number of connection timeouts that have occurred trying
+              to obtain a connection from the pool.
+          - metric_name: db.client.connections.create_time
+            instrument: histogram
+            description: The time it took to create a new connection.
+          - metric_name: db.client.connections.use_time
+            instrument: histogram
+            description: The time between borrowing a connection and returning it
+              to the pool.
+          - metric_name: db.client.connections.wait_time
+            instrument: histogram
+            description: The time it took to obtain an open connection from the pool.
+  - keys:
+      - http-url-connection
+    instrumented_components:
+      - name: HttpURLConnection
+    stability: experimental
+    support: community
+    signals:
+      - metrics:
+          - metric_name: http.client.request.duration
+            instrument: histogram
+            description: Duration of HTTP client requests.
+          - metric_name: http.client.request.body.size
+            instrument: histogram
+            description: Size of HTTP client request bodies (disabled by default).
+          - metric_name: http.client.request.body.size
+            instrument: histogram
+            description: Size of HTTP client request bodies (disabled by default).
+  - keys:
+      - hystrix
+    instrumented_components:
+      - name: Hystrix
+        supported_versions: 1.4 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - executors
+    instrumented_components:
+      - name: Java Executors
+    stability: experimental
+    support: community
+  - keys:
+      - java-http-client
+    instrumented_components:
+      - name: Java HTTP Client
+    stability: experimental
+    support: community
+    signals:
+      - metrics:
+          - metric_name: http.client.request.duration
+            instrument: histogram
+            description: Duration of HTTP client requests.
+          - metric_name: http.client.request.body.size
+            instrument: histogram
+            description: Size of HTTP client request bodies (disabled by default).
+          - metric_name: http.client.request.body.size
+            instrument: histogram
+            description: Size of HTTP client request bodies (disabled by default).
+  - keys:
+      - java-util-logging
+    instrumented_components:
+      - name: java.util.logging
+    stability: experimental
+    support: community
+  - keys:
+      - runtime-telemetry
+    instrumented_components:
+      - name: Java Platform
+    stability: experimental
+    support: community
+    signals:
+      - metrics:
+          - metric_name: jvm.class.loaded
+            instrument: counter
+            description: Number of classes loaded since JVM start.
+          - metric_name: jvm.class.unloaded
+            instrument: counter
+            description: Number of classes unloaded since JVM start.
+          - metric_name: jvm.class.count
+            instrument: updowncounter
+            description: Number of classes currently loaded.
+          - metric_name: jvm.cpu.time
+            instrument: counter
+            description: CPU time used by the process as reported by the JVM.
+          - metric_name: jvm.cpu.count
+            instrument: updowncounter
+            description: Number of processors available to the Java virtual machine.
+          - metric_name: jvm.cpu.recent_utilization
+            instrument: gauge
+            description: Recent CPU utilization for the process as reported by the
+              JVM.
+          - metric_name: jvm.gc.duration
+            instrument: histogram
+            description: Duration of JVM garbage collection actions.
+          - metric_name: jvm.memory.used
+            instrument: updowncounter
+            description: Measure of memory used.
+          - metric_name: jvm.memory.committed
+            instrument: updowncounter
+            description: Measure of memory committed.
+          - metric_name: jvm.memory.limit
+            instrument: updowncounter
+            description: Measure of max obtainable memory.
+          - metric_name: jvm.memory.used_after_last_gc
+            instrument: updowncounter
+            description: Measure of memory used, as measured after the most recent
+              garbage collection event on this pool.
+          - metric_name: jvm.thread.count
+            instrument: updowncounter
+            description: Number of executing platform threads (disabled by default).
+          - metric_name: jvm.buffer.memory.usage
+            instrument: updowncounter
+            description: Measure of memory used by buffers (disabled by default).
+          - metric_name: jvm.buffer.memory.limit
+            instrument: updowncounter
+            description: Measure of total memory capacity of buffers (disabled by
+              default).
+          - metric_name: jvm.buffer.count
+            instrument: updowncounter
+            description: Number of buffers in the pool (disabled by default).
+          - metric_name: jvm.system.cpu.load_1m
+            instrument: gauge
+            description: Average CPU load of the whole system for the last minute
+              as reported by the JVM (disabled by default).
+          - metric_name: jvm.system.cpu.utilization
+            instrument: gauge
+            description: Recent CPU utilization for the whole system as reported by
+              the JVM (disabled by default).
+          - metric_name: jvm.memory.init
+            instrument: updowncounter
+            description: Measure of initial memory requested (disabled by default).
+  - keys:
+      - jaxrs
+    instrumented_components:
+      - name: JAX-RS
+        supported_versions: 0.5 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - jaxrs-client
+    instrumented_components:
+      - name: JAX-RS Client
+        supported_versions: 1.1 and higher
+    stability: experimental
+    support: community
+    signals:
+      - metrics:
+          - metric_name: http.client.request.duration
+            instrument: histogram
+            description: Duration of HTTP client requests.
+          - metric_name: http.client.request.body.size
+            instrument: histogram
+            description: Size of HTTP client request bodies (disabled by default).
+          - metric_name: http.client.request.body.size
+            instrument: histogram
+            description: Size of HTTP client request bodies (disabled by default).
+  - keys:
+      - jaxws
+    instrumented_components:
+      - name: JAX-WS
+        supported_versions: 2.0 to 3.0
+    stability: experimental
+    support: community
+  - keys:
+      - jboss-logmanager-appender
+      - jboss-logmanager-mdc
+    instrumented_components:
+      - name: JBoss Log Manager
+        supported_versions: 1.1 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - jdbc
+      - jdbc-datasource
+    instrumented_components:
+      - name: JDBC
+    stability: experimental
+    support: community
+  - keys:
+      - jedis
+    instrumented_components:
+      - name: Jedis
+        supported_versions: 1.4 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - jms
+    instrumented_components:
+      - name: JMS
+        supported_versions: 1.1 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - jodd-http
+    instrumented_components:
+      - name: Jodd HTTP
+        supported_versions: 4.2 and higher
+    stability: experimental
+    support: community
+    signals:
+      - metrics:
+          - metric_name: http.client.request.duration
+            instrument: histogram
+            description: Duration of HTTP client requests.
+          - metric_name: http.client.request.body.size
+            instrument: histogram
+            description: Size of HTTP client request bodies (disabled by default).
+          - metric_name: http.client.request.body.size
+            instrument: histogram
+            description: Size of HTTP client request bodies (disabled by default).
+  - keys:
+      - jsp
+    instrumented_components:
+      - name: JSP
+        supported_versions: 2.3 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - kotlinx-coroutines
+    instrumented_components:
+      - name: Kotlin Coroutines
+        supported_versions: 1.0 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - ktor
+    instrumented_components:
+      - name: Ktor
+        supported_versions: 2.0 and higher
+    stability: experimental
+    support: community
+    signals:
+      - metrics:
+          - metric_name: http.client.request.duration
+            instrument: histogram
+            description: Duration of HTTP client requests.
+          - metric_name: http.client.request.body.size
+            instrument: histogram
+            description: Size of HTTP client request bodies (disabled by default).
+          - metric_name: http.client.request.body.size
+            instrument: histogram
+            description: Size of HTTP client request bodies (disabled by default).
+          - metric_name: http.server.request.duration
+            instrument: histogram
+            description: Duration of HTTP server requests.
+          - metric_name: http.server.active_requests
+            instrument: updowncounter
+            description: Number of active HTTP server requests (disabled by default).
+          - metric_name: http.server.request.body.size
+            instrument: histogram
+            description: Size of HTTP server request bodies (disabled by default).
+          - metric_name: http.server.request.body.size
+            instrument: histogram
+            description: Size of HTTP server response bodies (disabled by default).
+  - keys:
+      - kubernetes-client
+    instrumented_components:
+      - name: Kubernetes Client
+        supported_versions: 7.0 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - lettuce
+    instrumented_components:
+      - name: Lettuce
+        supported_versions: 4.0 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - liberty
+    instrumented_components:
+      - name: Liberty
+        supported_versions: 20.0 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - log4j-appender
+      - log4j-mdc
+      - log4j-context-data
+    instrumented_components:
+      - name: Log4j
+        supported_versions: 1.2 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - logback-appender
+      - logback-mdc
+    instrumented_components:
+      - name: Logback
+        supported_versions: 1.0 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - micrometer
+    instrumented_components:
+      - name: Micrometer
+        supported_versions: 1.5 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - mongo
+    instrumented_components:
+      - name: MongoDB Drive
+        supported_versions: 3.1 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - mybatis
+    instrumented_components:
+      - name: MyBatis
+        supported_versions: 3.2 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - netty
+    instrumented_components:
+      - name: Netty
+        supported_versions: 3.8 and higher
+    stability: experimental
+    support: community
+    signals:
+      - metrics:
+          - metric_name: http.client.request.duration
+            instrument: histogram
+            description: Duration of HTTP client requests.
+          - metric_name: http.client.request.body.size
+            instrument: histogram
+            description: Size of HTTP client request bodies (disabled by default).
+          - metric_name: http.client.request.body.size
+            instrument: histogram
+            description: Size of HTTP client request bodies (disabled by default).
+          - metric_name: http.server.request.duration
+            instrument: histogram
+            description: Duration of HTTP server requests.
+          - metric_name: http.server.active_requests
+            instrument: updowncounter
+            description: Number of active HTTP server requests (disabled by default).
+          - metric_name: http.server.request.body.size
+            instrument: histogram
+            description: Size of HTTP server request bodies (disabled by default).
+          - metric_name: http.server.request.body.size
+            instrument: histogram
+            description: Size of HTTP server response bodies (disabled by default).
+  - keys:
+      - okhttp
+    instrumented_components:
+      - name: OkHttp
+        supported_versions: 2.2 and higher
+    stability: experimental
+    support: community
+    signals:
+      - metrics:
+          - metric_name: http.client.request.duration
+            instrument: histogram
+            description: Duration of HTTP client requests.
+          - metric_name: http.client.request.body.size
+            instrument: histogram
+            description: Size of HTTP client request bodies (disabled by default).
+          - metric_name: http.client.request.body.size
+            instrument: histogram
+            description: Size of HTTP client request bodies (disabled by default).
+  - keys:
+      - liberty
+    instrumented_components:
+      - name: OpenLiberty
+        supported_versions: 20.0 and higher
+    stability: experimental
+    support: community
+    signals:
+      - metrics:
+          - metric_name: http.server.request.duration
+            instrument: histogram
+            description: Duration of HTTP server requests.
+          - metric_name: http.server.active_requests
+            instrument: updowncounter
+            description: Number of active HTTP server requests (disabled by default).
+          - metric_name: http.server.request.body.size
+            instrument: histogram
+            description: Size of HTTP server request bodies (disabled by default).
+          - metric_name: http.server.request.body.size
+            instrument: histogram
+            description: Size of HTTP server response bodies (disabled by default).
+  - keys:
+      - opentelemetry-api
+    instrumented_components:
+      - name: OpenTelemetry API
+    stability: experimental
+    support: community
+  - keys:
+      - opentelemetry-extension-annotations
+    instrumented_components:
+      - name: OpenTelemetry Extension Annotations
+    stability: experimental
+    support: community
+  - keys:
+      - opentelemetry-instrumentation-annotations
+    instrumented_components:
+      - name: OpenTelemetry Instrumentation Annotations
+    stability: experimental
+    support: community
+  - keys:
+      - oracle-ucp
+    instrumented_components:
+      - name: Oracle UCP
+        supported_versions: 11.2 and higher
+    stability: experimental
+    support: community
+    signals:
+      - metrics:
+          - metric_name: db.client.connections.usage
+            instrument: updowncounter
+            description: The number of connections that are currently in state described
+              by the state attribute.
+          - metric_name: db.client.connections.max
+            instrument: updowncounter
+            description: The maximum number of open connections allowed.
+          - metric_name: db.client.connections.pending_requests
+            instrument: updowncounter
+            description: The number of pending requests for an open connection, cumulative
+              for the entire pool.
+  - keys:
+      - oshi
+    instrumented_components:
+      - name: OSHI
+        supported_versions: 5.3.1 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - payara
+    instrumented_components:
+      - name: Payara
+        supported_versions: 5.0 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - play-mvc
+    instrumented_components:
+      - name: Play
+        supported_versions: 2.4 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - play-ws
+    instrumented_components:
+      - name: Play WS
+        supported_versions: 1.0 and higher
+    stability: experimental
+    support: community
+    signals:
+      - metrics:
+          - metric_name: http.client.request.duration
+            instrument: histogram
+            description: Duration of HTTP client requests.
+          - metric_name: http.client.request.body.size
+            instrument: histogram
+            description: Size of HTTP client request bodies (disabled by default).
+          - metric_name: http.client.request.body.size
+            instrument: histogram
+            description: Size of HTTP client request bodies (disabled by default).
+  - keys:
+      - quarkus-resteasy-reactive
+    instrumented_components:
+      - name: Quarkus Resteasy Reactive
+        supported_versions: 2.16.7 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - quartz
+    instrumented_components:
+      - name: Quartz
+        supported_versions: 2.0 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - r2dbc
+    instrumented_components:
+      - name: R2DBC
+        supported_versions: 1.0 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - rabbitmq
+    instrumented_components:
+      - name: RabbitMQ Client
+        supported_versions: 2.7 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - ratpack
+    instrumented_components:
+      - name: Ratpack
+        supported_versions: 1.4 and higher
+    stability: experimental
+    support: community
+    signals:
+      - metrics:
+          - metric_name: http.client.request.duration
+            instrument: histogram
+            description: Duration of HTTP client requests.
+          - metric_name: http.client.request.body.size
+            instrument: histogram
+            description: Size of HTTP client request bodies (disabled by default).
+          - metric_name: http.client.request.body.size
+            instrument: histogram
+            description: Size of HTTP client request bodies (disabled by default).
+          - metric_name: http.server.request.duration
+            instrument: histogram
+            description: Duration of HTTP server requests.
+          - metric_name: http.server.active_requests
+            instrument: updowncounter
+            description: Number of active HTTP server requests (disabled by default).
+          - metric_name: http.server.request.body.size
+            instrument: histogram
+            description: Size of HTTP server request bodies (disabled by default).
+          - metric_name: http.server.request.body.size
+            instrument: histogram
+            description: Size of HTTP server response bodies (disabled by default).
+  - keys:
+      - reactor
+    instrumented_components:
+      - name: Reactor
+        supported_versions: 3.1 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - reactor-netty
+    instrumented_components:
+      - name: Reactor Netty
+        supported_versions: 0.9 and higher
+    stability: experimental
+    support: community
+    signals:
+      - metrics:
+          - metric_name: http.client.request.duration
+            instrument: histogram
+            description: Duration of HTTP client requests.
+          - metric_name: http.client.request.body.size
+            instrument: histogram
+            description: Size of HTTP client request bodies (disabled by default).
+          - metric_name: http.client.request.body.size
+            instrument: histogram
+            description: Size of HTTP client request bodies (disabled by default).
+  - keys:
+      - rediscala
+    instrumented_components:
+      - name: Rediscala
+        supported_versions: 1.8 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - redisson
+    instrumented_components:
+      - name: Redisson
+        supported_versions: 3.0 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - resteasy
+    instrumented_components:
+      - name: RESTEasy
+        supported_versions: 3.0 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - restlet
+    instrumented_components:
+      - name: Restlet
+        supported_versions: 1.0 and higher
+    stability: experimental
+    support: community
+    signals:
+      - metrics:
+          - metric_name: http.server.request.duration
+            instrument: histogram
+            description: Duration of HTTP server requests.
+          - metric_name: http.server.active_requests
+            instrument: updowncounter
+            description: Number of active HTTP server requests (disabled by default).
+          - metric_name: http.server.request.body.size
+            instrument: histogram
+            description: Size of HTTP server request bodies (disabled by default).
+          - metric_name: http.server.request.body.size
+            instrument: histogram
+            description: Size of HTTP server response bodies (disabled by default).
+  - keys:
+      - rmi
+    instrumented_components:
+      - name: RMI
+    stability: experimental
+    support: community
+  - keys:
+      - rxjava
+    instrumented_components:
+      - name: RxJava
+        supported_versions: 2.2 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - scala-fork-join
+    instrumented_components:
+      - name: Scala ForkJoinPool
+        supported_versions: 2.8 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - servlet
+    instrumented_components:
+      - name: Servlet
+        supported_versions: 2.2 and higher
+    stability: experimental
+    support: community
+    signals:
+      - metrics:
+          - metric_name: http.server.request.duration
+            instrument: histogram
+            description: Duration of HTTP server requests.
+          - metric_name: http.server.active_requests
+            instrument: updowncounter
+            description: Number of active HTTP server requests (disabled by default).
+          - metric_name: http.server.request.body.size
+            instrument: histogram
+            description: Size of HTTP server request bodies (disabled by default).
+          - metric_name: http.server.request.body.size
+            instrument: histogram
+            description: Size of HTTP server response bodies (disabled by default).
+  - keys:
+      - spark
+    instrumented_components:
+      - name: Spark Web Framework
+        supported_versions: 2.3 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - spring-batch
+    instrumented_components:
+      - name: Spring Batch
+        supported_versions: 2.0 and higher
+    description: Disabled by default
+    stability: experimental
+    support: community
+  - keys:
+      - spring-cloud-gateway
+    instrumented_components:
+      - name: Spring Cloud Gateway
+        supported_versions: 1.8 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - spring-core
+    instrumented_components:
+      - name: Spring Core
+        supported_versions: 2.0 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - spring-data
+    instrumented_components:
+      - name: Spring Data
+        supported_versions: 1.8 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - spring-integration
+    instrumented_components:
+      - name: Spring Integration
+        supported_versions: 4.1 to 6.0
+    stability: experimental
+    support: community
+  - keys:
+      - spring-jms
+    instrumented_components:
+      - name: Spring JMS
+        supported_versions: 2.0 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - spring-kafka
+    instrumented_components:
+      - name: Spring Kafka
+        supported_versions: 2.7 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - spring-rabbit
+    instrumented_components:
+      - name: Spring RabbitMQ
+        supported_versions: 1.0 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - spring-web
+    instrumented_components:
+      - name: Spring RestTemplate
+        supported_versions: 3.1 and higher
+    stability: experimental
+    support: community
+    signals:
+      - metrics:
+          - metric_name: http.client.request.duration
+            instrument: histogram
+            description: Duration of HTTP client requests.
+          - metric_name: http.client.request.body.size
+            instrument: histogram
+            description: Size of HTTP client request bodies (disabled by default).
+          - metric_name: http.client.request.body.size
+            instrument: histogram
+            description: Size of HTTP client request bodies (disabled by default).
+  - keys:
+      - spring-rmi
+    instrumented_components:
+      - name: Spring RMI
+        supported_versions: 4.0 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - spring-scheduling
+    instrumented_components:
+      - name: Spring Scheduling
+        supported_versions: 3.1 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - spring-webmvc
+    instrumented_components:
+      - name: Spring Web MVC
+        supported_versions: 3.1 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - spring-ws
+    instrumented_components:
+      - name: Spring Web Service
+        supported_versions: 2.0 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - spring-webflux
+    instrumented_components:
+      - name: Spring WebFlux
+        supported_versions: 5.3 and higher
+    stability: experimental
+    support: community
+    signals:
+      - metrics:
+          - metric_name: http.client.request.duration
+            instrument: histogram
+            description: Duration of HTTP client requests.
+          - metric_name: http.client.request.body.size
+            instrument: histogram
+            description: Size of HTTP client request bodies (disabled by default).
+          - metric_name: http.client.request.body.size
+            instrument: histogram
+            description: Size of HTTP client request bodies (disabled by default).
+  - keys:
+      - spymemcached
+    instrumented_components:
+      - name: Spymemcached
+        supported_versions: 2.12 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - tomcat-jdbc
+    instrumented_components:
+      - name: Tomcat JDBC
+        supported_versions: 8.5 and higher
+    stability: experimental
+    support: community
+    signals:
+      - metrics:
+          - metric_name: db.client.connections.usage
+            instrument: updowncounter
+            description: The number of connections that are currently in state described
+              by the state attribute.
+          - metric_name: db.client.connections.idle.max
+            instrument: updowncounter
+            description: The maximum number of idle open connections allowed.
+          - metric_name: db.client.connections.idle.min
+            instrument: updowncounter
+            description: The minimum number of idle open connections allowed.
+          - metric_name: db.client.connections.max
+            instrument: updowncounter
+            description: The maximum number of open connections allowed.
+          - metric_name: db.client.connections.pending_requests
+            instrument: updowncounter
+            description: The number of pending requests for an open connection, cumulative
+              for the entire pool.
+  - keys:
+      - twilio
+    instrumented_components:
+      - name: Twilio
+        supported_versions: 6.6 to 8.0
+    stability: experimental
+    support: community
+  - keys:
+      - undertow
+    instrumented_components:
+      - name: Undertow
+        supported_versions: 1.4 and higher
+    stability: experimental
+    support: community
+    signals:
+      - metrics:
+          - metric_name: http.server.request.duration
+            instrument: histogram
+            description: Duration of HTTP server requests.
+          - metric_name: http.server.active_requests
+            instrument: updowncounter
+            description: Number of active HTTP server requests (disabled by default).
+          - metric_name: http.server.request.body.size
+            instrument: histogram
+            description: Size of HTTP server request bodies (disabled by default).
+          - metric_name: http.server.request.body.size
+            instrument: histogram
+            description: Size of HTTP server response bodies (disabled by default).
+  - keys:
+      - vaadin
+    instrumented_components:
+      - name: Vaadin
+        supported_versions: 14.2 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - vertx-http-client
+    instrumented_components:
+      - name: Vert.x HttpClient
+        supported_versions: 3.0 and higher
+    stability: experimental
+    support: community
+    signals:
+      - metrics:
+          - metric_name: http.client.request.duration
+            instrument: histogram
+            description: Duration of HTTP client requests.
+          - metric_name: http.client.request.body.size
+            instrument: histogram
+            description: Size of HTTP client request bodies (disabled by default).
+          - metric_name: http.client.request.body.size
+            instrument: histogram
+            description: Size of HTTP client request bodies (disabled by default).
+  - keys:
+      - vertx-kafka-client
+    instrumented_components:
+      - name: Vert.x Kafka Client
+        supported_versions: 3.6 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - vertx-redis-client
+    instrumented_components:
+      - name: Vert.x Redis Client
+        supported_versions: 3.0 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - vertx-rx-java
+    instrumented_components:
+      - name: Vert.x RxJava2
+        supported_versions: 3.5 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - vertx-sql-client
+    instrumented_components:
+      - name: Vert.x SQL Client
+        supported_versions: 4.0 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - vertx-web
+    instrumented_components:
+      - name: Vert.x Web
+        supported_versions: 3.0 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - vibur-dbcp
+    instrumented_components:
+      - name: Vibur DBCP
+        supported_versions: 11.0 and higher
+    stability: experimental
+    support: community
+    signals:
+      - metrics:
+          - metric_name: db.client.connections.usage
+            instrument: updowncounter
+            description: The number of connections that are currently in state described
+              by the state attribute.
+          - metric_name: db.client.connections.max
+            instrument: updowncounter
+            description: The maximum number of open connections allowed.
+  - keys:
+      - xxl-job
+    instrumented_components:
+      - name: XXL-JOB
+        supported_versions: 1.9.2 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - zio
+    instrumented_components:
+      - name: ZIO
+        supported_versions: 2.0 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - jvm-metrics.splunk
+    instrumented_components:
+      - name: Java Platform
+    stability: experimental
+    support: supported
+    signals:
+      - metrics:
+          - metric_name: process.runtime.jvm.memory.allocated
+            instrument: counter
+            description: Approximate sum of heap allocations.
+          - metric_name: jvm.gc.pause.count
+            instrument: counter
+            description: Number of gc pauses. This metric will be removed in a future
+              release.
+          - metric_name: jvm.gc.pause.totalTime
+            instrument: counter
+            description: Time spent in GC pause. This metric will be removed in a
+              future release.
+  - keys:
+      - khttp
+    instrumented_components:
+      - name: khttp
+        supported_versions: 0.1 and higher
+    stability: experimental
+    support: supported
+  - keys:
+      - glassfish
+    instrumented_components:
+      - name: GlassFish
+        supported_versions: 5.0 and higher
+    stability: experimental
+    support: supported
+  - keys:
+      - jetty
+    instrumented_components:
+      - name: Jetty
+        supported_versions: 9.4 and higher
+    stability: experimental
+    support: supported
+  - keys:
+      - liberty
+    instrumented_components:
+      - name: Liberty
+        supported_versions: 20.0 and higher
+    stability: experimental
+    support: supported
+    signals:
+      - metrics:
+          - metric_name: executor.threads
+            instrument: gauge
+            description: The current number of threads in the pool.
+          - metric_name: executor.threads.active
+            instrument: gauge
+            description: The number of threads that are currently busy.
+  - keys:
+      - tomcat
+      - tomcat-metrics-splunk
+    instrumented_components:
+      - name: Tomcat
+        supported_versions: 7.0 and higher
+    stability: experimental
+    support: supported
+    signals:
+      - metrics:
+          - metric_name: executor.threads
+            instrument: gauge
+            description: The current number of threads in the pool.
+          - metric_name: executor.threads.active
+            instrument: gauge
+            description: The number of threads that are currently busy.
+          - metric_name: executor.threads.idle
+            instrument: gauge
+            description: The number of threads that are currently idle.
+          - metric_name: executor.threads.core
+            instrument: gauge
+            description: Core thread pool size - the number of threads that are always
+              kept in the pool.
+          - metric_name: executor.threads.max
+            instrument: gauge
+            description: The maximum number of threads in the pool.
+          - metric_name: executor.tasks.submitted
+            instrument: counter
+            description: The total number of tasks that were submitted to this executor.
+          - metric_name: executor.tasks.completed
+            instrument: counter
+            description: The total number of tasks completed by this executor.
+  - keys:
+      - tomee
+    instrumented_components:
+      - name: TomEE
+        supported_versions: 7.0 and higher
+    stability: experimental
+    support: supported
+  - keys:
+      - weblogic
+      - weblogic-metrics-splunk
+    instrumented_components:
+      - name: WebLogic
+        supported_versions: 12.1 and higher
+    stability: experimental
+    support: supported
+    signals:
+      - metrics:
+          - metric_name: executor.threads
+            instrument: gauge
+            description: The current number of threads in the pool.
+          - metric_name: executor.threads.idle
+            instrument: gauge
+            description: The number of threads that are currently idle.
+          - metric_name: executor.tasks.completed
+            instrument: counter
+            description: The total number of tasks completed by this executor.
+  - keys:
+      - websphere
+    instrumented_components:
+      - name: WebSphere
+        supported_versions: 8.5.5 and higher
+    stability: experimental
+    support: supported
+  - keys:
+      - wildfly
+    instrumented_components:
+      - name: WildFly
+        supported_versions: 13.0 and higher
+    stability: experimental
+    support: supported
+resource_detectors:
+  - key: io.opentelemetry.instrumentation.resources.ContainerResourceProvider
+    description: Container detector.
+    attributes:
+      - id: container.id
+    stability: experimental
+    support: community
+    dependencies:
+      - name: OpenTelemetry Java Instrumentation Resource Providers
+        source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
+        package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
+        version: 2.3.0-alpha
+        stability: experimental
+  - key: io.opentelemetry.instrumentation.resources.HostIdResourceProvider
+    description: Host id detector.
+    attributes:
+      - id: host.id
+    stability: experimental
+    support: community
+    dependencies:
+      - name: OpenTelemetry Java Instrumentation Resource Providers
+        source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
+        package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
+        version: 2.3.0-alpha
+        stability: experimental
+  - key: io.opentelemetry.instrumentation.resources.HostResourceProvider
+    description: Host detector.
+    attributes:
+      - id: host.name
+      - id: host.arch
+    stability: experimental
+    support: community
+    dependencies:
+      - name: OpenTelemetry Java Instrumentation Resource Providers
+        source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
+        package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
+        version: 2.3.0-alpha
+        stability: experimental
+  - key: io.opentelemetry.instrumentation.resources.JarServiceNameDetector
+    description: Jar service name detector.
+    attributes:
+      - id: service.name
+    stability: experimental
+    support: community
+    dependencies:
+      - name: OpenTelemetry Java Instrumentation Resource Providers
+        source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
+        package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
+        version: 2.3.0-alpha
+        stability: experimental
+  - key: io.opentelemetry.instrumentation.resources.ManifestResourceProvider
+    description: Manifest service name and version detector.
+    attributes:
+      - id: service.name
+      - id: service.version
+    stability: experimental
+    support: community
+    dependencies:
+      - name: OpenTelemetry Java Instrumentation Resource Providers
+        source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
+        package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
+        version: 2.3.0-alpha
+        stability: experimental
+  - key: io.opentelemetry.instrumentation.resources.OsResourceProvider
+    description: Os detector.
+    attributes:
+      - id: os.type
+      - id: os.description
+    stability: experimental
+    support: community
+    dependencies:
+      - name: OpenTelemetry Java Instrumentation Resource Providers
+        source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
+        package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
+        version: 2.3.0-alpha
+        stability: experimental
+  - key: io.opentelemetry.instrumentation.resources.ProcessResourceProvider
+    description: Process detector.
+    attributes:
+      - id: process.pid
+      - id: process.executable.path
+      - id: process.command_args
+      - id: process.command_line
+    stability: experimental
+    support: community
+    dependencies:
+      - name: OpenTelemetry Java Instrumentation Resource Providers
+        source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
+        package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
+        version: 2.3.0-alpha
+        stability: experimental
+  - key: io.opentelemetry.instrumentation.resources.ProcessRuntimeResourceProvider
+    description: Process runtime detector.
+    attributes:
+      - id: process.runtime.name
+      - id: process.runtime.version
+      - id: process.runtime.description
+    stability: experimental
+    support: community
+    dependencies:
+      - name: OpenTelemetry Java Instrumentation Resource Providers
+        source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
+        package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
+        version: 2.3.0-alpha
+        stability: experimental
+  - key: io.opentelemetry.instrumentation.spring.resources.SpringBootServiceNameDetector
+    description: Spring boot service name detector.
+    attributes:
+      - id: service.name
+    stability: experimental
+    support: community
+    dependencies:
+      - name: OpenTelemetry Java Instrumentation Spring Boot Resource Providers
+        source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/spring/spring-boot-resources/javaagent
+        package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-spring-boot-resources
+        version: 2.3.0-alpha
+        stability: experimental
+  - key: io.opentelemetry.instrumentation.spring.resources.SpringBootServiceVersionDetector
+    description: Spring boot service version detector.
+    attributes:
+      - id: service.version
+    stability: experimental
+    support: community
+    dependencies:
+      - name: OpenTelemetry Java Instrumentation Spring Boot Resource Providers
+        source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/spring/spring-boot-resources/javaagent
+        package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-spring-boot-resources
+        version: 2.3.0-alpha
+        stability: experimental
+  - key: io.opentelemetry.contrib.resourceproviders.AppServerServiceNameProvider
+    description: Application server service name detector.
+    attributes:
+      - id: service.name
+    stability: experimental
+    support: community
+    dependencies:
+      - name: OpenTelemetry Java Contrib Resource Providers
+        source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/tree/main/resource-providers
+        package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-resource-providers
+        version: 1.35.0-alpha
+        stability: experimental
+  - key: io.opentelemetry.contrib.aws.resource.BeanstalkResourceProvider
+    description: Beanstalk detector.
+    attributes:
+      - id: service.instance.id
+      - id: service.version
+      - id: service.namespace
+      - id: cloud.provider
+      - id: cloud.platform
+    stability: experimental
+    support: community
+    dependencies:
+      - name: OpenTelemetry AWS Resource Providers
+        source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/aws-resources
+        package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-aws-resources
+        version: 1.35.0-alpha
+        stability: experimental
+  - key: io.opentelemetry.contrib.aws.resource.Ec2ResourceProvider
+    description: Ec2 detector.
+    attributes:
+      - id: cloud.provider
+      - id: cloud.platform
+      - id: host.id
+      - id: cloud.availability_zone
+      - id: host.type
+      - id: host.image.id
+      - id: cloud.account.id
+      - id: cloud.region
+      - id: host.name
+    stability: experimental
+    support: community
+    dependencies:
+      - name: OpenTelemetry AWS Resource Providers
+        source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/aws-resources
+        package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-aws-resources
+        version: 1.35.0-alpha
+        stability: experimental
+  - key: io.opentelemetry.contrib.aws.resource.EcsResourceProvider
+    description: Ecs detector.
+    attributes:
+      - id: cloud.provider
+      - id: container.id
+      - id: container.name
+      - id: aws.ecs.container.arn
+      - id: container.image.name
+      - id: container.image.tag
+      - id: aws.ecs.container.image.id
+      - id: aws.log.group.names
+      - id: aws.log.stream.names
+      - id: aws.log.group.arns
+      - id: aws.log.stream.arns
+      - id: aws.ecs.task.arn
+      - id: aws.ecs.launchtype
+      - id: aws.ecs.task.family
+      - id: aws.ecs.task.revision
+    stability: experimental
+    support: community
+    dependencies:
+      - name: OpenTelemetry AWS Resource Providers
+        source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/aws-resources
+        package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-aws-resources
+        version: 1.35.0-alpha
+        stability: experimental
+  - key: io.opentelemetry.contrib.aws.resource.EksResourceProvider
+    description: Eks detector.
+    attributes:
+      - id: cloud.provider
+      - id: cloud.platform
+      - id: k8s.cluster.name
+      - id: container.id
+    stability: experimental
+    support: community
+    dependencies:
+      - name: OpenTelemetry AWS Resource Providers
+        source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/aws-resources
+        package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-aws-resources
+        version: 1.35.0-alpha
+        stability: experimental
+  - key: io.opentelemetry.contrib.aws.resource.LambdaResourceProvider
+    description: Lambda detector.
+    attributes:
+      - id: cloud.provider
+      - id: cloud.platform
+      - id: cloud.region
+      - id: faas.name
+      - id: faas.version
+    stability: experimental
+    support: community
+    dependencies:
+      - name: OpenTelemetry AWS Resource Providers
+        source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/aws-resources
+        package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-aws-resources
+        version: 1.35.0-alpha
+        stability: experimental
+  - key: io.opentelemetry.contrib.gcp.resource.GCPResourceProvider
+    description: GCP detector.
+    attributes:
+      - id: cloud.platform
+      - id: cloud.provider
+      - id: cloud.account.id
+      - id: cloud.availability_zone
+      - id: cloud.region
+      - id: host.id
+      - id: host.name
+      - id: host.type
+      - id: k8s.pod.name
+      - id: k8s.namespace.name
+      - id: k8s.container.name
+      - id: k8s.cluster.name
+      - id: faas.name
+      - id: faas.version
+      - id: faas.instance
+    stability: experimental
+    support: community
+    dependencies:
+      - name: OpenTelemetry GCP Resource Providers
+        source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/gcp-resources
+        package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-gcp-resources
+        version: 1.35.0-alpha
+        stability: experimental
