@@ -26,4 +26,4 @@ jobs:
 
       - run: ./scripts/update-all.sh
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.UPDATE_TOKEN }}
