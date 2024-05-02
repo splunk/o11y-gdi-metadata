@@ -1,0 +1,29 @@
+name: Update metadata files for APM
+
+on:
+  workflow_dispatch:
+  schedule:
+    # hourly at minute 10
+    - cron: 10 * * * *
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  auto-update-versions:
+    name: Update metadata files for APM
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure git
+        run: |
+          git config user.name theletterf
+          git config user.email theletterf@users.noreply.github.com
+
+      - run: ./scripts/update-all.sh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
