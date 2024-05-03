@@ -1,7 +1,7 @@
 Dashboards:
   (Azure) Function App:
     dashboard_group: Azure Functions
-    view_support: N/A
+    view_support: instance
     importQualifiers: FunctionExecutionCount (resource_type =  Microsoft.Web/sites)
       & (is_Azure_Function =  true) & (primary_aggregation_type =  true);  OR FunctionExecutionUnits
       (resource_type =  Microsoft.Web/sites) & (is_Azure_Function =  true) & (primary_aggregation_type
@@ -9,23 +9,23 @@ Dashboards:
       =  azure_function_wrapper);
   (Azure) Function Apps:
     dashboard_group: Azure Functions
-    view_support: N/A
+    view_support: aggregated
     importQualifiers: FunctionExecutionCount (resource_type =  Microsoft.Web/sites)
       & (is_Azure_Function =  true) & (primary_aggregation_type =  true);  OR FunctionExecutionUnits
       (resource_type =  Microsoft.Web/sites) & (is_Azure_Function =  true) & (primary_aggregation_type
       =  true);  OR azure.function.invocations (is_Azure_Function =  true) & (metric_source
       =  azure_function_wrapper);
-  (SignalFx) Azure Function:
+  (SignalFx) Azure Function (deprecated):
     dashboard_group: Azure Functions
-    view_support: N/A
+    view_support: instance
     importQualifiers: FunctionExecutionCount (resource_type =  Microsoft.Web/sites)
       & (is_Azure_Function =  true) & (primary_aggregation_type =  true);  OR FunctionExecutionUnits
       (resource_type =  Microsoft.Web/sites) & (is_Azure_Function =  true) & (primary_aggregation_type
       =  true);  OR azure.function.invocations (is_Azure_Function =  true) & (metric_source
       =  azure_function_wrapper);
-  (SignalFx) Azure Functions:
+  (SignalFx) Azure Functions (deprecated):
     dashboard_group: Azure Functions
-    view_support: N/A
+    view_support: aggregated
     importQualifiers: FunctionExecutionCount (resource_type =  Microsoft.Web/sites)
       & (is_Azure_Function =  true) & (primary_aggregation_type =  true);  OR FunctionExecutionUnits
       (resource_type =  Microsoft.Web/sites) & (is_Azure_Function =  true) & (primary_aggregation_type
@@ -109,6 +109,11 @@ Dashboards:
     view_support: aggregated
     importQualifiers: SuccessfulRequestLatency (namespace =  AWS/DynamoDB) & (stat
       =  mean);
+  AWS EC2 logs:
+    dashboard_group: AWS EC2
+    view_support: N/A
+    importQualifiers: CPUUtilization (namespace =  AWS/EC2) & (stat =  mean) & (InstanceId
+      =  *);  OR cpu.utilization (cloud.provider =  aws);
   AWS Gateway LB instance:
     dashboard_group: AWS Gateway LB
     view_support: N/A
@@ -174,6 +179,21 @@ Dashboards:
     dashboard_group: ActiveMQ
     view_support: N/A
     importQualifiers: gauge.amq.TotalConsumerCount (plugin =  GenericJMX);
+  Amazon MWAA:
+    dashboard_group: Amazon MWAA
+    view_support: N/A
+    importQualifiers: Processes (namespace =  AmazonMWAA) & (stat =  mean);  OR CPUUtilization
+      (namespace =  AmazonMWAA) & (stat =  mean);  OR DagBagSize (namespace =  AmazonMWAA);
+  Amazon MWAA (Env metrics):
+    dashboard_group: Amazon MWAA
+    view_support: N/A
+    importQualifiers: Processes (namespace =  AmazonMWAA) & (stat =  mean);  OR CPUUtilization
+      (namespace =  AmazonMWAA) & (stat =  mean);  OR DagBagSize (namespace =  AmazonMWAA);
+  Amazon MWAA overview:
+    dashboard_group: Amazon MWAA
+    view_support: N/A
+    importQualifiers: Processes (namespace =  AmazonMWAA) & (stat =  mean);  OR CPUUtilization
+      (namespace =  AmazonMWAA) & (stat =  mean);  OR DagBagSize (namespace =  AmazonMWAA);
   Apache spark application:
     dashboard_group: Apache spark applications
     view_support: N/A
@@ -380,6 +400,12 @@ Dashboards:
     importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachines)
       & (primary_aggregation_type =  true);  OR Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets/virtualMachines)
       & (primary_aggregation_type =  true);  OR cpu.utilization (cloud.provider =  azure);
+  Azure Virtual Machines logs:
+    dashboard_group: Azure Virtual Machines
+    view_support: aggregated
+    importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachines)
+      & (primary_aggregation_type =  true);  OR Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets/virtualMachines)
+      & (primary_aggregation_type =  true);  OR cpu.utilization (cloud.provider =  azure);
   Azure batch account:
     dashboard_group: Azure batch
     view_support: instance
@@ -452,10 +478,34 @@ Dashboards:
     dashboard_group: Kafka
     view_support: instance
     importQualifiers: counter.kafka.produce.total-time.count (plugin =  GenericJMX);
+  Broker (Default):
+    dashboard_group: Amazon MSK
+    view_support: N/A
+    importQualifiers: ActiveControllerCount (namespace =  AWS/Kafka) & (stat =  sum)
+      & (Cluster_Name =  *);  OR GlobalPartitionCount (namespace =  AWS/Kafka) & (stat
+      =  sum) & (Cluster_Name =  *);
+  Broker (PER_BROKER):
+    dashboard_group: Amazon MSK
+    view_support: N/A
+    importQualifiers: ActiveControllerCount (namespace =  AWS/Kafka) & (stat =  sum)
+      & (Cluster_Name =  *);  OR GlobalPartitionCount (namespace =  AWS/Kafka) & (stat
+      =  sum) & (Cluster_Name =  *);
   Brokers:
     dashboard_group: Kafka
     view_support: aggregated
     importQualifiers: counter.kafka.produce.total-time.count (plugin =  GenericJMX);
+  Brokers (Default):
+    dashboard_group: Amazon MSK
+    view_support: N/A
+    importQualifiers: ActiveControllerCount (namespace =  AWS/Kafka) & (stat =  sum)
+      & (Cluster_Name =  *);  OR GlobalPartitionCount (namespace =  AWS/Kafka) & (stat
+      =  sum) & (Cluster_Name =  *);
+  Brokers (PER_BROKER):
+    dashboard_group: Amazon MSK
+    view_support: N/A
+    importQualifiers: ActiveControllerCount (namespace =  AWS/Kafka) & (stat =  sum)
+      & (Cluster_Name =  *);  OR GlobalPartitionCount (namespace =  AWS/Kafka) & (stat
+      =  sum) & (Cluster_Name =  *);
   Browser app health:
     dashboard_group: RUM applications
     view_support: N/A
@@ -487,6 +537,18 @@ Dashboards:
     view_support: N/A
     importQualifiers: conviva.quality_metriclens.total_attempts (*);  OR conviva.attempts
       (*);
+  Cloud NAT:
+    dashboard_group: Google Cloud NAT
+    view_support: N/A
+    importQualifiers: nat/allocated_ports (monitored_resource =  nat_gateway) & (gateway_name
+      =  *);  OR nat/port_usage (monitored_resource =  nat_gateway) & (gateway_name
+      =  *);
+  Cloud NAT overview:
+    dashboard_group: Google Cloud NAT
+    view_support: N/A
+    importQualifiers: nat/allocated_ports (monitored_resource =  nat_gateway) & (gateway_name
+      =  *);  OR nat/port_usage (monitored_resource =  nat_gateway) & (gateway_name
+      =  *);
   Cloud Storage bucket:
     dashboard_group: Google Cloud Storage
     view_support: instance
@@ -546,6 +608,16 @@ Dashboards:
     importQualifiers: Requests (namespace =  AWS/CloudFront) & (stat =  sum);  OR
       BytesDownloaded (namespace =  AWS/CloudFront) & (stat =  sum);  OR BytesUploaded
       (namespace =  AWS/CloudFront) & (stat =  sum);
+  Cluster:
+    dashboard_group: vSphere
+    view_support: N/A
+    importQualifiers: vsphere.cpu_usage_percent (*);
+  Cluster - Amazon MSK:
+    dashboard_group: Amazon MSK
+    view_support: N/A
+    importQualifiers: ActiveControllerCount (namespace =  AWS/Kafka) & (stat =  sum)
+      & (Cluster_Name =  *);  OR GlobalPartitionCount (namespace =  AWS/Kafka) & (stat
+      =  sum) & (Cluster_Name =  *);
   Cluster overview:
     dashboard_group: Google Kubernetes Engine
     view_support: aggregated
@@ -554,22 +626,37 @@ Dashboards:
     dashboard_group: Smart Gateway
     view_support: N/A
     importQualifiers: traces.totalUnique (cluster =  *);
+  Clusters:
+    dashboard_group: vSphere
+    view_support: N/A
+    importQualifiers: vsphere.cpu_usage_percent (*);
+  Clusters - Amazon MSK:
+    dashboard_group: Amazon MSK
+    view_support: N/A
+    importQualifiers: ActiveControllerCount (namespace =  AWS/Kafka) & (stat =  sum)
+      & (Cluster_Name =  *);  OR GlobalPartitionCount (namespace =  AWS/Kafka) & (stat
+      =  sum) & (Cluster_Name =  *);
   Compute Engine instance:
     dashboard_group: Google Compute Engine
-    view_support: N/A
+    view_support: instance
     importQualifiers: instance/cpu/utilization (service =  compute);  OR cpu.utilization
       (cloud.provider =  gcp);
   Compute Engine instance (StackDriver):
     dashboard_group: Google Compute Engine
-    view_support: N/A
+    view_support: instance
     importQualifiers: instance/cpu/utilization (service =  compute);  OR cpu.utilization
       (cloud.provider =  gcp);
   Compute Engine instances:
     dashboard_group: Google Compute Engine
-    view_support: N/A
+    view_support: aggregated
     importQualifiers: instance/cpu/utilization (service =  compute);  OR cpu.utilization
       (cloud.provider =  gcp);
   Compute Engine instances (StackDriver):
+    dashboard_group: Google Compute Engine
+    view_support: aggregated
+    importQualifiers: instance/cpu/utilization (service =  compute);  OR cpu.utilization
+      (cloud.provider =  gcp);
+  Compute Engine logs:
     dashboard_group: Google Compute Engine
     view_support: N/A
     importQualifiers: instance/cpu/utilization (service =  compute);  OR cpu.utilization
@@ -682,20 +769,20 @@ Dashboards:
     importQualifiers: postgres_sessions (*);
   Database - PostgreSQL(OTel):
     dashboard_group: PostgreSQL(OTel)
-    view_support: N/A
+    view_support: instance
     importQualifiers: postgresql.backends (*);  OR postgresql.db_size (*);
   Database - PostgreSQL(Smart Agent):
     dashboard_group: PostgreSQL(Smart Agent)
     view_support: N/A
     importQualifiers: pg_numbackends (plugin =  postgresql);
   Databases:
+    dashboard_group: PostgreSQL(OTel)
+    view_support: aggregated
+    importQualifiers: postgresql.backends (*);  OR postgresql.db_size (*);
+  Databases - PostgreSQL(Smart Agent):
     dashboard_group: PostgreSQL(Smart Agent)
     view_support: N/A
     importQualifiers: pg_numbackends (plugin =  postgresql);
-  Databases - PostgreSQL(OTel):
-    dashboard_group: PostgreSQL(OTel)
-    view_support: N/A
-    importQualifiers: postgresql.backends (*);  OR postgresql.db_size (*);
   Datanode:
     dashboard_group: Hadoop HDFS
     view_support: N/A
@@ -840,23 +927,23 @@ Dashboards:
     importQualifiers: HealthyHostCount (namespace =  AWS/ELB) & (stat =  mean) & (LoadBalancerName
       =  *);
   ESX-Host:
+    dashboard_group: vSphere (legacy)
+    view_support: N/A
+    importQualifiers: cpu.usage.average (metric_source =  vsphere);  OR mem.usage.average
+      (metric_source =  vsphere);
+  ESX-Host - vSphere:
     dashboard_group: vSphere
     view_support: instance
     importQualifiers: vsphere.cpu_usage_percent (*);
-  ESX-Host - vSphere (legacy):
+  ESX-Hosts:
     dashboard_group: vSphere (legacy)
     view_support: N/A
     importQualifiers: cpu.usage.average (metric_source =  vsphere);  OR mem.usage.average
       (metric_source =  vsphere);
-  ESX-Hosts:
+  ESX-Hosts - vSphere:
     dashboard_group: vSphere
     view_support: aggregated
     importQualifiers: vsphere.cpu_usage_percent (*);
-  ESX-Hosts - vSphere (legacy):
-    dashboard_group: vSphere (legacy)
-    view_support: N/A
-    importQualifiers: cpu.usage.average (metric_source =  vsphere);  OR mem.usage.average
-      (metric_source =  vsphere);
   ElastiCache:
     dashboard_group: AWS ElastiCache
     view_support: aggregated
@@ -930,13 +1017,13 @@ Dashboards:
     view_support: N/A
     importQualifiers: gauge.bucket.basic.diskUsed (plugin =  couchbase);
   Engagement:
-    dashboard_group: Organization metrics
-    view_support: N/A
-    importQualifiers: sf.org.subscription.customMetrics (*);
-  Engagement - Organization:
     dashboard_group: Organization
     view_support: N/A
     importQualifiers: sf.org.subscription.datapointsPerMinute (*);
+  Engagement - Organization metrics:
+    dashboard_group: Organization metrics
+    view_support: N/A
+    importQualifiers: sf.org.subscription.customMetrics (*);
   Engine specifics:
     dashboard_group: AWS RDS
     view_support: instance
@@ -998,23 +1085,23 @@ Dashboards:
     view_support: N/A
     importQualifiers: system.cpu.sys (*);  OR rep.ContainerCount (*);
   GCF (SignalFx) function:
-    dashboard_group: Google Cloud Functions
+    dashboard_group: Google Cloud Functions (SignalFx)
     view_support: N/A
-    importQualifiers: function/execution_count (service =  cloudfunctions);  OR function/user_memory_bytes
-      (service =  cloudfunctions);
+    importQualifiers: function.invocations (metric_source =  gcf_wrapper);  OR function.duration
+      (metric_source =  gcf_wrapper);
   GCF (SignalFx) overview:
-    dashboard_group: Google Cloud Functions
+    dashboard_group: Google Cloud Functions (SignalFx)
     view_support: N/A
-    importQualifiers: function/execution_count (service =  cloudfunctions);  OR function/user_memory_bytes
-      (service =  cloudfunctions);
+    importQualifiers: function.invocations (metric_source =  gcf_wrapper);  OR function.duration
+      (metric_source =  gcf_wrapper);
   GCF (stackdriver) function:
     dashboard_group: Google Cloud Functions
-    view_support: N/A
+    view_support: instance
     importQualifiers: function/execution_count (service =  cloudfunctions);  OR function/user_memory_bytes
       (service =  cloudfunctions);
   GCF (stackdriver) overview:
     dashboard_group: Google Cloud Functions
-    view_support: N/A
+    view_support: aggregated
     importQualifiers: function/execution_count (service =  cloudfunctions);  OR function/user_memory_bytes
       (service =  cloudfunctions);
   GCP:
@@ -1024,7 +1111,11 @@ Dashboards:
       (*);
   GKE node:
     dashboard_group: Google Kubernetes Engine
-    view_support: instance
+    view_support: aggregated
+    importQualifiers: container/memory/request_utilization (*);
+  GKE pod:
+    dashboard_group: Google Kubernetes Engine
+    view_support: aggregated
     importQualifiers: container/memory/request_utilization (*);
   Garden container:
     dashboard_group: Cloud foundry
@@ -1040,10 +1131,6 @@ Dashboards:
     importQualifiers: sidekiq_queue_size (host.name =  *);  OR sidekiq_queue_latency
       (host.name =  *);  OR grpc_server_handled_total (host.name =  *);  OR gitlab_workhorse_http_request_duration_seconds
       (host.name =  *);  OR nginx_vts_server_requests_total (host.name =  *);
-  Gke pod:
-    dashboard_group: Google Kubernetes Engine
-    view_support: instance
-    importQualifiers: container/memory/request_utilization (*);
   Google Cloud SQL:
     dashboard_group: Google Cloud SQL
     view_support: N/A
@@ -1095,39 +1182,41 @@ Dashboards:
     view_support: N/A
     importQualifiers: heroku.memory_quota (*);
   Host:
-    dashboard_group: SAP HANA
-    view_support: N/A
-    importQualifiers: sap.hana.host.cpu.user (*);
+    dashboard_group: PostgreSQL(OTel)
+    view_support: instance
+    importQualifiers: postgresql.backends (*);  OR postgresql.db_size (*);
   Host - Data Center Hosts:
     dashboard_group: Data Center Hosts
     view_support: instance
-    importQualifiers: cpu.utilization (*);
+    importQualifiers: cpu.utilization (host =  *) & (gcp_id !=  *) & (azure_resource_id
+      !=  *) & (cloud.provider !=  *) & (AWSUniqueId !=  *);
   Host - MySQL(OTEL):
     dashboard_group: MySQL(OTEL)
     view_support: N/A
-    importQualifiers: mysql.operation (operation =  *) & (host.name =  *);  OR mysql.commands
+    importQualifiers: mysql.operations (operation =  *) & (host.name =  *);  OR mysql.commands
       (host.name =  *) & (command =  *);
-  Host - PostgreSQL(OTel):
-    dashboard_group: PostgreSQL(OTel)
+  Host - SAP HANA:
+    dashboard_group: SAP HANA
     view_support: N/A
-    importQualifiers: postgresql.backends (*);  OR postgresql.db_size (*);
+    importQualifiers: sap.hana.host.cpu.user (*);
   Host with agent installed:
     dashboard_group: Hosts with agent installed
     view_support: N/A
     importQualifiers: cpu.utilization (*);
   Hosts:
-    dashboard_group: MySQL(OTEL)
-    view_support: N/A
-    importQualifiers: mysql.operation (operation =  *) & (host.name =  *);  OR mysql.commands
-      (host.name =  *) & (command =  *);
+    dashboard_group: PostgreSQL(OTel)
+    view_support: aggregated
+    importQualifiers: postgresql.backends (*);  OR postgresql.db_size (*);
   Hosts - Data Center Hosts:
     dashboard_group: Data Center Hosts
     view_support: aggregated
-    importQualifiers: cpu.utilization (*);
-  Hosts - PostgreSQL(OTel):
-    dashboard_group: PostgreSQL(OTel)
+    importQualifiers: cpu.utilization (host =  *) & (gcp_id !=  *) & (azure_resource_id
+      !=  *) & (cloud.provider !=  *) & (AWSUniqueId !=  *);
+  Hosts - MySQL(OTEL):
+    dashboard_group: MySQL(OTEL)
     view_support: N/A
-    importQualifiers: postgresql.backends (*);  OR postgresql.db_size (*);
+    importQualifiers: mysql.operations (operation =  *) & (host.name =  *);  OR mysql.commands
+      (host.name =  *) & (command =  *);
   Hosts with agent installed:
     dashboard_group: Hosts with agent installed
     view_support: N/A
@@ -1201,6 +1290,16 @@ Dashboards:
     dashboard_group: Jenkins
     view_support: N/A
     importQualifiers: gauge.jenkins.node.online.status (plugin =  jenkins);
+  Jira:
+    dashboard_group: JIRA
+    view_support: N/A
+    importQualifiers: jira_all_users_gauge (service.name =  jira) & (host.name =  *);  OR
+      jira_active_users_gauge (service.name =  jira) & (host.name =  *);
+  Jira overview:
+    dashboard_group: JIRA
+    view_support: N/A
+    importQualifiers: jira_all_users_gauge (service.name =  jira) & (host.name =  *);  OR
+      jira_active_users_gauge (service.name =  jira) & (host.name =  *);
   K8s cluster:
     dashboard_group: Kubernetes
     view_support: N/A
@@ -1231,7 +1330,7 @@ Dashboards:
       (sf_key =  k8s.pod.uid);
   K8s containers:
     dashboard_group: Kubernetes
-    view_support: instance
+    view_support: aggregated
     importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);  OR k8s.pod.phase
       (sf_key =  k8s.workload.name);  OR kubernetes.pod_phase (sf_key =  kubernetes_workload_name);  OR
       container_cpu_utilization (sf_key =  kubernetes_pod_uid);  OR container.cpu.time
@@ -1358,6 +1457,20 @@ Dashboards:
     dashboard_group: Knative
     view_support: N/A
     importQualifiers: autoscaler_stable_request_concurrency (*);
+  Kong host:
+    dashboard_group: Kong Gateway
+    view_support: instance
+    importQualifiers: kong_http_requests_total (host.name =  *) & (route =  *) & (service
+      =  *);  OR kong_request_latency_ms_sum (host.name =  *) & (route =  *) & (service
+      =  *);  OR kong_bandwidth_bytes (host.name =  *) & (route =  *) & (service =  *);  OR
+      kong_memory_workers_lua_vms_bytes (host.name =  *);
+  Kong hosts:
+    dashboard_group: Kong Gateway
+    view_support: aggregated
+    importQualifiers: kong_http_requests_total (host.name =  *) & (route =  *) & (service
+      =  *);  OR kong_request_latency_ms_sum (host.name =  *) & (route =  *) & (service
+      =  *);  OR kong_bandwidth_bytes (host.name =  *) & (route =  *) & (service =  *);  OR
+      kong_memory_workers_lua_vms_bytes (host.name =  *);
   Kong server overview:
     dashboard_group: Kong
     view_support: N/A
@@ -1380,14 +1493,14 @@ Dashboards:
     view_support: aggregated
     importQualifiers: ConcurrentExecutions (namespace =  AWS/Lambda) & (stat =  sum);  OR
       function.invocations (metric_source =  lambda_wrapper);
-  Lambda (SignalFx) function:
+  Lambda (SignalFx) function (deprecated):
     dashboard_group: AWS Lambda
-    view_support: instance
+    view_support: N/A
     importQualifiers: ConcurrentExecutions (namespace =  AWS/Lambda) & (stat =  sum);  OR
       function.invocations (metric_source =  lambda_wrapper);
-  Lambda (SignalFx) overview:
+  Lambda (SignalFx) overview (deprecated):
     dashboard_group: AWS Lambda
-    view_support: aggregated
+    view_support: N/A
     importQualifiers: ConcurrentExecutions (namespace =  AWS/Lambda) & (stat =  sum);  OR
       function.invocations (metric_source =  lambda_wrapper);
   Lambda extension:
@@ -1397,7 +1510,7 @@ Dashboards:
       function.invocations (metric_source =  lambda_wrapper);
   Lambda logs:
     dashboard_group: AWS Lambda
-    view_support: N/A
+    view_support: aggregated
     importQualifiers: ConcurrentExecutions (namespace =  AWS/Lambda) & (stat =  sum);  OR
       function.invocations (metric_source =  lambda_wrapper);
   License usage overview:
@@ -1520,6 +1633,11 @@ Dashboards:
     dashboard_group: MySQL
     view_support: aggregated
     importQualifiers: threads.connected (plugin =  mysql);
+  MySQL summary:
+    dashboard_group: MySQL(OTEL)
+    view_support: N/A
+    importQualifiers: mysql.operations (operation =  *) & (host.name =  *);  OR mysql.commands
+      (host.name =  *) & (command =  *);
   NGINX server:
     dashboard_group: NGINX
     view_support: instance
@@ -1606,18 +1724,23 @@ Dashboards:
     view_support: instance
     importQualifiers: oracledb.processes.usage (sf_key =  oracledb.instance.name)
       & (sf_key =  host.name);
-  Overview:
-    dashboard_group: Conviva
+  Oracle summary:
+    dashboard_group: Oracle DB
     view_support: N/A
-    importQualifiers: conviva.quality_metriclens.total_attempts (*);  OR conviva.attempts
-      (*);
-  Overview - AWS API Gateway:
+    importQualifiers: oracledb.processes.usage (sf_key =  oracledb.instance.name)
+      & (sf_key =  host.name);
+  Overview:
     dashboard_group: AWS API Gateway
     view_support: N/A
     importQualifiers: Count (namespace =  AWS/ApiGateway);  OR Latency (namespace
       =  AWS/ApiGateway);  OR IntegrationLatency (namespace =  AWS/ApiGateway);  OR
       4XXError (namespace =  AWS/ApiGateway);  OR 5XXError (namespace =  AWS/ApiGateway);  OR
       CacheHitCount (namespace =  AWS/ApiGateway);  OR CacheMissCount (namespace =  AWS/ApiGateway);
+  Overview - Conviva:
+    dashboard_group: Conviva
+    view_support: N/A
+    importQualifiers: conviva.quality_metriclens.total_attempts (*);  OR conviva.attempts
+      (*);
   Overview - GitLab:
     dashboard_group: GitLab
     view_support: aggregated
@@ -1735,10 +1858,20 @@ Dashboards:
     dashboard_group: Redis
     view_support: instance
     importQualifiers: bytes.used_memory (plugin =  redis_info);
+  Redis instance - Redis(OTEL):
+    dashboard_group: Redis(OTEL)
+    view_support: instance
+    importQualifiers: redis.cpu.time (host.name =  *);  OR redis.uptime (host.name
+      =  *);
   Redis instances:
     dashboard_group: Redis
     view_support: aggregated
     importQualifiers: bytes.used_memory (plugin =  redis_info);
+  Redis instances - Redis(OTEL):
+    dashboard_group: Redis(OTEL)
+    view_support: aggregated
+    importQualifiers: redis.cpu.time (host.name =  *);  OR redis.uptime (host.name
+      =  *);
   Replica sets:
     dashboard_group: MongoDB atlas
     view_support: N/A
@@ -1785,6 +1918,10 @@ Dashboards:
     view_support: aggregated
     importQualifiers: NumberOfMessagesPublished (namespace =  AWS/SNS) & (TopicName
       =  *) & (stat =  sum);
+  SQL server summary:
+    dashboard_group: Microsoft SQL server
+    view_support: N/A
+    importQualifiers: sqlserver_server_properties.db_online (plugin =  telegraf-sqlserver);
   SQS queue:
     dashboard_group: AWS SQS
     view_support: instance
@@ -1841,10 +1978,25 @@ Dashboards:
     dashboard_group: "\xB5APM PG"
     view_support: N/A
     importQualifiers: spans.count (service =  *);
+  Service limit:
+    dashboard_group: AWS service limit
+    view_support: N/A
+    importQualifiers: ServiceLimitUsage (ServiceLimit =  *) & (ServiceName =  *);
+  Service limit overview:
+    dashboard_group: AWS service limit
+    view_support: N/A
+    importQualifiers: ServiceLimitUsage (ServiceLimit =  *) & (ServiceName =  *);
   Service objects:
     dashboard_group: Kong
     view_support: N/A
     importQualifiers: gauge.kong.database.reachable (plugin =  kong);
+  Services:
+    dashboard_group: Kong Gateway
+    view_support: aggregated
+    importQualifiers: kong_http_requests_total (host.name =  *) & (route =  *) & (service
+      =  *);  OR kong_request_latency_ms_sum (host.name =  *) & (route =  *) & (service
+      =  *);  OR kong_bandwidth_bytes (host.name =  *) & (route =  *) & (service =  *);  OR
+      kong_memory_workers_lua_vms_bytes (host.name =  *);
   Shows:
     dashboard_group: Conviva
     view_support: N/A
@@ -2021,6 +2173,18 @@ Dashboards:
     importQualifiers: service.request.count (sf_environment =  *) & (sf_service =  *);  OR
       sf.org.numLogsReceivedByToken (*);  OR rum.page_view.count (*);  OR rum.page_view.count
       (sf_ua_browsername =  *);  OR sf.org.apm.numContainers (*);
+  Topic:
+    dashboard_group: Amazon MSK
+    view_support: N/A
+    importQualifiers: ActiveControllerCount (namespace =  AWS/Kafka) & (stat =  sum)
+      & (Cluster_Name =  *);  OR GlobalPartitionCount (namespace =  AWS/Kafka) & (stat
+      =  sum) & (Cluster_Name =  *);
+  Topics:
+    dashboard_group: Amazon MSK
+    view_support: N/A
+    importQualifiers: ActiveControllerCount (namespace =  AWS/Kafka) & (stat =  sum)
+      & (Cluster_Name =  *);  OR GlobalPartitionCount (namespace =  AWS/Kafka) & (stat
+      =  sum) & (Cluster_Name =  *);
   UDP:
     dashboard_group: Network explorer dashboards
     view_support: instance
@@ -2049,23 +2213,27 @@ Dashboards:
       & (UserPool =  *);  OR SignInSuccesses (namespace =  AWS/Cognito) & (stat =  count)
       & (UserPool =  *);
   VM:
+    dashboard_group: vSphere (legacy)
+    view_support: N/A
+    importQualifiers: cpu.usage.average (metric_source =  vsphere);  OR mem.usage.average
+      (metric_source =  vsphere);
+  VM - vSphere:
     dashboard_group: vSphere
     view_support: instance
     importQualifiers: vsphere.cpu_usage_percent (*);
-  VM - vSphere (legacy):
+  VM logs:
+    dashboard_group: vSphere
+    view_support: N/A
+    importQualifiers: vsphere.cpu_usage_percent (*);
+  VMs:
     dashboard_group: vSphere (legacy)
     view_support: N/A
     importQualifiers: cpu.usage.average (metric_source =  vsphere);  OR mem.usage.average
       (metric_source =  vsphere);
-  VMs:
+  VMs - vSphere:
     dashboard_group: vSphere
     view_support: aggregated
     importQualifiers: vsphere.cpu_usage_percent (*);
-  VMs - vSphere (legacy):
-    dashboard_group: vSphere (legacy)
-    view_support: N/A
-    importQualifiers: cpu.usage.average (metric_source =  vsphere);  OR mem.usage.average
-      (metric_source =  vsphere);
   Varnish:
     dashboard_group: Varnish
     view_support: N/A
@@ -2111,14 +2279,18 @@ Dashboards:
     view_support: N/A
     importQualifiers: counter.etcd.leader.counts.success (plugin =  etcd);
   vCenter:
-    dashboard_group: vSphere
-    view_support: instance
-    importQualifiers: vsphere.cpu_usage_percent (*);
-  vCenter - vSphere (legacy):
     dashboard_group: vSphere (legacy)
     view_support: N/A
     importQualifiers: cpu.usage.average (metric_source =  vsphere);  OR mem.usage.average
       (metric_source =  vsphere);
+  vCenter - vSphere:
+    dashboard_group: vSphere
+    view_support: instance
+    importQualifiers: vsphere.cpu_usage_percent (*);
+  vCenter logs:
+    dashboard_group: vSphere
+    view_support: N/A
+    importQualifiers: vsphere.cpu_usage_percent (*);
   vCenters:
     dashboard_group: vSphere
     view_support: aggregated

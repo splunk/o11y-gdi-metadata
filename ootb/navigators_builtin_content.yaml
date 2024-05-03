@@ -1,6 +1,6 @@
 Navigators:
   ALB instances:
-    category_display_name: AWS
+    category_display_name: Amazon Web Services
     associated_dashboards:
       aggregated:
       - AWS ALB instances
@@ -55,7 +55,7 @@ Navigators:
       - App Engine system
     importQualifiers: http/server/response_count (sf_key =  gcp_id) & (sf_key =  version_id);
   App services:
-    category_display_name: Azure
+    category_display_name: Microsoft Azure
     associated_dashboards:
       aggregated:
       - Azure App services
@@ -65,23 +65,34 @@ Navigators:
       & (primary_aggregation_type =  true);  OR BytesReceived (is_Azure_Function =  false)
       & (resource_type =  Microsoft.Web/sites) & (primary_aggregation_type =  true);
   Autoscaling groups:
-    category_display_name: AWS
+    category_display_name: Amazon Web Services
     associated_dashboards:
       aggregated:
       - AWS AutoScaling groups
       instance:
       - AWS AutoScaling group
     importQualifiers: GroupTotalInstances (stat =  mean) & (namespace =  AWS/AutoScaling);
-  Azure functions:
-    category_display_name: Azure
+  Azure Functions (SignalFx Wrapper):
+    category_display_name: Microsoft Azure
     associated_dashboards:
-      aggregated: Azure function apps
-      instance: Azure function app
+      aggregated:
+      - (SignalFx) Azure Functions (deprecated)
+      instance:
+      - (SignalFx) Azure Function (deprecated)
+    importQualifiers: azure.function.invocations (sf_key =  azure_function_name);  OR
+      azure.function.errors (sf_key =  azure_function_name);  OR azure.function.duration
+      (sf_key =  azure_function_name);
+  Azure functions:
+    category_display_name: Microsoft Azure
+    associated_dashboards:
+      aggregated:
+      - (Azure) Function Apps
+      instance:
+      - (Azure) Function App
     importQualifiers: FunctionExecutionCount (is_Azure_Function =  true) & (primary_aggregation_type
       =  true) & (resource_type =  Microsoft.Web/sites);  OR FunctionExecutionUnits
       (is_Azure_Function =  true) & (primary_aggregation_type =  true) & (resource_type
-      =  Microsoft.Web/sites);  OR azure.function.invocations (is_Azure_Function =  true)
-      & (metric_source =  azure_function_wrapper);
+      =  Microsoft.Web/sites);
   Batch accounts:
     category_display_name: Microsoft Azure
     associated_dashboards:
@@ -123,8 +134,10 @@ Navigators:
   Cloud functions:
     category_display_name: Google Cloud Platform
     associated_dashboards:
-      aggregated: GCF overview
-      instance: GCF function
+      aggregated:
+      - GCF (stackdriver) overview
+      instance:
+      - GCF (stackdriver) function
     importQualifiers: function/execution_count (sf_key =  function_name);  OR function/user_memory_bytes
       (sf_key =  function_name);  OR function/execution_times (sf_key =  function_name);
   Cloud router:
@@ -153,7 +166,7 @@ Navigators:
       - Cloud Storage bucket
     importQualifiers: network/received_bytes_count (sf_key =  gcp_id);
   CloudFront distributions:
-    category_display_name: AWS
+    category_display_name: Amazon Web Services
     associated_dashboards:
       aggregated:
       - CloudFront distributions
@@ -173,8 +186,12 @@ Navigators:
   Compute engine:
     category_display_name: Google Cloud Platform
     associated_dashboards:
-      aggregated: Compute engine instances
-      instance: Compute engine instance
+      aggregated:
+      - Compute Engine instances
+      - Compute Engine instances (StackDriver)
+      instance:
+      - Compute Engine instance
+      - Compute Engine instance (StackDriver)
     importQualifiers: instance/cpu/utilization (service =  compute) & (sf_key =  gcp_id);  OR
       cpu.utilization (cloud.provider =  gcp);
   Container engine:
@@ -222,7 +239,7 @@ Navigators:
       - AWS DynamoDB
     importQualifiers: SuccessfulRequestLatency (sf_key =  TableName);
   EBS:
-    category_display_name: AWS
+    category_display_name: Amazon Web Services
     associated_dashboards:
       aggregated:
       - EBS volumes
@@ -230,7 +247,7 @@ Navigators:
       - EBS volume
     importQualifiers: VolumeWriteOps (sf_key =  VolumeId);
   EC2:
-    category_display_name: AWS
+    category_display_name: Amazon Web Services
     associated_dashboards:
       aggregated:
       - EC2 instances
@@ -239,7 +256,7 @@ Navigators:
     importQualifiers: CPUUtilization (sf_key =  InstanceId);  OR cpu.utilization (cloud.provider
       =  aws);
   ECS:
-    category_display_name: AWS
+    category_display_name: Amazon Web Services
     associated_dashboards:
       aggregated:
       - ECS (AWS)
@@ -256,7 +273,7 @@ Navigators:
       - ELB instance
     importQualifiers: RequestCount (sf_key =  LoadBalancerName);
   ElastiCache:
-    category_display_name: AWS
+    category_display_name: Amazon Web Services
     associated_dashboards:
       aggregated:
       - ElastiCache
@@ -265,7 +282,7 @@ Navigators:
       - ElastiCache node
     importQualifiers: CurrConnections (sf_key =  CacheNodeId);
   Elastic pools:
-    category_display_name: Azure
+    category_display_name: Microsoft Azure
     associated_dashboards:
       aggregated:
       - Elastic pools
@@ -310,6 +327,31 @@ Navigators:
     importQualifiers: SuccessfulRequests (primary_aggregation_type =  true) & (resource_type
       =  Microsoft.EventHub/namespaces);  OR IncomingRequests (primary_aggregation_type
       =  true) & (resource_type =  Microsoft.EventHub/namespaces);
+  GKE clusters:
+    category_display_name: Google Cloud Platform
+    associated_dashboards:
+      aggregated:
+      - Cluster overview
+      instance:
+      - GKE node
+      - GKE pod
+    importQualifiers: container/memory/request_utilization (service =  kubernetes);
+  GKE nodes:
+    category_display_name: Google Cloud Platform
+    associated_dashboards:
+      aggregated:
+      - GKE node
+      instance:
+      - GKE node
+    importQualifiers: container/memory/request_utilization (service =  kubernetes);
+  GKE pods:
+    category_display_name: Google Cloud Platform
+    associated_dashboards:
+      aggregated:
+      - GKE pod
+      instance:
+      - GKE pod
+    importQualifiers: container/memory/request_utilization (service =  kubernetes);
   GitLab:
     category_display_name: CI/CD
     associated_dashboards:
@@ -322,15 +364,14 @@ Navigators:
       (host.name =  *);  OR grpc_server_handled_total (host.name =  *);  OR gitlab_workhorse_http_request_duration_seconds
       (host.name =  *);  OR nginx_vts_server_requests_total (host.name =  *);
   Hosts:
-    category_display_name: Hosts
+    category_display_name: My Data Center
     associated_dashboards:
       aggregated:
       - Hosts
       instance:
       - Host
-    importQualifiers: cpu.utilization (sf_key =  host) & (sf_key !=  kubernetes_node)
-      & (sf_key !=  gcp_id) & (sf_key !=  azure_resource_id) & (sf_key !=  cloud.provider)
-      & (sf_key !=  AWSUniqueId);
+    importQualifiers: cpu.utilization (sf_key =  host) & (sf_key !=  gcp_id) & (sf_key
+      !=  azure_resource_id) & (sf_key !=  cloud.provider) & (sf_key !=  AWSUniqueId);
   JMX (collectd):
     category_display_name: Others
     associated_dashboards:
@@ -339,46 +380,6 @@ Navigators:
       instance:
       - Java process
     importQualifiers: gauge.loaded_classes (plugin =  GenericJMX);
-  K8s containers:
-    category_display_name: Kubernetes
-    associated_dashboards:
-      aggregated:
-      - K8s containers
-      instance:
-      - K8s container
-    importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);
-  K8s nodes:
-    category_display_name: Kubernetes
-    associated_dashboards:
-      aggregated:
-      - K8s nodes
-      - K8s clusters
-      - K8s node logs
-      instance:
-      - K8s node
-      - K8s pods
-      - K8s node logs
-    importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);
-  K8s pods:
-    category_display_name: Kubernetes
-    associated_dashboards:
-      aggregated:
-      - K8s pods
-      instance:
-      - K8s pod
-      - K8s containers
-      - K8s pod logs
-    importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);
-  K8s workloads:
-    category_display_name: Kubernetes
-    associated_dashboards:
-      aggregated:
-      - K8s workloads
-      instance:
-      - K8s workload
-      - K8s pods
-    importQualifiers: k8s.pod.phase (sf_key =  k8s.workload.name);  OR kubernetes.pod_phase
-      (sf_key =  kubernetes_workload_name);
   Kafka brokers:
     category_display_name: Messaging
     associated_dashboards:
@@ -404,7 +405,7 @@ Navigators:
       - Producer
     importQualifiers: gauge.kafka.producer.response-rate (hostHasService =  kafka_producer);
   Kinesis analytics:
-    category_display_name: AWS
+    category_display_name: Amazon Web Services
     associated_dashboards:
       aggregated:
       - Kinesis Analytics overview
@@ -412,31 +413,77 @@ Navigators:
       - Kinesis Analytics
     importQualifiers: Bytes (namespace =  AWS/KinesisAnalytics);
   Kinesis streams:
-    category_display_name: AWS
+    category_display_name: Amazon Web Services
     associated_dashboards:
       aggregated:
       - Kinesis Streams overview
       instance:
       - Kinesis Stream
     importQualifiers: GetRecords.Latency (namespace =  AWS/Kinesis);
-  Kubernetes engine:
-    category_display_name: Google Cloud Platform
+  Kong Gateway:
+    category_display_name: Others
     associated_dashboards:
       aggregated:
-      - Cluster overview
+      - Kong hosts
+      - Services
       instance:
-      - GKE node
-      - Gke pod
-    importQualifiers: container/memory/request_utilization (service =  kubernetes);
+      - Kong host
+    importQualifiers: kong_http_requests_total (host.name =  *) & (route =  *) & (service
+      =  *);  OR kong_request_latency_ms_sum (host.name =  *) & (route =  *) & (service
+      =  *);  OR kong_bandwidth_bytes (host.name =  *) & (route =  *) & (service =  *);  OR
+      kong_memory_workers_lua_vms_bytes (host.name =  *);
+  Kubernetes containers:
+    category_display_name: Kubernetes
+    associated_dashboards:
+      aggregated:
+      - K8s containers
+      instance:
+      - K8s container
+    importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);
+  Kubernetes nodes:
+    category_display_name: Kubernetes
+    associated_dashboards:
+      aggregated:
+      - K8s nodes
+      - K8s clusters
+      - K8s node logs
+      instance:
+      - K8s node
+      - K8s pods
+      - K8s node logs
+    importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);
+  Kubernetes pods:
+    category_display_name: Kubernetes
+    associated_dashboards:
+      aggregated:
+      - K8s pods
+      instance:
+      - K8s pod
+      - K8s containers
+      - K8s pod logs
+    importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);
+  Kubernetes workloads:
+    category_display_name: Kubernetes
+    associated_dashboards:
+      aggregated:
+      - K8s workloads
+      instance:
+      - K8s workload
+      - K8s pods
+    importQualifiers: k8s.pod.phase (sf_key =  k8s.workload.name);  OR kubernetes.pod_phase
+      (sf_key =  kubernetes_workload_name);
   Lambda functions:
     category_display_name: Amazon Web Services
     associated_dashboards:
-      aggregated: Lambda (AWS) overview
-      instance: Lambda (AWS) function
+      aggregated:
+      - Lambda (AWS) overview
+      - Lambda logs
+      instance:
+      - Lambda (AWS) function
     importQualifiers: Invocations (sf_key =  FunctionName);  OR Errors (sf_key =  FunctionName);  OR
       Throttles (sf_key =  FunctionName);  OR function.invocations (sf_key =  aws_function_name);
   Logic apps:
-    category_display_name: Azure
+    category_display_name: Microsoft Azure
     associated_dashboards:
       aggregated:
       - Azure Logic Apps
@@ -520,7 +567,7 @@ Navigators:
       - HTTP - Outbound
     importQualifiers: tcp.bytes (source.workload.name =  *);
   OpsWorks:
-    category_display_name: AWS
+    category_display_name: Amazon Web Services
     associated_dashboards:
       aggregated:
       - OpsWorks overview
@@ -538,6 +585,22 @@ Navigators:
       - Oracle DB sessions
     importQualifiers: oracledb.processes.usage (sf_key =  oracledb.instance.name)
       & (sf_key =  host.name);
+  PostgreSQL databases:
+    category_display_name: Datastores
+    associated_dashboards:
+      aggregated:
+      - Databases
+      instance:
+      - Database
+    importQualifiers: postgresql.backends (*);  OR postgresql.db_size (*);
+  PostgreSQL hosts:
+    category_display_name: Datastores
+    associated_dashboards:
+      aggregated:
+      - Hosts
+      instance:
+      - Host
+    importQualifiers: postgresql.backends (*);  OR postgresql.db_size (*);
   RDS:
     category_display_name: Amazon Web Services
     associated_dashboards:
@@ -557,7 +620,7 @@ Navigators:
       - RabbitMQ node
     importQualifiers: gauge.node.uptime (plugin =  rabbitmq);
   Redis cache:
-    category_display_name: Azure
+    category_display_name: Microsoft Azure
     associated_dashboards:
       aggregated:
       - Azure redis caches
@@ -572,6 +635,14 @@ Navigators:
       instance:
       - Redis instance
     importQualifiers: bytes.used_memory (plugin =  redis_info);
+  Redis instances(OTEL):
+    category_display_name: Datastores
+    associated_dashboards:
+      aggregated:
+      - Redis instances
+      instance:
+      - Redis instance
+    importQualifiers: redis.keyspace.hits (redis.version =  *) & (host.name =  *);
   Redshift:
     category_display_name: Amazon Web Services
     associated_dashboards:
@@ -582,7 +653,7 @@ Navigators:
       - AWS Redshift
     importQualifiers: CPUUtilization (namespace =  AWS/Redshift);
   Route53:
-    category_display_name: AWS
+    category_display_name: Amazon Web Services
     associated_dashboards:
       aggregated:
       - Route 53
@@ -590,7 +661,7 @@ Navigators:
       - Route 53 healthcheck
     importQualifiers: HealthCheckStatus (namespace =  AWS/Route53) & (stat =  lower);
   S3 buckets:
-    category_display_name: AWS
+    category_display_name: Amazon Web Services
     associated_dashboards:
       aggregated:
       - AWS S3 buckets
@@ -599,7 +670,7 @@ Navigators:
     importQualifiers: BytesUploaded (namespace =  AWS/S3);  OR BytesDownloaded (namespace
       =  AWS/S3);
   SNS topics:
-    category_display_name: AWS
+    category_display_name: Amazon Web Services
     associated_dashboards:
       aggregated:
       - SNS
@@ -607,7 +678,7 @@ Navigators:
       - SNS
     importQualifiers: NumberOfMessagesPublished (sf_key =  TopicName);
   SQL database:
-    category_display_name: Azure
+    category_display_name: Microsoft Azure
     associated_dashboards:
       aggregated:
       - Azure SQL databases
@@ -615,7 +686,7 @@ Navigators:
       - Azure SQL database
     importQualifiers: dtu_consumption_percent (resource_type =  Microsoft.Sql/servers/databases);
   SQS queues:
-    category_display_name: AWS
+    category_display_name: Amazon Web Services
     associated_dashboards:
       aggregated:
       - SQS queues
@@ -623,7 +694,7 @@ Navigators:
       - SQS queue
     importQualifiers: NumberOfMessagesSent (sf_key =  QueueName);
   Storage:
-    category_display_name: Azure
+    category_display_name: Microsoft Azure
     associated_dashboards:
       aggregated:
       - Azure Storage accounts
@@ -657,10 +728,13 @@ Navigators:
     importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets)
       & (primary_aggregation_type =  true);
   Virtual machines:
-    category_display_name: Azure
+    category_display_name: Microsoft Azure
     associated_dashboards:
-      aggregated: Azure virtual machines
-      instance: Azure virtual machine
+      aggregated:
+      - Azure Virtual Machines
+      - Azure Virtual Machines logs
+      instance:
+      - Azure Virtual Machine
     importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachines);  OR
       cpu.utilization (cloud.provider =  azure);  OR Percentage CPU (resource_type
       =  Microsoft.Compute/virtualMachineScaleSets/virtualMachines);
