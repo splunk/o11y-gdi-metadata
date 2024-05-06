@@ -57,13 +57,13 @@ settings:
   category: exporter
 - env: OTEL_INSTRUMENTATION_COMMON_DEFAULT_ENABLED
   property: none
-  description: Whether to activate all the embedded instrumentations. When you set this setting to false, use OTEL_INSTRUMENTATION_<NAME>_ENABLED=true to selectively turn on instrumentations.
+  description: Whether to activate all the embedded instrumentations. When you set this setting to false, use OTEL_INSTRUMENTATION_[NAME]_ENABLED=true to selectively turn on instrumentations.
   default: true
   type: boolean
   category: instrumentation
 - env: OTEL_INSTRUMENTATION_<NAME>_ENABLED
   property: none
-  description: When set to true, this setting activates a specific instrumentation, as defined by replacing <NAME> with the name of the instrumentation. The name is not case sensitive.
+  description: When set to true, this setting activates a specific instrumentation, as defined by replacing [NAME] with the name of the instrumentation. The name is not case sensitive.
   default: true
   type: boolean
   category: instrumentation
@@ -76,7 +76,7 @@ settings:
 - env: OTEL_EXPORTER_OTLP_METRICS_ENDPOINT
   property: metrics.endpoint
   description: The metrics endpoint. Takes precedence over the value set in OTEL_EXPORTER_OTLP_ENDPOINT.
-  default: https://ingest.<realm>.signalfx.com/v2/datapoint/otlp
+  default: https://ingest.[realm].signalfx.com/v2/datapoint/otlp
   type: number
   category: metrics
 - env: OTEL_METRIC_EXPORT_INTERVAL
@@ -99,7 +99,7 @@ settings:
   category: propagator
 - env: OTEL_SERVICE_NAME
   property: serviceName
-  description: Name of the service or application you’re instrumenting. Takes precedence over the service name defined in the OTEL_RESOURCE_ATTRIBUTES variable.
+  description: Name of the service or application you are instrumenting. Takes precedence over the service name defined in the OTEL_RESOURCE_ATTRIBUTES variable.
   default: unnamed-node-service
   type: string
   category: general
@@ -129,7 +129,7 @@ settings:
   category: metrics
 - env: SPLUNK_METRICS_ENDPOINT
   property: metrics.endpoint
-  description: The metrics endpoint. Takes precedence over OTEL_EXPORTER_OTLP_METRICS_ENDPOINT. When SPLUNK_REALM is used, the default value is https://ingest.<realm>.signalfx.com/v2/datapoint/otlp.
+  description: The metrics endpoint. Takes precedence over OTEL_EXPORTER_OTLP_METRICS_ENDPOINT. When SPLUNK_REALM is used, the default value is https://ingest.[realm].signalfx.com/v2/datapoint/otlp.
   default: none
   type: string
   category: metrics
