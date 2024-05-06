@@ -61,7 +61,7 @@ settings:
   default: true
   type: boolean
   category: instrumentation
-- env: OTEL_INSTRUMENTATION_<NAME>_ENABLED
+- env: OTEL_INSTRUMENTATION_[NAME]_ENABLED
   property: none
   description: When set to true, this setting activates a specific instrumentation, as defined by replacing [NAME] with the name of the instrumentation. The name is not case sensitive.
   default: true
