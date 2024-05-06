@@ -1,162 +1,206 @@
 component: Splunk Distribution of OpenTelemetry JavaScript
 version: 2.8.0
 settings:
-- env: OTEL_ATTRIBUTE_VALUE_LENGTH_LIMIT
-  description: Maximum allowed attribute value size
-  default: 12000
-  type: number
-  category: instrumentation
 - env: OTEL_BSP_SCHEDULE_DELAY
+  property: 
   description: The delay in milliseconds between 2 consecutive bath span processor exports.
   default: 500
   type: number
   category: instrumentation
 - env: OTEL_EXPORTER_OTLP_CERTIFICATE
+  property: 
   description: Path to a certificate to use when verifying a server's TLS credentials.
   default: 
   type: string
   category: exporter
 - env: OTEL_EXPORTER_OTLP_CLIENT_CERTIFICATE
+  property: 
   description: Path to a certificate to use when verifying a client's TLS credentials.
   default: 
   type: string
   category: exporter
 - env: OTEL_EXPORTER_OTLP_CLIENT_KEY
+  property: 
   description: Path to client's private key to use in mTLS communication in PEM format.
   default: 
   type: string
   category: exporter
 - env: OTEL_EXPORTER_OTLP_ENDPOINT
+  property: endpoint
   description: The OTLP endpoint to export to.
   default: http://localhost:4317
   type: string
   category: exporter
 - env: OTEL_EXPORTER_OTLP_TRACES_PROTOCOL
+  property: 
   description: Chooses the trace exporter protocol. Allowed values are grpc and http/protobuf
   default: grpc
   type: string
   category: exporter
 - env: OTEL_EXPORTER_OTLP_METRICS_PROTOCOL
+  property: metrics.metricReaderFactory
   description: Chooses the metric exporter protocol. Allowed values are grpc and http/protobuf
   default: grpc
   type: string
   category: exporter
 - env: OTEL_EXPORTER_OTLP_PROTOCOL
+  property: 
   description: The protocol to use for OTLP exports.
   default: grpc
   type: string
   category: exporter
 - env: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+  property: 
   description: The traces OTLP endpoint to export to.
   default: http://localhost:4317
   type: string
   category: exporter
 - env: OTEL_INSTRUMENTATION_COMMON_DEFAULT_ENABLED
+  property: 
   description: Whether to activate all the embedded instrumentations. When you set this setting to false, use OTEL_INSTRUMENTATION_<NAME>_ENABLED=true to selectively turn on instrumentations.
   default: true
   type: boolean
   category: instrumentation
+- env: OTEL_INSTRUMENTATION_<NAME>_ENABLED
+  property: 
+  description: When set to true, this setting activates a specific instrumentation, as defined by replacing <NAME> with the name of the instrumentation. The name is not case sensitive.
+  default: true
+  type: boolean
+  category: instrumentation
 - env: OTEL_LOG_LEVEL
+  property: logLevel
   description: Log level for the OpenTelemetry diagnostic console logger. To activate debug logging, set the debug value. Available values are error, info, debug, and verbose.
   default: none
   type: string
   category: general
+- env: OTEL_EXPORTER_OTLP_METRICS_ENDPOINT
+  property: metrics.endpoint
+  description: The metrics endpoint. Takes precedence over the value set in OTEL_EXPORTER_OTLP_ENDPOINT.
+  default: https://ingest.<realm>.signalfx.com/v2/datapoint/otlp
+  type: number
+  category: metrics
 - env: OTEL_METRIC_EXPORT_INTERVAL
+  property: metrics.exportIntervalMillis
   description: The interval, in milliseconds, of metrics collection and exporting.
   default: 30000
   type: number
-  category: exporter
+  category: metrics
 - env: OTEL_METRICS_EXPORTER
+  property: metrics.metricReaderFactory
   description: Comma-separated list of metrics exporter to use. To output to the console, set the variable to console. If set to none, metric exports are turned off.
   default: otlp
   type: string
   category: exporter
 - env: OTEL_PROPAGATORS
+  property: tracing.propagators
   description: Comma-separated list of propagators you want to use.
   default: tracecontext,baggage
   type: string
-  category: general
+  category: propagator
 - env: OTEL_SERVICE_NAME
+  property: serviceName
   description: Name of the service or application you’re instrumenting. Takes precedence over the service name defined in the OTEL_RESOURCE_ATTRIBUTES variable.
   default: unnamed-node-service
   type: string
   category: general
-- env: OTEL_SPAN_LINK_COUNT_LIMIT
-  description: Maximum number of links per span.
-  default: 1000
-  type: number
-  category: general
 - env: OTEL_TRACES_EXPORTER
+  property: tracing.spanExporterFactory
   description: Comma-separated list of trace exporters to use. To output to the console, set the variable to console.
   default: otlp
   type: string
   category: exporter
 - env: SPLUNK_ACCESS_TOKEN
+  property: accessToken
   description: A Splunk authentication token that lets exporters send data directly to Splunk Observability Cloud. Required if you need to send data to the Splunk Observability Cloud ingest endpoint.
   default: 
   type: string
   category: general
 - env: SPLUNK_INSTRUMENTATION_METRICS_ENABLED
-  description: Emit metrics from instrumentation (e.g. http.server.duration)
+  property: 
+  description: Emit metrics from instrumentation (for example, http.server.duration)
   default: false
   type: boolean
   category: instrumentation
 - env: SPLUNK_METRICS_ENABLED
+  property: Activated by calling start()
   description: Activates metrics collection.
   default: false
   type: boolean
-  category: general
+  category: metrics
 - env: SPLUNK_METRICS_ENDPOINT
+  property: metrics.endpoint
   description: The metrics endpoint. Takes precedence over OTEL_EXPORTER_OTLP_METRICS_ENDPOINT. When SPLUNK_REALM is used, the default value is https://ingest.<realm>.signalfx.com/v2/datapoint/otlp.
   default: 
   type: string
-  category: general
-- env: SPLUNK_PROFILER_CALL_STACK_INTERVAL
-  description: Frequency with which call stacks are sampled, in milliseconds.
-  default: 1000
-  type: number
-  category: profiler
+  category: metrics
 - env: SPLUNK_PROFILER_ENABLED
+  property: profilingEnabled
   description: Activates AlwaysOn CPU profiling.
   default: false
   type: boolean
   category: profiler
 - env: SPLUNK_PROFILER_LOGS_ENDPOINT
+  property: profiling.endpoint
   description: The collector endpoint for profiler logs.
   default: http://localhost:4317
   type: string
   category: profiler
 - env: SPLUNK_PROFILER_MEMORY_ENABLED
+  property: profiling.memoryProfilingEnabled
   description: Activates memory profiling for AlwaysOn Profiling.
   default: false
   type: string
   category: profiler
+- env: SPLUNK_PROFILER_CALL_STACK_INTERVAL
+  property: profiling.callstackInterval
+  description: Frequency with which call stacks are sampled, in milliseconds.
+  default: 1000
+  type: number
+  category: profiler
 - env: SPLUNK_REALM
+  property: realm
   description: The name of your organization’s realm, for example, us0. When you set the realm, telemetry is sent directly to the ingest endpoint of Splunk Observability Cloud, bypassing the Splunk Distribution of OpenTelemetry Collector.
   default: 
   type: string
   category: general
 - env: SPLUNK_REDIS_INCLUDE_COMMAND_ARGS
+  property: 
   description: Whether to include the full Redis query in db.statement span attributes when using the Redis instrumentation.
   default: false
   type: boolean
   category: instrumentation
+- env: SPLUNK_GRAPHQL_RESOLVE_SPANS_ENABLED
+  property: 
+  description: Starting from version 2.7.0 of the instrumentation, GraphQL spans for resolvers are no longer generated. To collect resolve spans, set this environment variable to true. The default value is false.
+  default: false
+  type: boolean
+  category: instrumentation
 - env: SPLUNK_RUNTIME_METRICS_COLLECTION_INTERVAL
+  property: metrics.runtimeMetricsCollectionIntervalMillis
   description: The interval, in milliseconds, during which GC and event loop statistics are collected.
   default: 5000
   type: number
-  category: instrumentation
+  category: metrics
 - env: SPLUNK_RUNTIME_METRICS_ENABLED
+  property: metrics.runtimeMetricsEnabled
   description: Activates the collection and export of runtime metrics. Runtime metrics are only sent if the SPLUNK_METRICS_ENABLED environment variable is set to true or if memory profiling is activated.
   default: true
   type: boolean
-  category: instrumentation
+  category: metrics
+- env: SPLUNK_DEBUG_METRICS_ENABLED
+  property: metrics.debugMetricsEnabled
+  description: Activates the collection and export of internal debug metrics for troubleshooting. Debug metrics are only sent if the SPLUNK_METRICS_ENABLED environment variable is set to true.
+  default: true
+  type: boolean
+  category: metrics
 - env: SPLUNK_TRACE_RESPONSE_HEADER_ENABLED
+  property: tracing.serverTimingEnabled
   description: Activates the addition of server trace information to HTTP response headers.
   default: true
   type: boolean
   category: general
 - env: SPLUNK_TRACING_ENABLED
+  property: 
   description: Enables tracing.
   default: true
   type: boolean
@@ -420,37 +464,33 @@ dependencies:
     version: "^4.8.0"
     stability: stable
     source_href: "https://github.com/prebuild/node-gyp-build"
-  - name: "semver"
-    version: "^7.6.0"
-    stability: stable
   - name: "protobufjs"
     version: "^7.2.6"
     stability: stable
     source_href: "https://protobufjs.github.io/protobuf.js/"
+  - name: "semver"
+    version: "^7.6.0"
+    stability: stable
   - name: "@grpc/grpc-js"
     version: "^1.9.14"
-    stability: stable
-    source_href: "https://grpc.io/"
-  - name: "@grpc/proto-loader"
-    version: "^0.7.10"
     stability: stable
     source_href: "https://grpc.io/"
   - name: "@opentelemetry/api"
     version: "^1.8.0"
     stability: stable
     source_href: "https://github.com/open-telemetry/opentelemetry-js/tree/main/api"
-  - name: "@opentelemetry/api-logs"
-    version: "^0.51.0"
+  - name: "@grpc/proto-loader"
+    version: "^0.7.10"
     stability: stable
-    source_href: "https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/api-logs"
+    source_href: "https://grpc.io/"
   - name: "@opentelemetry/context-async-hooks"
     version: "1.24.0"
     stability: stable
     source_href: "https://github.com/open-telemetry/opentelemetry-js/tree/main/packages/opentelemetry-context-async-hooks"
-  - name: "@opentelemetry/core"
-    version: "1.24.0"
+  - name: "@opentelemetry/api-logs"
+    version: "^0.51.0"
     stability: stable
-    source_href: "https://github.com/open-telemetry/opentelemetry-js/tree/main/packages/opentelemetry-core"
+    source_href: "https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/api-logs"
   - name: "@opentelemetry/exporter-logs-otlp-http"
     version: "^0.51.0"
     stability: stable
@@ -459,6 +499,10 @@ dependencies:
     version: "0.51.0"
     stability: experimental
     source_href: "https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/opentelemetry-exporter-metrics-otlp-grpc"
+  - name: "@opentelemetry/core"
+    version: "1.24.0"
+    stability: stable
+    source_href: "https://github.com/open-telemetry/opentelemetry-js/tree/main/packages/opentelemetry-core"
   - name: "@opentelemetry/exporter-metrics-otlp-proto"
     version: "0.51.0"
     stability: experimental
@@ -499,14 +543,14 @@ dependencies:
     version: "0.9.0"
     stability: experimental
     source_href: "https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/plugins/node/instrumentation-dataloader#readme"
-  - name: "@opentelemetry/instrumentation-express"
-    version: "0.38.0"
-    stability: experimental
-    source_href: "https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/plugins/node/opentelemetry-instrumentation-express#readme"
   - name: "@opentelemetry/instrumentation-dns"
     version: "0.36.0"
     stability: experimental
     source_href: "https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/plugins/node/opentelemetry-instrumentation-dns#readme"
+  - name: "@opentelemetry/instrumentation-express"
+    version: "0.38.0"
+    stability: experimental
+    source_href: "https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/plugins/node/opentelemetry-instrumentation-express#readme"
   - name: "@opentelemetry/instrumentation-fastify"
     version: "0.36.0"
     stability: experimental
@@ -531,22 +575,22 @@ dependencies:
     version: "0.51.0"
     stability: experimental
     source_href: "https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/opentelemetry-instrumentation-http"
-  - name: "@opentelemetry/instrumentation-ioredis"
-    version: "0.40.0"
-    stability: experimental
-    source_href: "https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/plugins/node/opentelemetry-instrumentation-ioredis#readme"
   - name: "@opentelemetry/instrumentation-knex"
     version: "0.36.0"
     stability: experimental
     source_href: "https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/plugins/node/opentelemetry-instrumentation-knex#readme"
-  - name: "@opentelemetry/instrumentation-koa"
+  - name: "@opentelemetry/instrumentation-ioredis"
     version: "0.40.0"
     stability: experimental
-    source_href: "https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/plugins/node/opentelemetry-instrumentation-koa#readme"
+    source_href: "https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/plugins/node/opentelemetry-instrumentation-ioredis#readme"
   - name: "@opentelemetry/instrumentation-memcached"
     version: "0.36.0"
     stability: experimental
     source_href: "https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/plugins/node/opentelemetry-instrumentation-memcached#readme"
+  - name: "@opentelemetry/instrumentation-koa"
+    version: "0.40.0"
+    stability: experimental
+    source_href: "https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/plugins/node/opentelemetry-instrumentation-koa#readme"
   - name: "@opentelemetry/instrumentation-mongodb"
     version: "0.43.0"
     stability: experimental
@@ -571,14 +615,14 @@ dependencies:
     version: "0.36.0"
     stability: experimental
     source_href: "https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/plugins/node/opentelemetry-instrumentation-net#readme"
-  - name: "@opentelemetry/instrumentation-pino"
-    version: "0.38.0"
-    stability: experimental
-    source_href: "https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/plugins/node/opentelemetry-instrumentation-pino#readme"
   - name: "@opentelemetry/instrumentation-pg"
     version: "0.41.0"
     stability: experimental
     source_href: "https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/plugins/node/opentelemetry-instrumentation-pg#readme"
+  - name: "@opentelemetry/instrumentation-pino"
+    version: "0.38.0"
+    stability: experimental
+    source_href: "https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/plugins/node/opentelemetry-instrumentation-pino#readme"
   - name: "@opentelemetry/instrumentation-redis"
     version: "0.39.0"
     stability: experimental
@@ -591,14 +635,14 @@ dependencies:
     version: "0.38.0"
     stability: experimental
     source_href: "https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/plugins/node/opentelemetry-instrumentation-restify#readme"
-  - name: "@opentelemetry/instrumentation-tedious"
-    version: "0.10.0"
-    stability: experimental
-    source_href: "https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/plugins/node/instrumentation-tedious#readme"
   - name: "@opentelemetry/instrumentation-router"
     version: "0.37.0"
     stability: experimental
     source_href: "https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/plugins/node/opentelemetry-instrumentation-router#readme"
+  - name: "@opentelemetry/instrumentation-tedious"
+    version: "0.10.0"
+    stability: experimental
+    source_href: "https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/plugins/node/instrumentation-tedious#readme"
   - name: "@opentelemetry/instrumentation-winston"
     version: "0.37.0"
     stability: experimental
@@ -623,11 +667,11 @@ dependencies:
     version: "1.24.0"
     stability: stable
     source_href: "https://github.com/open-telemetry/opentelemetry-js/tree/main/packages/opentelemetry-sdk-trace-base"
-  - name: "@opentelemetry/semantic-conventions"
-    version: "1.24.0"
-    stability: stable
-    source_href: "https://github.com/open-telemetry/opentelemetry-js/tree/main/packages/opentelemetry-semantic-conventions"
   - name: "@opentelemetry/sdk-trace-node"
     version: "1.24.0"
     stability: stable
     source_href: "https://github.com/open-telemetry/opentelemetry-js/tree/main/packages/opentelemetry-sdk-trace-node"
+  - name: "@opentelemetry/semantic-conventions"
+    version: "1.24.0"
+    stability: stable
+    source_href: "https://github.com/open-telemetry/opentelemetry-js/tree/main/packages/opentelemetry-semantic-conventions"
