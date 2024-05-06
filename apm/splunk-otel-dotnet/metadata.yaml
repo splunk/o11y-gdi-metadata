@@ -1,13 +1,13 @@
 component: Splunk Distribution of OpenTelemetry .NET
-version: 1.4.0
+version: 1.5.0
 dependencies:
   - name: OpenTelemetry .NET
     source_href: https://github.com/open-telemetry/opentelemetry-dotnet
-    version: 1.7.0
+    version: 1.8.1
     stability: stable
   - name: OpenTelemetry .NET Automatic Instrumentation
     source_href: https://github.com/open-telemetry/opentelemetry-dotnet-instrumentation
-    version: 1.4.0
+    version: 1.6.0
     stability: stable
 settings:
   - env: SPLUNK_TRACE_RESPONSE_HEADER_ENABLED
@@ -75,6 +75,26 @@ settings:
     default: ''
     type: string
     category: exporter
+  - env: SPLUNK_PROFILER_ENABLED
+    description: Activates AlwaysOn Profiling.
+    default: 'false'
+    type: boolean
+    category: profiling
+  - env: SPLUNK_PROFILER_MEMORY_ENABLED
+    description: Activates memory profiling.
+    default: 'false'
+    type: boolean
+    category: profiling
+  - env: SPLUNK_PROFILER_LOGS_ENDPOINT
+    description: The collector endpoint for profiler logs.
+    default: 'http://localhost:4318/v1/logs'
+    type: string
+    category: profiling
+  - env: SPLUNK_PROFILER_CALL_STACK_INTERVAL
+    description: Frequency with which call stacks are sampled, in milliseconds.
+    default: '10000'
+    type: int
+    category: profiling
   - env: OTEL_PROPAGATORS
     description: Comma-separated list of propagators for the tracer. The default value is `tracecontext,baggage`. Supported values are `b3multi`, `b3`, `tracecontext`, and `baggage`.
     default: 'tracecontext,baggage'
@@ -145,6 +165,43 @@ settings:
     default: ''
     type: string
     category: instrumentation
+  - env: OTEL_DOTNET_AUTO_INSTRUMENTATION_ENABLED
+    description: Activates or deactivates all instrumentations. Can’t be set using the web.config or app.config files.
+    default: 'true'
+    type: boolean
+    category: instrumentation
+  - env: OTEL_DOTNET_AUTO_TRACES_INSTRUMENTATION_ENABLED
+    description: Activates or deactivates all trace instrumentations. Overrides `OTEL_DOTNET_AUTO_INSTRUMENTATION_ENABLED`. Inherits the value of the `OTEL_DOTNET_AUTO_INSTRUMENTATION_ENABLED` environment variable. Can’t be set using the web.config or app.config files.
+    default: ''
+    type: boolean
+    category: instrumentation
+  - env: OTEL_DOTNET_AUTO_TRACES_{INSTRUMENTATION}_INSTRUMENTATION_ENABLED
+    description: Activates or deactivates a specific trace instrumentation, where `{INSTRUMENTATION}` is the case-sensitive name of the instrumentation. Overrides `OTEL_DOTNET_AUTO_TRACES_INSTRUMENTATION_ENABLED`. Inherits the value of the `OTEL_DOTNET_AUTO_TRACES_INSTRUMENTATION_ENABLED` environment variable. Can’t be set using the web.config or app.config files. See Supported libraries for a complete list of supported instrumentations and their names.
+    default: ''
+    type: boolean
+    category: instrumentation
+  - env: OTEL_DOTNET_AUTO_METRICS_INSTRUMENTATION_ENABLED
+    description: Activates or deactivates all metric instrumentations. Overrides `OTEL_DOTNET_AUTO_INSTRUMENTATION_ENABLED`. Inherits the value of the `OTEL_DOTNET_AUTO_INSTRUMENTATION_ENABLED` environment variable. Can’t be set using the web.config or app.config files.
+    default: ''
+    type: boolean
+    category: instrumentation
+  - env: OTEL_DOTNET_AUTO_METRICS_{INSTRUMENTATION}_INSTRUMENTATION_ENABLED
+    description: Activates or deactivates a specific metric instrumentation, where `{INSTRUMENTATION}` is the case-sensitive name of the instrumentation. Overrides `OTEL_DOTNET_AUTO_METRICS_INSTRUMENTATION_ENABLED`. Inherits the value of the `OTEL_DOTNET_AUTO_METRICS_INSTRUMENTATION_ENABLED` environment variable. Can’t be set using the web.config or app.config files. See Supported libraries for a complete list of supported instrumentations and their names.
+    default: ''
+    type: boolean
+    category: instrumentation
+  - env: OTEL_DOTNET_AUTO_LOGS_INSTRUMENTATION_ENABLED
+    description: Activates or deactivates all log instrumentations. Overrides `OTEL_DOTNET_AUTO_INSTRUMENTATION_ENABLED`. Inherits the value of the `OTEL_DOTNET_AUTO_INSTRUMENTATION_ENABLED` environment variable. Can’t be set using the web.config or app.config files.
+    default: ''
+    type: boolean
+    category: instrumentation
+  - env: OTEL_DOTNET_AUTO_LOGS_{INSTRUMENTATION}_INSTRUMENTATION_ENABLED
+    description: >+
+      Activates or deactivates a specific log instrumentation, where `{INSTRUMENTATION}` is the case-sensitive name of the instrumentation. Overrides `OTEL_DOTNET_AUTO_LOGS_INSTRUMENTATION_ENABLED`. Inherits the value of the `OTEL_DOTNET_AUTO_LOGS_INSTRUMENTATION_ENABLED` environment variable. Can’t be set using the web.config or app.config files. See Supported libraries for a complete list of supported instrumentations and their names.
+
+    default: ''
+    type: boolean
+    category: instrumentation
   - env: OTEL_LOG_LEVEL
     description: Sets the logging level for instrumentation log messages. Possible values are `none`, `error`, `warn`, `info`, and `debug`. The default value is `info`. Can't be set using the web.config or app.config files.
     default: 'info'
@@ -188,12 +245,12 @@ instrumentations:
       - name: ASP.NET Instrumentation for OpenTelemetry
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Instrumentation.AspNet
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.AspNet
-        version: 1.7.0-beta.2
+        version: 1.8.0-beta.2
         stability: beta
       - name: ASP.NET Telemetry HttpModule for OpenTelemetry
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Instrumentation.AspNet.TelemetryHttpModule
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.AspNet.TelemetryHttpModule
-        version: 1.7.0-beta.2
+        version: 1.8.0-beta.1
         stability: beta
     signals:
       - traces: []
@@ -201,6 +258,12 @@ instrumentations:
           - metric_name: http.server.request.duration
             instrument: histogram
             description: Measures the duration of inbound HTTP requests.
+    settings:
+      - env: OTEL_DOTNET_EXPERIMENTAL_ASPNET_DISABLE_URL_QUERY_REDACTION
+        description: 'Whether the ASP.NET instrumentation turns off redaction of the `url.query` attribute value. '
+        default: 'false'
+        type: boolean
+        category: instrumentation
   - keys:
       - ASPNETCORE
     instrumented_components:
@@ -213,7 +276,7 @@ instrumentations:
       - name: ASP.NET Core Instrumentation for OpenTelemetry .NET
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet/tree/main/src/OpenTelemetry.Instrumentation.AspNetCore
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.AspNetCore
-        version: 1.7.1
+        version: 1.8.1
         stability: beta
     signals:
       - traces: []
@@ -275,6 +338,12 @@ instrumentations:
           - metric_name: aspnetcore.rate_limiting.requests
             instrument: counter
             description: Number of requests that tried to acquire a rate limiting lease. Requests could be rejected by global or endpoint rate limiting policies. Or the request could be canceled while waiting for the lease. Supported only on .NET8+
+    settings:
+      - env: OTEL_DOTNET_EXPERIMENTAL_ASPNETCORE_DISABLE_URL_QUERY_REDACTION
+        description: Whether the ASP.NET Core instrumentation turns off redaction of the `url.query` attribute value.
+        default: 'false'
+        type: boolean
+        category: instrumentation
   - keys:
       - AZURE
     instrumented_components:
@@ -315,7 +384,7 @@ instrumentations:
       - name: EntityFrameworkCore Instrumentation for OpenTelemetry .NET
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Instrumentation.EntityFrameworkCore
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.EntityFrameworkCore
-        version: 1.0.0-beta.10
+        version: 1.0.0-beta.11
         stability: beta
     signals:
       - traces: []
@@ -352,7 +421,7 @@ instrumentations:
       - name: Grpc.Net.Client Instrumentation for OpenTelemetry
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet/tree/main/src/OpenTelemetry.Instrumentation.GrpcNetClient
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.GrpcNetClient
-        version: 1.7.0-beta.1
+        version: 1.8.0-beta.1
         stability: beta
     signals:
       - traces: []
@@ -369,7 +438,7 @@ instrumentations:
       - name: HttpClient and HttpWebRequest instrumentation for OpenTelemetry
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet/tree/main/src/OpenTelemetry.Instrumentation.Http
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.Http
-        version: 1.7.1
+        version: 1.8.1
         stability: beta
     signals:
       - traces: []
@@ -392,6 +461,12 @@ instrumentations:
           - metric_name: dns.lookup.duration
             instrument: histogram
             description: Measures the time taken to perform a DNS lookup. Supported only on .NET8+
+    settings:
+      - env: OTEL_DOTNET_EXPERIMENTAL_HTTPCLIENT_DISABLE_URL_QUERY_REDACTION
+        description: Whether the HTTP client instrumentation turns off redaction of the `url.full` attribute value.
+        default: 'false'
+        type: boolean
+        category: instrumentation
   - keys:
       - KAFKA
     instrumented_components:
@@ -480,7 +555,7 @@ instrumentations:
       - name: QuartzNET Instrumentation for OpenTelemetry .NET
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Instrumentation.Quartz
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.Quartz
-        version: 1.0.0-beta.1
+        version: 1.0.0-beta.2
         stability: beta
     signals:
       - traces: []
@@ -499,7 +574,7 @@ instrumentations:
       - name: SqlClient instrumentation for OpenTelemetry .NET
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet/tree/main/src/OpenTelemetry.Instrumentation.SqlClient
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.SqlClient
-        version: 1.7.0-beta.1
+        version: 1.8.0-beta.1
         stability: beta
     signals:
       - traces: []
@@ -521,7 +596,7 @@ instrumentations:
       - name: StackExchange.Redis Instrumentation for OpenTelemetry
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Instrumentation.StackExchangeRedis
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.StackExchangeRedis
-        version: 1.0.0-rc9.13
+        version: 1.0.0-rc9.14
         stability: beta
     signals:
       - traces: []
@@ -531,14 +606,14 @@ instrumentations:
     instrumented_components:
       - name: System.ServiceModel
         supported_versions: 4.7.0 and higher of `System.ServiceModel.Primitives`
-    description: Service side not supported on .NET. `WCFCLIENT for client side instrumentation and `WCFSERVICE` for service side instrumentation
+    description: Service side not supported on .NET. `WCFCLIENT` for client side instrumentation and `WCFSERVICE` for service side instrumentation
     stability: beta
     support: community
     dependencies:
       - name: WCF Instrumentation for OpenTelemetry .NET
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Instrumentation.Wcf
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.Wcf
-        version: 1.0.0-rc.15
+        version: 1.0.0-rc.16
         stability: beta
     signals:
       - traces: []
@@ -552,7 +627,7 @@ instrumentations:
       - name: Runtime Instrumentation for OpenTelemetry .NET
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Instrumentation.Runtime
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.Runtime
-        version: 1.7.0
+        version: 1.8.0
         stability: stable
     signals:
       - metrics:
@@ -617,7 +692,7 @@ instrumentations:
       - name: Process Instrumentation for OpenTelemetry .NET
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Instrumentation.Process
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.Process
-        version: 0.5.0-beta.4
+        version: 0.5.0-beta.5
         stability: beta
     signals:
       - metrics:
@@ -665,7 +740,7 @@ resource_detectors:
       - name: Resource Detectors for Azure cloud environments
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.ResourceDetectors.Azure
         package_href: https://www.nuget.org/packages/OpenTelemetry.ResourceDetectors.Azure
-        version: 1.0.0-beta.5
+        version: 1.0.0-beta.6
         stability: beta
   - key: CONTAINER
     description: Container detector. For example, Docker or Podman containers. Not supported on .NET Framework.
@@ -677,7 +752,7 @@ resource_detectors:
       - name: Container Resource Detectors
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.ResourceDetectors.Container
         package_href: https://www.nuget.org/packages/OpenTelemetry.ResourceDetectors.Container
-        version: 1.0.0-beta.6
+        version: 1.0.0-beta.7
         stability: beta
   - key: HOST
     description: Host detector.
@@ -689,11 +764,12 @@ resource_detectors:
       - name: Host Resource Detectors
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.ResourceDetectors.Host
         package_href: https://www.nuget.org/packages/OpenTelemetry.ResourceDetectors.Host
-        version: 0.1.0-alpha.2
+        version: 0.1.0-alpha.3
         stability: alpha
   - key: PROCESS
     description: Process detector.
     attributes:
+      - id: process.owner
       - id: process.pid
     stability: alpha
     support: community
@@ -701,7 +777,7 @@ resource_detectors:
       - name: Process Resource Detectors
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.ResourceDetectors.Process
         package_href: https://www.nuget.org/packages/OpenTelemetry.ResourceDetectors.Process
-        version: 0.1.0-alpha.2
+        version: 0.1.0-alpha.3
         stability: alpha
   - key: PROCESSRUNTIME
     description: Process Runtime detector.
@@ -715,5 +791,5 @@ resource_detectors:
       - name: Process Runtime Resource Detectors
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.ResourceDetectors.ProcessRuntime
         package_href: https://www.nuget.org/packages/OpenTelemetry.ResourceDetectors.ProcessRuntime
-        version: 0.1.0-alpha.2
+        version: 0.1.0-alpha.3
         stability: alpha
