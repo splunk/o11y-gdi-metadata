@@ -2,25 +2,25 @@ component: Splunk Distribution of OpenTelemetry JavaScript
 version: 2.8.0
 settings:
 - env: OTEL_BSP_SCHEDULE_DELAY
-  property: 
+  property: ''
   description: The delay in milliseconds between 2 consecutive bath span processor exports.
   default: 500
   type: number
   category: instrumentation
 - env: OTEL_EXPORTER_OTLP_CERTIFICATE
-  property: 
+  property: ''
   description: Path to a certificate to use when verifying a server's TLS credentials.
   default: 
   type: string
   category: exporter
 - env: OTEL_EXPORTER_OTLP_CLIENT_CERTIFICATE
-  property: 
+  property: ''
   description: Path to a certificate to use when verifying a client's TLS credentials.
   default: 
   type: string
   category: exporter
 - env: OTEL_EXPORTER_OTLP_CLIENT_KEY
-  property: 
+  property: ''
   description: Path to client's private key to use in mTLS communication in PEM format.
   default: 
   type: string
@@ -32,7 +32,7 @@ settings:
   type: string
   category: exporter
 - env: OTEL_EXPORTER_OTLP_TRACES_PROTOCOL
-  property: 
+  property: ''
   description: Chooses the trace exporter protocol. Allowed values are grpc and http/protobuf
   default: grpc
   type: string
@@ -44,25 +44,25 @@ settings:
   type: string
   category: exporter
 - env: OTEL_EXPORTER_OTLP_PROTOCOL
-  property: 
+  property: ''
   description: The protocol to use for OTLP exports.
   default: grpc
   type: string
   category: exporter
 - env: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
-  property: 
+  property: ''
   description: The traces OTLP endpoint to export to.
   default: http://localhost:4317
   type: string
   category: exporter
 - env: OTEL_INSTRUMENTATION_COMMON_DEFAULT_ENABLED
-  property: 
+  property: ''
   description: Whether to activate all the embedded instrumentations. When you set this setting to false, use OTEL_INSTRUMENTATION_<NAME>_ENABLED=true to selectively turn on instrumentations.
   default: true
   type: boolean
   category: instrumentation
 - env: OTEL_INSTRUMENTATION_<NAME>_ENABLED
-  property: 
+  property: ''
   description: When set to true, this setting activates a specific instrumentation, as defined by replacing <NAME> with the name of the instrumentation. The name is not case sensitive.
   default: true
   type: boolean
@@ -116,7 +116,7 @@ settings:
   type: string
   category: general
 - env: SPLUNK_INSTRUMENTATION_METRICS_ENABLED
-  property: 
+  property: ''
   description: Emit metrics from instrumentation (for example, http.server.duration)
   default: false
   type: boolean
@@ -164,13 +164,13 @@ settings:
   type: string
   category: general
 - env: SPLUNK_REDIS_INCLUDE_COMMAND_ARGS
-  property: 
+  property: ''
   description: Whether to include the full Redis query in db.statement span attributes when using the Redis instrumentation.
   default: false
   type: boolean
   category: instrumentation
 - env: SPLUNK_GRAPHQL_RESOLVE_SPANS_ENABLED
-  property: 
+  property: ''
   description: Starting from version 2.7.0 of the instrumentation, GraphQL spans for resolvers are no longer generated. To collect resolve spans, set this environment variable to true. The default value is false.
   default: false
   type: boolean
@@ -200,7 +200,7 @@ settings:
   type: boolean
   category: general
 - env: SPLUNK_TRACING_ENABLED
-  property: 
+  property: ''
   description: Enables tracing.
   default: true
   type: boolean
