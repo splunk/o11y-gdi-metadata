@@ -159,7 +159,7 @@ settings:
   category: profiler
 - env: SPLUNK_REALM
   property: realm
-  description: The name of your organization’s realm, for example, us0. When you set the realm, telemetry is sent directly to the ingest endpoint of Splunk Observability Cloud, bypassing the Splunk Distribution of OpenTelemetry Collector.
+  description: The name of your organization realm, for example, us0. When you set the realm, telemetry is sent directly to the ingest endpoint of Splunk Observability Cloud, bypassing the Splunk Distribution of OpenTelemetry Collector.
   default: none
   type: string
   category: general
