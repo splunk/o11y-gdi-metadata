@@ -10,19 +10,19 @@ settings:
 - env: OTEL_EXPORTER_OTLP_CERTIFICATE
   property: ''
   description: Path to a certificate to use when verifying a server's TLS credentials.
-  default: 
+  default: ''
   type: string
   category: exporter
 - env: OTEL_EXPORTER_OTLP_CLIENT_CERTIFICATE
   property: ''
   description: Path to a certificate to use when verifying a client's TLS credentials.
-  default: 
+  default: ''
   type: string
   category: exporter
 - env: OTEL_EXPORTER_OTLP_CLIENT_KEY
   property: ''
   description: Path to client's private key to use in mTLS communication in PEM format.
-  default: 
+  default: ''
   type: string
   category: exporter
 - env: OTEL_EXPORTER_OTLP_ENDPOINT
@@ -112,7 +112,7 @@ settings:
 - env: SPLUNK_ACCESS_TOKEN
   property: accessToken
   description: A Splunk authentication token that lets exporters send data directly to Splunk Observability Cloud. Required if you need to send data to the Splunk Observability Cloud ingest endpoint.
-  default: 
+  default: ''
   type: string
   category: general
 - env: SPLUNK_INSTRUMENTATION_METRICS_ENABLED
@@ -130,7 +130,7 @@ settings:
 - env: SPLUNK_METRICS_ENDPOINT
   property: metrics.endpoint
   description: The metrics endpoint. Takes precedence over OTEL_EXPORTER_OTLP_METRICS_ENDPOINT. When SPLUNK_REALM is used, the default value is https://ingest.<realm>.signalfx.com/v2/datapoint/otlp.
-  default: 
+  default: ''
   type: string
   category: metrics
 - env: SPLUNK_PROFILER_ENABLED
@@ -160,7 +160,7 @@ settings:
 - env: SPLUNK_REALM
   property: realm
   description: The name of your organization’s realm, for example, us0. When you set the realm, telemetry is sent directly to the ingest endpoint of Splunk Observability Cloud, bypassing the Splunk Distribution of OpenTelemetry Collector.
-  default: 
+  default: ''
   type: string
   category: general
 - env: SPLUNK_REDIS_INCLUDE_COMMAND_ARGS
