@@ -530,6 +530,15 @@ Navigators:
       instance:
       - MySQL host
     importQualifiers: threads.connected (plugin =  mysql);
+  MySQL hosts(OTEL):
+    category_display_name: Datastores
+    associated_dashboards:
+      aggregated:
+      - Hosts
+      instance:
+      - Host
+    importQualifiers: mysql.operations (operation =  *) & (host.name =  *);  OR mysql.commands
+      (host.name =  *) & (command =  *);
   NGINX servers:
     category_display_name: Web Servers
     associated_dashboards:
