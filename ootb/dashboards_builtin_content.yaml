@@ -1192,7 +1192,7 @@ Dashboards:
       !=  *) & (cloud.provider !=  *) & (AWSUniqueId !=  *);
   Host - MySQL(OTEL):
     dashboard_group: MySQL(OTEL)
-    view_support: N/A
+    view_support: instance
     importQualifiers: mysql.operations (operation =  *) & (host.name =  *);  OR mysql.commands
       (host.name =  *) & (command =  *);
   Host - SAP HANA:
@@ -1214,7 +1214,7 @@ Dashboards:
       !=  *) & (cloud.provider !=  *) & (AWSUniqueId !=  *);
   Hosts - MySQL(OTEL):
     dashboard_group: MySQL(OTEL)
-    view_support: N/A
+    view_support: aggregated
     importQualifiers: mysql.operations (operation =  *) & (host.name =  *);  OR mysql.commands
       (host.name =  *) & (command =  *);
   Hosts with agent installed:
