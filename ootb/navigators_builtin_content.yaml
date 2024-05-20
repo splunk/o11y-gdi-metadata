@@ -522,6 +522,15 @@ Navigators:
       instance:
       - MongoDB host
     importQualifiers: counter.network.numRequests (plugin =  mongo);
+  MongoDB hosts(OTEL):
+    category_display_name: Datastores
+    associated_dashboards:
+      aggregated:
+      - Hosts
+      instance:
+      - Host
+    importQualifiers: mongodb.storage.size (host.name =  *);  OR mongodb.memory.usage
+      (host.name =  *) & (database =  *);
   MySQL hosts:
     category_display_name: Datastores
     associated_dashboards:
