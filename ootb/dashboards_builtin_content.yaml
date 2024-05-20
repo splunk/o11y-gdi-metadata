@@ -1182,9 +1182,10 @@ Dashboards:
     view_support: N/A
     importQualifiers: heroku.memory_quota (*);
   Host:
-    dashboard_group: PostgreSQL(OTel)
+    dashboard_group: MongoDB(OTEL)
     view_support: instance
-    importQualifiers: postgresql.backends (*);  OR postgresql.db_size (*);
+    importQualifiers: mongodb.storage.size (host.name =  *);  OR mongodb.memory.usage
+      (host.name =  *) & (database =  *);
   Host - Data Center Hosts:
     dashboard_group: Data Center Hosts
     view_support: instance
@@ -1195,6 +1196,10 @@ Dashboards:
     view_support: instance
     importQualifiers: mysql.operations (operation =  *) & (host.name =  *);  OR mysql.commands
       (host.name =  *) & (command =  *);
+  Host - PostgreSQL(OTel):
+    dashboard_group: PostgreSQL(OTel)
+    view_support: instance
+    importQualifiers: postgresql.backends (*);  OR postgresql.db_size (*);
   Host - SAP HANA:
     dashboard_group: SAP HANA
     view_support: N/A
@@ -1204,9 +1209,10 @@ Dashboards:
     view_support: N/A
     importQualifiers: cpu.utilization (*);
   Hosts:
-    dashboard_group: PostgreSQL(OTel)
+    dashboard_group: MongoDB(OTEL)
     view_support: aggregated
-    importQualifiers: postgresql.backends (*);  OR postgresql.db_size (*);
+    importQualifiers: mongodb.storage.size (host.name =  *);  OR mongodb.memory.usage
+      (host.name =  *) & (database =  *);
   Hosts - Data Center Hosts:
     dashboard_group: Data Center Hosts
     view_support: aggregated
@@ -1217,6 +1223,10 @@ Dashboards:
     view_support: aggregated
     importQualifiers: mysql.operations (operation =  *) & (host.name =  *);  OR mysql.commands
       (host.name =  *) & (command =  *);
+  Hosts - PostgreSQL(OTel):
+    dashboard_group: PostgreSQL(OTel)
+    view_support: aggregated
+    importQualifiers: postgresql.backends (*);  OR postgresql.db_size (*);
   Hosts with agent installed:
     dashboard_group: Hosts with agent installed
     view_support: N/A
