@@ -1292,6 +1292,10 @@ Dashboards:
     dashboard_group: APM java services
     view_support: N/A
     importQualifiers: runtime.jvm.classes.loaded (*);
+  Java runtime metrics (Otel 2.x):
+    dashboard_group: APM java services (Otel 2.x)
+    view_support: N/A
+    importQualifiers: jvm.class.loaded (*);
   Jenkins:
     dashboard_group: Jenkins
     view_support: N/A
@@ -1960,6 +1964,10 @@ Dashboards:
     dashboard_group: APM java services
     view_support: N/A
     importQualifiers: runtime.jvm.classes.loaded (*);
+  Service - APM java services (Otel 2.x):
+    dashboard_group: APM java services (Otel 2.x)
+    view_support: N/A
+    importQualifiers: jvm.class.loaded (*);
   Service - SAP HANA:
     dashboard_group: SAP HANA
     view_support: N/A
@@ -1968,6 +1976,10 @@ Dashboards:
     dashboard_group: "\xB5APM PG"
     view_support: N/A
     importQualifiers: spans.count (service =  *);
+  Service Endpoint:
+    dashboard_group: APM java services (Otel 2.x)
+    view_support: N/A
+    importQualifiers: jvm.class.loaded (*);
   Service endpoint:
     dashboard_group: APM services
     view_support: N/A
