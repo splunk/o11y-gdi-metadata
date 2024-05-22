@@ -1293,7 +1293,7 @@ Dashboards:
     view_support: N/A
     importQualifiers: runtime.jvm.classes.loaded (*);
   Java runtime metrics (Otel 2.x):
-    dashboard_group: APM java services (Otel 2.x)
+    dashboard_group: APM Java services (OTel 2.x)
     view_support: N/A
     importQualifiers: jvm.class.loaded (*);
   Jenkins:
@@ -1956,6 +1956,10 @@ Dashboards:
     dashboard_group: APM .NET services
     view_support: N/A
     importQualifiers: process.runtime.dotnet.gc.heap.size (*);
+  Service - APM Java services (OTel 2.x):
+    dashboard_group: APM Java services (OTel 2.x)
+    view_support: N/A
+    importQualifiers: jvm.class.loaded (*);
   Service - APM NodeJS services:
     dashboard_group: APM NodeJS services
     view_support: N/A
@@ -1964,10 +1968,6 @@ Dashboards:
     dashboard_group: APM java services
     view_support: N/A
     importQualifiers: runtime.jvm.classes.loaded (*);
-  Service - APM java services (Otel 2.x):
-    dashboard_group: APM java services (Otel 2.x)
-    view_support: N/A
-    importQualifiers: jvm.class.loaded (*);
   Service - SAP HANA:
     dashboard_group: SAP HANA
     view_support: N/A
@@ -1977,7 +1977,7 @@ Dashboards:
     view_support: N/A
     importQualifiers: spans.count (service =  *);
   Service Endpoint:
-    dashboard_group: APM java services (Otel 2.x)
+    dashboard_group: APM Java services (OTel 2.x)
     view_support: N/A
     importQualifiers: jvm.class.loaded (*);
   Service endpoint:
