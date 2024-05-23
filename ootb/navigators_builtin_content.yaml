@@ -522,7 +522,7 @@ Navigators:
       instance:
       - MongoDB host
     importQualifiers: counter.network.numRequests (plugin =  mongo);
-  MongoDB hosts(OTEL):
+  MongoDB hosts (OTel):
     category_display_name: Datastores
     associated_dashboards:
       aggregated:
@@ -539,7 +539,7 @@ Navigators:
       instance:
       - MySQL host
     importQualifiers: threads.connected (plugin =  mysql);
-  MySQL hosts(OTEL):
+  MySQL hosts (OTel):
     category_display_name: Datastores
     associated_dashboards:
       aggregated:
@@ -653,7 +653,7 @@ Navigators:
       instance:
       - Redis instance
     importQualifiers: bytes.used_memory (plugin =  redis_info);
-  Redis instances(OTEL):
+  Redis instances (OTel):
     category_display_name: Datastores
     associated_dashboards:
       aggregated:
