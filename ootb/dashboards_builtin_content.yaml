@@ -776,13 +776,13 @@ Dashboards:
     view_support: N/A
     importQualifiers: pg_numbackends (plugin =  postgresql);
   Databases:
-    dashboard_group: PostgreSQL(OTel)
-    view_support: aggregated
-    importQualifiers: postgresql.backends (*);  OR postgresql.db_size (*);
-  Databases - PostgreSQL(Smart Agent):
     dashboard_group: PostgreSQL(Smart Agent)
     view_support: N/A
     importQualifiers: pg_numbackends (plugin =  postgresql);
+  Databases - PostgreSQL(OTel):
+    dashboard_group: PostgreSQL(OTel)
+    view_support: aggregated
+    importQualifiers: postgresql.backends (*);  OR postgresql.db_size (*);
   Datanode:
     dashboard_group: Hadoop HDFS
     view_support: N/A
@@ -1182,20 +1182,20 @@ Dashboards:
     view_support: N/A
     importQualifiers: heroku.memory_quota (*);
   Host:
-    dashboard_group: MongoDB(OTEL)
+    dashboard_group: MySQL (OTel)
     view_support: instance
-    importQualifiers: mongodb.storage.size (host.name =  *);  OR mongodb.memory.usage
-      (host.name =  *) & (database =  *);
+    importQualifiers: mysql.operations (operation =  *) & (host.name =  *);  OR mysql.commands
+      (host.name =  *) & (command =  *);
   Host - Data Center Hosts:
     dashboard_group: Data Center Hosts
     view_support: instance
     importQualifiers: cpu.utilization (host =  *) & (gcp_id !=  *) & (azure_resource_id
       !=  *) & (cloud.provider !=  *) & (AWSUniqueId !=  *);
-  Host - MySQL(OTEL):
-    dashboard_group: MySQL(OTEL)
+  Host - MongoDB (OTel):
+    dashboard_group: MongoDB (OTel)
     view_support: instance
-    importQualifiers: mysql.operations (operation =  *) & (host.name =  *);  OR mysql.commands
-      (host.name =  *) & (command =  *);
+    importQualifiers: mongodb.storage.size (host.name =  *);  OR mongodb.memory.usage
+      (host.name =  *) & (database =  *);
   Host - PostgreSQL(OTel):
     dashboard_group: PostgreSQL(OTel)
     view_support: instance
@@ -1209,20 +1209,20 @@ Dashboards:
     view_support: N/A
     importQualifiers: cpu.utilization (*);
   Hosts:
-    dashboard_group: MongoDB(OTEL)
+    dashboard_group: MySQL (OTel)
     view_support: aggregated
-    importQualifiers: mongodb.storage.size (host.name =  *);  OR mongodb.memory.usage
-      (host.name =  *) & (database =  *);
+    importQualifiers: mysql.operations (operation =  *) & (host.name =  *);  OR mysql.commands
+      (host.name =  *) & (command =  *);
   Hosts - Data Center Hosts:
     dashboard_group: Data Center Hosts
     view_support: aggregated
     importQualifiers: cpu.utilization (host =  *) & (gcp_id !=  *) & (azure_resource_id
       !=  *) & (cloud.provider !=  *) & (AWSUniqueId !=  *);
-  Hosts - MySQL(OTEL):
-    dashboard_group: MySQL(OTEL)
+  Hosts - MongoDB (OTel):
+    dashboard_group: MongoDB (OTel)
     view_support: aggregated
-    importQualifiers: mysql.operations (operation =  *) & (host.name =  *);  OR mysql.commands
-      (host.name =  *) & (command =  *);
+    importQualifiers: mongodb.storage.size (host.name =  *);  OR mongodb.memory.usage
+      (host.name =  *) & (database =  *);
   Hosts - PostgreSQL(OTel):
     dashboard_group: PostgreSQL(OTel)
     view_support: aggregated
@@ -1648,7 +1648,7 @@ Dashboards:
     view_support: aggregated
     importQualifiers: threads.connected (plugin =  mysql);
   MySQL summary:
-    dashboard_group: MySQL(OTEL)
+    dashboard_group: MySQL (OTel)
     view_support: N/A
     importQualifiers: mysql.operations (operation =  *) & (host.name =  *);  OR mysql.commands
       (host.name =  *) & (command =  *);
@@ -1869,23 +1869,23 @@ Dashboards:
     view_support: instance
     importQualifiers: gauge.node.uptime (plugin =  rabbitmq);
   Redis instance:
-    dashboard_group: Redis
-    view_support: instance
-    importQualifiers: bytes.used_memory (plugin =  redis_info);
-  Redis instance - Redis(OTEL):
-    dashboard_group: Redis(OTEL)
+    dashboard_group: Redis (OTel)
     view_support: instance
     importQualifiers: redis.cpu.time (host.name =  *);  OR redis.uptime (host.name
       =  *);
+  Redis instance - Redis:
+    dashboard_group: Redis
+    view_support: instance
+    importQualifiers: bytes.used_memory (plugin =  redis_info);
   Redis instances:
-    dashboard_group: Redis
-    view_support: aggregated
-    importQualifiers: bytes.used_memory (plugin =  redis_info);
-  Redis instances - Redis(OTEL):
-    dashboard_group: Redis(OTEL)
+    dashboard_group: Redis (OTel)
     view_support: aggregated
     importQualifiers: redis.cpu.time (host.name =  *);  OR redis.uptime (host.name
       =  *);
+  Redis instances - Redis:
+    dashboard_group: Redis
+    view_support: aggregated
+    importQualifiers: bytes.used_memory (plugin =  redis_info);
   Replica sets:
     dashboard_group: MongoDB atlas
     view_support: N/A
