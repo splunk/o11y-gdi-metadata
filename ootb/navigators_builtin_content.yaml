@@ -660,7 +660,8 @@ Navigators:
       - Redis instances
       instance:
       - Redis instance
-    importQualifiers: redis.keyspace.hits (redis.version =  *) & (host.name =  *);
+    importQualifiers: redis.cpu.time (host.name =  *);  OR redis.uptime (host.name
+      =  *);
   Redshift:
     category_display_name: Amazon Web Services
     associated_dashboards:
