@@ -299,7 +299,8 @@ Navigators:
       - Elasticsearch clusters
       instance:
       - Elasticsearch cluster
-    importQualifiers: '*.indices.indexing.index-total (plugin =  elasticsearch);'
+    importQualifiers: counter.indices.indexing.index-total (plugin =  elasticsearch);  OR
+      elasticsearch.indices.indexing.index-total (plugin =  elasticsearch);
   Elasticsearch indexes:
     category_display_name: Datastores
     associated_dashboards:
@@ -307,7 +308,7 @@ Navigators:
       - Elasticsearch indexes
       instance:
       - Elasticsearch index
-    importQualifiers: '*.indices.indexing.index-total (plugin =  elasticsearch);'
+    importQualifiers: counter.indices.total.indexing.index-total (plugin =  elasticsearch);
   Elasticsearch nodes:
     category_display_name: Datastores
     associated_dashboards:
@@ -315,7 +316,8 @@ Navigators:
       - Elasticsearch nodes
       instance:
       - Elasticsearch node
-    importQualifiers: '*.indices.indexing.index-total (plugin =  elasticsearch);'
+    importQualifiers: counter.indices.indexing.index-total (plugin =  elasticsearch);  OR
+      elasticsearch.indices.indexing.index-total (plugin =  elasticsearch);
   Event hubs:
     category_display_name: Microsoft Azure
     associated_dashboards:
