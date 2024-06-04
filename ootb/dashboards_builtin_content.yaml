@@ -1860,6 +1860,10 @@ Dashboards:
     importQualifiers: service.request.count (sf_environment =  *) & (sf_service =  *);  OR
       sf.org.numLogsReceivedByToken (*);  OR rum.page_view.count (*);  OR rum.page_view.count
       (sf_ua_browsername =  *);  OR sf.org.apm.numContainers (*);
+  RUM entitlements:
+    dashboard_group: Organization metrics
+    view_support: N/A
+    importQualifiers: sf.org.subscription.customMetrics (*);
   RabbitMQ:
     dashboard_group: RabbitMQ
     view_support: aggregated
