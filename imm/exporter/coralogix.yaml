@@ -1,0 +1,517 @@
+type: '*coralogixexporter.Config'
+doc: |
+  Config defines by Coralogix.
+fields:
+- name: sending_queue
+  type: exporterhelper.QueueSettings
+  kind: struct
+  fields:
+  - name: enabled
+    kind: bool
+    default: true
+  - name: num_consumers
+    kind: int
+    default: 10
+  - name: queue_size
+    kind: int
+    default: 1000
+  - name: storage
+    type: '*component.ID'
+    kind: ptr
+- name: retry_on_failure
+  type: exporterhelper.RetrySettings
+  kind: struct
+  fields:
+  - name: enabled
+    kind: bool
+    default: true
+  - name: initial_interval
+    type: time.Duration
+    kind: int64
+    default: 5s
+  - name: randomization_factor
+    kind: float64
+  - name: multiplier
+    kind: float64
+  - name: max_interval
+    type: time.Duration
+    kind: int64
+    default: 30s
+  - name: max_elapsed_time
+    type: time.Duration
+    kind: int64
+    default: 5m0s
+- name: timeout
+  type: time.Duration
+  kind: int64
+  default: 5s
+- name: domain
+  kind: string
+  default: ""
+  doc: |
+    Coralogix domain
+- name: domain_settings
+  type: configgrpc.GRPCClientSettings
+  kind: struct
+  doc: |
+    GRPC Settings used with Domain
+  fields:
+  - name: endpoint
+    kind: string
+    default: ""
+  - name: compression
+    type: configcompression.CompressionType
+    kind: string
+    default: gzip
+  - name: tls
+    type: configtls.TLSClientSetting
+    kind: struct
+    fields:
+    - name: ca_file
+      kind: string
+      default: ""
+    - name: ca_pem
+      type: configopaque.String
+      kind: string
+      default: ""
+    - name: cert_file
+      kind: string
+      default: ""
+    - name: cert_pem
+      type: configopaque.String
+      kind: string
+      default: ""
+    - name: key_file
+      kind: string
+      default: ""
+    - name: key_pem
+      type: configopaque.String
+      kind: string
+      default: ""
+    - name: min_version
+      kind: string
+      default: ""
+    - name: max_version
+      kind: string
+      default: ""
+    - name: reload_interval
+      type: time.Duration
+      kind: int64
+    - name: insecure
+      kind: bool
+      default: false
+    - name: insecure_skip_verify
+      kind: bool
+      default: false
+    - name: server_name_override
+      kind: string
+      default: ""
+  - name: keepalive
+    type: '*configgrpc.KeepaliveClientConfig'
+    kind: ptr
+    fields:
+    - name: time
+      type: time.Duration
+      kind: int64
+    - name: timeout
+      type: time.Duration
+      kind: int64
+    - name: permit_without_stream
+      kind: bool
+      default: false
+  - name: read_buffer_size
+    kind: int
+  - name: write_buffer_size
+    kind: int
+  - name: wait_for_ready
+    kind: bool
+    default: false
+  - name: headers
+    type: map[string]configopaque.String
+    kind: map
+  - name: balancer_name
+    kind: string
+    default: ""
+  - name: auth
+    type: '*configauth.Authentication'
+    kind: ptr
+    fields:
+    - name: authenticator
+      type: component.ID
+      kind: struct
+- name: endpoint
+  kind: string
+  default: https://
+- name: compression
+  type: configcompression.CompressionType
+  kind: string
+  default: ""
+- name: tls
+  type: configtls.TLSClientSetting
+  kind: struct
+  fields:
+  - name: ca_file
+    kind: string
+    default: ""
+  - name: ca_pem
+    type: configopaque.String
+    kind: string
+    default: ""
+  - name: cert_file
+    kind: string
+    default: ""
+  - name: cert_pem
+    type: configopaque.String
+    kind: string
+    default: ""
+  - name: key_file
+    kind: string
+    default: ""
+  - name: key_pem
+    type: configopaque.String
+    kind: string
+    default: ""
+  - name: min_version
+    kind: string
+    default: ""
+  - name: max_version
+    kind: string
+    default: ""
+  - name: reload_interval
+    type: time.Duration
+    kind: int64
+  - name: insecure
+    kind: bool
+    default: false
+  - name: insecure_skip_verify
+    kind: bool
+    default: false
+  - name: server_name_override
+    kind: string
+    default: ""
+- name: keepalive
+  type: '*configgrpc.KeepaliveClientConfig'
+  kind: ptr
+  fields:
+  - name: time
+    type: time.Duration
+    kind: int64
+  - name: timeout
+    type: time.Duration
+    kind: int64
+  - name: permit_without_stream
+    kind: bool
+    default: false
+- name: read_buffer_size
+  kind: int
+- name: write_buffer_size
+  kind: int
+- name: wait_for_ready
+  kind: bool
+  default: false
+- name: headers
+  type: map[string]configopaque.String
+  kind: map
+- name: balancer_name
+  kind: string
+  default: ""
+- name: auth
+  type: '*configauth.Authentication'
+  kind: ptr
+  fields:
+  - name: authenticator
+    type: component.ID
+    kind: struct
+- name: traces
+  type: configgrpc.GRPCClientSettings
+  kind: struct
+  doc: |
+    Coralogix traces ingress endpoint
+  fields:
+  - name: endpoint
+    kind: string
+    default: https://
+  - name: compression
+    type: configcompression.CompressionType
+    kind: string
+    default: gzip
+  - name: tls
+    type: configtls.TLSClientSetting
+    kind: struct
+    fields:
+    - name: ca_file
+      kind: string
+      default: ""
+    - name: ca_pem
+      type: configopaque.String
+      kind: string
+      default: ""
+    - name: cert_file
+      kind: string
+      default: ""
+    - name: cert_pem
+      type: configopaque.String
+      kind: string
+      default: ""
+    - name: key_file
+      kind: string
+      default: ""
+    - name: key_pem
+      type: configopaque.String
+      kind: string
+      default: ""
+    - name: min_version
+      kind: string
+      default: ""
+    - name: max_version
+      kind: string
+      default: ""
+    - name: reload_interval
+      type: time.Duration
+      kind: int64
+    - name: insecure
+      kind: bool
+      default: false
+    - name: insecure_skip_verify
+      kind: bool
+      default: false
+    - name: server_name_override
+      kind: string
+      default: ""
+  - name: keepalive
+    type: '*configgrpc.KeepaliveClientConfig'
+    kind: ptr
+    fields:
+    - name: time
+      type: time.Duration
+      kind: int64
+    - name: timeout
+      type: time.Duration
+      kind: int64
+    - name: permit_without_stream
+      kind: bool
+      default: false
+  - name: read_buffer_size
+    kind: int
+  - name: write_buffer_size
+    kind: int
+  - name: wait_for_ready
+    kind: bool
+    default: false
+  - name: headers
+    type: map[string]configopaque.String
+    kind: map
+  - name: balancer_name
+    kind: string
+    default: ""
+  - name: auth
+    type: '*configauth.Authentication'
+    kind: ptr
+    fields:
+    - name: authenticator
+      type: component.ID
+      kind: struct
+- name: metrics
+  type: configgrpc.GRPCClientSettings
+  kind: struct
+  doc: |
+    The Coralogix metrics ingress endpoint
+  fields:
+  - name: endpoint
+    kind: string
+    default: https://
+  - name: compression
+    type: configcompression.CompressionType
+    kind: string
+    default: gzip
+  - name: tls
+    type: configtls.TLSClientSetting
+    kind: struct
+    fields:
+    - name: ca_file
+      kind: string
+      default: ""
+    - name: ca_pem
+      type: configopaque.String
+      kind: string
+      default: ""
+    - name: cert_file
+      kind: string
+      default: ""
+    - name: cert_pem
+      type: configopaque.String
+      kind: string
+      default: ""
+    - name: key_file
+      kind: string
+      default: ""
+    - name: key_pem
+      type: configopaque.String
+      kind: string
+      default: ""
+    - name: min_version
+      kind: string
+      default: ""
+    - name: max_version
+      kind: string
+      default: ""
+    - name: reload_interval
+      type: time.Duration
+      kind: int64
+    - name: insecure
+      kind: bool
+      default: false
+    - name: insecure_skip_verify
+      kind: bool
+      default: false
+    - name: server_name_override
+      kind: string
+      default: ""
+  - name: keepalive
+    type: '*configgrpc.KeepaliveClientConfig'
+    kind: ptr
+    fields:
+    - name: time
+      type: time.Duration
+      kind: int64
+    - name: timeout
+      type: time.Duration
+      kind: int64
+    - name: permit_without_stream
+      kind: bool
+      default: false
+  - name: read_buffer_size
+    kind: int
+  - name: write_buffer_size
+    kind: int
+    default: 524288
+  - name: wait_for_ready
+    kind: bool
+    default: false
+  - name: headers
+    type: map[string]configopaque.String
+    kind: map
+  - name: balancer_name
+    kind: string
+    default: ""
+  - name: auth
+    type: '*configauth.Authentication'
+    kind: ptr
+    fields:
+    - name: authenticator
+      type: component.ID
+      kind: struct
+- name: logs
+  type: configgrpc.GRPCClientSettings
+  kind: struct
+  doc: |
+    The Coralogix logs ingress endpoint
+  fields:
+  - name: endpoint
+    kind: string
+    default: https://
+  - name: compression
+    type: configcompression.CompressionType
+    kind: string
+    default: gzip
+  - name: tls
+    type: configtls.TLSClientSetting
+    kind: struct
+    fields:
+    - name: ca_file
+      kind: string
+      default: ""
+    - name: ca_pem
+      type: configopaque.String
+      kind: string
+      default: ""
+    - name: cert_file
+      kind: string
+      default: ""
+    - name: cert_pem
+      type: configopaque.String
+      kind: string
+      default: ""
+    - name: key_file
+      kind: string
+      default: ""
+    - name: key_pem
+      type: configopaque.String
+      kind: string
+      default: ""
+    - name: min_version
+      kind: string
+      default: ""
+    - name: max_version
+      kind: string
+      default: ""
+    - name: reload_interval
+      type: time.Duration
+      kind: int64
+    - name: insecure
+      kind: bool
+      default: false
+    - name: insecure_skip_verify
+      kind: bool
+      default: false
+    - name: server_name_override
+      kind: string
+      default: ""
+  - name: keepalive
+    type: '*configgrpc.KeepaliveClientConfig'
+    kind: ptr
+    fields:
+    - name: time
+      type: time.Duration
+      kind: int64
+    - name: timeout
+      type: time.Duration
+      kind: int64
+    - name: permit_without_stream
+      kind: bool
+      default: false
+  - name: read_buffer_size
+    kind: int
+  - name: write_buffer_size
+    kind: int
+  - name: wait_for_ready
+    kind: bool
+    default: false
+  - name: headers
+    type: map[string]configopaque.String
+    kind: map
+  - name: balancer_name
+    kind: string
+    default: ""
+  - name: auth
+    type: '*configauth.Authentication'
+    kind: ptr
+    fields:
+    - name: authenticator
+      type: component.ID
+      kind: struct
+- name: private_key
+  type: configopaque.String
+  kind: string
+  default: ""
+  doc: |
+    Your Coralogix private key (sensitive) for authentication
+- name: application_name_attributes
+  type: '[]string'
+  kind: slice
+  doc: |
+    Ordered list of Resource attributes that are used for Coralogix
+    AppName and SubSystem values. The first non-empty Resource attribute is used.
+    Example: AppNameAttributes: ["k8s.namespace.name", "service.namespace"]
+    Example: SubSystemAttributes: ["k8s.deployment.name", "k8s.daemonset.name", "service.name"]
+- name: subsystem_name_attributes
+  type: '[]string'
+  kind: slice
+- name: application_name
+  kind: string
+  default: ""
+  doc: |
+    Default Coralogix application and subsystem name values.
+- name: subsystem_name
+  kind: string
+  default: ""

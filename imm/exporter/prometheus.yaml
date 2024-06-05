@@ -1,0 +1,111 @@
+type: '*prometheusexporter.Config'
+doc: |
+  Config defines configuration for Prometheus exporter.
+fields:
+- name: endpoint
+  kind: string
+  default: ""
+- name: tls
+  type: '*configtls.TLSServerSetting'
+  kind: ptr
+  fields:
+  - name: ca_file
+    kind: string
+    default: ""
+  - name: ca_pem
+    type: configopaque.String
+    kind: string
+    default: ""
+  - name: cert_file
+    kind: string
+    default: ""
+  - name: cert_pem
+    type: configopaque.String
+    kind: string
+    default: ""
+  - name: key_file
+    kind: string
+    default: ""
+  - name: key_pem
+    type: configopaque.String
+    kind: string
+    default: ""
+  - name: min_version
+    kind: string
+    default: ""
+  - name: max_version
+    kind: string
+    default: ""
+  - name: reload_interval
+    type: time.Duration
+    kind: int64
+  - name: client_ca_file
+    kind: string
+    default: ""
+  - name: client_ca_file_reload
+    kind: bool
+    default: false
+- name: cors
+  type: '*confighttp.CORSSettings'
+  kind: ptr
+  fields:
+  - name: allowed_origins
+    type: '[]string'
+    kind: slice
+  - name: allowed_headers
+    type: '[]string'
+    kind: slice
+  - name: max_age
+    kind: int
+- name: auth
+  type: '*configauth.Authentication'
+  kind: ptr
+  fields:
+  - name: authenticator
+    type: component.ID
+    kind: struct
+- name: max_request_body_size
+  kind: int64
+- name: include_metadata
+  kind: bool
+  default: false
+- name: response_headers
+  type: map[string]configopaque.String
+  kind: map
+- name: namespace
+  kind: string
+  default: ""
+  doc: |
+    Namespace if set, exports metrics under the provided value.
+- name: const_labels
+  type: prometheus.Labels
+  kind: map
+  doc: |
+    ConstLabels are values that are applied for every exported metric.
+- name: send_timestamps
+  kind: bool
+  default: false
+  doc: |
+    SendTimestamps will send the underlying scrape timestamp with the export
+- name: metric_expiration
+  type: time.Duration
+  kind: int64
+  default: 5m0s
+  doc: |
+    MetricExpiration defines how long metrics are kept without updates
+- name: resource_to_telemetry_conversion
+  type: resourcetotelemetry.Settings
+  kind: struct
+  doc: |
+    ResourceToTelemetrySettings defines configuration for converting resource attributes to metric labels.
+  fields:
+  - name: enabled
+    kind: bool
+    default: false
+    doc: |
+      Enabled indicates whether to convert resource attributes to telemetry attributes. Default is `false`.
+- name: enable_open_metrics
+  kind: bool
+  default: false
+  doc: |
+    EnableOpenMetrics enables the use of the OpenMetrics encoding option for the prometheus exporter.

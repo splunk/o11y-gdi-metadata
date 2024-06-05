@@ -1,0 +1,81 @@
+type: '*awskinesisexporter.Config'
+doc: |
+  Config contains the main configuration options for the awskinesis exporter
+fields:
+- name: timeout
+  type: time.Duration
+  kind: int64
+  default: 5s
+- name: sending_queue
+  type: exporterhelper.QueueSettings
+  kind: struct
+  fields:
+  - name: enabled
+    kind: bool
+    default: true
+  - name: num_consumers
+    kind: int
+    default: 10
+  - name: queue_size
+    kind: int
+    default: 1000
+  - name: storage
+    type: '*component.ID'
+    kind: ptr
+- name: retry_on_failure
+  type: exporterhelper.RetrySettings
+  kind: struct
+  fields:
+  - name: enabled
+    kind: bool
+    default: true
+  - name: initial_interval
+    type: time.Duration
+    kind: int64
+    default: 5s
+  - name: randomization_factor
+    kind: float64
+  - name: multiplier
+    kind: float64
+  - name: max_interval
+    type: time.Duration
+    kind: int64
+    default: 30s
+  - name: max_elapsed_time
+    type: time.Duration
+    kind: int64
+    default: 5m0s
+- name: encoding
+  type: awskinesisexporter.Encoding
+  kind: struct
+  fields:
+  - name: name
+    kind: string
+    default: otlp
+  - name: compression
+    kind: string
+    default: none
+- name: aws
+  type: awskinesisexporter.AWSConfig
+  kind: struct
+  doc: |
+    AWSConfig contains AWS specific configuration such as awskinesis stream, region, etc.
+  fields:
+  - name: stream_name
+    kind: string
+    default: ""
+  - name: kinesis_endpoint
+    kind: string
+    default: ""
+  - name: region
+    kind: string
+    default: us-west-2
+  - name: role
+    kind: string
+    default: ""
+- name: max_records_per_batch
+  kind: int
+  default: 500
+- name: max_record_size
+  kind: int
+  default: 1048576

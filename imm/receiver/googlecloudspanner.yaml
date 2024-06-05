@@ -1,0 +1,44 @@
+type: '*googlecloudspannerreceiver.Config'
+fields:
+- name: collection_interval
+  type: time.Duration
+  kind: int64
+  default: 1m0s
+- name: initial_delay
+  type: time.Duration
+  kind: int64
+  default: 1s
+- name: top_metrics_query_max_rows
+  kind: int
+  default: 100
+- name: backfill_enabled
+  kind: bool
+  default: false
+- name: cardinality_total_limit
+  kind: int
+- name: projects
+  type: '[]googlecloudspannerreceiver.Project'
+  kind: slice
+  fields:
+  - name: project_id
+    kind: string
+    default: ""
+  - name: service_account_key
+    kind: string
+    default: ""
+  - name: instances
+    type: '[]googlecloudspannerreceiver.Instance'
+    kind: slice
+    fields:
+    - name: instance_id
+      kind: string
+      default: ""
+    - name: databases
+      type: '[]string'
+      kind: slice
+- name: hide_topn_lockstats_rowrangestartkey
+  kind: bool
+  default: false
+- name: truncate_text
+  kind: bool
+  default: false

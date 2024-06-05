@@ -1,0 +1,18 @@
+type: '*batchprocessor.Config'
+fields:
+- name: timeout
+  type: time.Duration
+  kind: int64
+  default: 200ms
+- name: send_batch_size
+  kind: uint32
+  default: 8192
+- name: send_batch_max_size
+  kind: uint32
+  default: 0
+- name: metadata_keys
+  type: '[]string'
+  kind: slice
+- name: metadata_cardinality_limit
+  kind: uint32
+  default: 1000

@@ -1,0 +1,240 @@
+type: '*kafkareceiver.Config'
+doc: |
+  Config defines configuration for Kafka receiver.
+fields:
+- name: brokers
+  type: '[]string'
+  kind: slice
+  doc: |
+    The list of kafka brokers (default localhost:9092)
+- name: protocol_version
+  kind: string
+  default: ""
+  doc: |
+    Kafka protocol version
+- name: topic
+  kind: string
+  default: otlp_spans
+  doc: |
+    The name of the kafka topic to consume from (default "otlp_spans")
+- name: encoding
+  kind: string
+  default: otlp_proto
+  doc: |
+    Encoding of the messages (default "otlp_proto")
+- name: group_id
+  kind: string
+  default: otel-collector
+  doc: |
+    The consumer group that receiver will be consuming messages from (default "otel-collector")
+- name: client_id
+  kind: string
+  default: otel-collector
+  doc: |
+    The consumer client ID that receiver will use (default "otel-collector")
+- name: initial_offset
+  kind: string
+  default: latest
+  doc: |
+    The initial offset to use if no offset was previously committed.
+    Must be `latest` or `earliest` (default "latest").
+- name: metadata
+  type: kafkaexporter.Metadata
+  kind: struct
+  doc: |
+    Metadata is the namespace for metadata management properties used by the
+    Client, and shared by the Producer/Consumer.
+  fields:
+  - name: full
+    kind: bool
+    default: true
+    doc: |
+      Whether to maintain a full set of metadata for all topics, or just
+      the minimal set that has been necessary so far. The full set is simpler
+      and usually more convenient, but can take up a substantial amount of
+      memory if you have many topics and partitions. Defaults to true.
+  - name: retry
+    type: kafkaexporter.MetadataRetry
+    kind: struct
+    doc: |
+      Retry configuration for metadata.
+      This configuration is useful to avoid race conditions when broker
+      is starting at the same time as collector.
+    fields:
+    - name: max
+      kind: int
+      default: 3
+      doc: |
+        The total number of times to retry a metadata request when the
+        cluster is in the middle of a leader election or at startup (default 3).
+    - name: backoff
+      type: time.Duration
+      kind: int64
+      default: 250ms
+      doc: |
+        How long to wait for leader election to occur before retrying
+        (default 250ms). Similar to the JVM's `retry.backoff.ms`.
+- name: auth
+  type: kafkaexporter.Authentication
+  kind: struct
+  doc: |
+    Authentication defines authentication.
+  fields:
+  - name: plain_text
+    type: '*kafkaexporter.PlainTextConfig'
+    kind: ptr
+    doc: |
+      PlainTextConfig defines plaintext authentication.
+    fields:
+    - name: username
+      kind: string
+      default: ""
+    - name: password
+      kind: string
+      default: ""
+  - name: sasl
+    type: '*kafkaexporter.SASLConfig'
+    kind: ptr
+    doc: |
+      SASLConfig defines the configuration for the SASL authentication.
+    fields:
+    - name: username
+      kind: string
+      default: ""
+      doc: |
+        Username to be used on authentication
+    - name: password
+      kind: string
+      default: ""
+      doc: |
+        Password to be used on authentication
+    - name: mechanism
+      kind: string
+      default: ""
+      doc: |
+        SASL Mechanism to be used, possible values are: (PLAIN, AWS_MSK_IAM, SCRAM-SHA-256 or SCRAM-SHA-512).
+    - name: aws_msk
+      type: kafkaexporter.AWSMSKConfig
+      kind: struct
+      doc: |
+        AWSMSKConfig defines the additional SASL authentication
+        measures needed to use AWS_MSK_IAM mechanism
+      fields:
+      - name: region
+        kind: string
+        default: ""
+        doc: |
+          Region is the AWS region the MSK cluster is based in
+      - name: broker_addr
+        kind: string
+        default: ""
+        doc: |
+          BrokerAddr is the client is connecting to in order to perform the auth required
+  - name: tls
+    type: '*configtls.TLSClientSetting'
+    kind: ptr
+    fields:
+    - name: ca_file
+      kind: string
+      default: ""
+    - name: ca_pem
+      type: configopaque.String
+      kind: string
+      default: ""
+    - name: cert_file
+      kind: string
+      default: ""
+    - name: cert_pem
+      type: configopaque.String
+      kind: string
+      default: ""
+    - name: key_file
+      kind: string
+      default: ""
+    - name: key_pem
+      type: configopaque.String
+      kind: string
+      default: ""
+    - name: min_version
+      kind: string
+      default: ""
+    - name: max_version
+      kind: string
+      default: ""
+    - name: reload_interval
+      type: time.Duration
+      kind: int64
+    - name: insecure
+      kind: bool
+      default: false
+    - name: insecure_skip_verify
+      kind: bool
+      default: false
+    - name: server_name_override
+      kind: string
+      default: ""
+  - name: kerberos
+    type: '*kafkaexporter.KerberosConfig'
+    kind: ptr
+    doc: |
+      KerberosConfig defines kereros configuration.
+    fields:
+    - name: service_name
+      kind: string
+      default: ""
+    - name: realm
+      kind: string
+      default: ""
+    - name: use_keytab
+      kind: bool
+      default: false
+    - name: username
+      kind: string
+      default: ""
+    - name: password
+      kind: string
+      default: ""
+    - name: config_file
+      kind: string
+      default: ""
+    - name: keytab_file
+      kind: string
+      default: ""
+- name: autocommit
+  type: kafkareceiver.AutoCommit
+  kind: struct
+  doc: |
+    Controls the auto-commit functionality
+  fields:
+  - name: enable
+    kind: bool
+    default: true
+    doc: |
+      Whether or not to auto-commit updated offsets back to the broker.
+      (default enabled).
+  - name: interval
+    type: time.Duration
+    kind: int64
+    default: 1s
+    doc: |
+      How frequently to commit updated offsets. Ineffective unless
+      auto-commit is enabled (default 1s)
+- name: message_marking
+  type: kafkareceiver.MessageMarking
+  kind: struct
+  doc: |
+    Controls the way the messages are marked as consumed
+  fields:
+  - name: after
+    kind: bool
+    default: false
+    doc: |
+      If true, the messages are marked after the pipeline execution
+  - name: on_error
+    kind: bool
+    default: false
+    doc: |
+      If false, only the successfully processed messages are marked, it has no impact if
+      After is set to false.
+      Note: this can block the entire partition in case a message processing returns
+      a permanent error.

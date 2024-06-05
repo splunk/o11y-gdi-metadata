@@ -1,0 +1,299 @@
+type: '*splunkhecexporter.Config'
+doc: |
+  Config defines configuration for Splunk exporter.
+fields:
+- name: endpoint
+  kind: string
+  default: ""
+- name: tls
+  type: configtls.TLSClientSetting
+  kind: struct
+  fields:
+  - name: ca_file
+    kind: string
+    default: ""
+  - name: ca_pem
+    type: configopaque.String
+    kind: string
+    default: ""
+  - name: cert_file
+    kind: string
+    default: ""
+  - name: cert_pem
+    type: configopaque.String
+    kind: string
+    default: ""
+  - name: key_file
+    kind: string
+    default: ""
+  - name: key_pem
+    type: configopaque.String
+    kind: string
+    default: ""
+  - name: min_version
+    kind: string
+    default: ""
+  - name: max_version
+    kind: string
+    default: ""
+  - name: reload_interval
+    type: time.Duration
+    kind: int64
+  - name: insecure
+    kind: bool
+    default: false
+  - name: insecure_skip_verify
+    kind: bool
+    default: false
+  - name: server_name_override
+    kind: string
+    default: ""
+- name: read_buffer_size
+  kind: int
+- name: write_buffer_size
+  kind: int
+- name: timeout
+  type: time.Duration
+  kind: int64
+  default: 10s
+- name: headers
+  type: map[string]configopaque.String
+  kind: map
+- name: customroundtripper
+  type: func(http.RoundTripper) (http.RoundTripper, error)
+  kind: func
+- name: auth
+  type: '*configauth.Authentication'
+  kind: ptr
+  fields:
+  - name: authenticator
+    type: component.ID
+    kind: struct
+- name: compression
+  type: configcompression.CompressionType
+  kind: string
+  default: ""
+- name: max_idle_conns
+  type: '*int'
+  kind: ptr
+- name: max_idle_conns_per_host
+  type: '*int'
+  kind: ptr
+- name: max_conns_per_host
+  type: '*int'
+  kind: ptr
+- name: idle_conn_timeout
+  type: '*time.Duration'
+  kind: ptr
+- name: sending_queue
+  type: exporterhelper.QueueSettings
+  kind: struct
+  fields:
+  - name: enabled
+    kind: bool
+    default: true
+  - name: num_consumers
+    kind: int
+    default: 10
+  - name: queue_size
+    kind: int
+    default: 1000
+  - name: storage
+    type: '*component.ID'
+    kind: ptr
+- name: retry_on_failure
+  type: exporterhelper.RetrySettings
+  kind: struct
+  fields:
+  - name: enabled
+    kind: bool
+    default: true
+  - name: initial_interval
+    type: time.Duration
+    kind: int64
+    default: 5s
+  - name: randomization_factor
+    kind: float64
+  - name: multiplier
+    kind: float64
+  - name: max_interval
+    type: time.Duration
+    kind: int64
+    default: 30s
+  - name: max_elapsed_time
+    type: time.Duration
+    kind: int64
+    default: 5m0s
+- name: log_data_enabled
+  kind: bool
+  default: true
+  doc: |
+    LogDataEnabled can be used to disable sending logs by the exporter.
+- name: profiling_data_enabled
+  kind: bool
+  default: true
+  doc: |
+    ProfilingDataEnabled can be used to disable sending profiling data by the exporter.
+- name: token
+  type: configopaque.String
+  kind: string
+  default: ""
+  doc: |
+    HEC Token is the authentication token provided by Splunk: https://docs.splunk.com/Documentation/Splunk/latest/Data/UsetheHTTPEventCollector.
+- name: source
+  kind: string
+  default: ""
+  doc: |
+    Optional Splunk source: https://docs.splunk.com/Splexicon:Source.
+    Sources identify the incoming data.
+- name: sourcetype
+  kind: string
+  default: ""
+  doc: |
+    Optional Splunk source type: https://docs.splunk.com/Splexicon:Sourcetype.
+- name: index
+  kind: string
+  default: ""
+  doc: |
+    Splunk index, optional name of the Splunk index.
+- name: max_connections
+  kind: uint
+  default: 0
+  doc: |
+    MaxConnections is used to set a limit to the maximum idle HTTP connection the exporter can keep open. Defaults to 100.
+    Deprecated: use HTTPClientSettings.MaxIdleConns or HTTPClientSettings.MaxIdleConnsPerHost instead.
+- name: disable_compression
+  kind: bool
+  default: false
+  doc: |
+    Disable GZip compression. Defaults to false.
+- name: max_content_length_logs
+  kind: uint
+  default: 2097152
+  doc: |
+    Maximum log payload size in bytes. Default value is 2097152 bytes (2MiB).
+    Maximum allowed value is 838860800 (~ 800 MB).
+- name: max_content_length_metrics
+  kind: uint
+  default: 2097152
+  doc: |
+    Maximum metric payload size in bytes. Default value is 2097152 bytes (2MiB).
+    Maximum allowed value is 838860800 (~ 800 MB).
+- name: max_content_length_traces
+  kind: uint
+  default: 2097152
+  doc: |
+    Maximum trace payload size in bytes. Default value is 2097152 bytes (2MiB).
+    Maximum allowed value is 838860800 (~ 800 MB).
+- name: max_event_size
+  kind: uint
+  default: 5242880
+  doc: |
+    Maximum payload size, raw uncompressed. Default value is 5242880 bytes (5MiB).
+    Maximum allowed value is 838860800 (~ 800 MB).
+- name: splunk_app_name
+  kind: string
+  default: OpenTelemetry Collector Contrib
+  doc: |
+    App name is used to track telemetry information for Splunk App's using HEC by App name. Defaults to "OpenTelemetry Collector Contrib".
+- name: splunk_app_version
+  kind: string
+  default: ""
+  doc: |
+    App version is used to track telemetry information for Splunk App's using HEC by App version. Defaults to the current OpenTelemetry Collector Contrib build version.
+- name: hec_metadata_to_otel_attrs
+  type: splunk.HecToOtelAttrs
+  kind: struct
+  doc: |
+    HecToOtelAttrs creates a mapping from attributes to HEC specific metadata: source, sourcetype, index and host.
+  fields:
+  - name: source
+    kind: string
+    default: com.splunk.source
+    doc: |
+      Source indicates the mapping of the source field to a specific unified model attribute.
+  - name: sourcetype
+    kind: string
+    default: com.splunk.sourcetype
+    doc: |
+      SourceType indicates the mapping of the sourcetype field to a specific unified model attribute.
+  - name: index
+    kind: string
+    default: com.splunk.index
+    doc: |
+      Index indicates the mapping of the index field to a specific unified model attribute.
+  - name: host
+    kind: string
+    default: host.name
+    doc: |
+      Host indicates the mapping of the host field to a specific unified model attribute.
+- name: otel_to_hec_fields
+  type: splunkhecexporter.OtelToHecFields
+  kind: struct
+  doc: |
+    HecFields creates a mapping from attributes to HEC fields.
+  fields:
+  - name: severity_text
+    kind: string
+    default: otel.log.severity.text
+    doc: |
+      SeverityText informs the exporter to map the severity text field to a specific HEC field.
+  - name: severity_number
+    kind: string
+    default: otel.log.severity.number
+    doc: |
+      SeverityNumber informs the exporter to map the severity number field to a specific HEC field.
+- name: health_path
+  kind: string
+  default: /services/collector/health
+  doc: |
+    HealthPath for health API, default is '/services/collector/health'
+- name: health_check_enabled
+  kind: bool
+  default: false
+  doc: |
+    HecHealthCheckEnabled can be used to verify Splunk HEC health on exporter's startup
+- name: export_raw
+  kind: bool
+  default: false
+  doc: |
+    ExportRaw to send only the log's body, targeting a Splunk HEC raw endpoint.
+- name: use_multi_metric_format
+  kind: bool
+  default: false
+  doc: |
+    UseMultiMetricFormat combines metric events to save space during ingestion.
+- name: heartbeat
+  type: splunkhecexporter.HecHeartbeat
+  kind: struct
+  doc: |
+    Heartbeat is the configuration to enable heartbeat
+  fields:
+  - name: interval
+    type: time.Duration
+    kind: int64
+    doc: |
+      Interval represents the time interval for the heartbeat interval. If nothing or 0 is set,
+      heartbeat is not enabled.
+      A heartbeat is an event sent to _internal index with metadata for the current collector/host.
+- name: telemetry
+  type: splunkhecexporter.HecTelemetry
+  kind: struct
+  doc: |
+    Telemetry is the configuration for splunk hec exporter telemetry
+  fields:
+  - name: enabled
+    kind: bool
+    default: false
+    doc: |
+      Enabled is the bool to enable telemetry inside splunk hec exporter
+  - name: override_metrics_names
+    type: map[string]string
+    kind: map
+    doc: |
+      OverrideMetricsNames is the map to override metrics for internal metrics in splunk hec exporter
+  - name: extra_attributes
+    type: map[string]string
+    kind: map
+    doc: |
+      ExtraAttributes is the extra attributes for metrics inside splunk hex exporter

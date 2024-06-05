@@ -1,0 +1,95 @@
+type: '*awsxrayreceiver.Config'
+doc: |
+  Config defines the configurations for an AWS X-Ray receiver.
+fields:
+- name: endpoint
+  kind: string
+  default: 0.0.0.0:2000
+- name: transport
+  kind: string
+  default: udp
+- name: proxy_server
+  type: '*proxy.Config'
+  kind: ptr
+  doc: |
+    ProxyServer defines configurations related to the local TCP proxy server.
+  fields:
+  - name: endpoint
+    kind: string
+    default: 0.0.0.0:2000
+  - name: proxy_address
+    kind: string
+    default: ""
+    doc: |
+      ProxyAddress defines the proxy address that the local TCP server
+      forwards HTTP requests to AWS X-Ray backend through.
+  - name: tls
+    type: configtls.TLSClientSetting
+    kind: struct
+    doc: |
+      TLSSetting struct exposes TLS client configuration when forwarding
+      calls to the AWS X-Ray backend.
+    fields:
+    - name: ca_file
+      kind: string
+      default: ""
+    - name: ca_pem
+      type: configopaque.String
+      kind: string
+      default: ""
+    - name: cert_file
+      kind: string
+      default: ""
+    - name: cert_pem
+      type: configopaque.String
+      kind: string
+      default: ""
+    - name: key_file
+      kind: string
+      default: ""
+    - name: key_pem
+      type: configopaque.String
+      kind: string
+      default: ""
+    - name: min_version
+      kind: string
+      default: ""
+    - name: max_version
+      kind: string
+      default: ""
+    - name: reload_interval
+      type: time.Duration
+      kind: int64
+    - name: insecure
+      kind: bool
+      default: false
+    - name: insecure_skip_verify
+      kind: bool
+      default: false
+    - name: server_name_override
+      kind: string
+      default: ""
+  - name: region
+    kind: string
+    default: ""
+    doc: |
+      Region is the AWS region the local TCP server forwards requests to.
+  - name: role_arn
+    kind: string
+    default: ""
+    doc: |
+      RoleARN is the IAM role used by the local TCP server when
+      communicating with the AWS X-Ray service.
+  - name: aws_endpoint
+    kind: string
+    default: ""
+    doc: |
+      AWSEndpoint is the X-Ray service endpoint which the local
+      TCP server forwards requests to.
+  - name: local_mode
+    kind: bool
+    default: false
+    doc: |
+      LocalMode determines whether the EC2 instance metadata endpoint
+      will be called or not. Set to `true` to skip EC2 instance
+      metadata check.

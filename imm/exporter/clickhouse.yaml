@@ -1,0 +1,88 @@
+type: '*clickhouseexporter.Config'
+doc: |
+  Config defines configuration for Elastic exporter.
+fields:
+- name: timeout
+  type: time.Duration
+  kind: int64
+  default: 5s
+- name: retry_on_failure
+  type: exporterhelper.RetrySettings
+  kind: struct
+  fields:
+  - name: enabled
+    kind: bool
+    default: true
+  - name: initial_interval
+    type: time.Duration
+    kind: int64
+    default: 5s
+  - name: randomization_factor
+    kind: float64
+  - name: multiplier
+    kind: float64
+  - name: max_interval
+    type: time.Duration
+    kind: int64
+    default: 30s
+  - name: max_elapsed_time
+    type: time.Duration
+    kind: int64
+    default: 5m0s
+- name: sending_queue
+  type: clickhouseexporter.QueueSettings
+  kind: struct
+  doc: |
+    QueueSettings is a subset of exporterhelper.QueueSettings,
+    because only QueueSize is user-settable.
+  fields:
+  - name: queue_size
+    kind: int
+    default: 1000
+    doc: |
+      QueueSize set the length of the sending queue
+- name: endpoint
+  kind: string
+  default: ""
+  doc: |
+    Endpoint is the clickhouse endpoint.
+- name: username
+  kind: string
+  default: ""
+  doc: |
+    Username is the authentication username.
+- name: password
+  kind: string
+  default: ""
+  doc: |
+    Username is the authentication password.
+- name: database
+  kind: string
+  default: default
+  doc: |
+    Database is the database name to export.
+- name: connection_params
+  type: map[string]string
+  kind: map
+  doc: |
+    ConnectionParams is the extra connection parameters with map format. for example compression/dial_timeout
+- name: logs_table_name
+  kind: string
+  default: otel_logs
+  doc: |
+    LogsTableName is the table name for logs. default is `otel_logs`.
+- name: traces_table_name
+  kind: string
+  default: otel_traces
+  doc: |
+    TracesTableName is the table name for logs. default is `otel_traces`.
+- name: metrics_table_name
+  kind: string
+  default: otel_metrics
+  doc: |
+    MetricsTableName is the table name for metrics. default is `otel_metrics`.
+- name: ttl_days
+  kind: uint
+  default: 0
+  doc: |
+    TTLDays is The data time-to-live in days, 0 means no ttl.

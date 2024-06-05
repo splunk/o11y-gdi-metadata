@@ -1,0 +1,38 @@
+type: '*statsdreceiver.Config'
+doc: |
+  Config defines configuration for StatsD receiver.
+fields:
+- name: endpoint
+  kind: string
+  default: localhost:8125
+- name: transport
+  kind: string
+  default: udp
+- name: aggregation_interval
+  type: time.Duration
+  kind: int64
+  default: 1m0s
+- name: enable_metric_type
+  kind: bool
+  default: false
+- name: is_monotonic_counter
+  kind: bool
+  default: false
+- name: timer_histogram_mapping
+  type: '[]protocol.TimerHistogramMapping'
+  kind: slice
+  fields:
+  - name: statsd_type
+    type: protocol.TypeName
+    kind: string
+    default: ""
+  - name: observer_type
+    type: protocol.ObserverType
+    kind: string
+    default: ""
+  - name: histogram
+    type: protocol.HistogramConfig
+    kind: struct
+    fields:
+    - name: max_size
+      kind: int32

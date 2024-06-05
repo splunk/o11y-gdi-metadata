@@ -1,0 +1,622 @@
+type: '*signalfxexporter.Config'
+doc: |
+  Config defines configuration for SignalFx exporter.
+fields:
+- name: sending_queue
+  type: exporterhelper.QueueSettings
+  kind: struct
+  fields:
+  - name: enabled
+    kind: bool
+    default: true
+  - name: num_consumers
+    kind: int
+    default: 10
+  - name: queue_size
+    kind: int
+    default: 1000
+  - name: storage
+    type: '*component.ID'
+    kind: ptr
+- name: retry_on_failure
+  type: exporterhelper.RetrySettings
+  kind: struct
+  fields:
+  - name: enabled
+    kind: bool
+    default: true
+  - name: initial_interval
+    type: time.Duration
+    kind: int64
+    default: 5s
+  - name: randomization_factor
+    kind: float64
+  - name: multiplier
+    kind: float64
+  - name: max_interval
+    type: time.Duration
+    kind: int64
+    default: 30s
+  - name: max_elapsed_time
+    type: time.Duration
+    kind: int64
+    default: 5m0s
+- name: endpoint
+  kind: string
+  default: ""
+- name: tls
+  type: configtls.TLSClientSetting
+  kind: struct
+  fields:
+  - name: ca_file
+    kind: string
+    default: ""
+  - name: ca_pem
+    type: configopaque.String
+    kind: string
+    default: ""
+  - name: cert_file
+    kind: string
+    default: ""
+  - name: cert_pem
+    type: configopaque.String
+    kind: string
+    default: ""
+  - name: key_file
+    kind: string
+    default: ""
+  - name: key_pem
+    type: configopaque.String
+    kind: string
+    default: ""
+  - name: min_version
+    kind: string
+    default: ""
+  - name: max_version
+    kind: string
+    default: ""
+  - name: reload_interval
+    type: time.Duration
+    kind: int64
+  - name: insecure
+    kind: bool
+    default: false
+  - name: insecure_skip_verify
+    kind: bool
+    default: false
+  - name: server_name_override
+    kind: string
+    default: ""
+- name: read_buffer_size
+  kind: int
+- name: write_buffer_size
+  kind: int
+- name: timeout
+  type: time.Duration
+  kind: int64
+  default: 5s
+- name: headers
+  type: map[string]configopaque.String
+  kind: map
+- name: customroundtripper
+  type: func(http.RoundTripper) (http.RoundTripper, error)
+  kind: func
+- name: auth
+  type: '*configauth.Authentication'
+  kind: ptr
+  fields:
+  - name: authenticator
+    type: component.ID
+    kind: struct
+- name: compression
+  type: configcompression.CompressionType
+  kind: string
+  default: ""
+- name: max_idle_conns
+  type: '*int'
+  kind: ptr
+- name: max_idle_conns_per_host
+  type: '*int'
+  kind: ptr
+- name: max_conns_per_host
+  type: '*int'
+  kind: ptr
+- name: idle_conn_timeout
+  type: '*time.Duration'
+  kind: ptr
+- name: access_token
+  type: configopaque.String
+  kind: string
+  default: ""
+  doc: |
+    AccessToken is the authentication token provided by SignalFx.
+- name: realm
+  kind: string
+  default: ""
+  doc: |
+    Realm is the SignalFx realm where data is going to be sent to.
+- name: ingest_url
+  kind: string
+  default: ""
+  doc: |
+    IngestURL is the destination to where SignalFx metrics will be sent to, it is
+    intended for tests and debugging. The value of Realm is ignored if the
+    URL is specified. The exporter will automatically append the appropriate
+    path: "/v2/datapoint" for metrics, and "/v2/event" for events.
+- name: ingest_tls
+  type: configtls.TLSClientSetting
+  kind: struct
+  doc: |
+    ingest_tls needs to be set if the exporter's IngestURL is pointing to a signalfx receiver
+    with TLS enabled and using a self-signed certificate where its CA is not loaded in the system cert pool.
+  fields:
+  - name: ca_file
+    kind: string
+    default: ""
+  - name: ca_pem
+    type: configopaque.String
+    kind: string
+    default: ""
+  - name: cert_file
+    kind: string
+    default: ""
+  - name: cert_pem
+    type: configopaque.String
+    kind: string
+    default: ""
+  - name: key_file
+    kind: string
+    default: ""
+  - name: key_pem
+    type: configopaque.String
+    kind: string
+    default: ""
+  - name: min_version
+    kind: string
+    default: ""
+  - name: max_version
+    kind: string
+    default: ""
+  - name: reload_interval
+    type: time.Duration
+    kind: int64
+  - name: insecure
+    kind: bool
+    default: false
+  - name: insecure_skip_verify
+    kind: bool
+    default: false
+  - name: server_name_override
+    kind: string
+    default: ""
+- name: api_url
+  kind: string
+  default: ""
+  doc: |
+    APIURL is the destination to where SignalFx metadata will be sent. This
+    value takes precedence over the value of Realm
+- name: api_tls
+  type: configtls.TLSClientSetting
+  kind: struct
+  doc: |
+    api_tls needs to be set if the exporter's APIURL is pointing to a httforwarder extension
+    with TLS enabled and using a self-signed certificate where its CA is not loaded in the system cert pool.
+  fields:
+  - name: ca_file
+    kind: string
+    default: ""
+  - name: ca_pem
+    type: configopaque.String
+    kind: string
+    default: ""
+  - name: cert_file
+    kind: string
+    default: ""
+  - name: cert_pem
+    type: configopaque.String
+    kind: string
+    default: ""
+  - name: key_file
+    kind: string
+    default: ""
+  - name: key_pem
+    type: configopaque.String
+    kind: string
+    default: ""
+  - name: min_version
+    kind: string
+    default: ""
+  - name: max_version
+    kind: string
+    default: ""
+  - name: reload_interval
+    type: time.Duration
+    kind: int64
+  - name: insecure
+    kind: bool
+    default: false
+  - name: insecure_skip_verify
+    kind: bool
+    default: false
+  - name: server_name_override
+    kind: string
+    default: ""
+- name: log_data_points
+  kind: bool
+  default: false
+  doc: |
+    Whether to log datapoints dispatched to Splunk Observability Cloud
+- name: log_dimension_updates
+  kind: bool
+  default: false
+  doc: |
+    Whether to log dimension updates being sent to SignalFx.
+- name: dimension_client
+  type: signalfxexporter.DimensionClientConfig
+  kind: struct
+  doc: |
+    Dimension update client configuration used for metadata updates.
+  fields:
+  - name: max_buffered
+    kind: int
+    default: 10000
+  - name: send_delay
+    type: time.Duration
+    kind: int64
+    default: 10s
+  - name: max_idle_conns
+    kind: int
+    default: 20
+  - name: max_idle_conns_per_host
+    kind: int
+    default: 20
+  - name: max_conns_per_host
+    kind: int
+    default: 20
+  - name: idle_conn_timeout
+    type: time.Duration
+    kind: int64
+    default: 30s
+- name: access_token_passthrough
+  kind: bool
+  default: true
+  doc: |
+    AccessTokenPassthrough indicates whether to associate datapoints with an organization access token received in request.
+- name: translation_rules
+  type: '[]translation.Rule'
+  kind: slice
+  doc: |
+    TranslationRules defines a set of rules how to translate metrics to a SignalFx compatible format
+    Rules defined in translation/constants.go are used by default.
+    Deprecated: Use metricstransform processor to do metrics transformations.
+  fields:
+  - name: action
+    type: translation.Action
+    kind: string
+    default: ""
+    doc: |
+      Action specifies the translation action to be applied on metrics.
+      This is a required field.
+  - name: mapping
+    type: map[string]string
+    kind: map
+    doc: |
+      Mapping specifies key/value mapping that is used by rename_dimension_keys,
+      rename_metrics, copy_metrics, and split_metric actions.
+  - name: scale_factors_int
+    type: map[string]int64
+    kind: map
+    doc: |
+      ScaleFactorsInt is used by multiply_int and divide_int action to scale
+      integer metric values, key/value format: metric_name/scale_factor
+  - name: scale_factors_float
+    type: map[string]float64
+    kind: map
+    doc: |
+      ScaleFactorsInt is used by multiply_float action to scale
+      float metric values, key/value format: metric_name/scale_factor
+  - name: metric_name
+    kind: string
+    default: ""
+    doc: |
+      MetricName is used by "split_metric" translation rule to specify a name
+      of a metric that will be split.
+  - name: dimension_key
+    kind: string
+    default: ""
+    doc: |
+      DimensionKey is used by "split_metric" translation rule action to specify dimension key
+      that will be used to translate the metric datapoints. Datapoints that don't have
+      the specified dimension key will not be translated.
+      DimensionKey is also used by "copy_metrics" for filterring.
+  - name: dimension_values
+    type: map[string]bool
+    kind: map
+    doc: |
+      DimensionValues is used by "copy_metrics" to filter out datapoints with dimensions values
+      not matching values set in this field
+  - name: types_mapping
+    type: map[string]translation.MetricValueType
+    kind: map
+    doc: |
+      TypesMapping is represents metric_name/metric_type key/value pairs,
+      used by ActionConvertValues.
+  - name: aggregation_method
+    type: translation.AggregationMethod
+    kind: string
+    default: ""
+    doc: |
+      AggregationMethod specifies method used by "aggregate_metric" translation rule
+  - name: without_dimensions
+    type: '[]string'
+    kind: slice
+    doc: |
+      WithoutDimensions used by "aggregate_metric" translation rule to specify dimensions to be
+      excluded by aggregation.
+  - name: add_dimensions
+    type: map[string]string
+    kind: map
+    doc: |
+      AddDimensions used by "rename_metrics" translation rule to add dimensions that are necessary for
+      existing SFx content for desired metric name
+  - name: copy_dimensions
+    type: map[string]string
+    kind: map
+    doc: |
+      CopyDimensions used by "rename_metrics" translation rule to copy dimensions that are necessary for
+      existing SFx content for desired metric name.  This will duplicate the dimension value and isn't a rename.
+  - name: metric_names
+    type: map[string]bool
+    kind: map
+    doc: |
+      MetricNames is used by "rename_dimension_keys" and "drop_metrics" translation rules.
+  - name: operand1_metric
+    kind: string
+    default: ""
+  - name: operand2_metric
+    kind: string
+    default: ""
+  - name: operator
+    type: translation.MetricOperator
+    kind: string
+    default: ""
+  - name: dimension_pairs
+    type: map[string]map[string]bool
+    kind: map
+    doc: |
+      DimensionPairs used by "drop_dimensions" translation rule to specify dimension pairs that
+      should be dropped.
+- name: disable_default_translation_rules
+  kind: bool
+  default: false
+- name: delta_translation_ttl
+  kind: int64
+  default: 3600
+  doc: |
+    DeltaTranslationTTL specifies in seconds the max duration to keep the most recent datapoint for any
+    `delta_metric` specified in TranslationRules. Default is 3600s.
+- name: sync_host_metadata
+  kind: bool
+  default: false
+  doc: |
+    SyncHostMetadata defines if the exporter should scrape host metadata and
+    sends it as property updates to SignalFx backend.
+    IMPORTANT: Host metadata synchronization relies on `resourcedetection` processor.
+               If this option is enabled make sure that `resourcedetection` processor
+               is enabled in the pipeline with one of the cloud provider detectors
+               or environment variable detector setting a unique value to
+               `host.name` attribute within your k8s cluster. Also keep override
+               And keep `override=true` in resourcedetection config.
+- name: exclude_metrics
+  type: '[]dpfilters.MetricFilter'
+  kind: slice
+  doc: |
+    ExcludeMetrics defines dpfilter.MetricFilters that will determine metrics to be
+    excluded from sending to SignalFx backend. If translations enabled with
+    TranslationRules options, the exclusion will be applie on translated metrics.
+  fields:
+  - name: metric_name
+    kind: string
+    default: ""
+    doc: |
+      A single metric name to match against.
+  - name: metric_names
+    type: '[]string'
+    kind: slice
+    doc: |
+      A list of metric names to match against.
+  - name: dimensions
+    type: map[string]interface {}
+    kind: map
+    doc: |
+      A map of dimension key/values to match against. All key/values must
+      match a datapoint for it to be matched. The map values can be either
+      a single string or a list of strings.
+- name: include_metrics
+  type: '[]dpfilters.MetricFilter'
+  kind: slice
+  doc: |
+    IncludeMetrics defines dpfilter.MetricFilters to override exclusion any of metric.
+    This option can be used to included metrics that are otherwise dropped by default.
+    See ./translation/default_metrics.go for a list of metrics that are dropped by default.
+  fields:
+  - name: metric_name
+    kind: string
+    default: ""
+    doc: |
+      A single metric name to match against.
+  - name: metric_names
+    type: '[]string'
+    kind: slice
+    doc: |
+      A list of metric names to match against.
+  - name: dimensions
+    type: map[string]interface {}
+    kind: map
+    doc: |
+      A map of dimension key/values to match against. All key/values must
+      match a datapoint for it to be matched. The map values can be either
+      a single string or a list of strings.
+- name: exclude_properties
+  type: '[]dpfilters.PropertyFilter'
+  kind: slice
+  doc: |
+    ExcludeProperties defines dpfilter.PropertyFilters to prevent inclusion of
+    properties to include with dimension updates to the SignalFx backend.
+  fields:
+  - name: property_name
+    type: '*dpfilters.StringFilter'
+    kind: ptr
+    doc: |
+      PropertyName is the (inverted) literal, regex, or globbed property name/key to not include in dimension updates
+  - name: property_value
+    type: '*dpfilters.StringFilter'
+    kind: ptr
+    doc: |
+      PropertyValue is the (inverted) literal or globbed property value to not include in dimension updates
+  - name: dimension_name
+    type: '*dpfilters.StringFilter'
+    kind: ptr
+    doc: |
+      DimensionName is the (inverted) literal, regex, or globbed dimension name/key to not target for dimension updates.
+      If there are no sub-property filters for its enclosing entry, it will disable dimension updates
+      for this dimension name in total.
+  - name: dimension_value
+    type: '*dpfilters.StringFilter'
+    kind: ptr
+    doc: |
+      PropertyValue is the (inverted) literal, regex, or globbed dimension value to not target with a dimension update
+      If there are no sub-property filters for its enclosing entry, it will disable dimension updates
+      for this dimension value in total.
+- name: correlation
+  type: '*correlation.Config'
+  kind: ptr
+  doc: |
+    Correlation configuration for syncing traces service and environment to metrics.
+  fields:
+  - name: endpoint
+    kind: string
+    default: ""
+  - name: tls
+    type: configtls.TLSClientSetting
+    kind: struct
+    fields:
+    - name: ca_file
+      kind: string
+      default: ""
+    - name: ca_pem
+      type: configopaque.String
+      kind: string
+      default: ""
+    - name: cert_file
+      kind: string
+      default: ""
+    - name: cert_pem
+      type: configopaque.String
+      kind: string
+      default: ""
+    - name: key_file
+      kind: string
+      default: ""
+    - name: key_pem
+      type: configopaque.String
+      kind: string
+      default: ""
+    - name: min_version
+      kind: string
+      default: ""
+    - name: max_version
+      kind: string
+      default: ""
+    - name: reload_interval
+      type: time.Duration
+      kind: int64
+    - name: insecure
+      kind: bool
+      default: false
+    - name: insecure_skip_verify
+      kind: bool
+      default: false
+    - name: server_name_override
+      kind: string
+      default: ""
+  - name: read_buffer_size
+    kind: int
+  - name: write_buffer_size
+    kind: int
+  - name: timeout
+    type: time.Duration
+    kind: int64
+    default: 5s
+  - name: headers
+    type: map[string]configopaque.String
+    kind: map
+  - name: customroundtripper
+    type: func(http.RoundTripper) (http.RoundTripper, error)
+    kind: func
+  - name: auth
+    type: '*configauth.Authentication'
+    kind: ptr
+    fields:
+    - name: authenticator
+      type: component.ID
+      kind: struct
+  - name: compression
+    type: configcompression.CompressionType
+    kind: string
+    default: ""
+  - name: max_idle_conns
+    type: '*int'
+    kind: ptr
+  - name: max_idle_conns_per_host
+    type: '*int'
+    kind: ptr
+  - name: max_conns_per_host
+    type: '*int'
+    kind: ptr
+  - name: idle_conn_timeout
+    type: '*time.Duration'
+    kind: ptr
+  - name: max_requests
+    kind: uint
+    default: 20
+  - name: max_buffered
+    kind: uint
+    default: 10000
+  - name: max_retries
+    kind: uint
+    default: 2
+  - name: log_updates
+    kind: bool
+    default: false
+  - name: retry_delay
+    type: time.Duration
+    kind: int64
+    default: 30s
+  - name: cleanup_interval
+    type: time.Duration
+    kind: int64
+    default: 1m0s
+  - name: stale_service_timeout
+    type: time.Duration
+    kind: int64
+    default: 5m0s
+    doc: |
+      How long to wait after a trace span's service name is last seen before
+      uncorrelating that service.
+  - name: sync_attributes
+    type: map[string]string
+    kind: map
+    doc: |
+      SyncAttributes is a key of the span attribute name to sync to the dimension as the value.
+- name: nonalphanumeric_dimension_chars
+  kind: string
+  default: _-.
+  doc: |
+    NonAlphanumericDimensionChars is a list of allowable characters, in addition to alphanumeric ones,
+    to be used in a dimension key.
+- name: max_connections
+  kind: int
+  doc: |
+    MaxConnections is used to set a limit to the maximum idle HTTP connection the exporter can keep open.
+    Deprecated: use HTTPClientSettings.MaxIdleConns or HTTPClientSettings.MaxIdleConnsPerHost instead.

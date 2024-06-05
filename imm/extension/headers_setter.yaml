@@ -1,0 +1,19 @@
+type: '*headerssetterextension.Config'
+fields:
+- name: headers
+  type: '[]headerssetterextension.HeaderConfig'
+  kind: slice
+  fields:
+  - name: action
+    type: headerssetterextension.actionValue
+    kind: string
+    default: ""
+  - name: key
+    type: '*string'
+    kind: ptr
+  - name: value
+    type: '*string'
+    kind: ptr
+  - name: from_context
+    type: '*string'
+    kind: ptr

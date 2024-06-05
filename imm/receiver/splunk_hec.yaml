@@ -1,0 +1,121 @@
+type: '*splunkhecreceiver.Config'
+doc: |
+  Config defines configuration for the Splunk HEC receiver.
+fields:
+- name: endpoint
+  kind: string
+  default: :8088
+- name: tls
+  type: '*configtls.TLSServerSetting'
+  kind: ptr
+  fields:
+  - name: ca_file
+    kind: string
+    default: ""
+  - name: ca_pem
+    type: configopaque.String
+    kind: string
+    default: ""
+  - name: cert_file
+    kind: string
+    default: ""
+  - name: cert_pem
+    type: configopaque.String
+    kind: string
+    default: ""
+  - name: key_file
+    kind: string
+    default: ""
+  - name: key_pem
+    type: configopaque.String
+    kind: string
+    default: ""
+  - name: min_version
+    kind: string
+    default: ""
+  - name: max_version
+    kind: string
+    default: ""
+  - name: reload_interval
+    type: time.Duration
+    kind: int64
+  - name: client_ca_file
+    kind: string
+    default: ""
+  - name: client_ca_file_reload
+    kind: bool
+    default: false
+- name: cors
+  type: '*confighttp.CORSSettings'
+  kind: ptr
+  fields:
+  - name: allowed_origins
+    type: '[]string'
+    kind: slice
+  - name: allowed_headers
+    type: '[]string'
+    kind: slice
+  - name: max_age
+    kind: int
+- name: auth
+  type: '*configauth.Authentication'
+  kind: ptr
+  fields:
+  - name: authenticator
+    type: component.ID
+    kind: struct
+- name: max_request_body_size
+  kind: int64
+- name: include_metadata
+  kind: bool
+  default: false
+- name: response_headers
+  type: map[string]configopaque.String
+  kind: map
+- name: access_token_passthrough
+  kind: bool
+  default: false
+  doc: |
+    AccessTokenPassthrough indicates whether to associate datapoints with an organization access token received in request.
+- name: raw_path
+  kind: string
+  default: /services/collector/raw
+  doc: |
+    RawPath for raw data collection, default is '/services/collector/raw'
+- name: splitting
+  type: splunkhecreceiver.SplittingStrategy
+  kind: string
+  default: line
+  doc: |
+    Splitting defines the splitting strategy used by the receiver when ingesting raw events. Can be set to "line" or "none". Default is "line".
+- name: health_path
+  kind: string
+  default: /services/collector/health
+  doc: |
+    HealthPath for health API, default is '/services/collector/health'
+- name: hec_metadata_to_otel_attrs
+  type: splunk.HecToOtelAttrs
+  kind: struct
+  doc: |
+    HecToOtelAttrs creates a mapping from HEC metadata to attributes.
+  fields:
+  - name: source
+    kind: string
+    default: com.splunk.source
+    doc: |
+      Source indicates the mapping of the source field to a specific unified model attribute.
+  - name: sourcetype
+    kind: string
+    default: com.splunk.sourcetype
+    doc: |
+      SourceType indicates the mapping of the sourcetype field to a specific unified model attribute.
+  - name: index
+    kind: string
+    default: com.splunk.index
+    doc: |
+      Index indicates the mapping of the index field to a specific unified model attribute.
+  - name: host
+    kind: string
+    default: host.name
+    doc: |
+      Host indicates the mapping of the host field to a specific unified model attribute.

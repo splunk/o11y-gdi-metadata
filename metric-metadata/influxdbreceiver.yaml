@@ -1,0 +1,10 @@
+type: influxdb
+scope_name: otelcol/influxdbreceiver
+
+status:
+  class: receiver
+  stability:
+    beta: [metrics]
+  distributions: [contrib]
+  codeowners:
+    active: [jacobmarble]

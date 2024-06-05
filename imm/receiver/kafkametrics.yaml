@@ -1,0 +1,273 @@
+type: '*kafkametricsreceiver.Config'
+doc: |
+  Config represents user settings for kafkametrics receiver
+fields:
+- name: collection_interval
+  type: time.Duration
+  kind: int64
+  default: 1m0s
+- name: initial_delay
+  type: time.Duration
+  kind: int64
+  default: 1s
+- name: brokers
+  type: '[]string'
+  kind: slice
+  doc: |
+    The list of kafka brokers (default localhost:9092)
+- name: protocol_version
+  kind: string
+  default: ""
+  doc: |
+    ProtocolVersion Kafka protocol version
+- name: topic_match
+  kind: string
+  default: ^[^_].*$
+  doc: |
+    TopicMatch topics to collect metrics on
+- name: group_match
+  kind: string
+  default: .*
+  doc: |
+    GroupMatch consumer groups to collect on
+- name: auth
+  type: kafkaexporter.Authentication
+  kind: struct
+  doc: |
+    Authentication data
+  fields:
+  - name: plain_text
+    type: '*kafkaexporter.PlainTextConfig'
+    kind: ptr
+    doc: |
+      PlainTextConfig defines plaintext authentication.
+    fields:
+    - name: username
+      kind: string
+      default: ""
+    - name: password
+      kind: string
+      default: ""
+  - name: sasl
+    type: '*kafkaexporter.SASLConfig'
+    kind: ptr
+    doc: |
+      SASLConfig defines the configuration for the SASL authentication.
+    fields:
+    - name: username
+      kind: string
+      default: ""
+      doc: |
+        Username to be used on authentication
+    - name: password
+      kind: string
+      default: ""
+      doc: |
+        Password to be used on authentication
+    - name: mechanism
+      kind: string
+      default: ""
+      doc: |
+        SASL Mechanism to be used, possible values are: (PLAIN, AWS_MSK_IAM, SCRAM-SHA-256 or SCRAM-SHA-512).
+    - name: aws_msk
+      type: kafkaexporter.AWSMSKConfig
+      kind: struct
+      doc: |
+        AWSMSKConfig defines the additional SASL authentication
+        measures needed to use AWS_MSK_IAM mechanism
+      fields:
+      - name: region
+        kind: string
+        default: ""
+        doc: |
+          Region is the AWS region the MSK cluster is based in
+      - name: broker_addr
+        kind: string
+        default: ""
+        doc: |
+          BrokerAddr is the client is connecting to in order to perform the auth required
+  - name: tls
+    type: '*configtls.TLSClientSetting'
+    kind: ptr
+    fields:
+    - name: ca_file
+      kind: string
+      default: ""
+    - name: ca_pem
+      type: configopaque.String
+      kind: string
+      default: ""
+    - name: cert_file
+      kind: string
+      default: ""
+    - name: cert_pem
+      type: configopaque.String
+      kind: string
+      default: ""
+    - name: key_file
+      kind: string
+      default: ""
+    - name: key_pem
+      type: configopaque.String
+      kind: string
+      default: ""
+    - name: min_version
+      kind: string
+      default: ""
+    - name: max_version
+      kind: string
+      default: ""
+    - name: reload_interval
+      type: time.Duration
+      kind: int64
+    - name: insecure
+      kind: bool
+      default: false
+    - name: insecure_skip_verify
+      kind: bool
+      default: false
+    - name: server_name_override
+      kind: string
+      default: ""
+  - name: kerberos
+    type: '*kafkaexporter.KerberosConfig'
+    kind: ptr
+    doc: |
+      KerberosConfig defines kereros configuration.
+    fields:
+    - name: service_name
+      kind: string
+      default: ""
+    - name: realm
+      kind: string
+      default: ""
+    - name: use_keytab
+      kind: bool
+      default: false
+    - name: username
+      kind: string
+      default: ""
+    - name: password
+      kind: string
+      default: ""
+    - name: config_file
+      kind: string
+      default: ""
+    - name: keytab_file
+      kind: string
+      default: ""
+- name: scrapers
+  type: '[]string'
+  kind: slice
+  doc: |
+    Scrapers defines which metric data points to be captured from kafka
+- name: client_id
+  kind: string
+  default: otel-metrics-receiver
+  doc: |
+    ClientID is the id associated with the consumer that reads from topics in kafka.
+- name: metrics
+  type: metadata.MetricsConfig
+  kind: struct
+  doc: |
+    MetricsConfig provides config for kafkametrics metrics.
+  fields:
+  - name: kafka.brokers
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: kafka.consumer_group.lag
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: kafka.consumer_group.lag_sum
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: kafka.consumer_group.members
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: kafka.consumer_group.offset
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: kafka.consumer_group.offset_sum
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: kafka.partition.current_offset
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: kafka.partition.oldest_offset
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: kafka.partition.replicas
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: kafka.partition.replicas_in_sync
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: kafka.topic.partitions
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true

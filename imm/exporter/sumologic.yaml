@@ -1,0 +1,194 @@
+type: '*sumologicexporter.Config'
+doc: |
+  Config defines configuration for Sumo Logic exporter.
+fields:
+- name: endpoint
+  kind: string
+  default: ""
+- name: tls
+  type: configtls.TLSClientSetting
+  kind: struct
+  fields:
+  - name: ca_file
+    kind: string
+    default: ""
+  - name: ca_pem
+    type: configopaque.String
+    kind: string
+    default: ""
+  - name: cert_file
+    kind: string
+    default: ""
+  - name: cert_pem
+    type: configopaque.String
+    kind: string
+    default: ""
+  - name: key_file
+    kind: string
+    default: ""
+  - name: key_pem
+    type: configopaque.String
+    kind: string
+    default: ""
+  - name: min_version
+    kind: string
+    default: ""
+  - name: max_version
+    kind: string
+    default: ""
+  - name: reload_interval
+    type: time.Duration
+    kind: int64
+  - name: insecure
+    kind: bool
+    default: false
+  - name: insecure_skip_verify
+    kind: bool
+    default: false
+  - name: server_name_override
+    kind: string
+    default: ""
+- name: read_buffer_size
+  kind: int
+- name: write_buffer_size
+  kind: int
+- name: timeout
+  type: time.Duration
+  kind: int64
+  default: 5s
+- name: headers
+  type: map[string]configopaque.String
+  kind: map
+- name: customroundtripper
+  type: func(http.RoundTripper) (http.RoundTripper, error)
+  kind: func
+- name: auth
+  type: '*configauth.Authentication'
+  kind: ptr
+  fields:
+  - name: authenticator
+    type: component.ID
+    kind: struct
+- name: compression
+  type: configcompression.CompressionType
+  kind: string
+  default: ""
+- name: max_idle_conns
+  type: '*int'
+  kind: ptr
+- name: max_idle_conns_per_host
+  type: '*int'
+  kind: ptr
+- name: max_conns_per_host
+  type: '*int'
+  kind: ptr
+- name: idle_conn_timeout
+  type: '*time.Duration'
+  kind: ptr
+- name: sending_queue
+  type: exporterhelper.QueueSettings
+  kind: struct
+  fields:
+  - name: enabled
+    kind: bool
+    default: false
+  - name: num_consumers
+    kind: int
+    default: 10
+  - name: queue_size
+    kind: int
+    default: 1000
+  - name: storage
+    type: '*component.ID'
+    kind: ptr
+- name: retry_on_failure
+  type: exporterhelper.RetrySettings
+  kind: struct
+  fields:
+  - name: enabled
+    kind: bool
+    default: true
+  - name: initial_interval
+    type: time.Duration
+    kind: int64
+    default: 5s
+  - name: randomization_factor
+    kind: float64
+  - name: multiplier
+    kind: float64
+  - name: max_interval
+    type: time.Duration
+    kind: int64
+    default: 30s
+  - name: max_elapsed_time
+    type: time.Duration
+    kind: int64
+    default: 5m0s
+- name: compress_encoding
+  type: sumologicexporter.CompressEncodingType
+  kind: string
+  default: gzip
+  doc: |
+    Compression encoding format, either empty string, gzip or deflate (default gzip)
+    Empty string means no compression
+- name: max_request_body_size
+  kind: int
+  default: 1048576
+  doc: |
+    Max HTTP request body size in bytes before compression (if applied).
+    By default 1MB is recommended.
+- name: log_format
+  type: sumologicexporter.LogFormatType
+  kind: string
+  default: json
+  doc: |
+    Logs related configuration
+    Format to post logs into Sumo. (default json)
+      * text - Logs will appear in Sumo Logic in text format.
+      * json - Logs will appear in Sumo Logic in json format.
+- name: metric_format
+  type: sumologicexporter.MetricFormatType
+  kind: string
+  default: prometheus
+  doc: |
+    Metrics related configuration
+    The format of metrics you will be sending, either graphite or carbon2 or prometheus (Default is prometheus)
+    Possible values are `carbon2` and `prometheus`
+- name: graphite_template
+  kind: string
+  default: '%{_metric_}'
+  doc: |
+    Graphite template.
+    Placeholders `%{attr_name}` will be replaced with attribute value for attr_name.
+- name: metadata_attributes
+  type: '[]string'
+  kind: slice
+  doc: |
+    List of regexes for attributes which should be send as metadata
+- name: source_category
+  kind: string
+  default: ""
+  doc: |
+    Sumo specific options
+    Desired source category.
+    Useful if you want to override the source category configured for the source.
+    Placeholders `%{attr_name}` will be replaced with attribute value for attr_name.
+- name: source_name
+  kind: string
+  default: ""
+  doc: |
+    Desired source name.
+    Useful if you want to override the source name configured for the source.
+    Placeholders `%{attr_name}` will be replaced with attribute value for attr_name.
+- name: source_host
+  kind: string
+  default: ""
+  doc: |
+    Desired host name.
+    Useful if you want to override the source host configured for the source.
+    Placeholders `%{attr_name}` will be replaced with attribute value for attr_name.
+- name: client
+  kind: string
+  default: otelcol
+  doc: |
+    Name of the client

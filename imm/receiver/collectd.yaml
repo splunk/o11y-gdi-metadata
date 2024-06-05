@@ -1,0 +1,17 @@
+type: '*collectdreceiver.Config'
+doc: |
+  Config defines configuration for Collectd receiver.
+fields:
+- name: endpoint
+  kind: string
+  default: localhost:8081
+- name: timeout
+  type: time.Duration
+  kind: int64
+  default: 30s
+- name: attributes_prefix
+  kind: string
+  default: ""
+- name: encoding
+  kind: string
+  default: json

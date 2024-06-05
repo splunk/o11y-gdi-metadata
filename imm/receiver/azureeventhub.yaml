@@ -1,0 +1,17 @@
+type: '*azureeventhubreceiver.Config'
+fields:
+- name: connection
+  kind: string
+  default: ""
+- name: partition
+  kind: string
+  default: ""
+- name: offset
+  kind: string
+  default: ""
+- name: storage
+  type: '*component.ID'
+  kind: ptr
+- name: format
+  kind: string
+  default: ""
