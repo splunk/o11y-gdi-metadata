@@ -19,7 +19,7 @@ import (
 	"fmt"
 	"path/filepath"
 
-	"github.com/splunk/collector-config-tools/cfgschema/lib/configschema"
+	"github.com/splunk/o11y-gdi-metadata/scripts/cfgschema/lib/configschema"
 )
 
 func main() {
@@ -35,12 +35,12 @@ func run() error {
 	if err != nil {
 		return err
 	}
-	return configschema.GenerateYAMLFiles(c, sourceDir, outputDir, "github.com/splunk/collector-config-tools/cfgschema")
+	return configschema.GenerateYAMLFiles(c, sourceDir, outputDir, "github.com/splunk/o11y-gdi-metadata/scripts/cfgschema")
 }
 
 func getFlags() (string, string) {
 	sourceDir := flag.String("s", filepath.Join("."), "")
-	outputDir := flag.String("o", filepath.Join("..", "cfg-metadata"), "output dir")
+	outputDir := flag.String("o", filepath.Join("../..", "imm"), "output dir")
 	flag.Parse()
 	return *sourceDir, *outputDir
 }
