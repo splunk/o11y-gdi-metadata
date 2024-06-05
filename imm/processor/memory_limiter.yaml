@@ -1,0 +1,17 @@
+type: '*memorylimiterprocessor.Config'
+fields:
+- name: check_interval
+  type: time.Duration
+  kind: int64
+- name: limit_mib
+  kind: uint32
+  default: 0
+- name: spike_limit_mib
+  kind: uint32
+  default: 0
+- name: limit_percentage
+  kind: uint32
+  default: 0
+- name: spike_limit_percentage
+  kind: uint32
+  default: 0

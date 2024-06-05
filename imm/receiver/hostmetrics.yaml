@@ -1,0 +1,17 @@
+type: '*hostmetricsreceiver.Config'
+doc: |
+  Config defines configuration for HostMetrics receiver.
+fields:
+- name: collection_interval
+  type: time.Duration
+  kind: int64
+  default: 1m0s
+- name: initial_delay
+  type: time.Duration
+  kind: int64
+  default: 1s
+- name: root_path
+  kind: string
+  default: ""
+  doc: |
+    RootPath is the host's root directory (linux only).

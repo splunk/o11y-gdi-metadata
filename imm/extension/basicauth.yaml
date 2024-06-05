@@ -1,0 +1,35 @@
+type: '*basicauthextension.Config'
+fields:
+- name: htpasswd
+  type: '*basicauthextension.HtpasswdSettings'
+  kind: ptr
+  doc: |
+    Htpasswd settings.
+  fields:
+  - name: file
+    kind: string
+    default: ""
+    doc: |
+      Path to the htpasswd file.
+  - name: inline
+    kind: string
+    default: ""
+    doc: |
+      Inline contents of the htpasswd file.
+- name: client_auth
+  type: '*basicauthextension.ClientAuthSettings'
+  kind: ptr
+  doc: |
+    ClientAuth settings
+  fields:
+  - name: username
+    kind: string
+    default: ""
+    doc: |
+      Username holds the username to use for client authentication.
+  - name: password
+    type: configopaque.String
+    kind: string
+    default: ""
+    doc: |
+      Password holds the password to use for client authentication.

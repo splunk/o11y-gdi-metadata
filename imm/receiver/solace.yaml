@@ -1,0 +1,113 @@
+type: '*solacereceiver.Config'
+doc: |
+  Config defines configuration for Solace receiver.
+fields:
+- name: broker
+  type: '[]string'
+  kind: slice
+  doc: |
+    The list of solace brokers (default localhost:5671)
+- name: queue
+  kind: string
+  default: ""
+  doc: |
+    The name of the solace queue to consume from, it is required parameter
+- name: max_unacknowledged
+  kind: int32
+  default: 1000
+  doc: |
+    The maximum number of unacknowledged messages the Solace broker can transmit, to configure AMQP Link
+- name: tls
+  type: configtls.TLSClientSetting
+  kind: struct
+  fields:
+  - name: ca_file
+    kind: string
+    default: ""
+  - name: ca_pem
+    type: configopaque.String
+    kind: string
+    default: ""
+  - name: cert_file
+    kind: string
+    default: ""
+  - name: cert_pem
+    type: configopaque.String
+    kind: string
+    default: ""
+  - name: key_file
+    kind: string
+    default: ""
+  - name: key_pem
+    type: configopaque.String
+    kind: string
+    default: ""
+  - name: min_version
+    kind: string
+    default: ""
+  - name: max_version
+    kind: string
+    default: ""
+  - name: reload_interval
+    type: time.Duration
+    kind: int64
+  - name: insecure
+    kind: bool
+    default: false
+  - name: insecure_skip_verify
+    kind: bool
+    default: false
+  - name: server_name_override
+    kind: string
+    default: ""
+- name: auth
+  type: solacereceiver.Authentication
+  kind: struct
+  doc: |
+    Authentication defines authentication strategies.
+  fields:
+  - name: sasl_plain
+    type: '*solacereceiver.SaslPlainTextConfig'
+    kind: ptr
+    doc: |
+      SaslPlainTextConfig defines SASL PLAIN authentication.
+    fields:
+    - name: username
+      kind: string
+      default: ""
+    - name: password
+      kind: string
+      default: ""
+  - name: sasl_xauth2
+    type: '*solacereceiver.SaslXAuth2Config'
+    kind: ptr
+    doc: |
+      SaslXAuth2Config defines the configuration for the SASL XAUTH2 authentication.
+    fields:
+    - name: username
+      kind: string
+      default: ""
+    - name: bearer
+      kind: string
+      default: ""
+  - name: sasl_external
+    type: '*solacereceiver.SaslExternalConfig'
+    kind: ptr
+    doc: |
+      SaslExternalConfig defines the configuration for the SASL External used in conjunction with TLS client authentication.
+- name: flow_control
+  type: solacereceiver.FlowControl
+  kind: struct
+  doc: |
+    FlowControl defines the configuration for what to do in backpressure scenarios, e.g. memorylimiter errors
+  fields:
+  - name: delayed_retry
+    type: '*solacereceiver.FlowControlDelayedRetry'
+    kind: ptr
+    doc: |
+      FlowControlDelayedRetry represents the strategy of waiting for a defined amount of time (in time.Duration) and attempt redelivery
+    fields:
+    - name: delay
+      type: time.Duration
+      kind: int64
+      default: 10ms

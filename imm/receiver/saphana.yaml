@@ -1,0 +1,499 @@
+type: '*saphanareceiver.Config'
+doc: |
+  MetricsBuilderConfig is a configuration for saphana metrics builder.
+fields:
+- name: collection_interval
+  type: time.Duration
+  kind: int64
+  default: 10s
+- name: initial_delay
+  type: time.Duration
+  kind: int64
+  default: 1s
+- name: endpoint
+  kind: string
+  default: localhost:33015
+- name: tls
+  type: configtls.TLSClientSetting
+  kind: struct
+  fields:
+  - name: ca_file
+    kind: string
+    default: ""
+  - name: ca_pem
+    type: configopaque.String
+    kind: string
+    default: ""
+  - name: cert_file
+    kind: string
+    default: ""
+  - name: cert_pem
+    type: configopaque.String
+    kind: string
+    default: ""
+  - name: key_file
+    kind: string
+    default: ""
+  - name: key_pem
+    type: configopaque.String
+    kind: string
+    default: ""
+  - name: min_version
+    kind: string
+    default: ""
+  - name: max_version
+    kind: string
+    default: ""
+  - name: reload_interval
+    type: time.Duration
+    kind: int64
+  - name: insecure
+    kind: bool
+    default: true
+  - name: insecure_skip_verify
+    kind: bool
+    default: false
+  - name: server_name_override
+    kind: string
+    default: ""
+- name: metrics
+  type: metadata.MetricsConfig
+  kind: struct
+  doc: |
+    MetricsConfig provides config for saphana metrics.
+  fields:
+  - name: saphana.alert.count
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: saphana.backup.latest
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: saphana.column.memory.used
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: saphana.component.memory.used
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: saphana.connection.count
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: saphana.cpu.used
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: saphana.disk.size.current
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: saphana.host.memory.current
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: saphana.host.swap.current
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: saphana.instance.code_size
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: saphana.instance.memory.current
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: saphana.instance.memory.shared.allocated
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: saphana.instance.memory.used.peak
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: saphana.license.expiration.time
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: saphana.license.limit
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: saphana.license.peak
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: saphana.network.request.average_time
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: saphana.network.request.count
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: saphana.network.request.finished.count
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: saphana.replication.average_time
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: saphana.replication.backlog.size
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: saphana.replication.backlog.time
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: saphana.row_store.memory.used
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: saphana.schema.memory.used.current
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: saphana.schema.memory.used.max
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: saphana.schema.operation.count
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: saphana.schema.record.compressed.count
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: saphana.schema.record.count
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: saphana.service.code_size
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: saphana.service.count
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: saphana.service.memory.compactors.allocated
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: saphana.service.memory.compactors.freeable
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: saphana.service.memory.effective_limit
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: saphana.service.memory.heap.current
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: saphana.service.memory.limit
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: saphana.service.memory.shared.current
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: saphana.service.memory.used
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: saphana.service.stack_size
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: saphana.service.thread.count
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: saphana.transaction.blocked
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: saphana.transaction.count
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: saphana.uptime
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: saphana.volume.operation.count
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: saphana.volume.operation.size
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: saphana.volume.operation.time
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+- name: resource_attributes
+  type: metadata.ResourceAttributesConfig
+  kind: struct
+  doc: |
+    ResourceAttributesConfig provides config for saphana resource attributes.
+  fields:
+  - name: db.system
+    type: metadata.ResourceAttributeConfig
+    kind: struct
+    doc: |
+      ResourceAttributeConfig provides common config for a particular resource attribute.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: saphana.host
+    type: metadata.ResourceAttributeConfig
+    kind: struct
+    doc: |
+      ResourceAttributeConfig provides common config for a particular resource attribute.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+- name: username
+  kind: string
+  default: ""
+- name: password
+  kind: string
+  default: ""

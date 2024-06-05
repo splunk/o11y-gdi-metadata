@@ -1,0 +1,86 @@
+type: '*oauth2clientauthextension.Config'
+doc: |
+  Config stores the configuration for OAuth2 Client Credentials (2-legged OAuth2 flow) setup.
+fields:
+- name: client_id
+  kind: string
+  default: ""
+  doc: |
+    ClientID is the application's ID.
+    See https://datatracker.ietf.org/doc/html/rfc6749#section-2.2
+- name: client_secret
+  type: configopaque.String
+  kind: string
+  default: ""
+  doc: |
+    ClientSecret is the application's secret.
+    See https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1
+- name: endpoint_params
+  type: url.Values
+  kind: map
+  doc: |
+    EndpointParams specifies additional parameters for requests to the token endpoint.
+- name: token_url
+  kind: string
+  default: ""
+  doc: |
+    TokenURL is the resource server's token endpoint
+    URL. This is a constant specific to each server.
+    See https://datatracker.ietf.org/doc/html/rfc6749#section-3.2
+- name: scopes
+  type: '[]string'
+  kind: slice
+  doc: |
+    Scope specifies optional requested permissions.
+    See https://datatracker.ietf.org/doc/html/rfc6749#section-3.3
+- name: tls
+  type: configtls.TLSClientSetting
+  kind: struct
+  doc: |
+    TLSSetting struct exposes TLS client configuration for the underneath client to authorization server.
+  fields:
+  - name: ca_file
+    kind: string
+    default: ""
+  - name: ca_pem
+    type: configopaque.String
+    kind: string
+    default: ""
+  - name: cert_file
+    kind: string
+    default: ""
+  - name: cert_pem
+    type: configopaque.String
+    kind: string
+    default: ""
+  - name: key_file
+    kind: string
+    default: ""
+  - name: key_pem
+    type: configopaque.String
+    kind: string
+    default: ""
+  - name: min_version
+    kind: string
+    default: ""
+  - name: max_version
+    kind: string
+    default: ""
+  - name: reload_interval
+    type: time.Duration
+    kind: int64
+  - name: insecure
+    kind: bool
+    default: false
+  - name: insecure_skip_verify
+    kind: bool
+    default: false
+  - name: server_name_override
+    kind: string
+    default: ""
+- name: timeout
+  type: time.Duration
+  kind: int64
+  doc: |
+    Timeout parameter configures `http.Client.Timeout` for the underneath client to authorization
+    server while fetching and refreshing tokens.

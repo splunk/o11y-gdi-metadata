@@ -1,0 +1,169 @@
+type: '*httpforwarder.Config'
+doc: |
+  Config defines configuration for http forwarder extension.
+fields:
+- name: ingress
+  type: confighttp.HTTPServerSettings
+  kind: struct
+  doc: |
+    Ingress holds config settings for HTTP server listening for requests.
+  fields:
+  - name: endpoint
+    kind: string
+    default: :6060
+  - name: tls
+    type: '*configtls.TLSServerSetting'
+    kind: ptr
+    fields:
+    - name: ca_file
+      kind: string
+      default: ""
+    - name: ca_pem
+      type: configopaque.String
+      kind: string
+      default: ""
+    - name: cert_file
+      kind: string
+      default: ""
+    - name: cert_pem
+      type: configopaque.String
+      kind: string
+      default: ""
+    - name: key_file
+      kind: string
+      default: ""
+    - name: key_pem
+      type: configopaque.String
+      kind: string
+      default: ""
+    - name: min_version
+      kind: string
+      default: ""
+    - name: max_version
+      kind: string
+      default: ""
+    - name: reload_interval
+      type: time.Duration
+      kind: int64
+    - name: client_ca_file
+      kind: string
+      default: ""
+    - name: client_ca_file_reload
+      kind: bool
+      default: false
+  - name: cors
+    type: '*confighttp.CORSSettings'
+    kind: ptr
+    fields:
+    - name: allowed_origins
+      type: '[]string'
+      kind: slice
+    - name: allowed_headers
+      type: '[]string'
+      kind: slice
+    - name: max_age
+      kind: int
+  - name: auth
+    type: '*configauth.Authentication'
+    kind: ptr
+    fields:
+    - name: authenticator
+      type: component.ID
+      kind: struct
+  - name: max_request_body_size
+    kind: int64
+  - name: include_metadata
+    kind: bool
+    default: false
+  - name: response_headers
+    type: map[string]configopaque.String
+    kind: map
+- name: egress
+  type: confighttp.HTTPClientSettings
+  kind: struct
+  doc: |
+    Egress holds config settings to use for forwarded requests.
+  fields:
+  - name: endpoint
+    kind: string
+    default: ""
+  - name: tls
+    type: configtls.TLSClientSetting
+    kind: struct
+    fields:
+    - name: ca_file
+      kind: string
+      default: ""
+    - name: ca_pem
+      type: configopaque.String
+      kind: string
+      default: ""
+    - name: cert_file
+      kind: string
+      default: ""
+    - name: cert_pem
+      type: configopaque.String
+      kind: string
+      default: ""
+    - name: key_file
+      kind: string
+      default: ""
+    - name: key_pem
+      type: configopaque.String
+      kind: string
+      default: ""
+    - name: min_version
+      kind: string
+      default: ""
+    - name: max_version
+      kind: string
+      default: ""
+    - name: reload_interval
+      type: time.Duration
+      kind: int64
+    - name: insecure
+      kind: bool
+      default: false
+    - name: insecure_skip_verify
+      kind: bool
+      default: false
+    - name: server_name_override
+      kind: string
+      default: ""
+  - name: read_buffer_size
+    kind: int
+  - name: write_buffer_size
+    kind: int
+  - name: timeout
+    type: time.Duration
+    kind: int64
+    default: 10s
+  - name: headers
+    type: map[string]configopaque.String
+    kind: map
+  - name: customroundtripper
+    type: func(http.RoundTripper) (http.RoundTripper, error)
+    kind: func
+  - name: auth
+    type: '*configauth.Authentication'
+    kind: ptr
+    fields:
+    - name: authenticator
+      type: component.ID
+      kind: struct
+  - name: compression
+    type: configcompression.CompressionType
+    kind: string
+    default: ""
+  - name: max_idle_conns
+    type: '*int'
+    kind: ptr
+  - name: max_idle_conns_per_host
+    type: '*int'
+    kind: ptr
+  - name: max_conns_per_host
+    type: '*int'
+    kind: ptr
+  - name: idle_conn_timeout
+    type: '*time.Duration'
+    kind: ptr

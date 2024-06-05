@@ -1,0 +1,78 @@
+type: '*googlecloudpubsubexporter.Config'
+fields:
+- name: timeout
+  type: time.Duration
+  kind: int64
+  default: 12s
+- name: sending_queue
+  type: exporterhelper.QueueSettings
+  kind: struct
+  fields:
+  - name: enabled
+    kind: bool
+    default: false
+  - name: num_consumers
+    kind: int
+  - name: queue_size
+    kind: int
+  - name: storage
+    type: '*component.ID'
+    kind: ptr
+- name: retry_on_failure
+  type: exporterhelper.RetrySettings
+  kind: struct
+  fields:
+  - name: enabled
+    kind: bool
+    default: false
+  - name: initial_interval
+    type: time.Duration
+    kind: int64
+  - name: randomization_factor
+    kind: float64
+  - name: multiplier
+    kind: float64
+  - name: max_interval
+    type: time.Duration
+    kind: int64
+  - name: max_elapsed_time
+    type: time.Duration
+    kind: int64
+- name: project
+  kind: string
+  default: ""
+  doc: |
+    Google Cloud Project ID where the Pubsub client will connect to
+- name: user_agent
+  kind: string
+  default: opentelemetry-collector-contrib {{version}}
+  doc: |
+    User agent that will be used by the Pubsub client to connect to the service
+- name: topic
+  kind: string
+  default: ""
+  doc: |
+    The fully qualified resource name of the Pubsub topic
+- name: compression
+  kind: string
+  default: ""
+  doc: |
+    Compression of the payload (only gzip or is supported, no compression is the default)
+- name: watermark
+  type: googlecloudpubsubexporter.WatermarkConfig
+  kind: struct
+  doc: |
+    Watermark defines the watermark (the ce-time attribute on the message) behavior
+  fields:
+  - name: behavior
+    kind: string
+    default: current
+    doc: |
+      Behavior of the watermark. Currently, only  of the message (none, earliest and current, current being the default)
+      will set the timestamp on pubsub based on timestamps of the events inside the message
+  - name: allowed_drift
+    type: time.Duration
+    kind: int64
+    doc: |
+      Indication on how much the timestamp can drift from the current time, the timestamp will be capped to the allowed
+      maximum. A duration of 0 is the same as maximum duration

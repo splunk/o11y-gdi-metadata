@@ -1,0 +1,112 @@
+type: '*opencensusreceiver.Config'
+doc: |
+  Config defines configuration for OpenCensus receiver.
+fields:
+- name: endpoint
+  kind: string
+  default: 0.0.0.0:55678
+- name: transport
+  kind: string
+  default: tcp
+- name: tls
+  type: '*configtls.TLSServerSetting'
+  kind: ptr
+  fields:
+  - name: ca_file
+    kind: string
+    default: ""
+  - name: ca_pem
+    type: configopaque.String
+    kind: string
+    default: ""
+  - name: cert_file
+    kind: string
+    default: ""
+  - name: cert_pem
+    type: configopaque.String
+    kind: string
+    default: ""
+  - name: key_file
+    kind: string
+    default: ""
+  - name: key_pem
+    type: configopaque.String
+    kind: string
+    default: ""
+  - name: min_version
+    kind: string
+    default: ""
+  - name: max_version
+    kind: string
+    default: ""
+  - name: reload_interval
+    type: time.Duration
+    kind: int64
+  - name: client_ca_file
+    kind: string
+    default: ""
+  - name: client_ca_file_reload
+    kind: bool
+    default: false
+- name: max_recv_msg_size_mib
+  kind: uint64
+  default: 0
+- name: max_concurrent_streams
+  kind: uint32
+  default: 0
+- name: read_buffer_size
+  kind: int
+  default: 524288
+- name: write_buffer_size
+  kind: int
+- name: keepalive
+  type: '*configgrpc.KeepaliveServerConfig'
+  kind: ptr
+  fields:
+  - name: server_parameters
+    type: '*configgrpc.KeepaliveServerParameters'
+    kind: ptr
+    fields:
+    - name: max_connection_idle
+      type: time.Duration
+      kind: int64
+    - name: max_connection_age
+      type: time.Duration
+      kind: int64
+    - name: max_connection_age_grace
+      type: time.Duration
+      kind: int64
+    - name: time
+      type: time.Duration
+      kind: int64
+    - name: timeout
+      type: time.Duration
+      kind: int64
+  - name: enforcement_policy
+    type: '*configgrpc.KeepaliveEnforcementPolicy'
+    kind: ptr
+    fields:
+    - name: min_time
+      type: time.Duration
+      kind: int64
+    - name: permit_without_stream
+      kind: bool
+      default: false
+- name: auth
+  type: '*configauth.Authentication'
+  kind: ptr
+  fields:
+  - name: authenticator
+    type: component.ID
+    kind: struct
+- name: include_metadata
+  kind: bool
+  default: false
+- name: cors_allowed_origins
+  type: '[]string'
+  kind: slice
+  doc: |
+    CorsOrigins are the allowed CORS origins for HTTP/JSON requests to grpc-gateway adapter
+    for the OpenCensus receiver. See github.com/rs/cors
+    An empty list means that CORS is not enabled at all. A wildcard (*) can be
+    used to match any origin or one or more characters of an origin.

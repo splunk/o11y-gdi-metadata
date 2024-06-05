@@ -1,0 +1,385 @@
+type: '*redisreceiver.Config'
+doc: |
+  MetricsBuilderConfig is a configuration for redis metrics builder.
+fields:
+- name: collection_interval
+  type: time.Duration
+  kind: int64
+  default: 10s
+- name: initial_delay
+  type: time.Duration
+  kind: int64
+  default: 1s
+- name: endpoint
+  kind: string
+  default: ""
+- name: transport
+  kind: string
+  default: tcp
+- name: password
+  kind: string
+  default: ""
+  doc: |
+    Optional password. Must match the password specified in the
+    requirepass server configuration option.
+- name: tls
+  type: configtls.TLSClientSetting
+  kind: struct
+  fields:
+  - name: ca_file
+    kind: string
+    default: ""
+  - name: ca_pem
+    type: configopaque.String
+    kind: string
+    default: ""
+  - name: cert_file
+    kind: string
+    default: ""
+  - name: cert_pem
+    type: configopaque.String
+    kind: string
+    default: ""
+  - name: key_file
+    kind: string
+    default: ""
+  - name: key_pem
+    type: configopaque.String
+    kind: string
+    default: ""
+  - name: min_version
+    kind: string
+    default: ""
+  - name: max_version
+    kind: string
+    default: ""
+  - name: reload_interval
+    type: time.Duration
+    kind: int64
+  - name: insecure
+    kind: bool
+    default: true
+  - name: insecure_skip_verify
+    kind: bool
+    default: false
+  - name: server_name_override
+    kind: string
+    default: ""
+- name: metrics
+  type: metadata.MetricsConfig
+  kind: struct
+  doc: |
+    MetricsConfig provides config for redis metrics.
+  fields:
+  - name: redis.clients.blocked
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: redis.clients.connected
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: redis.clients.max_input_buffer
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: redis.clients.max_output_buffer
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: redis.cmd.calls
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: false
+  - name: redis.cmd.usec
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: false
+  - name: redis.commands
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: redis.commands.processed
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: redis.connections.received
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: redis.connections.rejected
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: redis.cpu.time
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: redis.db.avg_ttl
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: redis.db.expires
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: redis.db.keys
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: redis.keys.evicted
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: redis.keys.expired
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: redis.keyspace.hits
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: redis.keyspace.misses
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: redis.latest_fork
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: redis.maxmemory
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: false
+  - name: redis.memory.fragmentation_ratio
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: redis.memory.lua
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: redis.memory.peak
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: redis.memory.rss
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: redis.memory.used
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: redis.net.input
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: redis.net.output
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: redis.rdb.changes_since_last_save
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: redis.replication.backlog_first_byte_offset
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: redis.replication.offset
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: redis.role
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: false
+  - name: redis.slaves.connected
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+  - name: redis.uptime
+    type: metadata.MetricConfig
+    kind: struct
+    doc: |
+      MetricConfig provides common config for a particular metric.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true
+- name: resource_attributes
+  type: metadata.ResourceAttributesConfig
+  kind: struct
+  doc: |
+    ResourceAttributesConfig provides config for redis resource attributes.
+  fields:
+  - name: redis.version
+    type: metadata.ResourceAttributeConfig
+    kind: struct
+    doc: |
+      ResourceAttributeConfig provides common config for a particular resource attribute.
+    fields:
+    - name: enabled
+      kind: bool
+      default: true

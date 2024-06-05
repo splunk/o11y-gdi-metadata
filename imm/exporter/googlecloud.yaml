@@ -1,0 +1,334 @@
+type: '*googlecloudexporter.Config'
+doc: |
+  Config defines configuration for Google Cloud exporter.
+fields:
+- name: project
+  kind: string
+  default: ""
+  doc: |
+    ProjectID is the project telemetry is sent to if the gcp.project.id
+    resource attribute is not set. If unspecified, this is determined using
+    application default credentials.
+- name: user_agent
+  kind: string
+  default: opentelemetry-collector-contrib {{version}}
+- name: impersonate
+  type: collector.ImpersonateConfig
+  kind: struct
+  doc: |
+    ImpersonateConfig defines configuration for service account impersonation.
+  fields:
+  - name: target_principal
+    kind: string
+    default: ""
+  - name: subject
+    kind: string
+    default: ""
+  - name: delegates
+    type: '[]string'
+    kind: slice
+- name: trace
+  type: collector.TraceConfig
+  kind: struct
+  fields:
+  - name: attribute_mappings
+    type: '[]collector.AttributeMapping'
+    kind: slice
+    doc: |
+      AttributeMappings determines how to map from OpenTelemetry attribute
+      keys to Google Cloud Trace keys.  By default, it changes http and
+      service keys so that they appear more prominently in the UI.
+    fields:
+    - name: key
+      kind: string
+      default: ""
+      doc: |
+        Key is the OpenTelemetry attribute key
+    - name: replacement
+      kind: string
+      default: ""
+      doc: |
+        Replacement is the attribute sent to Google Cloud Trace
+  - name: getclientoptions
+    type: func() []option.ClientOption
+    kind: func
+    doc: |
+      GetClientOptions returns additional options to be passed
+      to the underlying Google Cloud API client.
+      Must be set programmatically (no support via declarative config).
+      If GetClientOptions returns any options, the exporter will not add the
+      default credentials, as those could conflict with options provided via
+      GetClientOptions.
+      Optional.
+  - name: endpoint
+    kind: string
+    default: ""
+  - name: compression
+    kind: string
+    default: ""
+    doc: |
+      Compression specifies the compression format for Metrics and Logging gRPC requests.
+      Supported values: gzip.
+  - name: use_insecure
+    kind: bool
+    default: false
+    doc: |
+      Only has effect if Endpoint is not ""
+  - name: grpc_pool_size
+    kind: int
+    doc: |
+      GRPCPoolSize sets the size of the connection pool in the GCP client
+- name: log
+  type: collector.LogConfig
+  kind: struct
+  fields:
+  - name: default_log_name
+    kind: string
+    default: ""
+    doc: |
+      DefaultLogName sets the fallback log name to use when one isn't explicitly set
+      for a log entry. If unset, logs without a log name will raise an error.
+  - name: resource_filters
+    type: '[]collector.ResourceFilter'
+    kind: slice
+    doc: |
+      ResourceFilters, if provided, provides a list of resource filters.
+      Resource attributes matching any filter will be included in LogEntry labels.
+      Defaults to empty, which won't include any additional resource labels.
+    fields:
+    - name: prefix
+      kind: string
+      default: ""
+      doc: |
+        Match resource keys by prefix
+    - name: regex
+      kind: string
+      default: ""
+      doc: |
+        Match resource keys by regex
+  - name: getclientoptions
+    type: func() []option.ClientOption
+    kind: func
+    doc: |
+      GetClientOptions returns additional options to be passed
+      to the underlying Google Cloud API client.
+      Must be set programmatically (no support via declarative config).
+      If GetClientOptions returns any options, the exporter will not add the
+      default credentials, as those could conflict with options provided via
+      GetClientOptions.
+      Optional.
+  - name: endpoint
+    kind: string
+    default: ""
+  - name: compression
+    kind: string
+    default: ""
+    doc: |
+      Compression specifies the compression format for Metrics and Logging gRPC requests.
+      Supported values: gzip.
+  - name: use_insecure
+    kind: bool
+    default: false
+    doc: |
+      Only has effect if Endpoint is not ""
+  - name: grpc_pool_size
+    kind: int
+    doc: |
+      GRPCPoolSize sets the size of the connection pool in the GCP client
+  - name: service_resource_labels
+    kind: bool
+    default: true
+    doc: |
+      ServiceResourceLabels, if true, causes the exporter to copy OTel's
+      service.name, service.namespace, and service.instance.id resource attributes into the Cloud Logging LogEntry labels.
+      Disabling this option does not prevent resource_filters from adding those labels. Default is true.
+- name: metric
+  type: collector.MetricConfig
+  kind: struct
+  fields:
+  - name: mapmonitoredresource
+    type: func(pcommon.Resource) *monitoredres.MonitoredResource
+    kind: func
+    doc: |
+      MapMonitoredResource is not exposed as an option in the configuration, but
+      can be used by other exporters to extend the functionality of this
+      exporter. It allows overriding the function used to map otel resource to
+      monitored resource.
+  - name: extrametrics
+    type: func(pmetric.Metrics) pmetric.ResourceMetricsSlice
+    kind: func
+    doc: |
+      ExtraMetrics is an extension point for exporters to add to the set
+      of ResourceMetrics during a call to PushMetrics.
+  - name: getmetricname
+    type: func(string, pmetric.Metric) (string, error)
+    kind: func
+    doc: |
+      GetMetricName is not settable in config files, but can be used by other
+      exporters which extend the functionality of this exporter. It allows
+      customizing the naming of metrics. baseName already includes type
+      suffixes for summary metrics, but does not (yet) include the domain prefix
+  - name: experimental_wal_config
+    type: '*collector.WALConfig'
+    kind: ptr
+    doc: |
+      WALConfig holds configuration settings for the write ahead log.
+    fields:
+    - name: directory
+      kind: string
+      default: ""
+      doc: |
+        Directory is the location to store WAL files.
+    - name: max_backoff
+      type: time.Duration
+      kind: int64
+      doc: |
+        MaxBackoff sets the length of time to exponentially re-try failed exports.
+  - name: prefix
+    kind: string
+    default: workload.googleapis.com
+  - name: known_domains
+    type: '[]string'
+    kind: slice
+    doc: |
+      KnownDomains contains a list of prefixes. If a metric already has one
+      of these prefixes, the prefix is not added.
+  - name: resource_filters
+    type: '[]collector.ResourceFilter'
+    kind: slice
+    doc: |
+      ResourceFilters, if provided, provides a list of resource filters.
+      Resource attributes matching any filter will be included in metric labels.
+      Defaults to empty, which won't include any additional resource labels. Note that the
+      service_resource_labels option operates independently from resource_filters.
+    fields:
+    - name: prefix
+      kind: string
+      default: ""
+      doc: |
+        Match resource keys by prefix
+    - name: regex
+      kind: string
+      default: ""
+      doc: |
+        Match resource keys by regex
+  - name: getclientoptions
+    type: func() []option.ClientOption
+    kind: func
+    doc: |
+      GetClientOptions returns additional options to be passed
+      to the underlying Google Cloud API client.
+      Must be set programmatically (no support via declarative config).
+      If GetClientOptions returns any options, the exporter will not add the
+      default credentials, as those could conflict with options provided via
+      GetClientOptions.
+      Optional.
+  - name: endpoint
+    kind: string
+    default: ""
+  - name: compression
+    kind: string
+    default: ""
+    doc: |
+      Compression specifies the compression format for Metrics and Logging gRPC requests.
+      Supported values: gzip.
+  - name: use_insecure
+    kind: bool
+    default: false
+    doc: |
+      Only has effect if Endpoint is not ""
+  - name: grpc_pool_size
+    kind: int
+    doc: |
+      GRPCPoolSize sets the size of the connection pool in the GCP client
+  - name: create_metric_descriptor_buffer_size
+    kind: int
+    default: 10
+    doc: |
+      CreateMetricDescriptorBufferSize is the buffer size for the channel
+      which asynchronously calls CreateMetricDescriptor. Default is 10.
+  - name: skip_create_descriptor
+    kind: bool
+    default: false
+  - name: create_service_timeseries
+    kind: bool
+    default: false
+    doc: |
+      CreateServiceTimeSeries, if true, this will send all timeseries using `CreateServiceTimeSeries`.
+      Implicitly, this sets `SkipMetricDescriptor` to true.
+  - name: instrumentation_library_labels
+    kind: bool
+    default: true
+    doc: |
+      InstrumentationLibraryLabels, if true, set the instrumentation_source
+      and instrumentation_version labels. Defaults to true.
+  - name: service_resource_labels
+    kind: bool
+    default: true
+    doc: |
+      ServiceResourceLabels, if true, causes the exporter to copy OTel's
+      service.name, service.namespace, and service.instance.id resource attributes into the GCM timeseries metric labels. This
+      option is recommended to avoid writing duplicate timeseries against the same monitored
+      resource. Disabling this option does not prevent resource_filters from adding those
+      labels. Default is true.
+  - name: cumulative_normalization
+    kind: bool
+    default: true
+    doc: |
+      CumulativeNormalization normalizes cumulative metrics without start times or with
+      explicit reset points by subtracting subsequent points from the initial point.
+      It is enabled by default. Since it caches starting points, it may result in
+      increased memory usage.
+  - name: sum_of_squared_deviation
+    kind: bool
+    default: false
+    doc: |
+      EnableSumOfSquaredDeviation enables calculation of an estimated sum of squared
+      deviation.  It isn't correct, so we don't send it by default, and don't expose
+      it to users. For some uses, it is expected, however.
+- name: destination_project_quota
+  kind: bool
+  default: false
+- name: timeout
+  type: time.Duration
+  kind: int64
+  default: 12s
+- name: sending_queue
+  type: exporterhelper.QueueSettings
+  kind: struct
+  fields:
+  - name: enabled
+    kind: bool
+    default: true
+  - name: num_consumers
+    kind: int
+    default: 10
+  - name: queue_size
+    kind: int
+    default: 1000
+  - name: storage
+    type: '*component.ID'
+    kind: ptr
+- name: retry_on_failure
+  type: exporterhelper.RetrySettings
+  kind: struct
+  fields:
+  - name: enabled
+    kind: bool
+    default: false
+  - name: initial_interval
+    type: time.Duration
+    kind: int64
+    default: 5s
+  - name: randomization_factor
+    kind: float64
+  - name: multiplier
+    kind: float64
+  - name: max_interval
+    type: time.Duration
+    kind: int64
+    default: 30s
+  - name: max_elapsed_time
+    type: time.Duration
+    kind: int64
+    default: 5m0s

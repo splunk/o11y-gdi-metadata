@@ -1,0 +1,5 @@
+type: '*zpagesextension.Config'
+fields:
+- name: endpoint
+  kind: string
+  default: localhost:55679

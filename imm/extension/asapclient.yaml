@@ -1,0 +1,18 @@
+type: '*asapauthextension.Config'
+fields:
+- name: key_id
+  kind: string
+  default: ""
+- name: ttl
+  type: time.Duration
+  kind: int64
+- name: issuer
+  kind: string
+  default: ""
+- name: audience
+  type: '[]string'
+  kind: slice
+- name: private_key
+  type: configopaque.String
+  kind: string
+  default: ""

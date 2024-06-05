@@ -1,0 +1,25 @@
+type: '*pprofextension.Config'
+doc: |
+  Config has the configuration for the extension enabling the golang
+  net/http/pprof (Performance Profiler) extension.
+fields:
+- name: endpoint
+  kind: string
+  default: localhost:1777
+- name: block_profile_fraction
+  kind: int
+  doc: |
+    Fraction of blocking events that are profiled. A value <= 0 disables
+    profiling. See https://golang.org/pkg/runtime/#SetBlockProfileRate for details.
+- name: mutex_profile_fraction
+  kind: int
+  doc: |
+    Fraction of mutex contention events that are profiled. A value <= 0
+    disables profiling. See https://golang.org/pkg/runtime/#SetMutexProfileFraction
+    for details.
+- name: save_to_file
+  kind: string
+  default: ""
+  doc: |
+    Optional file name to save the CPU profile to. The profiling starts when the
+    Collector starts and is saved to the file when the Collector is terminated.

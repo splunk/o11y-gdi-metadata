@@ -1,0 +1,34 @@
+type: '*carbonreceiver.Config'
+doc: |
+  Config defines configuration for the Carbon receiver.
+fields:
+- name: endpoint
+  kind: string
+  default: localhost:2003
+- name: transport
+  kind: string
+  default: tcp
+- name: tcp_idle_timeout
+  type: time.Duration
+  kind: int64
+  default: 30s
+  doc: |
+    TCPIdleTimeout is the timout for idle TCP connections, it is ignored
+    if transport being used is UDP.
+- name: parser
+  type: '*protocol.Config'
+  kind: ptr
+  doc: |
+    Parser specifies a parser and the respective configuration to be used
+    by the receiver.
+  fields:
+  - name: type
+    kind: string
+    default: plaintext
+    doc: |
+      Type of the parser to be used with the arriving data.
+  - name: config
+    type: protocol.ParserConfig
+    kind: interface
+    doc: |
+      Config placeholder for the configuration object of the selected parser.

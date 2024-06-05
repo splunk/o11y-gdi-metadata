@@ -1,0 +1,189 @@
+type: '*pulsarexporter.Config'
+doc: |
+  Config defines configuration for Pulsar exporter.
+fields:
+- name: timeout
+  type: time.Duration
+  kind: int64
+  default: 5s
+- name: sending_queue
+  type: exporterhelper.QueueSettings
+  kind: struct
+  fields:
+  - name: enabled
+    kind: bool
+    default: true
+  - name: num_consumers
+    kind: int
+    default: 10
+  - name: queue_size
+    kind: int
+    default: 1000
+  - name: storage
+    type: '*component.ID'
+    kind: ptr
+- name: retry_on_failure
+  type: exporterhelper.RetrySettings
+  kind: struct
+  fields:
+  - name: enabled
+    kind: bool
+    default: true
+  - name: initial_interval
+    type: time.Duration
+    kind: int64
+    default: 5s
+  - name: randomization_factor
+    kind: float64
+  - name: multiplier
+    kind: float64
+  - name: max_interval
+    type: time.Duration
+    kind: int64
+    default: 30s
+  - name: max_elapsed_time
+    type: time.Duration
+    kind: int64
+    default: 5m0s
+- name: endpoint
+  kind: string
+  default: pulsar://localhost:6650
+  doc: |
+    Endpoint of pulsar broker (default "pulsar://localhost:6650")
+- name: topic
+  kind: string
+  default: ""
+  doc: |
+    The name of the pulsar topic to export to (default otlp_spans for traces, otlp_metrics for metrics)
+- name: encoding
+  kind: string
+  default: otlp_proto
+  doc: |
+    Encoding of messages (default "otlp_proto")
+- name: producer
+  type: pulsarexporter.Producer
+  kind: struct
+  doc: |
+    Producer configuration of the Pulsar producer
+  fields:
+  - name: max_reconnect_broker
+    type: '*uint'
+    kind: ptr
+  - name: hashing_scheme
+    type: pulsarexporter.HashingScheme
+    kind: string
+    default: ""
+  - name: compression_level
+    type: pulsarexporter.CompressionLevel
+    kind: string
+    default: ""
+  - name: compression_type
+    type: pulsarexporter.CompressionType
+    kind: string
+    default: ""
+  - name: max_pending_messages
+    kind: int
+  - name: batch_builder_type
+    type: pulsarexporter.BatchBuilderType
+    kind: string
+    default: ""
+  - name: partitions_auto_discovery_interval
+    type: time.Duration
+    kind: int64
+  - name: batching_max_publish_delay
+    type: time.Duration
+    kind: int64
+  - name: batching_max_messages
+    kind: uint
+    default: 0
+  - name: batching_max_size
+    kind: uint
+    default: 0
+  - name: disable_block_if_queue_full
+    kind: bool
+    default: false
+  - name: disable_batching
+    kind: bool
+    default: false
+- name: tls_trust_certs_file_path
+  kind: string
+  default: ""
+  doc: |
+    Set the path to the trusted TLS certificate file
+- name: tls_allow_insecure_connection
+  kind: bool
+  default: false
+  doc: |
+    Configure whether the Pulsar client accept untrusted TLS certificate from broker (default: false)
+- name: auth
+  type: pulsarexporter.Authentication
+  kind: struct
+  fields:
+  - name: tls
+    type: '*pulsarexporter.TLS'
+    kind: ptr
+    fields:
+    - name: cert_file
+      kind: string
+      default: ""
+    - name: key_file
+      kind: string
+      default: ""
+  - name: token
+    type: '*pulsarexporter.Token'
+    kind: ptr
+    fields:
+    - name: token
+      type: configopaque.String
+      kind: string
+      default: ""
+  - name: athenz
+    type: '*pulsarexporter.Athenz'
+    kind: ptr
+    fields:
+    - name: provider_domain
+      kind: string
+      default: ""
+    - name: tenant_domain
+      kind: string
+      default: ""
+    - name: tenant_service
+      kind: string
+      default: ""
+    - name: private_key
+      type: configopaque.String
+      kind: string
+      default: ""
+    - name: key_id
+      kind: string
+      default: ""
+    - name: principal_header
+      kind: string
+      default: ""
+    - name: zts_url
+      kind: string
+      default: ""
+  - name: oauth2
+    type: '*pulsarexporter.OAuth2'
+    kind: ptr
+    fields:
+    - name: issuer_url
+      kind: string
+      default: ""
+    - name: client_id
+      kind: string
+      default: ""
+    - name: audience
+      kind: string
+      default: ""
+- name: operation_timeout
+  type: time.Duration
+  kind: int64
+  default: 30s
+- name: connection_timeout
+  type: time.Duration
+  kind: int64
+  default: 5s
+- name: map_connections_per_broker
+  kind: int
+  default: 1

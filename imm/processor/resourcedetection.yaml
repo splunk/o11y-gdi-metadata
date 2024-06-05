@@ -1,0 +1,1181 @@
+type: '*resourcedetectionprocessor.Config'
+doc: |
+  Config defines configuration for Resource processor.
+fields:
+- name: detectors
+  type: '[]string'
+  kind: slice
+  doc: |
+    Detectors is an ordered list of named detectors that should be
+    run to attempt to detect resource information.
+- name: override
+  kind: bool
+  default: true
+  doc: |
+    Override indicates whether any existing resource attributes
+    should be overridden or preserved. Defaults to true.
+- name: ec2
+  type: ec2.Config
+  kind: struct
+  doc: |
+    EC2Config contains user-specified configurations for the EC2 detector
+  fields:
+  - name: tags
+    type: '[]string'
+    kind: slice
+    doc: |
+      Tags is a list of regex's to match ec2 instance tag keys that users want
+      to add as resource attributes to processed data
+  - name: resource_attributes
+    type: metadata.ResourceAttributesConfig
+    kind: struct
+    doc: |
+      ResourceAttributesConfig provides config for resourcedetectionprocessor/system resource attributes.
+    fields:
+    - name: cloud.account.id
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: cloud.availability_zone
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: cloud.platform
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: cloud.provider
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: cloud.region
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: host.id
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: host.image.id
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: host.name
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: host.type
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+- name: ecs
+  type: ecs.Config
+  kind: struct
+  doc: |
+    ECSConfig contains user-specified configurations for the ECS detector
+  fields:
+  - name: resource_attributes
+    type: metadata.ResourceAttributesConfig
+    kind: struct
+    doc: |
+      ResourceAttributesConfig provides config for resourcedetectionprocessor/system resource attributes.
+    fields:
+    - name: aws.ecs.cluster.arn
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: aws.ecs.launchtype
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: aws.ecs.task.arn
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: aws.ecs.task.family
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: aws.ecs.task.revision
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: aws.log.group.arns
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: aws.log.group.names
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: aws.log.stream.arns
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: aws.log.stream.names
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: cloud.account.id
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: cloud.availability_zone
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: cloud.platform
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: cloud.provider
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: cloud.region
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+- name: eks
+  type: eks.Config
+  kind: struct
+  doc: |
+    EKSConfig contains user-specified configurations for the EKS detector
+  fields:
+  - name: resource_attributes
+    type: metadata.ResourceAttributesConfig
+    kind: struct
+    doc: |
+      ResourceAttributesConfig provides config for resourcedetectionprocessor/system resource attributes.
+    fields:
+    - name: cloud.platform
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: cloud.provider
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+- name: elasticbeanstalk
+  type: elasticbeanstalk.Config
+  kind: struct
+  doc: |
+    Elasticbeanstalk contains user-specified configurations for the elasticbeanstalk detector
+  fields:
+  - name: resource_attributes
+    type: metadata.ResourceAttributesConfig
+    kind: struct
+    doc: |
+      ResourceAttributesConfig provides config for resourcedetectionprocessor/system resource attributes.
+    fields:
+    - name: cloud.platform
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: cloud.provider
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: deployment.environment
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: service.instance.id
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: service.version
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+- name: lambda
+  type: lambda.Config
+  kind: struct
+  doc: |
+    Lambda contains user-specified configurations for the lambda detector
+  fields:
+  - name: resource_attributes
+    type: metadata.ResourceAttributesConfig
+    kind: struct
+    doc: |
+      ResourceAttributesConfig provides config for resourcedetectionprocessor/system resource attributes.
+    fields:
+    - name: aws.log.group.names
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: aws.log.stream.names
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: cloud.platform
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: cloud.provider
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: cloud.region
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: faas.instance
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: faas.max_memory
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: faas.name
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: faas.version
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+- name: azure
+  type: azure.Config
+  kind: struct
+  doc: |
+    Azure contains user-specified configurations for the azure detector
+  fields:
+  - name: resource_attributes
+    type: metadata.ResourceAttributesConfig
+    kind: struct
+    doc: |
+      ResourceAttributesConfig provides config for resourcedetectionprocessor/system resource attributes.
+    fields:
+    - name: azure.resourcegroup.name
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: azure.vm.name
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: azure.vm.scaleset.name
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: azure.vm.size
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: cloud.account.id
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: cloud.platform
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: cloud.provider
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: cloud.region
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: host.id
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: host.name
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+- name: aks
+  type: aks.Config
+  kind: struct
+  doc: |
+    Aks contains user-specified configurations for the aks detector
+  fields:
+  - name: resource_attributes
+    type: metadata.ResourceAttributesConfig
+    kind: struct
+    doc: |
+      ResourceAttributesConfig provides config for resourcedetectionprocessor/system resource attributes.
+    fields:
+    - name: cloud.platform
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: cloud.provider
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+- name: consul
+  type: consul.Config
+  kind: struct
+  doc: |
+    ConsulConfig contains user-specified configurations for the Consul detector
+  fields:
+  - name: address
+    kind: string
+    default: ""
+    doc: |
+      Address is the address of the Consul server
+  - name: datacenter
+    kind: string
+    default: ""
+    doc: |
+      Datacenter to use. If not provided, the default agent datacenter is used.
+  - name: token
+    type: configopaque.String
+    kind: string
+    default: ""
+    doc: |
+      Token is used to provide a per-request ACL token
+      which overrides the agent's default (empty) token.
+      Token or Tokenfile are only required if [Consul's ACL
+      System](https://www.consul.io/docs/security/acl/acl-system) is enabled.
+  - name: token_file
+    kind: string
+    default: ""
+    doc: |
+      TokenFile is a file containing the current token to use for this client.
+      If provided it is read once at startup and never again.
+      Token or Tokenfile are only required if [Consul's ACL
+      System](https://www.consul.io/docs/security/acl/acl-system) is enabled.
+  - name: namespace
+    kind: string
+    default: ""
+    doc: |
+      Namespace is the name of the namespace to send along for the request
+      when no other Namespace is present in the QueryOptions
+  - name: meta
+    type: map[string]interface {}
+    kind: map
+    doc: |
+      Allowlist of [Consul
+      Metadata](https://www.consul.io/docs/agent/options#node_meta) keys to use as
+      resource attributes.
+  - name: resource_attributes
+    type: metadata.ResourceAttributesConfig
+    kind: struct
+    doc: |
+      ResourceAttributes configuration for Consul detector
+    fields:
+    - name: azure.resourcegroup.name
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: azure.vm.name
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: azure.vm.scaleset.name
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: azure.vm.size
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: cloud.account.id
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: cloud.platform
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: cloud.provider
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: cloud.region
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: host.id
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: host.name
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+- name: docker
+  type: docker.Config
+  kind: struct
+  doc: |
+    DockerConfig contains user-specified configurations for the docker detector
+  fields:
+  - name: resource_attributes
+    type: metadata.ResourceAttributesConfig
+    kind: struct
+    doc: |
+      ResourceAttributesConfig provides config for resourcedetectionprocessor/system resource attributes.
+    fields:
+    - name: host.name
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: os.type
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+- name: gcp
+  type: gcp.Config
+  kind: struct
+  doc: |
+    GcpConfig contains user-specified configurations for the gcp detector
+  fields:
+  - name: resource_attributes
+    type: metadata.ResourceAttributesConfig
+    kind: struct
+    doc: |
+      ResourceAttributesConfig provides config for resourcedetectionprocessor/system resource attributes.
+    fields:
+    - name: cloud.account.id
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: cloud.availability_zone
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: cloud.platform
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: cloud.provider
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: cloud.region
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: faas.id
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: faas.name
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: faas.version
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: host.id
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: host.name
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: host.type
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: k8s.cluster.name
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+- name: heroku
+  type: heroku.Config
+  kind: struct
+  doc: |
+    HerokuConfig contains user-specified configurations for the heroku detector
+  fields:
+  - name: resource_attributes
+    type: metadata.ResourceAttributesConfig
+    kind: struct
+    doc: |
+      ResourceAttributesConfig provides config for resourcedetectionprocessor/system resource attributes.
+    fields:
+    - name: cloud.provider
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: heroku.app.id
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: heroku.app.name
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: heroku.dyno.id
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: heroku.release.commit
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: heroku.release.creation_timestamp
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: heroku.release.version
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: service.instance.id
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+- name: system
+  type: system.Config
+  kind: struct
+  doc: |
+    SystemConfig contains user-specified configurations for the System detector
+  fields:
+  - name: hostname_sources
+    type: '[]string'
+    kind: slice
+    doc: |
+      The HostnameSources is a priority list of sources from which hostname will be fetched.
+      In case of the error in fetching hostname from source,
+      the next source from the list will be considered.(**default**: `["dns", "os"]`)
+  - name: resource_attributes
+    type: metadata.ResourceAttributesConfig
+    kind: struct
+    doc: |
+      ResourceAttributesConfig provides config for resourcedetectionprocessor/system resource attributes.
+    fields:
+    - name: host.id
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: host.name
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: os.type
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+- name: openshift
+  type: openshift.Config
+  kind: struct
+  doc: |
+    OpenShift contains user-specified configurations for the Openshift detector
+  fields:
+  - name: address
+    kind: string
+    default: ""
+    doc: |
+      Address is the address of the openshift api server
+  - name: token
+    kind: string
+    default: ""
+    doc: |
+      Token is used to identify against the openshift api server
+  - name: tls
+    type: configtls.TLSClientSetting
+    kind: struct
+    doc: |
+      TLSSettings contains TLS configurations that are specific to client
+      connection used to communicate with the Openshift API.
+    fields:
+    - name: ca_file
+      kind: string
+      default: ""
+    - name: ca_pem
+      type: configopaque.String
+      kind: string
+      default: ""
+    - name: cert_file
+      kind: string
+      default: ""
+    - name: cert_pem
+      type: configopaque.String
+      kind: string
+      default: ""
+    - name: key_file
+      kind: string
+      default: ""
+    - name: key_pem
+      type: configopaque.String
+      kind: string
+      default: ""
+    - name: min_version
+      kind: string
+      default: ""
+    - name: max_version
+      kind: string
+      default: ""
+    - name: reload_interval
+      type: time.Duration
+      kind: int64
+    - name: insecure
+      kind: bool
+      default: false
+    - name: insecure_skip_verify
+      kind: bool
+      default: false
+    - name: server_name_override
+      kind: string
+      default: ""
+  - name: resource_attributes
+    type: metadata.ResourceAttributesConfig
+    kind: struct
+    doc: |
+      ResourceAttributesConfig provides config for resourcedetectionprocessor/system resource attributes.
+    fields:
+    - name: cloud.platform
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: cloud.provider
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: cloud.region
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+    - name: k8s.cluster.name
+      type: metadata.ResourceAttributeConfig
+      kind: struct
+      doc: |
+        ResourceAttributeConfig provides common config for a particular resource attribute.
+      fields:
+      - name: enabled
+        kind: bool
+        default: true
+- name: endpoint
+  kind: string
+  default: ""
+- name: tls
+  type: configtls.TLSClientSetting
+  kind: struct
+  fields:
+  - name: ca_file
+    kind: string
+    default: ""
+  - name: ca_pem
+    type: configopaque.String
+    kind: string
+    default: ""
+  - name: cert_file
+    kind: string
+    default: ""
+  - name: cert_pem
+    type: configopaque.String
+    kind: string
+    default: ""
+  - name: key_file
+    kind: string
+    default: ""
+  - name: key_pem
+    type: configopaque.String
+    kind: string
+    default: ""
+  - name: min_version
+    kind: string
+    default: ""
+  - name: max_version
+    kind: string
+    default: ""
+  - name: reload_interval
+    type: time.Duration
+    kind: int64
+  - name: insecure
+    kind: bool
+    default: false
+  - name: insecure_skip_verify
+    kind: bool
+    default: false
+  - name: server_name_override
+    kind: string
+    default: ""
+- name: read_buffer_size
+  kind: int
+- name: write_buffer_size
+  kind: int
+- name: timeout
+  type: time.Duration
+  kind: int64
+  default: 5s
+- name: headers
+  type: map[string]configopaque.String
+  kind: map
+- name: customroundtripper
+  type: func(http.RoundTripper) (http.RoundTripper, error)
+  kind: func
+- name: auth
+  type: '*configauth.Authentication'
+  kind: ptr
+  fields:
+  - name: authenticator
+    type: component.ID
+    kind: struct
+- name: compression
+  type: configcompression.CompressionType
+  kind: string
+  default: ""
+- name: max_idle_conns
+  type: '*int'
+  kind: ptr
+- name: max_idle_conns_per_host
+  type: '*int'
+  kind: ptr
+- name: max_conns_per_host
+  type: '*int'
+  kind: ptr
+- name: idle_conn_timeout
+  type: '*time.Duration'
+  kind: ptr
+- name: attributes
+  type: '[]string'
+  kind: slice
+  doc: |
+    Attributes is an allowlist of attributes to add.
+    If a supplied attribute is not a valid attribute of a supplied detector it will be ignored.
+    Deprecated: Please use detector's resource_attributes config instead

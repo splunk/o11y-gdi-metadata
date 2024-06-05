@@ -1,0 +1,325 @@
+type: '*jaegerreceiver.Config'
+doc: |
+  Config defines configuration for Jaeger receiver.
+fields:
+- name: protocols
+  type: jaegerreceiver.Protocols
+  kind: struct
+  doc: |
+    Protocols is the configuration for the supported protocols.
+  fields:
+  - name: grpc
+    type: '*configgrpc.GRPCServerSettings'
+    kind: ptr
+    fields:
+    - name: endpoint
+      kind: string
+      default: 0.0.0.0:14250
+    - name: transport
+      kind: string
+      default: tcp
+    - name: tls
+      type: '*configtls.TLSServerSetting'
+      kind: ptr
+      fields:
+      - name: ca_file
+        kind: string
+        default: ""
+      - name: ca_pem
+        type: configopaque.String
+        kind: string
+        default: ""
+      - name: cert_file
+        kind: string
+        default: ""
+      - name: cert_pem
+        type: configopaque.String
+        kind: string
+        default: ""
+      - name: key_file
+        kind: string
+        default: ""
+      - name: key_pem
+        type: configopaque.String
+        kind: string
+        default: ""
+      - name: min_version
+        kind: string
+        default: ""
+      - name: max_version
+        kind: string
+        default: ""
+      - name: reload_interval
+        type: time.Duration
+        kind: int64
+      - name: client_ca_file
+        kind: string
+        default: ""
+      - name: client_ca_file_reload
+        kind: bool
+        default: false
+    - name: max_recv_msg_size_mib
+      kind: uint64
+      default: 0
+    - name: max_concurrent_streams
+      kind: uint32
+      default: 0
+    - name: read_buffer_size
+      kind: int
+    - name: write_buffer_size
+      kind: int
+    - name: keepalive
+      type: '*configgrpc.KeepaliveServerConfig'
+      kind: ptr
+      fields:
+      - name: server_parameters
+        type: '*configgrpc.KeepaliveServerParameters'
+        kind: ptr
+        fields:
+        - name: max_connection_idle
+          type: time.Duration
+          kind: int64
+        - name: max_connection_age
+          type: time.Duration
+          kind: int64
+        - name: max_connection_age_grace
+          type: time.Duration
+          kind: int64
+        - name: time
+          type: time.Duration
+          kind: int64
+        - name: timeout
+          type: time.Duration
+          kind: int64
+      - name: enforcement_policy
+        type: '*configgrpc.KeepaliveEnforcementPolicy'
+        kind: ptr
+        fields:
+        - name: min_time
+          type: time.Duration
+          kind: int64
+        - name: permit_without_stream
+          kind: bool
+          default: false
+    - name: auth
+      type: '*configauth.Authentication'
+      kind: ptr
+      fields:
+      - name: authenticator
+        type: component.ID
+        kind: struct
+    - name: include_metadata
+      kind: bool
+      default: false
+  - name: thrift_http
+    type: '*confighttp.HTTPServerSettings'
+    kind: ptr
+    fields:
+    - name: endpoint
+      kind: string
+      default: 0.0.0.0:14268
+    - name: tls
+      type: '*configtls.TLSServerSetting'
+      kind: ptr
+      fields:
+      - name: ca_file
+        kind: string
+        default: ""
+      - name: ca_pem
+        type: configopaque.String
+        kind: string
+        default: ""
+      - name: cert_file
+        kind: string
+        default: ""
+      - name: cert_pem
+        type: configopaque.String
+        kind: string
+        default: ""
+      - name: key_file
+        kind: string
+        default: ""
+      - name: key_pem
+        type: configopaque.String
+        kind: string
+        default: ""
+      - name: min_version
+        kind: string
+        default: ""
+      - name: max_version
+        kind: string
+        default: ""
+      - name: reload_interval
+        type: time.Duration
+        kind: int64
+      - name: client_ca_file
+        kind: string
+        default: ""
+      - name: client_ca_file_reload
+        kind: bool
+        default: false
+    - name: cors
+      type: '*confighttp.CORSSettings'
+      kind: ptr
+      fields:
+      - name: allowed_origins
+        type: '[]string'
+        kind: slice
+      - name: allowed_headers
+        type: '[]string'
+        kind: slice
+      - name: max_age
+        kind: int
+    - name: auth
+      type: '*configauth.Authentication'
+      kind: ptr
+      fields:
+      - name: authenticator
+        type: component.ID
+        kind: struct
+    - name: max_request_body_size
+      kind: int64
+    - name: include_metadata
+      kind: bool
+      default: false
+    - name: response_headers
+      type: map[string]configopaque.String
+      kind: map
+  - name: thrift_binary
+    type: '*jaegerreceiver.ProtocolUDP'
+    kind: ptr
+    doc: |
+      ProtocolUDP is the configuration for a UDP protocol.
+    fields:
+    - name: endpoint
+      kind: string
+      default: 0.0.0.0:6832
+    - name: queue_size
+      kind: int
+      default: 1000
+    - name: max_packet_size
+      kind: int
+      default: 65000
+    - name: workers
+      kind: int
+      default: 10
+    - name: socket_buffer_size
+      kind: int
+  - name: thrift_compact
+    type: '*jaegerreceiver.ProtocolUDP'
+    kind: ptr
+    doc: |
+      ProtocolUDP is the configuration for a UDP protocol.
+    fields:
+    - name: endpoint
+      kind: string
+      default: 0.0.0.0:6831
+    - name: queue_size
+      kind: int
+      default: 1000
+    - name: max_packet_size
+      kind: int
+      default: 65000
+    - name: workers
+      kind: int
+      default: 10
+    - name: socket_buffer_size
+      kind: int
+- name: remote_sampling
+  type: '*jaegerreceiver.RemoteSamplingConfig'
+  kind: ptr
+  doc: |
+    RemoteSamplingConfig defines config key for remote sampling fetch endpoint
+  fields:
+  - name: host_endpoint
+    kind: string
+    default: ""
+  - name: strategy_file
+    kind: string
+    default: ""
+  - name: strategy_file_reload_interval
+    type: time.Duration
+    kind: int64
+  - name: endpoint
+    kind: string
+    default: ""
+  - name: compression
+    type: configcompression.CompressionType
+    kind: string
+    default: ""
+  - name: tls
+    type: configtls.TLSClientSetting
+    kind: struct
+    fields:
+    - name: ca_file
+      kind: string
+      default: ""
+    - name: ca_pem
+      type: configopaque.String
+      kind: string
+      default: ""
+    - name: cert_file
+      kind: string
+      default: ""
+    - name: cert_pem
+      type: configopaque.String
+      kind: string
+      default: ""
+    - name: key_file
+      kind: string
+      default: ""
+    - name: key_pem
+      type: configopaque.String
+      kind: string
+      default: ""
+    - name: min_version
+      kind: string
+      default: ""
+    - name: max_version
+      kind: string
+      default: ""
+    - name: reload_interval
+      type: time.Duration
+      kind: int64
+    - name: insecure
+      kind: bool
+      default: false
+    - name: insecure_skip_verify
+      kind: bool
+      default: false
+    - name: server_name_override
+      kind: string
+      default: ""
+  - name: keepalive
+    type: '*configgrpc.KeepaliveClientConfig'
+    kind: ptr
+    fields:
+    - name: time
+      type: time.Duration
+      kind: int64
+    - name: timeout
+      type: time.Duration
+      kind: int64
+    - name: permit_without_stream
+      kind: bool
+      default: false
+  - name: read_buffer_size
+    kind: int
+  - name: write_buffer_size
+    kind: int
+  - name: wait_for_ready
+    kind: bool
+    default: false
+  - name: headers
+    type: map[string]configopaque.String
+    kind: map
+  - name: balancer_name
+    kind: string
+    default: ""
+  - name: auth
+    type: '*configauth.Authentication'
+    kind: ptr
+    fields:
+    - name: authenticator
+      type: component.ID
+      kind: struct

@@ -1,0 +1,15 @@
+type: awscloudwatch
+scope_name: otelcol/awscloudwatchreceiver
+
+status:
+  class: receiver
+  stability:
+    alpha: [logs]
+  distributions: [contrib]
+  codeowners:
+    active: [schmikei]
+    emeritus: [djaglowski]
+    seeking_new: true
+
+tests:
+  config:

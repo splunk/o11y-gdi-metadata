@@ -1,0 +1,15 @@
+type: '*loggingexporter.Config'
+fields:
+- name: loglevel
+  type: zapcore.Level
+  kind: int8
+- name: verbosity
+  type: configtelemetry.Level
+  kind: int32
+  default: 1
+- name: sampling_initial
+  kind: int
+  default: 2
+- name: sampling_thereafter
+  kind: int
+  default: 500
