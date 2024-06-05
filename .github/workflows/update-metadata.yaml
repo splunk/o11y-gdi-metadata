@@ -2,6 +2,8 @@ name: Update metadata files for APM
 
 on:
   workflow_dispatch:
+  schedule:
+     - cron: "30 1 1,15 * *"
 
 permissions:
   contents: write
