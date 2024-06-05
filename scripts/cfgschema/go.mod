@@ -1,4 +1,4 @@
-module github.com/splunk/collector-config-tools/cfgschema
+module github.com/splunk/o11y-gdi-metadata/scripts/cfgschema
 
 go 1.19
 
