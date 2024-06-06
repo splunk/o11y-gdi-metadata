@@ -26,6 +26,8 @@ jobs:
         run: curl -L https://raw.githubusercontent.com/signalfx/splunk-otel-collector/main/internal/components/components.go -o scripts/cfgschema/components.go
       - name: Download go.mod
         run: curl -L https://raw.githubusercontent.com/signalfx/splunk-otel-collector/main/go.mod -o scripts/cfgschema/go.mod
+      - name: Download go.sum
+        run: curl -L https://raw.githubusercontent.com/signalfx/splunk-otel-collector/main/go.sum -o scripts/cfgschema/go.sum
       - name: Download settings from contrib
         run: |
           cd scripts/cfgschema
