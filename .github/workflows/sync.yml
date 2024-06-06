@@ -23,7 +23,7 @@ jobs:
         with:
           go-version: '1.20'
       - name: Download components.go
-        run: curl -L https://raw.githubusercontent.com/signalfx/splunk-otel-collector/main/internal/components/components.go -o /scripts/cfgschema/components.go
+        run: curl -L https://raw.githubusercontent.com/signalfx/splunk-otel-collector/main/internal/components/components.go -o scripts/cfgschema/components.go
       - name: Download settings from contrib
         run: |
           cd scripts/cfgschema
