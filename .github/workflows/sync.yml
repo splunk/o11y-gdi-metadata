@@ -10,6 +10,22 @@ permissions:
   pull-requests: write
 
 jobs:
+  download_components:
+    name: Download components.go
+    runs-on: ubuntu-latest
+    steps:
+     - name: Download components.go
+       run: curl -L https://raw.githubusercontent.com/signalfx/splunk-otel-collector/main/internal/components/components.go -o /scripts/cfgschema/components.go
+ 
+     - name: Commit and push changes
+       run: |
+         git config --global user.name 'github-actions[bot]'
+         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+         git add /scripts/cfgschema/components.go
+         git commit -m 'Update components.go'
+         git push
+       env:
+         GITHUB_TOKEN: ${{ secrets.UPDATE_TOKEN }}
   sync_metadata:
     name: Sync metadata
     runs-on: ubuntu-latest
