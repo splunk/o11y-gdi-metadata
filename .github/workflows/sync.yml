@@ -29,11 +29,11 @@ jobs:
       - name: Download go.sum
         run: curl -L https://raw.githubusercontent.com/signalfx/splunk-otel-collector/main/go.sum -o scripts/cfgschema/go.sum
       - name: Clean up go.mod
-        run: sed -i '/replace (/,/)/d' scripts/cfgschema/go.mod 
-      - name: Download settings from contrib
         run: |
-          cd scripts/cfgschema
-          go run .
+           cd scripts/cfgschema
+           go mod tidy
+      - name: Download settings from contrib
+        run: go run .
       - name: Download metrics from contrib
         run: |
           ./scripts/import_metric_metadata.sh
