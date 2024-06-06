@@ -1,4 +1,4 @@
-module github.com/signalfx/splunk-otel-collector
+module github.com/splunk/o11y-gdi-metadata/scripts/cfgschema
 
 go 1.21.0
 
@@ -630,7 +630,7 @@ require (
 	sigs.k8s.io/yaml v1.4.0 // indirect
 )
 
-replace (
+//replace (
 	github.com/signalfx/signalfx-agent => ./internal/signalfx-agent
 	github.com/signalfx/splunk-otel-collector/pkg/extension/smartagentextension => ./pkg/extension/smartagentextension
 	github.com/signalfx/splunk-otel-collector/pkg/processor/timestampprocessor => ./pkg/processor/timestampprocessor
@@ -639,7 +639,7 @@ replace (
 )
 
 // each of these is required for the smartagentreceiver
-replace (
+//replace (
 	code.cloudfoundry.org/go-loggregator => github.com/signalfx/go-loggregator v1.0.1-0.20200205155641-5ba5ca92118d
 	github.com/influxdata/telegraf => github.com/signalfx/telegraf v0.10.2-0.20240111190717-3494050f2933
 )
