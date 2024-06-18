@@ -1500,33 +1500,49 @@ Dashboards:
   Lambda (AWS) function:
     dashboard_group: AWS Lambda
     view_support: instance
-    importQualifiers: ConcurrentExecutions (namespace =  AWS/Lambda) & (stat =  sum);  OR
-      function.invocations (metric_source =  lambda_wrapper);
+    importQualifiers: ConcurrentExecutions (namespace =  AWS/Lambda) & (stat =  upper)
+      & (Resource =  *);  OR Duration (namespace =  AWS/Lambda) & (Resource =  *)
+      & (stat =  mean);
   Lambda (AWS) overview:
     dashboard_group: AWS Lambda
     view_support: aggregated
-    importQualifiers: ConcurrentExecutions (namespace =  AWS/Lambda) & (stat =  sum);  OR
-      function.invocations (metric_source =  lambda_wrapper);
+    importQualifiers: ConcurrentExecutions (namespace =  AWS/Lambda) & (stat =  upper)
+      & (Resource =  *);  OR Duration (namespace =  AWS/Lambda) & (Resource =  *)
+      & (stat =  mean);
   Lambda (SignalFx) function (deprecated):
-    dashboard_group: AWS Lambda
+    dashboard_group: AWS Lambda (SignalFx) (deprecated)
     view_support: N/A
-    importQualifiers: ConcurrentExecutions (namespace =  AWS/Lambda) & (stat =  sum);  OR
-      function.invocations (metric_source =  lambda_wrapper);
+    importQualifiers: function.invocations (aws_function_name =  *) & (AWSUniqueId
+      =  *);  OR function.duration (aws_function_name =  *) & (AWSUniqueId =  *);
   Lambda (SignalFx) overview (deprecated):
-    dashboard_group: AWS Lambda
+    dashboard_group: AWS Lambda (SignalFx) (deprecated)
     view_support: N/A
-    importQualifiers: ConcurrentExecutions (namespace =  AWS/Lambda) & (stat =  sum);  OR
-      function.invocations (metric_source =  lambda_wrapper);
+    importQualifiers: function.invocations (aws_function_name =  *) & (AWSUniqueId
+      =  *);  OR function.duration (aws_function_name =  *) & (AWSUniqueId =  *);
   Lambda extension:
     dashboard_group: AWS Lambda
     view_support: N/A
-    importQualifiers: ConcurrentExecutions (namespace =  AWS/Lambda) & (stat =  sum);  OR
-      function.invocations (metric_source =  lambda_wrapper);
+    importQualifiers: ConcurrentExecutions (namespace =  AWS/Lambda) & (stat =  upper)
+      & (Resource =  *);  OR Duration (namespace =  AWS/Lambda) & (Resource =  *)
+      & (stat =  mean);
+  Lambda function:
+    dashboard_group: AWS Lambda (OTel)
+    view_support: instance
+    importQualifiers: lambda.function.lifetime (aws_function_name =  *) & (AWSUniqueId
+      =  *);  OR lambda.function.invocation (aws_function_name =  *) & (AWSUniqueId
+      =  *);
+  Lambda functions:
+    dashboard_group: AWS Lambda (OTel)
+    view_support: aggregated
+    importQualifiers: lambda.function.lifetime (aws_function_name =  *) & (AWSUniqueId
+      =  *);  OR lambda.function.invocation (aws_function_name =  *) & (AWSUniqueId
+      =  *);
   Lambda logs:
     dashboard_group: AWS Lambda
     view_support: aggregated
-    importQualifiers: ConcurrentExecutions (namespace =  AWS/Lambda) & (stat =  sum);  OR
-      function.invocations (metric_source =  lambda_wrapper);
+    importQualifiers: ConcurrentExecutions (namespace =  AWS/Lambda) & (stat =  upper)
+      & (Resource =  *);  OR Duration (namespace =  AWS/Lambda) & (Resource =  *)
+      & (stat =  mean);
   License usage overview:
     dashboard_group: Executive Level
     view_support: N/A
