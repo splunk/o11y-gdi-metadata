@@ -1815,6 +1815,10 @@ Dashboards:
     dashboard_group: PostgreSQL(Smart Agent)
     view_support: N/A
     importQualifiers: pg_numbackends (plugin =  postgresql);
+  PostgreSQL summary:
+    dashboard_group: PostgreSQL(OTel)
+    view_support: N/A
+    importQualifiers: postgresql.backends (*);  OR postgresql.db_size (*);
   Processes:
     dashboard_group: MongoDB atlas
     view_support: N/A
