@@ -484,6 +484,16 @@ Navigators:
       - Lambda (AWS) function
     importQualifiers: Invocations (sf_key =  FunctionName);  OR Errors (sf_key =  FunctionName);  OR
       Throttles (sf_key =  FunctionName);  OR function.invocations (sf_key =  aws_function_name);
+  Lambda functions (OTel):
+    category_display_name: Amazon Web Services
+    associated_dashboards:
+      aggregated:
+      - Lambda functions
+      instance:
+      - Lambda function
+    importQualifiers: lambda.function.lifetime (aws_function_name =  *) & (AWSUniqueId
+      =  *);  OR lambda.function.invocation (aws_function_name =  *) & (AWSUniqueId
+      =  *);
   Logic apps:
     category_display_name: Microsoft Azure
     associated_dashboards:
