@@ -363,8 +363,8 @@ Navigators:
       - Gitlab
       - Embedded NGINX
     importQualifiers: sidekiq_queue_size (host.name =  *);  OR sidekiq_queue_latency
-      (host.name =  *);  OR grpc_server_handled_total (host.name =  *);  OR gitlab_workhorse_http_request_duration_seconds
-      (host.name =  *);  OR nginx_vts_server_requests_total (host.name =  *);
+      (host.name =  *);  OR gitlab_workhorse_http_request_duration_seconds (host.name
+      =  *);  OR nginx_vts_server_requests_total (host.name =  *);
   Hosts:
     category_display_name: My Data Center
     associated_dashboards:
