@@ -65,6 +65,16 @@ Dashboards:
       =  AWS/ApiGateway);  OR IntegrationLatency (namespace =  AWS/ApiGateway);  OR
       4XXError (namespace =  AWS/ApiGateway);  OR 5XXError (namespace =  AWS/ApiGateway);  OR
       CacheHitCount (namespace =  AWS/ApiGateway);  OR CacheMissCount (namespace =  AWS/ApiGateway);
+  API test:
+    dashboard_group: Synthetic Monitoring
+    view_support: N/A
+    importQualifiers: synthetics.run.count (test_type =  *) & (test =  *);  OR synthetics.run.uptime.percent
+      (test =  *) & (location =  *);
+  API test org:
+    dashboard_group: Synthetic Monitoring
+    view_support: N/A
+    importQualifiers: synthetics.run.count (test_type =  *) & (test =  *);  OR synthetics.run.uptime.percent
+      (test =  *) & (location =  *);
   APM / IMM:
     dashboard_group: Executive Level
     view_support: N/A
@@ -514,6 +524,16 @@ Dashboards:
     dashboard_group: RUM applications
     view_support: N/A
     importQualifiers: rum.page_view.count (*);
+  Browser test:
+    dashboard_group: Synthetic Monitoring
+    view_support: N/A
+    importQualifiers: synthetics.run.count (test_type =  *) & (test =  *);  OR synthetics.run.uptime.percent
+      (test =  *) & (location =  *);
+  Browser test org:
+    dashboard_group: Synthetic Monitoring
+    view_support: N/A
+    importQualifiers: synthetics.run.count (test_type =  *) & (test =  *);  OR synthetics.run.uptime.percent
+      (test =  *) & (location =  *);
   CF host:
     dashboard_group: Cloud foundry
     view_support: N/A
@@ -2170,6 +2190,16 @@ Dashboards:
     dashboard_group: SAP HANA
     view_support: N/A
     importQualifiers: sap.hana.host.cpu.user (*);
+  Synthetic usage:
+    dashboard_group: Synthetic Monitoring
+    view_support: N/A
+    importQualifiers: synthetics.run.count (test_type =  *) & (test =  *);  OR synthetics.run.uptime.percent
+      (test =  *) & (location =  *);
+  Synthetics org metrics:
+    dashboard_group: Synthetic Monitoring
+    view_support: N/A
+    importQualifiers: synthetics.run.count (test_type =  *) & (test =  *);  OR synthetics.run.uptime.percent
+      (test =  *) & (location =  *);
   System Overview:
     dashboard_group: PostgreSQL (New)
     view_support: N/A
@@ -2223,6 +2253,11 @@ Dashboards:
     dashboard_group: OpenStack
     view_support: N/A
     importQualifiers: gauge.openstack.nova.hypervisor.vcpus (plugin =  openstack);
+  Test trends:
+    dashboard_group: Synthetic Monitoring
+    view_support: N/A
+    importQualifiers: synthetics.run.count (test_type =  *) & (test =  *);  OR synthetics.run.uptime.percent
+      (test =  *) & (location =  *);
   Token usage:
     dashboard_group: Executive Level
     view_support: N/A
@@ -2256,6 +2291,16 @@ Dashboards:
     view_support: aggregated
     importQualifiers: tcp.bytes (source.workload.name =  *);  OR tcp.bytes (dest.workload.name
       =  *);
+  Uptime (HTTP/Port) test:
+    dashboard_group: Synthetic Monitoring
+    view_support: N/A
+    importQualifiers: synthetics.run.count (test_type =  *) & (test =  *);  OR synthetics.run.uptime.percent
+      (test =  *) & (location =  *);
+  Uptime (HTTP/Port) test org:
+    dashboard_group: Synthetic Monitoring
+    view_support: N/A
+    importQualifiers: synthetics.run.count (test_type =  *) & (test =  *);  OR synthetics.run.uptime.percent
+      (test =  *) & (location =  *);
   Userpool:
     dashboard_group: AWS Cognito
     view_support: instance
