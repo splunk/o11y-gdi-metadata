@@ -193,7 +193,7 @@ Navigators:
       - Compute Engine instance
       - Compute Engine instance (StackDriver)
     importQualifiers: instance/cpu/utilization (service =  compute) & (sf_key =  gcp_id);  OR
-      cpu.utilization (cloud.provider =  gcp);
+      system.memory.usage (cloud.provider =  gcp);
   Container engine:
     category_display_name: Google Cloud Platform
     associated_dashboards:
@@ -253,8 +253,8 @@ Navigators:
       - EC2 instances
       instance:
       - EC2 instance
-    importQualifiers: CPUUtilization (sf_key =  InstanceId);  OR cpu.utilization (cloud.provider
-      =  aws);
+    importQualifiers: CPUUtilization (sf_key =  InstanceId);  OR system.memory.usage
+      (cloud.provider =  aws);
   ECS:
     category_display_name: Amazon Web Services
     associated_dashboards:
@@ -767,7 +767,7 @@ Navigators:
       instance:
       - Azure Virtual Machine
     importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachines);  OR
-      cpu.utilization (cloud.provider =  azure);  OR Percentage CPU (resource_type
+      system.memory.usage (cloud.provider =  azure);  OR Percentage CPU (resource_type
       =  Microsoft.Compute/virtualMachineScaleSets/virtualMachines);
   Windows IIS servers:
     category_display_name: Web Servers
