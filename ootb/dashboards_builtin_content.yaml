@@ -123,7 +123,7 @@ Dashboards:
     dashboard_group: AWS EC2
     view_support: N/A
     importQualifiers: CPUUtilization (namespace =  AWS/EC2) & (stat =  mean) & (InstanceId
-      =  *);  OR cpu.utilization (cloud.provider =  aws);
+      =  *);  OR system.memory.usage (cloud.provider =  aws);
   AWS Gateway LB instance:
     dashboard_group: AWS Gateway LB
     view_support: N/A
@@ -385,37 +385,43 @@ Dashboards:
     view_support: instance
     importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachines)
       & (primary_aggregation_type =  true);  OR Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets/virtualMachines)
-      & (primary_aggregation_type =  true);  OR cpu.utilization (cloud.provider =  azure);
+      & (primary_aggregation_type =  true);  OR system.memory.usage (cloud.provider
+      =  azure);
   Azure Virtual Machine (Azure monitor):
     dashboard_group: Azure Virtual Machines
     view_support: instance
     importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachines)
       & (primary_aggregation_type =  true);  OR Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets/virtualMachines)
-      & (primary_aggregation_type =  true);  OR cpu.utilization (cloud.provider =  azure);
+      & (primary_aggregation_type =  true);  OR system.memory.usage (cloud.provider
+      =  azure);
   Azure Virtual Machine classic (Azure monitor):
     dashboard_group: Azure Virtual Machines
     view_support: N/A
     importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachines)
       & (primary_aggregation_type =  true);  OR Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets/virtualMachines)
-      & (primary_aggregation_type =  true);  OR cpu.utilization (cloud.provider =  azure);
+      & (primary_aggregation_type =  true);  OR system.memory.usage (cloud.provider
+      =  azure);
   Azure Virtual Machines:
     dashboard_group: Azure Virtual Machines
     view_support: aggregated
     importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachines)
       & (primary_aggregation_type =  true);  OR Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets/virtualMachines)
-      & (primary_aggregation_type =  true);  OR cpu.utilization (cloud.provider =  azure);
+      & (primary_aggregation_type =  true);  OR system.memory.usage (cloud.provider
+      =  azure);
   Azure Virtual Machines (Azure monitor):
     dashboard_group: Azure Virtual Machines
     view_support: aggregated
     importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachines)
       & (primary_aggregation_type =  true);  OR Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets/virtualMachines)
-      & (primary_aggregation_type =  true);  OR cpu.utilization (cloud.provider =  azure);
+      & (primary_aggregation_type =  true);  OR system.memory.usage (cloud.provider
+      =  azure);
   Azure Virtual Machines logs:
     dashboard_group: Azure Virtual Machines
     view_support: aggregated
     importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachines)
       & (primary_aggregation_type =  true);  OR Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets/virtualMachines)
-      & (primary_aggregation_type =  true);  OR cpu.utilization (cloud.provider =  azure);
+      & (primary_aggregation_type =  true);  OR system.memory.usage (cloud.provider
+      =  azure);
   Azure batch account:
     dashboard_group: Azure batch
     view_support: instance
@@ -659,27 +665,27 @@ Dashboards:
   Compute Engine instance:
     dashboard_group: Google Compute Engine
     view_support: instance
-    importQualifiers: instance/cpu/utilization (service =  compute);  OR cpu.utilization
+    importQualifiers: instance/cpu/utilization (service =  compute);  OR system.memory.usage
       (cloud.provider =  gcp);
   Compute Engine instance (StackDriver):
     dashboard_group: Google Compute Engine
     view_support: instance
-    importQualifiers: instance/cpu/utilization (service =  compute);  OR cpu.utilization
+    importQualifiers: instance/cpu/utilization (service =  compute);  OR system.memory.usage
       (cloud.provider =  gcp);
   Compute Engine instances:
     dashboard_group: Google Compute Engine
     view_support: aggregated
-    importQualifiers: instance/cpu/utilization (service =  compute);  OR cpu.utilization
+    importQualifiers: instance/cpu/utilization (service =  compute);  OR system.memory.usage
       (cloud.provider =  gcp);
   Compute Engine instances (StackDriver):
     dashboard_group: Google Compute Engine
     view_support: aggregated
-    importQualifiers: instance/cpu/utilization (service =  compute);  OR cpu.utilization
+    importQualifiers: instance/cpu/utilization (service =  compute);  OR system.memory.usage
       (cloud.provider =  gcp);
   Compute Engine logs:
     dashboard_group: Google Compute Engine
     view_support: N/A
-    importQualifiers: instance/cpu/utilization (service =  compute);  OR cpu.utilization
+    importQualifiers: instance/cpu/utilization (service =  compute);  OR system.memory.usage
       (cloud.provider =  gcp);
   Connections:
     dashboard_group: SAP HANA
@@ -885,22 +891,22 @@ Dashboards:
     dashboard_group: AWS EC2
     view_support: instance
     importQualifiers: CPUUtilization (namespace =  AWS/EC2) & (stat =  mean) & (InstanceId
-      =  *);  OR cpu.utilization (cloud.provider =  aws);
+      =  *);  OR system.memory.usage (cloud.provider =  aws);
   EC2 instance (CloudWatch):
     dashboard_group: AWS EC2
     view_support: N/A
     importQualifiers: CPUUtilization (namespace =  AWS/EC2) & (stat =  mean) & (InstanceId
-      =  *);  OR cpu.utilization (cloud.provider =  aws);
+      =  *);  OR system.memory.usage (cloud.provider =  aws);
   EC2 instances:
     dashboard_group: AWS EC2
     view_support: aggregated
     importQualifiers: CPUUtilization (namespace =  AWS/EC2) & (stat =  mean) & (InstanceId
-      =  *);  OR cpu.utilization (cloud.provider =  aws);
+      =  *);  OR system.memory.usage (cloud.provider =  aws);
   EC2 instances (CloudWatch):
     dashboard_group: AWS EC2
     view_support: N/A
     importQualifiers: CPUUtilization (namespace =  AWS/EC2) & (stat =  mean) & (InstanceId
-      =  *);  OR cpu.utilization (cloud.provider =  aws);
+      =  *);  OR system.memory.usage (cloud.provider =  aws);
   ECS (AWS):
     dashboard_group: AWS ECS
     view_support: aggregated
