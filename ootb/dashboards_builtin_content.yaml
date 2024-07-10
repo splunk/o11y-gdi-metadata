@@ -1743,12 +1743,12 @@ Dashboards:
     importQualifiers: nodejs.memory.heap.total (*);
   OpenSearch Domain:
     dashboard_group: AWS OpenSearch
-    view_support: N/A
+    view_support: instance
     importQualifiers: ClusterStatus.green (namespace =  AWS/ES) & (stat =  upper);  OR
       Nodes (namespace =  AWS/ES) & (stat =  upper);
   OpenSearch Domains:
     dashboard_group: AWS OpenSearch
-    view_support: N/A
+    view_support: aggregated
     importQualifiers: ClusterStatus.green (namespace =  AWS/ES) & (stat =  upper);  OR
       Nodes (namespace =  AWS/ES) & (stat =  upper);
   OpenSearch Node:
