@@ -230,6 +230,14 @@ Navigators:
       - Couchbase node
     importQualifiers: gauge.nodes.system.cpu_utilization_rate (plugin =  couchbase)
       & (sf_key =  node);
+  DocumentDB clusters:
+    category_display_name: Amazon Web Services
+    associated_dashboards:
+      aggregated:
+      - DocumentDB clusters
+      instance:
+      - DocumentDB cluster
+    importQualifiers: CPUUtilization (namespace =  AWS/DocDB) & (stat =  mean);
   DynamoDB:
     category_display_name: Amazon Web Services
     associated_dashboards:
