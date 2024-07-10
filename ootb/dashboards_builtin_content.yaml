@@ -863,11 +863,11 @@ Dashboards:
     importQualifiers: cpu.usage.total (plugin =  docker);
   DocumentDB cluster:
     dashboard_group: AWS DocumentDB
-    view_support: N/A
+    view_support: instance
     importQualifiers: CPUUtilization (namespace =  AWS/DocDB) & (stat =  mean);
   DocumentDB clusters:
     dashboard_group: AWS DocumentDB
-    view_support: N/A
+    view_support: aggregated
     importQualifiers: CPUUtilization (namespace =  AWS/DocDB) & (stat =  mean);
   DocumentDB instance:
     dashboard_group: AWS DocumentDB
