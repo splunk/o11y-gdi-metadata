@@ -604,6 +604,15 @@ Navigators:
       - DNS
       - HTTP - Outbound
     importQualifiers: tcp.bytes (source.workload.name =  *);
+  OpenSearch domains:
+    category_display_name: Amazon Web Services
+    associated_dashboards:
+      aggregated:
+      - OpenSearch Domains
+      instance:
+      - OpenSearch Domain
+    importQualifiers: ClusterStatus.green (namespace =  AWS/ES) & (stat =  upper);  OR
+      Nodes (namespace =  AWS/ES) & (stat =  upper);
   OpsWorks:
     category_display_name: Amazon Web Services
     associated_dashboards:
