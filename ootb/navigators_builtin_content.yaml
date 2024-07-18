@@ -551,6 +551,16 @@ Navigators:
       - Host
     importQualifiers: mongodb.storage.size (host.name =  *);  OR mongodb.memory.usage
       (host.name =  *) & (database =  *);
+  MySQL flexible server:
+    category_display_name: Microsoft Azure
+    associated_dashboards:
+      aggregated:
+      - Flexibleserver overview
+      instance:
+      - Flexibleserver
+    importQualifiers: cpu_percent (resource_type =  Microsoft.DBforMySQL/flexibleServers)
+      & (primary_aggregation_type =  true);  OR active_connections (resource_type
+      =  Microsoft.DBforMySQL/flexibleServers) & (primary_aggregation_type =  true);
   MySQL hosts:
     category_display_name: Datastores
     associated_dashboards:
