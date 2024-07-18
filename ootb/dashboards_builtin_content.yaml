@@ -1112,12 +1112,12 @@ Dashboards:
     importQualifiers: system.cpu.sys (*);  OR rep.ContainerCount (*);
   Flexibleserver:
     dashboard_group: Azure MySQL - Flexible server
-    view_support: N/A
+    view_support: instance
     importQualifiers: cpu_percent (resource_type =  Microsoft.DBforMySQL/flexibleServers);  OR
       active_connections (resource_type =  Microsoft.DBforMySQL/flexibleServers);
   Flexibleserver overview:
     dashboard_group: Azure MySQL - Flexible server
-    view_support: N/A
+    view_support: aggregated
     importQualifiers: cpu_percent (resource_type =  Microsoft.DBforMySQL/flexibleServers);  OR
       active_connections (resource_type =  Microsoft.DBforMySQL/flexibleServers);
   GCF (SignalFx) function:
