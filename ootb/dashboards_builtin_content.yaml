@@ -1663,11 +1663,11 @@ Dashboards:
     dashboard_group: Microsoft SQL server
     view_support: aggregated
     importQualifiers: sqlserver_server_properties.db_online (plugin =  telegraf-sqlserver);
-  Microsoft SQL server:
+  Microsoft SQL instance:
     dashboard_group: Microsoft SQL server
     view_support: instance
     importQualifiers: sqlserver_server_properties.db_online (plugin =  telegraf-sqlserver);
-  Microsoft SQL servers:
+  Microsoft SQL instances:
     dashboard_group: Microsoft SQL server
     view_support: aggregated
     importQualifiers: sqlserver_server_properties.db_online (plugin =  telegraf-sqlserver);
