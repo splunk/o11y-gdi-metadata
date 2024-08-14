@@ -518,13 +518,13 @@ Navigators:
       instance:
       - Microsoft SQL database
     importQualifiers: sqlserver_server_properties.db_online (plugin =  telegraf-sqlserver);
-  Microsoft SQL servers:
+  Microsoft SQL instances:
     category_display_name: Datastores
     associated_dashboards:
       aggregated:
-      - Microsoft SQL servers
+      - Microsoft SQL instances
       instance:
-      - Microsoft SQL server
+      - Microsoft SQL instance
     importQualifiers: sqlserver_server_properties.db_online (plugin =  telegraf-sqlserver);
   MongoDB clusters:
     category_display_name: Datastores
