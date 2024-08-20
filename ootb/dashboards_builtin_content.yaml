@@ -1227,11 +1227,6 @@ Dashboards:
     view_support: instance
     importQualifiers: cpu.utilization (host =  *) & (gcp_id !=  *) & (azure_resource_id
       !=  *) & (cloud.provider !=  *) & (AWSUniqueId !=  *);
-  Host - MongoDB (OTel):
-    dashboard_group: MongoDB (OTel)
-    view_support: instance
-    importQualifiers: mongodb.storage.size (host.name =  *);  OR mongodb.memory.usage
-      (host.name =  *) & (database =  *);
   Host - PostgreSQL(OTel):
     dashboard_group: PostgreSQL(OTel)
     view_support: instance
@@ -1254,11 +1249,6 @@ Dashboards:
     view_support: aggregated
     importQualifiers: cpu.utilization (host =  *) & (gcp_id !=  *) & (azure_resource_id
       !=  *) & (cloud.provider !=  *) & (AWSUniqueId !=  *);
-  Hosts - MongoDB (OTel):
-    dashboard_group: MongoDB (OTel)
-    view_support: aggregated
-    importQualifiers: mongodb.storage.size (host.name =  *);  OR mongodb.memory.usage
-      (host.name =  *) & (database =  *);
   Hosts - PostgreSQL(OTel):
     dashboard_group: PostgreSQL(OTel)
     view_support: aggregated
@@ -1301,9 +1291,19 @@ Dashboards:
     importQualifiers: conviva.quality_metriclens.total_attempts (*);  OR conviva.attempts
       (*);
   Instance:
+    dashboard_group: MongoDB (OTel)
+    view_support: instance
+    importQualifiers: mongodb.storage.size (server.address =  *);  OR mongodb.memory.usage
+      (server.address =  *) & (database =  *);
+  Instance - OpenStack:
     dashboard_group: OpenStack
     view_support: N/A
     importQualifiers: gauge.openstack.nova.hypervisor.vcpus (plugin =  openstack);
+  Instances:
+    dashboard_group: MongoDB (OTel)
+    view_support: aggregated
+    importQualifiers: mongodb.storage.size (server.address =  *);  OR mongodb.memory.usage
+      (server.address =  *) & (database =  *);
   Internals:
     dashboard_group: Smart Gateway
     view_support: N/A
