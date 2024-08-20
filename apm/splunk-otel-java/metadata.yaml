@@ -1,21 +1,21 @@
 component: Splunk Distribution of OpenTelemetry Java
-version: 2.5.0
+version: 2.6.0
 dependencies:
   - name: OpenTelemetry Java
     source_href: https://github.com/open-telemetry/opentelemetry-java
-    version: 1.39.0
+    version: 1.40.0
     stability: stable
   - name: OpenTelemetry Instrumentation for Java
     source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation
-    version: 2.5.0
+    version: 2.6.0
     stability: stable
   - name: OpenTelemetry Java Contrib Resource Providers
     source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/tree/main/resource-providers
-    version: 1.36.0-alpha
+    version: 1.37.0-alpha
     stability: experimental
   - name: OpenTelemetry Java Contrib Samplers
     source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/tree/main/samplers
-    version: 1.36.0-alpha
+    version: 1.37.0-alpha
     stability: experimental
 settings:
   - property: otel.sdk.disabled
@@ -770,8 +770,8 @@ settings:
     category: profiler
   - property: splunk.profiler.logs-endpoint
     env: SPLUNK_PROFILER_LOGS_ENDPOINT
-    description: Where to send OTLP logs.
-    default: otel.exporter.otlp.endpoint or http://localhost:4317
+    description: Where to send OTLP logs, defaults to `otel.exporter.otlp.endpoint.
+    default: http://localhost:4318/v1/logs
     type: string
     category: profiler
   - property: splunk.profiler.call.stack.interval
@@ -1402,9 +1402,9 @@ instrumentations:
           - metric_name: http.client.request.body.size
             instrument: histogram
             description: Size of HTTP client request bodies (disabled by default).
-          - metric_name: http.client.request.body.size
+          - metric_name: http.client.response.body.size
             instrument: histogram
-            description: Size of HTTP client request bodies (disabled by default).
+            description: Size of HTTP client response bodies (disabled by default).
           - metric_name: http.server.request.duration
             instrument: histogram
             description: Duration of HTTP server requests.
@@ -1414,7 +1414,7 @@ instrumentations:
           - metric_name: http.server.request.body.size
             instrument: histogram
             description: Size of HTTP server request bodies (disabled by default).
-          - metric_name: http.server.request.body.size
+          - metric_name: http.server.response.body.size
             instrument: histogram
             description: Size of HTTP server response bodies (disabled by default).
   - keys:
@@ -1484,9 +1484,9 @@ instrumentations:
           - metric_name: http.client.request.body.size
             instrument: histogram
             description: Size of HTTP client request bodies (disabled by default).
-          - metric_name: http.client.request.body.size
+          - metric_name: http.client.response.body.size
             instrument: histogram
-            description: Size of HTTP client request bodies (disabled by default).
+            description: Size of HTTP client response bodies (disabled by default).
   - keys:
       - apache-httpclient
     instrumented_components:
@@ -1502,9 +1502,9 @@ instrumentations:
           - metric_name: http.client.request.body.size
             instrument: histogram
             description: Size of HTTP client request bodies (disabled by default).
-          - metric_name: http.client.request.body.size
+          - metric_name: http.client.response.body.size
             instrument: histogram
-            description: Size of HTTP client request bodies (disabled by default).
+            description: Size of HTTP client response bodies (disabled by default).
   - keys:
       - kafka
       - kafka-clients-metrics
@@ -2121,9 +2121,9 @@ instrumentations:
           - metric_name: http.client.request.body.size
             instrument: histogram
             description: Size of HTTP client request bodies (disabled by default).
-          - metric_name: http.client.request.body.size
+          - metric_name: http.client.response.body.size
             instrument: histogram
-            description: Size of HTTP client request bodies (disabled by default).
+            description: Size of HTTP client response bodies (disabled by default).
           - metric_name: http.server.request.duration
             instrument: histogram
             description: Duration of HTTP server requests.
@@ -2133,7 +2133,7 @@ instrumentations:
           - metric_name: http.server.request.body.size
             instrument: histogram
             description: Size of HTTP server request bodies (disabled by default).
-          - metric_name: http.server.request.body.size
+          - metric_name: http.server.response.body.size
             instrument: histogram
             description: Size of HTTP server response bodies (disabled by default).
   - keys:
@@ -2143,6 +2143,11 @@ instrumentations:
         supported_versions: 2.8 and higher
     stability: experimental
     support: community
+    signals:
+      - metrics:
+          - metric_name: messaging.publish.duration
+            instrument: histogram
+            description: Measures the duration of publish operation.
   - keys:
       - rocketmq-client
     instrumented_components:
@@ -2184,7 +2189,7 @@ instrumentations:
           - metric_name: http.server.request.body.size
             instrument: histogram
             description: Size of HTTP server request bodies (disabled by default).
-          - metric_name: http.server.request.body.size
+          - metric_name: http.server.response.body.size
             instrument: histogram
             description: Size of HTTP server response bodies (disabled by default).
   - keys:
@@ -2216,9 +2221,9 @@ instrumentations:
           - metric_name: http.client.request.body.size
             instrument: histogram
             description: Size of HTTP client request bodies (disabled by default).
-          - metric_name: http.client.request.body.size
+          - metric_name: http.client.response.body.size
             instrument: histogram
-            description: Size of HTTP client request bodies (disabled by default).
+            description: Size of HTTP client response bodies (disabled by default).
           - metric_name: http.server.request.duration
             instrument: histogram
             description: Duration of HTTP server requests.
@@ -2228,7 +2233,7 @@ instrumentations:
           - metric_name: http.server.request.body.size
             instrument: histogram
             description: Size of HTTP server request bodies (disabled by default).
-          - metric_name: http.server.request.body.size
+          - metric_name: http.server.response.body.size
             instrument: histogram
             description: Size of HTTP server response bodies (disabled by default).
   - keys:
@@ -2261,9 +2266,9 @@ instrumentations:
           - metric_name: http.client.request.body.size
             instrument: histogram
             description: Size of HTTP client request bodies (disabled by default).
-          - metric_name: http.client.request.body.size
+          - metric_name: http.client.response.body.size
             instrument: histogram
-            description: Size of HTTP client request bodies (disabled by default).
+            description: Size of HTTP client response bodies (disabled by default).
   - keys:
       - aws-lambda
     instrumented_components:
@@ -2292,6 +2297,13 @@ instrumentations:
     instrumented_components:
       - name: Cassandra Driver
         supported_versions: 3.0 and higher
+    stability: experimental
+    support: community
+  - keys:
+      - clickhouse
+    instrumented_components:
+      - name: Clickhouse Client
+        supported_versions: 0.5 and higher
     stability: experimental
     support: community
   - keys:
@@ -2351,7 +2363,7 @@ instrumentations:
           - metric_name: http.server.request.body.size
             instrument: histogram
             description: Size of HTTP server request bodies (disabled by default).
-          - metric_name: http.server.request.body.size
+          - metric_name: http.server.response.body.size
             instrument: histogram
             description: Size of HTTP server response bodies (disabled by default).
   - keys:
@@ -2379,14 +2391,14 @@ instrumentations:
           - metric_name: http.server.request.body.size
             instrument: histogram
             description: Size of HTTP server request bodies (disabled by default).
-          - metric_name: http.server.request.body.size
+          - metric_name: http.server.response.body.size
             instrument: histogram
             description: Size of HTTP server response bodies (disabled by default).
   - keys:
       - jetty-httpclient
     instrumented_components:
       - name: Eclipse Jetty HTTP Client
-        supported_versions: 9.2 to 10.0
+        supported_versions: 9.2 to 10.0, 12.0 and higher
     stability: experimental
     support: community
     signals:
@@ -2397,9 +2409,9 @@ instrumentations:
           - metric_name: http.client.request.body.size
             instrument: histogram
             description: Size of HTTP client request bodies (disabled by default).
-          - metric_name: http.client.request.body.size
+          - metric_name: http.client.response.body.size
             instrument: histogram
-            description: Size of HTTP client request bodies (disabled by default).
+            description: Size of HTTP client response bodies (disabled by default).
   - keys:
       - metro
     instrumented_components:
@@ -2471,9 +2483,9 @@ instrumentations:
           - metric_name: http.client.request.body.size
             instrument: histogram
             description: Size of HTTP client request bodies (disabled by default).
-          - metric_name: http.client.request.body.size
+          - metric_name: http.client.response.body.size
             instrument: histogram
-            description: Size of HTTP client request bodies (disabled by default).
+            description: Size of HTTP client response bodies (disabled by default).
   - keys:
       - grails
     instrumented_components:
@@ -2582,9 +2594,9 @@ instrumentations:
           - metric_name: http.client.request.body.size
             instrument: histogram
             description: Size of HTTP client request bodies (disabled by default).
-          - metric_name: http.client.request.body.size
+          - metric_name: http.client.response.body.size
             instrument: histogram
-            description: Size of HTTP client request bodies (disabled by default).
+            description: Size of HTTP client response bodies (disabled by default).
   - keys:
       - hystrix
     instrumented_components:
@@ -2619,9 +2631,9 @@ instrumentations:
           - metric_name: http.client.request.body.size
             instrument: histogram
             description: Size of HTTP client request bodies (disabled by default).
-          - metric_name: http.client.request.body.size
+          - metric_name: http.client.response.body.size
             instrument: histogram
-            description: Size of HTTP client request bodies (disabled by default).
+            description: Size of HTTP client response bodies (disabled by default).
   - keys:
       - java-util-logging
     instrumented_components:
@@ -2696,6 +2708,13 @@ instrumentations:
             instrument: updowncounter
             description: Measure of initial memory requested (disabled by default).
   - keys:
+      - javalin
+    instrumented_components:
+      - name: Javalin
+        supported_versions: 5.0 and higher
+    stability: experimental
+    support: community
+  - keys:
       - jaxrs
     instrumented_components:
       - name: JAX-RS
@@ -2717,9 +2736,9 @@ instrumentations:
           - metric_name: http.client.request.body.size
             instrument: histogram
             description: Size of HTTP client request bodies (disabled by default).
-          - metric_name: http.client.request.body.size
+          - metric_name: http.client.response.body.size
             instrument: histogram
-            description: Size of HTTP client request bodies (disabled by default).
+            description: Size of HTTP client response bodies (disabled by default).
   - keys:
       - jaxws
     instrumented_components:
@@ -2771,9 +2790,9 @@ instrumentations:
           - metric_name: http.client.request.body.size
             instrument: histogram
             description: Size of HTTP client request bodies (disabled by default).
-          - metric_name: http.client.request.body.size
+          - metric_name: http.client.response.body.size
             instrument: histogram
-            description: Size of HTTP client request bodies (disabled by default).
+            description: Size of HTTP client response bodies (disabled by default).
   - keys:
       - jsp
     instrumented_components:
@@ -2803,9 +2822,9 @@ instrumentations:
           - metric_name: http.client.request.body.size
             instrument: histogram
             description: Size of HTTP client request bodies (disabled by default).
-          - metric_name: http.client.request.body.size
+          - metric_name: http.client.response.body.size
             instrument: histogram
-            description: Size of HTTP client request bodies (disabled by default).
+            description: Size of HTTP client response bodies (disabled by default).
           - metric_name: http.server.request.duration
             instrument: histogram
             description: Duration of HTTP server requests.
@@ -2815,7 +2834,7 @@ instrumentations:
           - metric_name: http.server.request.body.size
             instrument: histogram
             description: Size of HTTP server request bodies (disabled by default).
-          - metric_name: http.server.request.body.size
+          - metric_name: http.server.response.body.size
             instrument: histogram
             description: Size of HTTP server response bodies (disabled by default).
   - keys:
@@ -2892,9 +2911,9 @@ instrumentations:
           - metric_name: http.client.request.body.size
             instrument: histogram
             description: Size of HTTP client request bodies (disabled by default).
-          - metric_name: http.client.request.body.size
+          - metric_name: http.client.response.body.size
             instrument: histogram
-            description: Size of HTTP client request bodies (disabled by default).
+            description: Size of HTTP client response bodies (disabled by default).
           - metric_name: http.server.request.duration
             instrument: histogram
             description: Duration of HTTP server requests.
@@ -2904,7 +2923,7 @@ instrumentations:
           - metric_name: http.server.request.body.size
             instrument: histogram
             description: Size of HTTP server request bodies (disabled by default).
-          - metric_name: http.server.request.body.size
+          - metric_name: http.server.response.body.size
             instrument: histogram
             description: Size of HTTP server response bodies (disabled by default).
   - keys:
@@ -2922,9 +2941,9 @@ instrumentations:
           - metric_name: http.client.request.body.size
             instrument: histogram
             description: Size of HTTP client request bodies (disabled by default).
-          - metric_name: http.client.request.body.size
+          - metric_name: http.client.response.body.size
             instrument: histogram
-            description: Size of HTTP client request bodies (disabled by default).
+            description: Size of HTTP client response bodies (disabled by default).
   - keys:
       - liberty
     instrumented_components:
@@ -2943,7 +2962,7 @@ instrumentations:
           - metric_name: http.server.request.body.size
             instrument: histogram
             description: Size of HTTP server request bodies (disabled by default).
-          - metric_name: http.server.request.body.size
+          - metric_name: http.server.response.body.size
             instrument: histogram
             description: Size of HTTP server response bodies (disabled by default).
   - keys:
@@ -3020,9 +3039,9 @@ instrumentations:
           - metric_name: http.client.request.body.size
             instrument: histogram
             description: Size of HTTP client request bodies (disabled by default).
-          - metric_name: http.client.request.body.size
+          - metric_name: http.client.response.body.size
             instrument: histogram
-            description: Size of HTTP client request bodies (disabled by default).
+            description: Size of HTTP client response bodies (disabled by default).
   - keys:
       - quarkus-resteasy-reactive
     instrumented_components:
@@ -3066,9 +3085,9 @@ instrumentations:
           - metric_name: http.client.request.body.size
             instrument: histogram
             description: Size of HTTP client request bodies (disabled by default).
-          - metric_name: http.client.request.body.size
+          - metric_name: http.client.response.body.size
             instrument: histogram
-            description: Size of HTTP client request bodies (disabled by default).
+            description: Size of HTTP client response bodies (disabled by default).
           - metric_name: http.server.request.duration
             instrument: histogram
             description: Duration of HTTP server requests.
@@ -3078,7 +3097,7 @@ instrumentations:
           - metric_name: http.server.request.body.size
             instrument: histogram
             description: Size of HTTP server request bodies (disabled by default).
-          - metric_name: http.server.request.body.size
+          - metric_name: http.server.response.body.size
             instrument: histogram
             description: Size of HTTP server response bodies (disabled by default).
   - keys:
@@ -3103,9 +3122,9 @@ instrumentations:
           - metric_name: http.client.request.body.size
             instrument: histogram
             description: Size of HTTP client request bodies (disabled by default).
-          - metric_name: http.client.request.body.size
+          - metric_name: http.client.response.body.size
             instrument: histogram
-            description: Size of HTTP client request bodies (disabled by default).
+            description: Size of HTTP client response bodies (disabled by default).
   - keys:
       - rediscala
     instrumented_components:
@@ -3145,7 +3164,7 @@ instrumentations:
           - metric_name: http.server.request.body.size
             instrument: histogram
             description: Size of HTTP server request bodies (disabled by default).
-          - metric_name: http.server.request.body.size
+          - metric_name: http.server.response.body.size
             instrument: histogram
             description: Size of HTTP server response bodies (disabled by default).
   - keys:
@@ -3186,7 +3205,7 @@ instrumentations:
           - metric_name: http.server.request.body.size
             instrument: histogram
             description: Size of HTTP server request bodies (disabled by default).
-          - metric_name: http.server.request.body.size
+          - metric_name: http.server.response.body.size
             instrument: histogram
             description: Size of HTTP server response bodies (disabled by default).
   - keys:
@@ -3268,9 +3287,9 @@ instrumentations:
           - metric_name: http.client.request.body.size
             instrument: histogram
             description: Size of HTTP client request bodies (disabled by default).
-          - metric_name: http.client.request.body.size
+          - metric_name: http.client.response.body.size
             instrument: histogram
-            description: Size of HTTP client request bodies (disabled by default).
+            description: Size of HTTP client response bodies (disabled by default).
   - keys:
       - spring-rmi
     instrumented_components:
@@ -3314,9 +3333,9 @@ instrumentations:
           - metric_name: http.client.request.body.size
             instrument: histogram
             description: Size of HTTP client request bodies (disabled by default).
-          - metric_name: http.client.request.body.size
+          - metric_name: http.client.response.body.size
             instrument: histogram
-            description: Size of HTTP client request bodies (disabled by default).
+            description: Size of HTTP client response bodies (disabled by default).
   - keys:
       - spymemcached
     instrumented_components:
@@ -3375,7 +3394,7 @@ instrumentations:
           - metric_name: http.server.request.body.size
             instrument: histogram
             description: Size of HTTP server request bodies (disabled by default).
-          - metric_name: http.server.request.body.size
+          - metric_name: http.server.response.body.size
             instrument: histogram
             description: Size of HTTP server response bodies (disabled by default).
   - keys:
@@ -3400,9 +3419,9 @@ instrumentations:
           - metric_name: http.client.request.body.size
             instrument: histogram
             description: Size of HTTP client request bodies (disabled by default).
-          - metric_name: http.client.request.body.size
+          - metric_name: http.client.response.body.size
             instrument: histogram
-            description: Size of HTTP client request bodies (disabled by default).
+            description: Size of HTTP client response bodies (disabled by default).
   - keys:
       - vertx-kafka-client
     instrumented_components:
@@ -3476,7 +3495,7 @@ instrumentations:
     support: supported
     signals:
       - metrics:
-          - metric_name: process.runtime.jvm.memory.allocated
+          - metric_name: jvm.memory.allocated
             instrument: counter
             description: Approximate sum of heap allocations.
           - metric_name: jvm.gc.pause.count
@@ -3563,7 +3582,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.5.0-alpha
+        version: 2.6.0-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.resources.HostIdResourceProvider
     description: Host id detector.
@@ -3575,7 +3594,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.5.0-alpha
+        version: 2.6.0-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.resources.HostResourceProvider
     description: Host detector.
@@ -3588,7 +3607,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.5.0-alpha
+        version: 2.6.0-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.resources.JarServiceNameDetector
     description: Jar service name detector.
@@ -3600,7 +3619,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.5.0-alpha
+        version: 2.6.0-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.resources.ManifestResourceProvider
     description: Manifest service name and version detector.
@@ -3613,7 +3632,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.5.0-alpha
+        version: 2.6.0-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.resources.OsResourceProvider
     description: Os detector.
@@ -3626,7 +3645,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.5.0-alpha
+        version: 2.6.0-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.resources.ProcessResourceProvider
     description: Process detector.
@@ -3641,7 +3660,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.5.0-alpha
+        version: 2.6.0-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.resources.ProcessRuntimeResourceProvider
     description: Process runtime detector.
@@ -3655,7 +3674,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.5.0-alpha
+        version: 2.6.0-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.spring.resources.SpringBootServiceNameDetector
     description: Spring boot service name detector.
@@ -3667,7 +3686,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Spring Boot Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/spring/spring-boot-resources/javaagent
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-spring-boot-resources
-        version: 2.5.0-alpha
+        version: 2.6.0-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.spring.resources.SpringBootServiceVersionDetector
     description: Spring boot service version detector.
@@ -3679,7 +3698,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Spring Boot Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/spring/spring-boot-resources/javaagent
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-spring-boot-resources
-        version: 2.5.0-alpha
+        version: 2.6.0-alpha
         stability: experimental
   - key: io.opentelemetry.contrib.resourceproviders.AppServerServiceNameProvider
     description: Application server service name detector.
@@ -3691,7 +3710,7 @@ resource_detectors:
       - name: OpenTelemetry Java Contrib Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/tree/main/resource-providers
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-resource-providers
-        version: 1.36.0-alpha
+        version: 1.37.0-alpha
         stability: experimental
   - key: io.opentelemetry.contrib.aws.resource.BeanstalkResourceProvider
     description: Beanstalk detector.
@@ -3707,7 +3726,7 @@ resource_detectors:
       - name: OpenTelemetry AWS Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/aws-resources
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-aws-resources
-        version: 1.36.0-alpha
+        version: 1.37.0-alpha
         stability: experimental
   - key: io.opentelemetry.contrib.aws.resource.Ec2ResourceProvider
     description: Ec2 detector.
@@ -3727,7 +3746,7 @@ resource_detectors:
       - name: OpenTelemetry AWS Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/aws-resources
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-aws-resources
-        version: 1.36.0-alpha
+        version: 1.37.0-alpha
         stability: experimental
   - key: io.opentelemetry.contrib.aws.resource.EcsResourceProvider
     description: Ecs detector.
@@ -3753,7 +3772,7 @@ resource_detectors:
       - name: OpenTelemetry AWS Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/aws-resources
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-aws-resources
-        version: 1.36.0-alpha
+        version: 1.37.0-alpha
         stability: experimental
   - key: io.opentelemetry.contrib.aws.resource.EksResourceProvider
     description: Eks detector.
@@ -3768,7 +3787,7 @@ resource_detectors:
       - name: OpenTelemetry AWS Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/aws-resources
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-aws-resources
-        version: 1.36.0-alpha
+        version: 1.37.0-alpha
         stability: experimental
   - key: io.opentelemetry.contrib.aws.resource.LambdaResourceProvider
     description: Lambda detector.
@@ -3784,7 +3803,7 @@ resource_detectors:
       - name: OpenTelemetry AWS Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/aws-resources
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-aws-resources
-        version: 1.36.0-alpha
+        version: 1.37.0-alpha
         stability: experimental
   - key: io.opentelemetry.contrib.gcp.resource.GCPResourceProvider
     description: GCP detector.
@@ -3810,5 +3829,5 @@ resource_detectors:
       - name: OpenTelemetry GCP Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/gcp-resources
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-gcp-resources
-        version: 1.36.0-alpha
+        version: 1.37.0-alpha
         stability: experimental
