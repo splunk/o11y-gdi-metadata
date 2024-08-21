@@ -1111,11 +1111,23 @@ Dashboards:
     view_support: N/A
     importQualifiers: system.cpu.sys (*);  OR rep.ContainerCount (*);
   Flexibleserver:
+    dashboard_group: Azure PostgreSQL - Flexible server
+    view_support: instance
+    importQualifiers: cpu_percent (resource_type =  Microsoft.DBforPostgreSQL/flexibleServers)
+      & (azure_resource_name =  *);  OR active_connections (resource_type =  Microsoft.DBforPostgreSQL/flexibleServers)
+      & (azure_resource_name =  *);
+  Flexibleserver - Azure MySQL - Flexible server:
     dashboard_group: Azure MySQL - Flexible server
     view_support: instance
     importQualifiers: cpu_percent (resource_type =  Microsoft.DBforMySQL/flexibleServers);  OR
       active_connections (resource_type =  Microsoft.DBforMySQL/flexibleServers);
   Flexibleserver overview:
+    dashboard_group: Azure PostgreSQL - Flexible server
+    view_support: aggregated
+    importQualifiers: cpu_percent (resource_type =  Microsoft.DBforPostgreSQL/flexibleServers)
+      & (azure_resource_name =  *);  OR active_connections (resource_type =  Microsoft.DBforPostgreSQL/flexibleServers)
+      & (azure_resource_name =  *);
+  Flexibleserver overview - Azure MySQL - Flexible server:
     dashboard_group: Azure MySQL - Flexible server
     view_support: aggregated
     importQualifiers: cpu_percent (resource_type =  Microsoft.DBforMySQL/flexibleServers);  OR
