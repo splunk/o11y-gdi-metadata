@@ -650,6 +650,16 @@ Navigators:
       instance:
       - Database
     importQualifiers: postgresql.backends (*);  OR postgresql.db_size (*);
+  PostgreSQL flexible server:
+    category_display_name: Microsoft Azure
+    associated_dashboards:
+      aggregated:
+      - Flexibleserver overview
+      instance:
+      - Flexibleserver
+    importQualifiers: cpu_percent (resource_type =  Microsoft.DBforPostgreSQL/flexibleServers)
+      & (azure_resource_name =  *);  OR active_connections (resource_type =  Microsoft.DBforPostgreSQL/flexibleServers)
+      & (azure_resource_name =  *);
   PostgreSQL hosts:
     category_display_name: Datastores
     associated_dashboards:
