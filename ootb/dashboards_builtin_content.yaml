@@ -65,6 +65,16 @@ Dashboards:
       =  AWS/ApiGateway);  OR IntegrationLatency (namespace =  AWS/ApiGateway);  OR
       4XXError (namespace =  AWS/ApiGateway);  OR 5XXError (namespace =  AWS/ApiGateway);  OR
       CacheHitCount (namespace =  AWS/ApiGateway);  OR CacheMissCount (namespace =  AWS/ApiGateway);
+  API test:
+    dashboard_group: Synthetic Monitoring
+    view_support: N/A
+    importQualifiers: synthetics.run.count (test_type =  *) & (test =  *);  OR synthetics.run.uptime.percent
+      (test =  *) & (location =  *);
+  API test org:
+    dashboard_group: Synthetic Monitoring
+    view_support: N/A
+    importQualifiers: synthetics.run.count (test_type =  *) & (test =  *);  OR synthetics.run.uptime.percent
+      (test =  *) & (location =  *);
   APM / IMM:
     dashboard_group: Executive Level
     view_support: N/A
@@ -113,7 +123,7 @@ Dashboards:
     dashboard_group: AWS EC2
     view_support: N/A
     importQualifiers: CPUUtilization (namespace =  AWS/EC2) & (stat =  mean) & (InstanceId
-      =  *);  OR cpu.utilization (cloud.provider =  aws);
+      =  *);  OR system.memory.usage (cloud.provider =  aws);
   AWS Gateway LB instance:
     dashboard_group: AWS Gateway LB
     view_support: N/A
@@ -375,37 +385,43 @@ Dashboards:
     view_support: instance
     importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachines)
       & (primary_aggregation_type =  true);  OR Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets/virtualMachines)
-      & (primary_aggregation_type =  true);  OR cpu.utilization (cloud.provider =  azure);
+      & (primary_aggregation_type =  true);  OR system.memory.usage (cloud.provider
+      =  azure);
   Azure Virtual Machine (Azure monitor):
     dashboard_group: Azure Virtual Machines
     view_support: instance
     importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachines)
       & (primary_aggregation_type =  true);  OR Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets/virtualMachines)
-      & (primary_aggregation_type =  true);  OR cpu.utilization (cloud.provider =  azure);
+      & (primary_aggregation_type =  true);  OR system.memory.usage (cloud.provider
+      =  azure);
   Azure Virtual Machine classic (Azure monitor):
     dashboard_group: Azure Virtual Machines
     view_support: N/A
     importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachines)
       & (primary_aggregation_type =  true);  OR Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets/virtualMachines)
-      & (primary_aggregation_type =  true);  OR cpu.utilization (cloud.provider =  azure);
+      & (primary_aggregation_type =  true);  OR system.memory.usage (cloud.provider
+      =  azure);
   Azure Virtual Machines:
     dashboard_group: Azure Virtual Machines
     view_support: aggregated
     importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachines)
       & (primary_aggregation_type =  true);  OR Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets/virtualMachines)
-      & (primary_aggregation_type =  true);  OR cpu.utilization (cloud.provider =  azure);
+      & (primary_aggregation_type =  true);  OR system.memory.usage (cloud.provider
+      =  azure);
   Azure Virtual Machines (Azure monitor):
     dashboard_group: Azure Virtual Machines
     view_support: aggregated
     importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachines)
       & (primary_aggregation_type =  true);  OR Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets/virtualMachines)
-      & (primary_aggregation_type =  true);  OR cpu.utilization (cloud.provider =  azure);
+      & (primary_aggregation_type =  true);  OR system.memory.usage (cloud.provider
+      =  azure);
   Azure Virtual Machines logs:
     dashboard_group: Azure Virtual Machines
     view_support: aggregated
     importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachines)
       & (primary_aggregation_type =  true);  OR Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets/virtualMachines)
-      & (primary_aggregation_type =  true);  OR cpu.utilization (cloud.provider =  azure);
+      & (primary_aggregation_type =  true);  OR system.memory.usage (cloud.provider
+      =  azure);
   Azure batch account:
     dashboard_group: Azure batch
     view_support: instance
@@ -514,6 +530,16 @@ Dashboards:
     dashboard_group: RUM applications
     view_support: N/A
     importQualifiers: rum.page_view.count (*);
+  Browser test:
+    dashboard_group: Synthetic Monitoring
+    view_support: N/A
+    importQualifiers: synthetics.run.count (test_type =  *) & (test =  *);  OR synthetics.run.uptime.percent
+      (test =  *) & (location =  *);
+  Browser test org:
+    dashboard_group: Synthetic Monitoring
+    view_support: N/A
+    importQualifiers: synthetics.run.count (test_type =  *) & (test =  *);  OR synthetics.run.uptime.percent
+      (test =  *) & (location =  *);
   CF host:
     dashboard_group: Cloud foundry
     view_support: N/A
@@ -639,27 +665,27 @@ Dashboards:
   Compute Engine instance:
     dashboard_group: Google Compute Engine
     view_support: instance
-    importQualifiers: instance/cpu/utilization (service =  compute);  OR cpu.utilization
+    importQualifiers: instance/cpu/utilization (service =  compute);  OR system.memory.usage
       (cloud.provider =  gcp);
   Compute Engine instance (StackDriver):
     dashboard_group: Google Compute Engine
     view_support: instance
-    importQualifiers: instance/cpu/utilization (service =  compute);  OR cpu.utilization
+    importQualifiers: instance/cpu/utilization (service =  compute);  OR system.memory.usage
       (cloud.provider =  gcp);
   Compute Engine instances:
     dashboard_group: Google Compute Engine
     view_support: aggregated
-    importQualifiers: instance/cpu/utilization (service =  compute);  OR cpu.utilization
+    importQualifiers: instance/cpu/utilization (service =  compute);  OR system.memory.usage
       (cloud.provider =  gcp);
   Compute Engine instances (StackDriver):
     dashboard_group: Google Compute Engine
     view_support: aggregated
-    importQualifiers: instance/cpu/utilization (service =  compute);  OR cpu.utilization
+    importQualifiers: instance/cpu/utilization (service =  compute);  OR system.memory.usage
       (cloud.provider =  gcp);
   Compute Engine logs:
     dashboard_group: Google Compute Engine
     view_support: N/A
-    importQualifiers: instance/cpu/utilization (service =  compute);  OR cpu.utilization
+    importQualifiers: instance/cpu/utilization (service =  compute);  OR system.memory.usage
       (cloud.provider =  gcp);
   Connections:
     dashboard_group: SAP HANA
@@ -776,13 +802,13 @@ Dashboards:
     view_support: N/A
     importQualifiers: pg_numbackends (plugin =  postgresql);
   Databases:
-    dashboard_group: PostgreSQL(OTel)
-    view_support: aggregated
-    importQualifiers: postgresql.backends (*);  OR postgresql.db_size (*);
-  Databases - PostgreSQL(Smart Agent):
     dashboard_group: PostgreSQL(Smart Agent)
     view_support: N/A
     importQualifiers: pg_numbackends (plugin =  postgresql);
+  Databases - PostgreSQL(OTel):
+    dashboard_group: PostgreSQL(OTel)
+    view_support: aggregated
+    importQualifiers: postgresql.backends (*);  OR postgresql.db_size (*);
   Datanode:
     dashboard_group: Hadoop HDFS
     view_support: N/A
@@ -837,11 +863,11 @@ Dashboards:
     importQualifiers: cpu.usage.total (plugin =  docker);
   DocumentDB cluster:
     dashboard_group: AWS DocumentDB
-    view_support: N/A
+    view_support: instance
     importQualifiers: CPUUtilization (namespace =  AWS/DocDB) & (stat =  mean);
   DocumentDB clusters:
     dashboard_group: AWS DocumentDB
-    view_support: N/A
+    view_support: aggregated
     importQualifiers: CPUUtilization (namespace =  AWS/DocDB) & (stat =  mean);
   DocumentDB instance:
     dashboard_group: AWS DocumentDB
@@ -865,22 +891,22 @@ Dashboards:
     dashboard_group: AWS EC2
     view_support: instance
     importQualifiers: CPUUtilization (namespace =  AWS/EC2) & (stat =  mean) & (InstanceId
-      =  *);  OR cpu.utilization (cloud.provider =  aws);
+      =  *);  OR system.memory.usage (cloud.provider =  aws);
   EC2 instance (CloudWatch):
     dashboard_group: AWS EC2
     view_support: N/A
     importQualifiers: CPUUtilization (namespace =  AWS/EC2) & (stat =  mean) & (InstanceId
-      =  *);  OR cpu.utilization (cloud.provider =  aws);
+      =  *);  OR system.memory.usage (cloud.provider =  aws);
   EC2 instances:
     dashboard_group: AWS EC2
     view_support: aggregated
     importQualifiers: CPUUtilization (namespace =  AWS/EC2) & (stat =  mean) & (InstanceId
-      =  *);  OR cpu.utilization (cloud.provider =  aws);
+      =  *);  OR system.memory.usage (cloud.provider =  aws);
   EC2 instances (CloudWatch):
     dashboard_group: AWS EC2
     view_support: N/A
     importQualifiers: CPUUtilization (namespace =  AWS/EC2) & (stat =  mean) & (InstanceId
-      =  *);  OR cpu.utilization (cloud.provider =  aws);
+      =  *);  OR system.memory.usage (cloud.provider =  aws);
   ECS (AWS):
     dashboard_group: AWS ECS
     view_support: aggregated
@@ -1084,6 +1110,28 @@ Dashboards:
     dashboard_group: Cloud foundry
     view_support: N/A
     importQualifiers: system.cpu.sys (*);  OR rep.ContainerCount (*);
+  Flexibleserver:
+    dashboard_group: Azure PostgreSQL - Flexible server
+    view_support: instance
+    importQualifiers: cpu_percent (resource_type =  Microsoft.DBforPostgreSQL/flexibleServers)
+      & (azure_resource_name =  *);  OR active_connections (resource_type =  Microsoft.DBforPostgreSQL/flexibleServers)
+      & (azure_resource_name =  *);
+  Flexibleserver - Azure MySQL - Flexible server:
+    dashboard_group: Azure MySQL - Flexible server
+    view_support: instance
+    importQualifiers: cpu_percent (resource_type =  Microsoft.DBforMySQL/flexibleServers);  OR
+      active_connections (resource_type =  Microsoft.DBforMySQL/flexibleServers);
+  Flexibleserver overview:
+    dashboard_group: Azure PostgreSQL - Flexible server
+    view_support: aggregated
+    importQualifiers: cpu_percent (resource_type =  Microsoft.DBforPostgreSQL/flexibleServers)
+      & (azure_resource_name =  *);  OR active_connections (resource_type =  Microsoft.DBforPostgreSQL/flexibleServers)
+      & (azure_resource_name =  *);
+  Flexibleserver overview - Azure MySQL - Flexible server:
+    dashboard_group: Azure MySQL - Flexible server
+    view_support: aggregated
+    importQualifiers: cpu_percent (resource_type =  Microsoft.DBforMySQL/flexibleServers);  OR
+      active_connections (resource_type =  Microsoft.DBforMySQL/flexibleServers);
   GCF (SignalFx) function:
     dashboard_group: Google Cloud Functions (SignalFx)
     view_support: N/A
@@ -1182,19 +1230,19 @@ Dashboards:
     view_support: N/A
     importQualifiers: heroku.memory_quota (*);
   Host:
-    dashboard_group: PostgreSQL(OTel)
+    dashboard_group: MySQL (OTel)
     view_support: instance
-    importQualifiers: postgresql.backends (*);  OR postgresql.db_size (*);
+    importQualifiers: mysql.operations (operation =  *) & (host.name =  *);  OR mysql.commands
+      (host.name =  *) & (command =  *);
   Host - Data Center Hosts:
     dashboard_group: Data Center Hosts
     view_support: instance
     importQualifiers: cpu.utilization (host =  *) & (gcp_id !=  *) & (azure_resource_id
       !=  *) & (cloud.provider !=  *) & (AWSUniqueId !=  *);
-  Host - MySQL(OTEL):
-    dashboard_group: MySQL(OTEL)
-    view_support: N/A
-    importQualifiers: mysql.operations (operation =  *) & (host.name =  *);  OR mysql.commands
-      (host.name =  *) & (command =  *);
+  Host - PostgreSQL(OTel):
+    dashboard_group: PostgreSQL(OTel)
+    view_support: instance
+    importQualifiers: postgresql.backends (*);  OR postgresql.db_size (*);
   Host - SAP HANA:
     dashboard_group: SAP HANA
     view_support: N/A
@@ -1204,19 +1252,19 @@ Dashboards:
     view_support: N/A
     importQualifiers: cpu.utilization (*);
   Hosts:
-    dashboard_group: PostgreSQL(OTel)
+    dashboard_group: MySQL (OTel)
     view_support: aggregated
-    importQualifiers: postgresql.backends (*);  OR postgresql.db_size (*);
+    importQualifiers: mysql.operations (operation =  *) & (host.name =  *);  OR mysql.commands
+      (host.name =  *) & (command =  *);
   Hosts - Data Center Hosts:
     dashboard_group: Data Center Hosts
     view_support: aggregated
     importQualifiers: cpu.utilization (host =  *) & (gcp_id !=  *) & (azure_resource_id
       !=  *) & (cloud.provider !=  *) & (AWSUniqueId !=  *);
-  Hosts - MySQL(OTEL):
-    dashboard_group: MySQL(OTEL)
-    view_support: N/A
-    importQualifiers: mysql.operations (operation =  *) & (host.name =  *);  OR mysql.commands
-      (host.name =  *) & (command =  *);
+  Hosts - PostgreSQL(OTel):
+    dashboard_group: PostgreSQL(OTel)
+    view_support: aggregated
+    importQualifiers: postgresql.backends (*);  OR postgresql.db_size (*);
   Hosts with agent installed:
     dashboard_group: Hosts with agent installed
     view_support: N/A
@@ -1255,9 +1303,19 @@ Dashboards:
     importQualifiers: conviva.quality_metriclens.total_attempts (*);  OR conviva.attempts
       (*);
   Instance:
+    dashboard_group: MongoDB (OTel)
+    view_support: instance
+    importQualifiers: mongodb.storage.size (server.address =  *);  OR mongodb.memory.usage
+      (server.address =  *) & (database =  *);
+  Instance - OpenStack:
     dashboard_group: OpenStack
     view_support: N/A
     importQualifiers: gauge.openstack.nova.hypervisor.vcpus (plugin =  openstack);
+  Instances:
+    dashboard_group: MongoDB (OTel)
+    view_support: aggregated
+    importQualifiers: mongodb.storage.size (server.address =  *);  OR mongodb.memory.usage
+      (server.address =  *) & (database =  *);
   Internals:
     dashboard_group: Smart Gateway
     view_support: N/A
@@ -1282,6 +1340,10 @@ Dashboards:
     dashboard_group: APM java services
     view_support: N/A
     importQualifiers: runtime.jvm.classes.loaded (*);
+  Java runtime metrics (Otel 2.x):
+    dashboard_group: APM Java services (OTel 2.x)
+    view_support: N/A
+    importQualifiers: jvm.class.loaded (*);
   Jenkins:
     dashboard_group: Jenkins
     view_support: N/A
@@ -1486,33 +1548,49 @@ Dashboards:
   Lambda (AWS) function:
     dashboard_group: AWS Lambda
     view_support: instance
-    importQualifiers: ConcurrentExecutions (namespace =  AWS/Lambda) & (stat =  sum);  OR
-      function.invocations (metric_source =  lambda_wrapper);
+    importQualifiers: ConcurrentExecutions (namespace =  AWS/Lambda) & (stat =  upper)
+      & (Resource =  *);  OR Duration (namespace =  AWS/Lambda) & (Resource =  *)
+      & (stat =  mean);
   Lambda (AWS) overview:
     dashboard_group: AWS Lambda
     view_support: aggregated
-    importQualifiers: ConcurrentExecutions (namespace =  AWS/Lambda) & (stat =  sum);  OR
-      function.invocations (metric_source =  lambda_wrapper);
+    importQualifiers: ConcurrentExecutions (namespace =  AWS/Lambda) & (stat =  upper)
+      & (Resource =  *);  OR Duration (namespace =  AWS/Lambda) & (Resource =  *)
+      & (stat =  mean);
   Lambda (SignalFx) function (deprecated):
-    dashboard_group: AWS Lambda
+    dashboard_group: AWS Lambda (SignalFx) (deprecated)
     view_support: N/A
-    importQualifiers: ConcurrentExecutions (namespace =  AWS/Lambda) & (stat =  sum);  OR
-      function.invocations (metric_source =  lambda_wrapper);
+    importQualifiers: function.invocations (aws_function_name =  *) & (AWSUniqueId
+      =  *);  OR function.duration (aws_function_name =  *) & (AWSUniqueId =  *);
   Lambda (SignalFx) overview (deprecated):
-    dashboard_group: AWS Lambda
+    dashboard_group: AWS Lambda (SignalFx) (deprecated)
     view_support: N/A
-    importQualifiers: ConcurrentExecutions (namespace =  AWS/Lambda) & (stat =  sum);  OR
-      function.invocations (metric_source =  lambda_wrapper);
+    importQualifiers: function.invocations (aws_function_name =  *) & (AWSUniqueId
+      =  *);  OR function.duration (aws_function_name =  *) & (AWSUniqueId =  *);
   Lambda extension:
     dashboard_group: AWS Lambda
     view_support: N/A
-    importQualifiers: ConcurrentExecutions (namespace =  AWS/Lambda) & (stat =  sum);  OR
-      function.invocations (metric_source =  lambda_wrapper);
+    importQualifiers: ConcurrentExecutions (namespace =  AWS/Lambda) & (stat =  upper)
+      & (Resource =  *);  OR Duration (namespace =  AWS/Lambda) & (Resource =  *)
+      & (stat =  mean);
+  Lambda function:
+    dashboard_group: AWS Lambda (OTel)
+    view_support: instance
+    importQualifiers: lambda.function.lifetime (aws_function_name =  *) & (AWSUniqueId
+      =  *);  OR lambda.function.invocation (aws_function_name =  *) & (AWSUniqueId
+      =  *);
+  Lambda functions:
+    dashboard_group: AWS Lambda (OTel)
+    view_support: aggregated
+    importQualifiers: lambda.function.lifetime (aws_function_name =  *) & (AWSUniqueId
+      =  *);  OR lambda.function.invocation (aws_function_name =  *) & (AWSUniqueId
+      =  *);
   Lambda logs:
     dashboard_group: AWS Lambda
     view_support: aggregated
-    importQualifiers: ConcurrentExecutions (namespace =  AWS/Lambda) & (stat =  sum);  OR
-      function.invocations (metric_source =  lambda_wrapper);
+    importQualifiers: ConcurrentExecutions (namespace =  AWS/Lambda) & (stat =  upper)
+      & (Resource =  *);  OR Duration (namespace =  AWS/Lambda) & (Resource =  *)
+      & (stat =  mean);
   License usage overview:
     dashboard_group: Executive Level
     view_support: N/A
@@ -1597,11 +1675,11 @@ Dashboards:
     dashboard_group: Microsoft SQL server
     view_support: aggregated
     importQualifiers: sqlserver_server_properties.db_online (plugin =  telegraf-sqlserver);
-  Microsoft SQL server:
+  Microsoft SQL instance:
     dashboard_group: Microsoft SQL server
     view_support: instance
     importQualifiers: sqlserver_server_properties.db_online (plugin =  telegraf-sqlserver);
-  Microsoft SQL servers:
+  Microsoft SQL instances:
     dashboard_group: Microsoft SQL server
     view_support: aggregated
     importQualifiers: sqlserver_server_properties.db_online (plugin =  telegraf-sqlserver);
@@ -1634,7 +1712,7 @@ Dashboards:
     view_support: aggregated
     importQualifiers: threads.connected (plugin =  mysql);
   MySQL summary:
-    dashboard_group: MySQL(OTEL)
+    dashboard_group: MySQL (OTel)
     view_support: N/A
     importQualifiers: mysql.operations (operation =  *) & (host.name =  *);  OR mysql.commands
       (host.name =  *) & (command =  *);
@@ -1677,12 +1755,12 @@ Dashboards:
     importQualifiers: nodejs.memory.heap.total (*);
   OpenSearch Domain:
     dashboard_group: AWS OpenSearch
-    view_support: N/A
+    view_support: instance
     importQualifiers: ClusterStatus.green (namespace =  AWS/ES) & (stat =  upper);  OR
       Nodes (namespace =  AWS/ES) & (stat =  upper);
   OpenSearch Domains:
     dashboard_group: AWS OpenSearch
-    view_support: N/A
+    view_support: aggregated
     importQualifiers: ClusterStatus.green (namespace =  AWS/ES) & (stat =  upper);  OR
       Nodes (namespace =  AWS/ES) & (stat =  upper);
   OpenSearch Node:
@@ -1785,6 +1863,10 @@ Dashboards:
     dashboard_group: PostgreSQL(Smart Agent)
     view_support: N/A
     importQualifiers: pg_numbackends (plugin =  postgresql);
+  PostgreSQL summary:
+    dashboard_group: PostgreSQL(OTel)
+    view_support: N/A
+    importQualifiers: postgresql.backends (*);  OR postgresql.db_size (*);
   Processes:
     dashboard_group: MongoDB atlas
     view_support: N/A
@@ -1846,6 +1928,10 @@ Dashboards:
     importQualifiers: service.request.count (sf_environment =  *) & (sf_service =  *);  OR
       sf.org.numLogsReceivedByToken (*);  OR rum.page_view.count (*);  OR rum.page_view.count
       (sf_ua_browsername =  *);  OR sf.org.apm.numContainers (*);
+  RUM entitlements:
+    dashboard_group: Organization metrics
+    view_support: N/A
+    importQualifiers: sf.org.subscription.customMetrics (*);
   RabbitMQ:
     dashboard_group: RabbitMQ
     view_support: aggregated
@@ -1855,23 +1941,23 @@ Dashboards:
     view_support: instance
     importQualifiers: gauge.node.uptime (plugin =  rabbitmq);
   Redis instance:
-    dashboard_group: Redis
-    view_support: instance
-    importQualifiers: bytes.used_memory (plugin =  redis_info);
-  Redis instance - Redis(OTEL):
-    dashboard_group: Redis(OTEL)
+    dashboard_group: Redis (OTel)
     view_support: instance
     importQualifiers: redis.cpu.time (host.name =  *);  OR redis.uptime (host.name
       =  *);
+  Redis instance - Redis:
+    dashboard_group: Redis
+    view_support: instance
+    importQualifiers: bytes.used_memory (plugin =  redis_info);
   Redis instances:
-    dashboard_group: Redis
-    view_support: aggregated
-    importQualifiers: bytes.used_memory (plugin =  redis_info);
-  Redis instances - Redis(OTEL):
-    dashboard_group: Redis(OTEL)
+    dashboard_group: Redis (OTel)
     view_support: aggregated
     importQualifiers: redis.cpu.time (host.name =  *);  OR redis.uptime (host.name
       =  *);
+  Redis instances - Redis:
+    dashboard_group: Redis
+    view_support: aggregated
+    importQualifiers: bytes.used_memory (plugin =  redis_info);
   Replica sets:
     dashboard_group: MongoDB atlas
     view_support: N/A
@@ -1942,6 +2028,10 @@ Dashboards:
     dashboard_group: APM .NET services
     view_support: N/A
     importQualifiers: process.runtime.dotnet.gc.heap.size (*);
+  Service - APM Java services (OTel 2.x):
+    dashboard_group: APM Java services (OTel 2.x)
+    view_support: N/A
+    importQualifiers: jvm.class.loaded (*);
   Service - APM NodeJS services:
     dashboard_group: APM NodeJS services
     view_support: N/A
@@ -1958,6 +2048,10 @@ Dashboards:
     dashboard_group: "\xB5APM PG"
     view_support: N/A
     importQualifiers: spans.count (service =  *);
+  Service Endpoint:
+    dashboard_group: APM Java services (OTel 2.x)
+    view_support: N/A
+    importQualifiers: jvm.class.loaded (*);
   Service endpoint:
     dashboard_group: APM services
     view_support: N/A
@@ -2114,6 +2208,16 @@ Dashboards:
     dashboard_group: SAP HANA
     view_support: N/A
     importQualifiers: sap.hana.host.cpu.user (*);
+  Synthetic usage:
+    dashboard_group: Synthetic Monitoring
+    view_support: N/A
+    importQualifiers: synthetics.run.count (test_type =  *) & (test =  *);  OR synthetics.run.uptime.percent
+      (test =  *) & (location =  *);
+  Synthetics org metrics:
+    dashboard_group: Synthetic Monitoring
+    view_support: N/A
+    importQualifiers: synthetics.run.count (test_type =  *) & (test =  *);  OR synthetics.run.uptime.percent
+      (test =  *) & (location =  *);
   System Overview:
     dashboard_group: PostgreSQL (New)
     view_support: N/A
@@ -2167,6 +2271,11 @@ Dashboards:
     dashboard_group: OpenStack
     view_support: N/A
     importQualifiers: gauge.openstack.nova.hypervisor.vcpus (plugin =  openstack);
+  Test trends:
+    dashboard_group: Synthetic Monitoring
+    view_support: N/A
+    importQualifiers: synthetics.run.count (test_type =  *) & (test =  *);  OR synthetics.run.uptime.percent
+      (test =  *) & (location =  *);
   Token usage:
     dashboard_group: Executive Level
     view_support: N/A
@@ -2200,6 +2309,16 @@ Dashboards:
     view_support: aggregated
     importQualifiers: tcp.bytes (source.workload.name =  *);  OR tcp.bytes (dest.workload.name
       =  *);
+  Uptime (HTTP/Port) test:
+    dashboard_group: Synthetic Monitoring
+    view_support: N/A
+    importQualifiers: synthetics.run.count (test_type =  *) & (test =  *);  OR synthetics.run.uptime.percent
+      (test =  *) & (location =  *);
+  Uptime (HTTP/Port) test org:
+    dashboard_group: Synthetic Monitoring
+    view_support: N/A
+    importQualifiers: synthetics.run.count (test_type =  *) & (test =  *);  OR synthetics.run.uptime.percent
+      (test =  *) & (location =  *);
   Userpool:
     dashboard_group: AWS Cognito
     view_support: instance

@@ -193,7 +193,7 @@ Navigators:
       - Compute Engine instance
       - Compute Engine instance (StackDriver)
     importQualifiers: instance/cpu/utilization (service =  compute) & (sf_key =  gcp_id);  OR
-      cpu.utilization (cloud.provider =  gcp);
+      system.memory.usage (cloud.provider =  gcp);
   Container engine:
     category_display_name: Google Cloud Platform
     associated_dashboards:
@@ -230,6 +230,14 @@ Navigators:
       - Couchbase node
     importQualifiers: gauge.nodes.system.cpu_utilization_rate (plugin =  couchbase)
       & (sf_key =  node);
+  DocumentDB clusters:
+    category_display_name: Amazon Web Services
+    associated_dashboards:
+      aggregated:
+      - DocumentDB clusters
+      instance:
+      - DocumentDB cluster
+    importQualifiers: CPUUtilization (namespace =  AWS/DocDB) & (stat =  mean);
   DynamoDB:
     category_display_name: Amazon Web Services
     associated_dashboards:
@@ -253,8 +261,8 @@ Navigators:
       - EC2 instances
       instance:
       - EC2 instance
-    importQualifiers: CPUUtilization (sf_key =  InstanceId);  OR cpu.utilization (cloud.provider
-      =  aws);
+    importQualifiers: CPUUtilization (sf_key =  InstanceId);  OR system.memory.usage
+      (cloud.provider =  aws);
   ECS:
     category_display_name: Amazon Web Services
     associated_dashboards:
@@ -299,7 +307,8 @@ Navigators:
       - Elasticsearch clusters
       instance:
       - Elasticsearch cluster
-    importQualifiers: '*.indices.indexing.index-total (plugin =  elasticsearch);'
+    importQualifiers: counter.indices.indexing.index-total (plugin =  elasticsearch);  OR
+      elasticsearch.indices.indexing.index-total (plugin =  elasticsearch);
   Elasticsearch indexes:
     category_display_name: Datastores
     associated_dashboards:
@@ -307,7 +316,7 @@ Navigators:
       - Elasticsearch indexes
       instance:
       - Elasticsearch index
-    importQualifiers: '*.indices.indexing.index-total (plugin =  elasticsearch);'
+    importQualifiers: counter.indices.total.indexing.index-total (plugin =  elasticsearch);
   Elasticsearch nodes:
     category_display_name: Datastores
     associated_dashboards:
@@ -315,7 +324,8 @@ Navigators:
       - Elasticsearch nodes
       instance:
       - Elasticsearch node
-    importQualifiers: '*.indices.indexing.index-total (plugin =  elasticsearch);'
+    importQualifiers: counter.indices.indexing.index-total (plugin =  elasticsearch);  OR
+      elasticsearch.indices.indexing.index-total (plugin =  elasticsearch);
   Event hubs:
     category_display_name: Microsoft Azure
     associated_dashboards:
@@ -361,8 +371,8 @@ Navigators:
       - Gitlab
       - Embedded NGINX
     importQualifiers: sidekiq_queue_size (host.name =  *);  OR sidekiq_queue_latency
-      (host.name =  *);  OR grpc_server_handled_total (host.name =  *);  OR gitlab_workhorse_http_request_duration_seconds
-      (host.name =  *);  OR nginx_vts_server_requests_total (host.name =  *);
+      (host.name =  *);  OR gitlab_workhorse_http_request_duration_seconds (host.name
+      =  *);  OR nginx_vts_server_requests_total (host.name =  *);
   Hosts:
     category_display_name: My Data Center
     associated_dashboards:
@@ -482,6 +492,16 @@ Navigators:
       - Lambda (AWS) function
     importQualifiers: Invocations (sf_key =  FunctionName);  OR Errors (sf_key =  FunctionName);  OR
       Throttles (sf_key =  FunctionName);  OR function.invocations (sf_key =  aws_function_name);
+  Lambda functions (OTel):
+    category_display_name: Amazon Web Services
+    associated_dashboards:
+      aggregated:
+      - Lambda functions
+      instance:
+      - Lambda function
+    importQualifiers: lambda.function.lifetime (aws_function_name =  *) & (AWSUniqueId
+      =  *);  OR lambda.function.invocation (aws_function_name =  *) & (AWSUniqueId
+      =  *);
   Logic apps:
     category_display_name: Microsoft Azure
     associated_dashboards:
@@ -498,13 +518,13 @@ Navigators:
       instance:
       - Microsoft SQL database
     importQualifiers: sqlserver_server_properties.db_online (plugin =  telegraf-sqlserver);
-  Microsoft SQL servers:
+  Microsoft SQL instances:
     category_display_name: Datastores
     associated_dashboards:
       aggregated:
-      - Microsoft SQL servers
+      - Microsoft SQL instances
       instance:
-      - Microsoft SQL server
+      - Microsoft SQL instance
     importQualifiers: sqlserver_server_properties.db_online (plugin =  telegraf-sqlserver);
   MongoDB clusters:
     category_display_name: Datastores
@@ -522,6 +542,25 @@ Navigators:
       instance:
       - MongoDB host
     importQualifiers: counter.network.numRequests (plugin =  mongo);
+  MongoDB instances (OTel):
+    category_display_name: Datastores
+    associated_dashboards:
+      aggregated:
+      - Instances
+      instance:
+      - Instance
+    importQualifiers: mongodb.storage.size (server.address =  *);  OR mongodb.memory.usage
+      (server.address =  *) & (database =  *);
+  MySQL flexible server:
+    category_display_name: Microsoft Azure
+    associated_dashboards:
+      aggregated:
+      - Flexibleserver overview
+      instance:
+      - Flexibleserver
+    importQualifiers: cpu_percent (resource_type =  Microsoft.DBforMySQL/flexibleServers)
+      & (primary_aggregation_type =  true);  OR active_connections (resource_type
+      =  Microsoft.DBforMySQL/flexibleServers) & (primary_aggregation_type =  true);
   MySQL hosts:
     category_display_name: Datastores
     associated_dashboards:
@@ -530,6 +569,15 @@ Navigators:
       instance:
       - MySQL host
     importQualifiers: threads.connected (plugin =  mysql);
+  MySQL hosts (OTel):
+    category_display_name: Datastores
+    associated_dashboards:
+      aggregated:
+      - Hosts
+      instance:
+      - Host
+    importQualifiers: mysql.operations (operation =  *) & (host.name =  *);  OR mysql.commands
+      (host.name =  *) & (command =  *);
   NGINX servers:
     category_display_name: Web Servers
     associated_dashboards:
@@ -566,6 +614,15 @@ Navigators:
       - DNS
       - HTTP - Outbound
     importQualifiers: tcp.bytes (source.workload.name =  *);
+  OpenSearch domains:
+    category_display_name: Amazon Web Services
+    associated_dashboards:
+      aggregated:
+      - OpenSearch Domains
+      instance:
+      - OpenSearch Domain
+    importQualifiers: ClusterStatus.green (namespace =  AWS/ES) & (stat =  upper);  OR
+      Nodes (namespace =  AWS/ES) & (stat =  upper);
   OpsWorks:
     category_display_name: Amazon Web Services
     associated_dashboards:
@@ -593,6 +650,16 @@ Navigators:
       instance:
       - Database
     importQualifiers: postgresql.backends (*);  OR postgresql.db_size (*);
+  PostgreSQL flexible server:
+    category_display_name: Microsoft Azure
+    associated_dashboards:
+      aggregated:
+      - Flexibleserver overview
+      instance:
+      - Flexibleserver
+    importQualifiers: cpu_percent (resource_type =  Microsoft.DBforPostgreSQL/flexibleServers)
+      & (azure_resource_name =  *);  OR active_connections (resource_type =  Microsoft.DBforPostgreSQL/flexibleServers)
+      & (azure_resource_name =  *);
   PostgreSQL hosts:
     category_display_name: Datastores
     associated_dashboards:
@@ -635,14 +702,15 @@ Navigators:
       instance:
       - Redis instance
     importQualifiers: bytes.used_memory (plugin =  redis_info);
-  Redis instances(OTEL):
+  Redis instances (OTel):
     category_display_name: Datastores
     associated_dashboards:
       aggregated:
       - Redis instances
       instance:
       - Redis instance
-    importQualifiers: redis.keyspace.hits (redis.version =  *) & (host.name =  *);
+    importQualifiers: redis.cpu.time (host.name =  *);  OR redis.uptime (host.name
+      =  *);
   Redshift:
     category_display_name: Amazon Web Services
     associated_dashboards:
@@ -736,7 +804,7 @@ Navigators:
       instance:
       - Azure Virtual Machine
     importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachines);  OR
-      cpu.utilization (cloud.provider =  azure);  OR Percentage CPU (resource_type
+      system.memory.usage (cloud.provider =  azure);  OR Percentage CPU (resource_type
       =  Microsoft.Compute/virtualMachineScaleSets/virtualMachines);
   Windows IIS servers:
     category_display_name: Web Servers
