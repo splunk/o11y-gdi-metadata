@@ -745,6 +745,24 @@ Navigators:
       instance:
       - SNS
     importQualifiers: NumberOfMessagesPublished (sf_key =  TopicName);
+  SQL Server databases (OTel):
+    category_display_name: Datastores
+    associated_dashboards:
+      aggregated:
+      - SQL Server databases
+      instance:
+      - SQL Server database
+    importQualifiers: sqlserver.user.connection.count (sqlserver.instance.name =  *)
+      & (host.name =  *);
+  SQL Server instances (OTel):
+    category_display_name: Datastores
+    associated_dashboards:
+      aggregated:
+      - SQL Server instances
+      instance:
+      - SQL Server instance
+    importQualifiers: sqlserver.user.connection.count (sqlserver.instance.name =  *)
+      & (host.name =  *);
   SQL database:
     category_display_name: Microsoft Azure
     associated_dashboards:
