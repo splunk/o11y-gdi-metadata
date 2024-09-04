@@ -2004,6 +2004,26 @@ Dashboards:
     view_support: aggregated
     importQualifiers: NumberOfMessagesPublished (namespace =  AWS/SNS) & (TopicName
       =  *) & (stat =  sum);
+  SQL Server database:
+    dashboard_group: SQL Server (OTel)
+    view_support: instance
+    importQualifiers: sqlserver.user.connection.count (sqlserver.instance.name =  *)
+      & (host.name =  *);
+  SQL Server databases:
+    dashboard_group: SQL Server (OTel)
+    view_support: aggregated
+    importQualifiers: sqlserver.user.connection.count (sqlserver.instance.name =  *)
+      & (host.name =  *);
+  SQL Server instance:
+    dashboard_group: SQL Server (OTel)
+    view_support: instance
+    importQualifiers: sqlserver.user.connection.count (sqlserver.instance.name =  *)
+      & (host.name =  *);
+  SQL Server instances:
+    dashboard_group: SQL Server (OTel)
+    view_support: aggregated
+    importQualifiers: sqlserver.user.connection.count (sqlserver.instance.name =  *)
+      & (host.name =  *);
   SQL server summary:
     dashboard_group: Microsoft SQL server
     view_support: N/A
