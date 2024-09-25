@@ -20,8 +20,8 @@ jobs:
 
       - name: Configure git
         run: |
-          git config user.name theletterf
-          git config user.email theletterf@users.noreply.github.com
+          git config user.name "Paul Williams"
+          git config user.email paulw@splunk.com
 
       - run: ./scripts/update-all.sh
         env:
