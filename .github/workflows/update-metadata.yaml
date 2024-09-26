@@ -20,7 +20,7 @@ jobs:
 
       - name: Configure git
         run: |
-          git config user.name "Paul Williams"
+          git config user.name pauljwil
           git config user.email paulw@splunk.com
 
       - run: ./scripts/update-all.sh
