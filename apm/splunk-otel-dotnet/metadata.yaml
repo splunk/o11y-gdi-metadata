@@ -1,5 +1,5 @@
 component: Splunk Distribution of OpenTelemetry .NET
-version: 1.6.0
+version: 1.7.0
 dependencies:
   - name: OpenTelemetry .NET
     source_href: https://github.com/open-telemetry/opentelemetry-dotnet
@@ -7,7 +7,7 @@ dependencies:
     stability: stable
   - name: OpenTelemetry .NET Automatic Instrumentation
     source_href: https://github.com/open-telemetry/opentelemetry-dotnet-instrumentation
-    version: 1.7.0
+    version: 1.8.0
     stability: stable
 settings:
   - env: SPLUNK_TRACE_RESPONSE_HEADER_ENABLED
@@ -60,8 +60,38 @@ settings:
     default: 'false'
     type: boolean
     category: general
+  - env: OTEL_LOGS_EXPORTER
+    description: 'Comma-separated list of exporters. Supported options: `otlp`, `console`, `none`.'
+    default: 'otlp'
+    type: string
+    category: exporter
+  - env: OTEL_METRICS_EXPORTER
+    description: 'Comma-separated list of exporters. Supported options: `otlp`, `console`, `none`.'
+    default: 'otlp'
+    type: string
+    category: exporter
+  - env: OTEL_TRACES_EXPORTER
+    description: 'Comma-separated list of exporters. Supported options: `otlp`, `console`, `none`.'
+    default: 'otlp'
+    type: string
+    category: exporter
   - env: OTEL_EXPORTER_OTLP_ENDPOINT
-    description: The URL to where traces and metrics are sent. The default value is `http://localhost:4318`. Setting a value overrides the `SPLUNK_REALM` environment variable.
+    description: The URL to where traces, metrics, and logs are sent. The default value is `http://localhost:4318`. Setting a value overrides the `SPLUNK_REALM` environment variable.
+    default: ''
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_LOGS_ENDPOINT
+    description: Equivalent to `OTEL_EXPORTER_OTLP_ENDPOINT`, but applies only to logs.
+    default: ''
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_METRICS_ENDPOINT
+    description: Equivalent to `OTEL_EXPORTER_OTLP_ENDPOINT`, but applies only to metrics.
+    default: ''
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+    description: Equivalent to `OTEL_EXPORTER_OTLP_ENDPOINT`, but applies only to traces.
     default: ''
     type: string
     category: exporter
@@ -73,6 +103,11 @@ settings:
   - env: SPLUNK_ACCESS_TOKEN
     description: A Splunk authentication token that lets exporters send data directly to Splunk Observability Cloud. Unset by default. Required if you need to send data to the Splunk Observability Cloud ingest endpoint.
     default: ''
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
+    description: The aggregation temporality to use on the basis of instrument kind. The supported options are `Cumulative` for all instrument kinds and `Delta` for Counter, Asynchronous Counter, and Histogram instrument kinds. If you use `Delta` for UpDownCounter and Asynchronous UpDownCounter instrument kinds, the `Cumulative` aggregation temporality will be used. `LowMemory`, from the OpenTelemetry specification, is not supported.
+    default: 'Cumulative'
     type: string
     category: exporter
   - env: SPLUNK_PROFILER_ENABLED
@@ -202,8 +237,13 @@ settings:
     default: ''
     type: boolean
     category: instrumentation
+  - env: OTEL_DOTNET_AUTO_LOGGER
+    description: 'AutoInstrumentation diagnostic logs sink. (supported values: `none`,`file`,`console`.'
+    default: 'file'
+    type: string
+    category: diagnostic logging
   - env: OTEL_LOG_LEVEL
-    description: Sets the logging level for instrumentation log messages. Possible values are `none`, `error`, `warn`, `info`, and `debug`. The default value is `info`. Can't be set using the web.config or app.config files.
+    description: Sets the logging level for instrumentation log messages. Possible values are `none`, `error`, `warn`, `info`, and `debug`. Can't be set using the web.config or app.config files.
     default: 'info'
     type: string
     category: diagnostic logging
@@ -213,22 +253,22 @@ settings:
     type: string
     category: diagnostic logging
   - env: OTEL_DOTNET_AUTO_TRACES_CONSOLE_EXPORTER_ENABLED
-    description: Whether the traces console exporter is activated. The default value is `false`.
+    description: Deprecated. Whether the traces console exporter is activated. It can be configured by `OTEL_TRACES_EXPORTER`.
     default: 'false'
     type: boolean
     category: diagnostic logging
   - env: OTEL_DOTNET_AUTO_METRICS_CONSOLE_EXPORTER_ENABLED
-    description: Whether the metrics console exporter is activated. The default value is `false`.
+    description: Deprecated. Whether the metrics console exporter is activated. It can be configured by `OTEL_METRICS_EXPORTER`.
     default: 'false'
     type: boolean
     category: diagnostic logging
   - env: OTEL_DOTNET_AUTO_LOGS_CONSOLE_EXPORTER_ENABLED
-    description: Whether the logs console exporter is activated. The default value is `false`.The default value is `false`.
+    description: Deprecated. Whether the logs console exporter is activated. It can be configured by `OTEL_LOGS_EXPORTER`.
     default: 'false'
     type: boolean
     category: diagnostic logging
   - env: OTEL_DOTNET_AUTO_LOGS_INCLUDE_FORMATTED_MESSAGE
-    description: Whether the log state have to be formatted. The default value is `false`.
+    description: Whether the log state have to be formatted.
     default: 'false'
     type: boolean
     category: diagnostic logging
@@ -512,8 +552,7 @@ instrumentations:
       - KAFKA
     instrumented_components:
       - name: Confluent.Kafka
-        supported_versions: 1.4.0 to 3.0.0
-    description: Confluent.Kafka is supported from version ≥1.8.2 on ARM64.
+        supported_versions: 'ARM64: 1.8.2 to 3.0.0. Other platforms: 1.4.0 to 3.0.0'
     stability: beta
     support: community
     signals:
@@ -532,7 +571,7 @@ instrumentations:
       - MONGODB
     instrumented_components:
       - name: MongoDB.Driver.Core
-        supported_versions: 2.13.3 to 3.0.0
+        supported_versions: 2.28.0 to 3.0.0
     description: Not supported on .NET Framework
     stability: beta
     support: third-party
@@ -620,6 +659,15 @@ instrumentations:
     signals:
       - traces: []
   - keys:
+      - RABBITMQ
+    instrumented_components:
+      - name: RabbitMQ.Client
+        supported_versions: 6.0.0 to 7.0.0
+    stability: beta
+    support: community
+    signals:
+      - traces: []
+  - keys:
       - SQLCLIENT
     instrumented_components:
       - name: Microsoft.Data.SqlClient
@@ -648,7 +696,7 @@ instrumentations:
       - STACKEXCHANGEREDIS
     instrumented_components:
       - name: StackExchange.Redis
-        supported_versions: 2.0.405 to 3.0.0
+        supported_versions: 2.6.122 to 3.0.0
     description: Not supported on .NET Framework
     stability: beta
     support: community
@@ -794,13 +842,14 @@ resource_detectors:
       - id: host.id
       - id: service.instance.id
       - id: service.name
+      - id: service.version
     stability: beta
     support: community
     dependencies:
       - name: Resource Detectors for Azure cloud environments
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Resources.Azure
         package_href: https://www.nuget.org/packages/OpenTelemetry.Resources.Azure
-        version: 1.0.0-beta.8
+        version: 1.0.0-beta.9
         stability: beta
   - key: CONTAINER
     description: Container detector. For example, Docker or Podman containers. Not supported on .NET Framework.
@@ -817,6 +866,7 @@ resource_detectors:
   - key: HOST
     description: Host detector.
     attributes:
+      - id: host.id
       - id: host.name
     stability: alpha
     support: community
@@ -824,8 +874,24 @@ resource_detectors:
       - name: Host Resource Detectors
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Resources.Host
         package_href: https://www.nuget.org/packages/OpenTelemetry.Resources.Host
-        version: 0.1.0-beta.2
+        version: 0.1.0-beta.3
         stability: beta
+  - key: OPERATINGSYSTEM
+    description: Operating System detector.
+    attributes:
+      - id: os.type
+      - id: os.build_id
+      - id: os.description
+      - id: os.name
+      - id: os.version
+    stability: beta
+    support: community
+    dependencies:
+      - name: Operating System Detectors
+        source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/blob/main/src/OpenTelemetry.Resources.OperatingSystem
+        package_href: https://www.nuget.org/packages/OpenTelemetry.Resources.OperatingSystem
+        version: 0.1.0-alpha.4
+        stability: alpha
   - key: PROCESS
     description: Process detector.
     attributes:
@@ -837,7 +903,7 @@ resource_detectors:
       - name: Process Resource Detectors
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Resources.Process
         package_href: https://www.nuget.org/packages/OpenTelemetry.Resources.Process
-        version: 0.1.0-beta.2
+        version: 0.1.0-beta.3
         stability: beta
   - key: PROCESSRUNTIME
     description: Process Runtime detector.
