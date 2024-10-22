@@ -491,9 +491,10 @@ Dashboards:
     importQualifiers: cluster/node_count (service =  bigtable);  OR server/latencies
       (service =  bigtable);
   Broker:
-    dashboard_group: Kafka
-    view_support: instance
-    importQualifiers: counter.kafka.produce.total-time.count (plugin =  GenericJMX);
+    dashboard_group: Kafka (OTeL)
+    view_support: N/A
+    importQualifiers: kafka.brokers (host.name =  *);  OR kafka.topic.partitions (host.name
+      =  *) & (topic =  *) & (partition =  *);
   Broker (Default):
     dashboard_group: Amazon MSK
     view_support: N/A
@@ -506,10 +507,15 @@ Dashboards:
     importQualifiers: ActiveControllerCount (namespace =  AWS/Kafka) & (stat =  sum)
       & (Cluster_Name =  *);  OR GlobalPartitionCount (namespace =  AWS/Kafka) & (stat
       =  sum) & (Cluster_Name =  *);
-  Brokers:
+  Broker - Kafka:
     dashboard_group: Kafka
-    view_support: aggregated
+    view_support: instance
     importQualifiers: counter.kafka.produce.total-time.count (plugin =  GenericJMX);
+  Brokers:
+    dashboard_group: Kafka (OTeL)
+    view_support: N/A
+    importQualifiers: kafka.brokers (host.name =  *);  OR kafka.topic.partitions (host.name
+      =  *) & (topic =  *) & (partition =  *);
   Brokers (Default):
     dashboard_group: Amazon MSK
     view_support: N/A
@@ -522,6 +528,10 @@ Dashboards:
     importQualifiers: ActiveControllerCount (namespace =  AWS/Kafka) & (stat =  sum)
       & (Cluster_Name =  *);  OR GlobalPartitionCount (namespace =  AWS/Kafka) & (stat
       =  sum) & (Cluster_Name =  *);
+  Brokers - Kafka:
+    dashboard_group: Kafka
+    view_support: aggregated
+    importQualifiers: counter.kafka.produce.total-time.count (plugin =  GenericJMX);
   Browser app health:
     dashboard_group: RUM applications
     view_support: N/A
