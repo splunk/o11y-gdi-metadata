@@ -492,7 +492,7 @@ Dashboards:
       (service =  bigtable);
   Broker:
     dashboard_group: Kafka (OTeL)
-    view_support: N/A
+    view_support: instance
     importQualifiers: kafka.brokers (host.name =  *);  OR kafka.topic.partitions (host.name
       =  *) & (topic =  *) & (partition =  *);
   Broker (Default):
@@ -513,7 +513,7 @@ Dashboards:
     importQualifiers: counter.kafka.produce.total-time.count (plugin =  GenericJMX);
   Brokers:
     dashboard_group: Kafka (OTeL)
-    view_support: N/A
+    view_support: aggregated
     importQualifiers: kafka.brokers (host.name =  *);  OR kafka.topic.partitions (host.name
       =  *) & (topic =  *) & (partition =  *);
   Brokers (Default):
