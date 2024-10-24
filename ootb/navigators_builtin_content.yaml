@@ -398,6 +398,15 @@ Navigators:
       instance:
       - Broker
     importQualifiers: counter.kafka-bytes-out (*);
+  Kafka brokers (OTel):
+    category_display_name: Messaging
+    associated_dashboards:
+      aggregated:
+      - Brokers
+      instance:
+      - Broker
+    importQualifiers: kafka.brokers (host.name =  *);  OR kafka.topic.partitions (host.name
+      =  *) & (topic =  *) & (partition =  *);
   Kafka consumers:
     category_display_name: Messaging
     associated_dashboards:
