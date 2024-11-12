@@ -1,5 +1,5 @@
 component: Splunk Distribution of OpenTelemetry .NET
-version: 1.7.0
+version: 1.8.0
 dependencies:
   - name: OpenTelemetry .NET
     source_href: https://github.com/open-telemetry/opentelemetry-dotnet
@@ -7,7 +7,7 @@ dependencies:
     stability: stable
   - name: OpenTelemetry .NET Automatic Instrumentation
     source_href: https://github.com/open-telemetry/opentelemetry-dotnet-instrumentation
-    version: 1.8.0
+    version: 1.9.0
     stability: stable
 settings:
   - env: SPLUNK_TRACE_RESPONSE_HEADER_ENABLED
@@ -254,21 +254,6 @@ settings:
     category: diagnostic logging
   - env: OTEL_DOTNET_AUTO_TRACES_CONSOLE_EXPORTER_ENABLED
     description: Deprecated. Whether the traces console exporter is activated. It can be configured by `OTEL_TRACES_EXPORTER`.
-    default: 'false'
-    type: boolean
-    category: diagnostic logging
-  - env: OTEL_DOTNET_AUTO_METRICS_CONSOLE_EXPORTER_ENABLED
-    description: Deprecated. Whether the metrics console exporter is activated. It can be configured by `OTEL_METRICS_EXPORTER`.
-    default: 'false'
-    type: boolean
-    category: diagnostic logging
-  - env: OTEL_DOTNET_AUTO_LOGS_CONSOLE_EXPORTER_ENABLED
-    description: Deprecated. Whether the logs console exporter is activated. It can be configured by `OTEL_LOGS_EXPORTER`.
-    default: 'false'
-    type: boolean
-    category: diagnostic logging
-  - env: OTEL_DOTNET_AUTO_LOGS_INCLUDE_FORMATTED_MESSAGE
-    description: Whether the log state have to be formatted.
     default: 'false'
     type: boolean
     category: diagnostic logging
@@ -721,7 +706,7 @@ instrumentations:
       - name: WCF Instrumentation for OpenTelemetry .NET
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Instrumentation.Wcf
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.Wcf
-        version: 1.0.0-rc.17
+        version: 1.0.0-rc.18
         stability: beta
     signals:
       - traces: []
