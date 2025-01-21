@@ -26,7 +26,7 @@ settings:
     type: boolean
     category: general
   - env: OTEL_DOTNET_AUTO_METRICS_ENABLED
-    description: etrics are collected by default. To deactivate metric collection, set the environment variable to `false`. Data from custom or manual instrumentation is not affected.
+    description: Metrics are collected by default. To deactivate metric collection, set the environment variable to `false`. Data from custom or manual instrumentation is not affected.
     default: 'true'
     type: boolean
     category: general
