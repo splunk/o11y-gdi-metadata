@@ -451,6 +451,15 @@ Navigators:
       =  *);  OR kong_request_latency_ms_sum (host.name =  *) & (route =  *) & (service
       =  *);  OR kong_bandwidth_bytes (host.name =  *) & (route =  *) & (service =  *);  OR
       kong_memory_workers_lua_vms_bytes (host.name =  *);
+  Kubernetes clusters:
+    category_display_name: Kubernetes
+    associated_dashboards:
+      aggregated:
+      - K8s clusters
+      instance:
+      - K8s cluster
+    importQualifiers: container_cpu_utilization (sf_key =  k8s.cluster.name);  OR
+      container.cpu.time (sf_key =  k8s.cluster.name);
   Kubernetes containers:
     category_display_name: Kubernetes
     associated_dashboards:
@@ -459,6 +468,53 @@ Navigators:
       instance:
       - K8s container
     importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);
+  Kubernetes cronjobs:
+    category_display_name: Kubernetes
+    associated_dashboards:
+      aggregated:
+      - K8s cronjobs
+      instance:
+      - K8s cronjob
+    importQualifiers: k8s.cronjob.active_jobs (k8s.cronjob.name =  *) & (k8s.cluster.name
+      =  *);
+  Kubernetes daemonsets:
+    category_display_name: Kubernetes
+    associated_dashboards:
+      aggregated:
+      - K8s Daemonsets
+      instance:
+      - K8s Daemonset
+    importQualifiers: k8s.daemonset.current_scheduled_nodes (k8s.daemonsets.name =  *)
+      & (k8s.node.name =  *);  OR k8s.daemonset.desired_scheduled_nodes (k8s.daemonset.name
+      =  *) & (k8s.cluster.name =  *);
+  Kubernetes deployments:
+    category_display_name: Kubernetes
+    associated_dashboards:
+      aggregated:
+      - K8s deployments
+      instance:
+      - K8s deployment
+    importQualifiers: k8s.deployment.available (k8s.deployment.name =  *) & (k8s.cluster.name
+      =  *);  OR k8s.deployment.desired (k8s.deployment.name =  *) & (k8s.cluster.name
+      =  *);
+  Kubernetes jobs:
+    category_display_name: Kubernetes
+    associated_dashboards:
+      aggregated:
+      - K8s jobs
+      instance:
+      - K8s job
+    importQualifiers: k8s.job.active_pods (k8s.job.name =  *) & (k8s.cluster.name
+      =  *);  OR k8s.job.desired_successful_pods (k8s.job.name =  *) & (k8s.cluster.name
+      =  *);
+  Kubernetes namespaces:
+    category_display_name: Kubernetes
+    associated_dashboards:
+      aggregated:
+      - K8s namespaces
+      instance:
+      - K8s namespace
+    importQualifiers: k8s.namespace.phase (sf_key =  k8s.namespace.name);
   Kubernetes nodes:
     category_display_name: Kubernetes
     associated_dashboards:
@@ -481,6 +537,26 @@ Navigators:
       - K8s containers
       - K8s pod logs
     importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);
+  Kubernetes replicasets:
+    category_display_name: Kubernetes
+    associated_dashboards:
+      aggregated:
+      - k8s replicasets
+      instance:
+      - k8s replicaset
+    importQualifiers: k8s.replicaset.available (k8s.replicaset.name =  *) & (k8s.cluster.name
+      =  *);  OR k8s.replicaset.desired (k8s.replicaset.name =  *) & (k8s.cluster.name
+      =  *);
+  Kubernetes statefulsets:
+    category_display_name: Kubernetes
+    associated_dashboards:
+      aggregated:
+      - K8s statefulsets
+      instance:
+      - K8s statefulset
+    importQualifiers: k8s.statefulset.current_pods (k8s.statefulset.name =  *) & (k8s.cluster.name
+      =  *);  OR k8s.statefulset.desired_pods (k8s.statefulset.name =  *) & (k8s.cluster.name
+      =  *);
   Kubernetes workloads:
     category_display_name: Kubernetes
     associated_dashboards:
