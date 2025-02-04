@@ -1113,6 +1113,22 @@ Dashboards:
     dashboard_group: Envoy
     view_support: N/A
     importQualifiers: upstream_rq_completed (mesh =  *) & (_exists_ !=  plugin);
+  Envoy cluster:
+    dashboard_group: Envoy summary
+    view_support: instance
+    importQualifiers: envoy_cluster_upstream_cx_total (cluster_name =  *);
+  Envoy clusters:
+    dashboard_group: Envoy summary
+    view_support: aggregated
+    importQualifiers: envoy_cluster_upstream_cx_total (cluster_name =  *);
+  Envoy listener:
+    dashboard_group: Envoy summary
+    view_support: instance
+    importQualifiers: envoy_cluster_upstream_cx_total (cluster_name =  *);
+  Envoy listeners:
+    dashboard_group: Envoy summary
+    view_support: aggregated
+    importQualifiers: envoy_cluster_upstream_cx_total (cluster_name =  *);
   Firehose:
     dashboard_group: VMware Tanzu AS
     view_support: N/A
