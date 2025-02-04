@@ -326,6 +326,22 @@ Navigators:
       - Elasticsearch node
     importQualifiers: counter.indices.indexing.index-total (plugin =  elasticsearch);  OR
       elasticsearch.indices.indexing.index-total (plugin =  elasticsearch);
+  Envoy clusters:
+    category_display_name: Messaging
+    associated_dashboards:
+      aggregated:
+      - Envoy clusters
+      instance:
+      - Envoy cluster
+    importQualifiers: envoy_cluster_upstream_cx_total (cluster_name =  *);
+  Envoy listeners:
+    category_display_name: Messaging
+    associated_dashboards:
+      aggregated:
+      - Envoy listeners
+      instance:
+      - Envoy listener
+    importQualifiers: envoy_cluster_upstream_cx_total (cluster_name =  *);
   Event hubs:
     category_display_name: Microsoft Azure
     associated_dashboards:
