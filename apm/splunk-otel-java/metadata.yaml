@@ -1,21 +1,21 @@
 component: Splunk Distribution of OpenTelemetry Java
-version: 2.9.0
+version: 2.13.1
 dependencies:
   - name: OpenTelemetry Java
     source_href: https://github.com/open-telemetry/opentelemetry-java
-    version: 1.43.0
+    version: 1.47.0
     stability: stable
   - name: OpenTelemetry Instrumentation for Java
     source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation
-    version: 2.9.0
+    version: 2.13.3
     stability: stable
   - name: OpenTelemetry Java Contrib Resource Providers
     source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/tree/main/resource-providers
-    version: 1.40.0-alpha
+    version: 1.43.0-alpha
     stability: experimental
   - name: OpenTelemetry Java Contrib Samplers
     source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/tree/main/samplers
-    version: 1.40.0-alpha
+    version: 1.43.0-alpha
     stability: experimental
 settings:
   - property: otel.sdk.disabled
@@ -997,6 +997,14 @@ settings:
     env: OTEL_INSTRUMENTATION_LOG4J_APPENDER_EXPERIMENTAL_LOG_ATTRIBUTES
     description: Enable the capture of experimental log attributes `thread.name` and
       `thread.id`.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - property: otel.instrumentation.log4j-appender.experimental.capture-code-attributes
+    env: OTEL_INSTRUMENTATION_LOG4J_APPENDER_EXPERIMENTAL_CAPTURE_CODE_ATTRIBUTES
+    description: Enable the capture of [source code attributes](https://github.com/open-telemetry/semantic-conventions/blob/main/docs/general/attributes.md#source-code-attributes).
+      Note that capturing source code attributes at logging sites might add a performance
+      overhead.
     default: 'false'
     type: boolean
     category: instrumentation
@@ -2304,6 +2312,11 @@ instrumentations:
         supported_versions: 2.2 and higher
     stability: experimental
     support: community
+    signals:
+      - metrics:
+          - metric_name: db.client.operation.duration
+            instrument: histogram
+            description: Duration of database client operations.
   - keys:
       - azure-core
     instrumented_components:
@@ -2318,6 +2331,11 @@ instrumentations:
         supported_versions: 3.0 and higher
     stability: experimental
     support: community
+    signals:
+      - metrics:
+          - metric_name: db.client.operation.duration
+            instrument: histogram
+            description: Duration of database client operations.
   - keys:
       - clickhouse
     instrumented_components:
@@ -2325,6 +2343,11 @@ instrumentations:
         supported_versions: 0.5 and higher
     stability: experimental
     support: community
+    signals:
+      - metrics:
+          - metric_name: db.client.operation.duration
+            instrument: histogram
+            description: Duration of database client operations.
   - keys:
       - couchbase
     instrumented_components:
@@ -2332,6 +2355,11 @@ instrumentations:
         supported_versions: 2.0 to 3.0 and 3.1 and higher
     stability: experimental
     support: community
+    signals:
+      - metrics:
+          - metric_name: db.client.operation.duration
+            instrument: histogram
+            description: Duration of database client operations.
   - keys:
       - c3p0
     instrumented_components:
@@ -2459,6 +2487,11 @@ instrumentations:
         supported_versions: 5.0 and higher
     stability: experimental
     support: community
+    signals:
+      - metrics:
+          - metric_name: db.client.operation.duration
+            instrument: histogram
+            description: Duration of database client operations.
   - keys:
       - elasticsearch-transport
     instrumented_components:
@@ -2466,6 +2499,11 @@ instrumentations:
         supported_versions: 5.0 and higher
     stability: experimental
     support: community
+    signals:
+      - metrics:
+          - metric_name: db.client.operation.duration
+            instrument: histogram
+            description: Duration of database client operations.
   - keys:
       - finagle-http
     instrumented_components:
@@ -2487,6 +2525,11 @@ instrumentations:
         supported_versions: 1.4 and higher
     stability: experimental
     support: community
+    signals:
+      - metrics:
+          - metric_name: db.client.operation.duration
+            instrument: histogram
+            description: Duration of database client operations.
   - keys:
       - google-http-client
     instrumented_components:
@@ -2630,6 +2673,11 @@ instrumentations:
         supported_versions: 2.4 and higher
     stability: experimental
     support: community
+    signals:
+      - metrics:
+          - metric_name: db.client.operation.duration
+            instrument: histogram
+            description: Duration of database client operations.
   - keys:
       - executors
     instrumented_components:
@@ -2653,6 +2701,26 @@ instrumentations:
           - metric_name: http.client.response.body.size
             instrument: histogram
             description: Size of HTTP client response bodies (disabled by default).
+  - keys:
+      - java-http-server
+    instrumented_components:
+      - name: Java HTTP Server
+    stability: experimental
+    support: community
+    signals:
+      - metrics:
+          - metric_name: http.server.request.duration
+            instrument: histogram
+            description: Duration of HTTP server requests.
+          - metric_name: http.server.active_requests
+            instrument: updowncounter
+            description: Number of active HTTP server requests (disabled by default).
+          - metric_name: http.server.request.body.size
+            instrument: histogram
+            description: Size of HTTP server request bodies (disabled by default).
+          - metric_name: http.server.response.body.size
+            instrument: histogram
+            description: Size of HTTP server response bodies (disabled by default).
   - keys:
       - java-util-logging
     instrumented_components:
@@ -2780,6 +2848,11 @@ instrumentations:
       - name: JDBC
     stability: experimental
     support: community
+    signals:
+      - metrics:
+          - metric_name: db.client.operation.duration
+            instrument: histogram
+            description: Duration of database client operations.
   - keys:
       - jedis
     instrumented_components:
@@ -2787,6 +2860,11 @@ instrumentations:
         supported_versions: 1.4 and higher
     stability: experimental
     support: community
+    signals:
+      - metrics:
+          - metric_name: db.client.operation.duration
+            instrument: histogram
+            description: Duration of database client operations.
   - keys:
       - jms
     instrumented_components:
@@ -2870,6 +2948,11 @@ instrumentations:
         supported_versions: 4.0 and higher
     stability: experimental
     support: community
+    signals:
+      - metrics:
+          - metric_name: db.client.operation.duration
+            instrument: histogram
+            description: Duration of database client operations.
   - keys:
       - liberty
     instrumented_components:
@@ -2908,6 +2991,11 @@ instrumentations:
         supported_versions: 3.1 and higher
     stability: experimental
     support: community
+    signals:
+      - metrics:
+          - metric_name: db.client.operation.duration
+            instrument: histogram
+            description: Duration of database client operations.
   - keys:
       - mybatis
     instrumented_components:
@@ -2984,6 +3072,18 @@ instrumentations:
           - metric_name: http.server.response.body.size
             instrument: histogram
             description: Size of HTTP server response bodies (disabled by default).
+  - keys:
+      - opensearch
+    instrumented_components:
+      - name: OpenSearch REST Client
+        supported_versions: 1.0 and higher
+    stability: experimental
+    support: community
+    signals:
+      - metrics:
+          - metric_name: db.client.operation.duration
+            instrument: histogram
+            description: Duration of database client operations.
   - keys:
       - opentelemetry-api
     instrumented_components:
@@ -3089,6 +3189,11 @@ instrumentations:
         supported_versions: 1.0 and higher
     stability: experimental
     support: community
+    signals:
+      - metrics:
+          - metric_name: db.client.operation.duration
+            instrument: histogram
+            description: Duration of database client operations.
   - keys:
       - rabbitmq
     instrumented_components:
@@ -3158,6 +3263,11 @@ instrumentations:
         supported_versions: 1.8 and higher
     stability: experimental
     support: community
+    signals:
+      - metrics:
+          - metric_name: db.client.operation.duration
+            instrument: histogram
+            description: Duration of database client operations.
   - keys:
       - redisson
     instrumented_components:
@@ -3165,6 +3275,11 @@ instrumentations:
         supported_versions: 3.0 and higher
     stability: experimental
     support: community
+    signals:
+      - metrics:
+          - metric_name: db.client.operation.duration
+            instrument: histogram
+            description: Duration of database client operations.
   - keys:
       - resteasy
     instrumented_components:
@@ -3247,6 +3362,13 @@ instrumentations:
       - name: Spring Batch
         supported_versions: 2.0 and higher
     description: Disabled by default
+    stability: experimental
+    support: community
+  - keys:
+      - spring-cloud-gateway
+    instrumented_components:
+      - name: Spring Cloud AWS
+        supported_versions: 3.0 and higher
     stability: experimental
     support: community
   - keys:
@@ -3369,6 +3491,11 @@ instrumentations:
         supported_versions: 2.12 and higher
     stability: experimental
     support: community
+    signals:
+      - metrics:
+          - metric_name: db.client.operation.duration
+            instrument: histogram
+            description: Duration of database client operations.
   - keys:
       - tomcat-jdbc
     instrumented_components:
@@ -3462,6 +3589,11 @@ instrumentations:
         supported_versions: 3.0 and higher
     stability: experimental
     support: community
+    signals:
+      - metrics:
+          - metric_name: db.client.operation.duration
+            instrument: histogram
+            description: Duration of database client operations.
   - keys:
       - vertx-rx-java
     instrumented_components:
@@ -3476,6 +3608,11 @@ instrumentations:
         supported_versions: 4.0 and higher
     stability: experimental
     support: community
+    signals:
+      - metrics:
+          - metric_name: db.client.operation.duration
+            instrument: histogram
+            description: Duration of database client operations.
   - keys:
       - vertx-web
     instrumented_components:
@@ -3608,7 +3745,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.9.0-alpha
+        version: 2.13.3-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.resources.HostIdResourceProvider
     description: Host id detector.
@@ -3620,7 +3757,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.9.0-alpha
+        version: 2.13.3-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.resources.HostResourceProvider
     description: Host detector.
@@ -3633,7 +3770,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.9.0-alpha
+        version: 2.13.3-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.resources.JarServiceNameDetector
     description: Jar service name detector.
@@ -3645,7 +3782,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.9.0-alpha
+        version: 2.13.3-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.resources.ManifestResourceProvider
     description: Manifest service name and version detector.
@@ -3658,7 +3795,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.9.0-alpha
+        version: 2.13.3-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.resources.OsResourceProvider
     description: Os detector.
@@ -3671,7 +3808,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.9.0-alpha
+        version: 2.13.3-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.resources.ProcessResourceProvider
     description: Process detector.
@@ -3686,7 +3823,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.9.0-alpha
+        version: 2.13.3-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.resources.ProcessRuntimeResourceProvider
     description: Process runtime detector.
@@ -3700,7 +3837,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.9.0-alpha
+        version: 2.13.3-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.spring.resources.SpringBootServiceNameDetector
     description: Spring boot service name detector.
@@ -3712,7 +3849,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Spring Boot Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/spring/spring-boot-resources/javaagent
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-spring-boot-resources
-        version: 2.9.0-alpha
+        version: 2.13.3-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.spring.resources.SpringBootServiceVersionDetector
     description: Spring boot service version detector.
@@ -3724,7 +3861,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Spring Boot Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/spring/spring-boot-resources/javaagent
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-spring-boot-resources
-        version: 2.9.0-alpha
+        version: 2.13.3-alpha
         stability: experimental
   - key: io.opentelemetry.contrib.resourceproviders.AppServerServiceNameProvider
     description: Application server service name detector.
@@ -3736,7 +3873,7 @@ resource_detectors:
       - name: OpenTelemetry Java Contrib Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/tree/main/resource-providers
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-resource-providers
-        version: 1.40.0-alpha
+        version: 1.43.0-alpha
         stability: experimental
   - key: io.opentelemetry.contrib.aws.resource.BeanstalkResourceProvider
     description: Beanstalk detector.
@@ -3752,7 +3889,7 @@ resource_detectors:
       - name: OpenTelemetry AWS Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/aws-resources
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-aws-resources
-        version: 1.40.0-alpha
+        version: 1.43.0-alpha
         stability: experimental
   - key: io.opentelemetry.contrib.aws.resource.Ec2ResourceProvider
     description: Ec2 detector.
@@ -3772,7 +3909,7 @@ resource_detectors:
       - name: OpenTelemetry AWS Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/aws-resources
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-aws-resources
-        version: 1.40.0-alpha
+        version: 1.43.0-alpha
         stability: experimental
   - key: io.opentelemetry.contrib.aws.resource.EcsResourceProvider
     description: Ecs detector.
@@ -3798,7 +3935,7 @@ resource_detectors:
       - name: OpenTelemetry AWS Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/aws-resources
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-aws-resources
-        version: 1.40.0-alpha
+        version: 1.43.0-alpha
         stability: experimental
   - key: io.opentelemetry.contrib.aws.resource.EksResourceProvider
     description: Eks detector.
@@ -3813,7 +3950,7 @@ resource_detectors:
       - name: OpenTelemetry AWS Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/aws-resources
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-aws-resources
-        version: 1.40.0-alpha
+        version: 1.43.0-alpha
         stability: experimental
   - key: io.opentelemetry.contrib.aws.resource.LambdaResourceProvider
     description: Lambda detector.
@@ -3829,7 +3966,7 @@ resource_detectors:
       - name: OpenTelemetry AWS Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/aws-resources
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-aws-resources
-        version: 1.40.0-alpha
+        version: 1.43.0-alpha
         stability: experimental
   - key: io.opentelemetry.contrib.gcp.resource.GCPResourceProvider
     description: GCP detector.
@@ -3855,5 +3992,5 @@ resource_detectors:
       - name: OpenTelemetry GCP Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/gcp-resources
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-gcp-resources
-        version: 1.40.0-alpha
+        version: 1.43.0-alpha
         stability: experimental
