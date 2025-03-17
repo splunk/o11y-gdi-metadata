@@ -21,10 +21,7 @@ fi
 
 repo=$1
 
-# pick the highest version number, we are not using the latest release because in splunk-otel-java
-# latest release is currently from 1.x branch that does not publish metadata yaml
-latest_version=$(gh release list -R signalfx/$repo --json tagName -q ".[].tagName" | sort -r | head -n 1)
-#latest_version=$(gh api -q .tag_name "repos/signalfx/$repo/releases/latest")
+latest_version=$(gh api -q .tag_name "repos/signalfx/$repo/releases/latest")
 latest_vers_no_v="${latest_version#v}" # Remove leading 'v'
 
 echo "REPO:            $repo"
