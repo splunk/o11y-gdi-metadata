@@ -1,21 +1,21 @@
 component: Splunk Distribution of OpenTelemetry Java
-version: 2.13.1
+version: 2.14.0
 dependencies:
   - name: OpenTelemetry Java
     source_href: https://github.com/open-telemetry/opentelemetry-java
-    version: 1.47.0
+    version: 1.48.0
     stability: stable
   - name: OpenTelemetry Instrumentation for Java
     source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation
-    version: 2.13.3
+    version: 2.14.0
     stability: stable
   - name: OpenTelemetry Java Contrib Resource Providers
     source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/tree/main/resource-providers
-    version: 1.43.0-alpha
+    version: 1.45.0-alpha
     stability: experimental
   - name: OpenTelemetry Java Contrib Samplers
     source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/tree/main/samplers
-    version: 1.43.0-alpha
+    version: 1.45.0-alpha
     stability: experimental
 settings:
   - property: otel.sdk.disabled
@@ -635,6 +635,12 @@ settings:
     default: 'false'
     type: boolean
     category: instrumentation
+  - property: otel.instrumentation.http.client.experimental.redact-query-parameters
+    env: OTEL_INSTRUMENTATION_HTTP_CLIENT_EXPERIMENTAL_REDACT_QUERY_PARAMETERS
+    description: Redact sensitive parameter values from URL query string, see https://opentelemetry.io/docs/specs/semconv/http/http-spans.
+    default: 'true'
+    type: boolean
+    category: instrumentation
   - property: otel.instrumentation.common.default-enabled
     env: OTEL_INSTRUMENTATION_COMMON_DEFAULT_ENABLED
     description: Disable all instrumentations in the agent.
@@ -833,6 +839,12 @@ settings:
     default: 'false'
     type: boolean
     category: instrumentation
+  - property: otel.instrumentation.genai.capture-message-content
+    env: OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT
+    description: v2 only, record content of user and LLM messages when using Bedrock.
+    default: 'false'
+    type: boolean
+    category: instrumentation
   - property: otel.instrumentation.camel.experimental-span-attributes
     env: OTEL_INSTRUMENTATION_CAMEL_EXPERIMENTAL_SPAN_ATTRIBUTES
     description: Enable the capture of experimental span attributes.
@@ -884,6 +896,13 @@ settings:
       fetcher is one that simply maps data from an object to a field (GraphQL 20 and
       later).
     default: 'false'
+    type: boolean
+    category: instrumentation
+  - property: otel.instrumentation.grpc.emit-message-events
+    env: OTEL_INSTRUMENTATION_GRPC_EMIT_MESSAGE_EVENTS
+    description: Determines whether to emit span event for each individual message
+      received and sent.
+    default: 'true'
     type: boolean
     category: instrumentation
   - property: otel.instrumentation.grpc.experimental-span-attributes
@@ -1389,6 +1408,27 @@ metrics:
     instrument: counter
     description: The number of items seen by the otlp exporter.
 instrumentations:
+  - keys:
+      - activej-http
+    instrumented_components:
+      - name: ActiveJ HTTP Server
+        supported_versions: 6.0 and higher
+    stability: experimental
+    support: community
+    signals:
+      - metrics:
+          - metric_name: http.server.request.duration
+            instrument: histogram
+            description: Duration of HTTP server requests.
+          - metric_name: http.server.active_requests
+            instrument: updowncounter
+            description: Number of active HTTP server requests (disabled by default).
+          - metric_name: http.server.request.body.size
+            instrument: histogram
+            description: Size of HTTP server request bodies (disabled by default).
+          - metric_name: http.server.response.body.size
+            instrument: histogram
+            description: Size of HTTP server response bodies (disabled by default).
   - keys:
       - methods
     instrumented_components:
@@ -2317,6 +2357,12 @@ instrumentations:
           - metric_name: db.client.operation.duration
             instrument: histogram
             description: Duration of database client operations.
+          - metric_name: gen_ai.client.token.usage
+            instrument: histogram
+            description: Measures number of input and output tokens used.
+          - metric_name: gen_ai.client.operation.duration
+            instrument: histogram
+            description: GenAI operation duration.
   - keys:
       - azure-core
     instrumented_components:
@@ -2773,7 +2819,7 @@ instrumentations:
           - metric_name: jvm.thread.count
             instrument: updowncounter
             description: Number of executing platform threads (disabled by default).
-          - metric_name: jvm.buffer.memory.usage
+          - metric_name: jvm.buffer.memory.used
             instrument: updowncounter
             description: Measure of memory used by buffers (disabled by default).
           - metric_name: jvm.buffer.memory.limit
@@ -3414,6 +3460,13 @@ instrumentations:
     stability: experimental
     support: community
   - keys:
+      - spring-pulsar
+    instrumented_components:
+      - name: Spring Pulsar
+        supported_versions: 1.0 and higher
+    stability: experimental
+    support: community
+  - keys:
       - spring-rabbit
     instrumented_components:
       - name: Spring RabbitMQ
@@ -3745,7 +3798,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.13.3-alpha
+        version: 2.14.0-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.resources.HostIdResourceProvider
     description: Host id detector.
@@ -3757,7 +3810,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.13.3-alpha
+        version: 2.14.0-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.resources.HostResourceProvider
     description: Host detector.
@@ -3770,7 +3823,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.13.3-alpha
+        version: 2.14.0-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.resources.JarServiceNameDetector
     description: Jar service name detector.
@@ -3782,7 +3835,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.13.3-alpha
+        version: 2.14.0-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.resources.ManifestResourceProvider
     description: Manifest service name and version detector.
@@ -3795,7 +3848,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.13.3-alpha
+        version: 2.14.0-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.resources.OsResourceProvider
     description: Os detector.
@@ -3808,7 +3861,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.13.3-alpha
+        version: 2.14.0-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.resources.ProcessResourceProvider
     description: Process detector.
@@ -3823,7 +3876,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.13.3-alpha
+        version: 2.14.0-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.resources.ProcessRuntimeResourceProvider
     description: Process runtime detector.
@@ -3837,7 +3890,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.13.3-alpha
+        version: 2.14.0-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.spring.resources.SpringBootServiceNameDetector
     description: Spring boot service name detector.
@@ -3849,7 +3902,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Spring Boot Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/spring/spring-boot-resources/javaagent
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-spring-boot-resources
-        version: 2.13.3-alpha
+        version: 2.14.0-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.spring.resources.SpringBootServiceVersionDetector
     description: Spring boot service version detector.
@@ -3861,7 +3914,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Spring Boot Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/spring/spring-boot-resources/javaagent
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-spring-boot-resources
-        version: 2.13.3-alpha
+        version: 2.14.0-alpha
         stability: experimental
   - key: io.opentelemetry.contrib.resourceproviders.AppServerServiceNameProvider
     description: Application server service name detector.
@@ -3873,7 +3926,7 @@ resource_detectors:
       - name: OpenTelemetry Java Contrib Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/tree/main/resource-providers
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-resource-providers
-        version: 1.43.0-alpha
+        version: 1.45.0-alpha
         stability: experimental
   - key: io.opentelemetry.contrib.aws.resource.BeanstalkResourceProvider
     description: Beanstalk detector.
@@ -3889,7 +3942,7 @@ resource_detectors:
       - name: OpenTelemetry AWS Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/aws-resources
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-aws-resources
-        version: 1.43.0-alpha
+        version: 1.45.0-alpha
         stability: experimental
   - key: io.opentelemetry.contrib.aws.resource.Ec2ResourceProvider
     description: Ec2 detector.
@@ -3909,7 +3962,7 @@ resource_detectors:
       - name: OpenTelemetry AWS Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/aws-resources
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-aws-resources
-        version: 1.43.0-alpha
+        version: 1.45.0-alpha
         stability: experimental
   - key: io.opentelemetry.contrib.aws.resource.EcsResourceProvider
     description: Ecs detector.
@@ -3935,7 +3988,7 @@ resource_detectors:
       - name: OpenTelemetry AWS Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/aws-resources
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-aws-resources
-        version: 1.43.0-alpha
+        version: 1.45.0-alpha
         stability: experimental
   - key: io.opentelemetry.contrib.aws.resource.EksResourceProvider
     description: Eks detector.
@@ -3950,7 +4003,7 @@ resource_detectors:
       - name: OpenTelemetry AWS Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/aws-resources
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-aws-resources
-        version: 1.43.0-alpha
+        version: 1.45.0-alpha
         stability: experimental
   - key: io.opentelemetry.contrib.aws.resource.LambdaResourceProvider
     description: Lambda detector.
@@ -3966,7 +4019,7 @@ resource_detectors:
       - name: OpenTelemetry AWS Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/aws-resources
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-aws-resources
-        version: 1.43.0-alpha
+        version: 1.45.0-alpha
         stability: experimental
   - key: io.opentelemetry.contrib.gcp.resource.GCPResourceProvider
     description: GCP detector.
@@ -3992,5 +4045,5 @@ resource_detectors:
       - name: OpenTelemetry GCP Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/gcp-resources
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-gcp-resources
-        version: 1.43.0-alpha
+        version: 1.45.0-alpha
         stability: experimental
