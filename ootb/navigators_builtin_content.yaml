@@ -406,14 +406,6 @@ Navigators:
       instance:
       - Java process
     importQualifiers: gauge.loaded_classes (plugin =  GenericJMX);
-  K8s namespaces list:
-    category_display_name: Kubernetes
-    associated_dashboards:
-      aggregated:
-      - K8s namespaces
-      instance:
-      - K8s namespace
-    importQualifiers: k8s.namespace.phase (sf_key =  k8s.namespace.name);
   Kafka brokers:
     category_display_name: Messaging
     associated_dashboards:
