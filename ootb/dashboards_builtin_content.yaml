@@ -1752,7 +1752,7 @@ Dashboards:
   NodeJS runtime metrics:
     dashboard_group: APM NodeJS services
     view_support: N/A
-    importQualifiers: nodejs.memory.heap.total (*);
+    importQualifiers: process.runtime.nodejs.memory.heap.total (*);
   OpenSearch Domain:
     dashboard_group: AWS OpenSearch
     view_support: instance
@@ -2035,7 +2035,7 @@ Dashboards:
   Service - APM NodeJS services:
     dashboard_group: APM NodeJS services
     view_support: N/A
-    importQualifiers: nodejs.memory.heap.total (*);
+    importQualifiers: process.runtime.nodejs.memory.heap.total (*);
   Service - APM java services:
     dashboard_group: APM java services
     view_support: N/A
@@ -2063,7 +2063,7 @@ Dashboards:
   Service endpoint - APM NodeJS services:
     dashboard_group: APM NodeJS services
     view_support: N/A
-    importQualifiers: nodejs.memory.heap.total (*);
+    importQualifiers: process.runtime.nodejs.memory.heap.total (*);
   Service endpoint - APM java services:
     dashboard_group: APM java services
     view_support: N/A
