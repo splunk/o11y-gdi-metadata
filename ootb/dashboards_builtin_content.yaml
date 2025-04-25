@@ -214,10 +214,20 @@ Dashboards:
     dashboard_group: Apache
     view_support: instance
     importQualifiers: apache_bytes (plugin =  apache);
+  Apache web server - Apache (OTel):
+    dashboard_group: Apache (OTel)
+    view_support: instance
+    importQualifiers: apache.uptime (host.name =  *);  OR apache.requests (host.name
+      =  *);
   Apache web servers:
     dashboard_group: Apache
     view_support: aggregated
     importQualifiers: apache_bytes (plugin =  apache);
+  Apache web servers - Apache (OTel):
+    dashboard_group: Apache (OTel)
+    view_support: aggregated
+    importQualifiers: apache.uptime (host.name =  *);  OR apache.requests (host.name
+      =  *);
   App Engine HTTP:
     dashboard_group: Google App Engine
     view_support: aggregated
@@ -295,15 +305,17 @@ Dashboards:
   Azure App service:
     dashboard_group: Azure App service
     view_support: instance
-    importQualifiers: BytesReceived (resource_type =  Microsoft.Web/sites) & (is_Azure_Function
-      =  false) & (primary_aggregation_type =  true);  OR CpuTime (resource_type =  Microsoft.Web/sites)
-      & (is_Azure_Function =  false) & (primary_aggregation_type =  true);
+    importQualifiers: BytesReceived (resource_type =  Microsoft.Web/sites | microsoft.web/sites)
+      & (is_Azure_Function =  false) & (primary_aggregation_type =  true);  OR CpuTime
+      (resource_type =  Microsoft.Web/sites | microsoft.web/sites) & (is_Azure_Function
+      =  false) & (primary_aggregation_type =  true);
   Azure App services:
     dashboard_group: Azure App service
     view_support: aggregated
-    importQualifiers: BytesReceived (resource_type =  Microsoft.Web/sites) & (is_Azure_Function
-      =  false) & (primary_aggregation_type =  true);  OR CpuTime (resource_type =  Microsoft.Web/sites)
-      & (is_Azure_Function =  false) & (primary_aggregation_type =  true);
+    importQualifiers: BytesReceived (resource_type =  Microsoft.Web/sites | microsoft.web/sites)
+      & (is_Azure_Function =  false) & (primary_aggregation_type =  true);  OR CpuTime
+      (resource_type =  Microsoft.Web/sites | microsoft.web/sites) & (is_Azure_Function
+      =  false) & (primary_aggregation_type =  true);
   Azure Event Hub:
     dashboard_group: Azure Event Hubs
     view_support: instance
@@ -325,19 +337,23 @@ Dashboards:
   Azure Logic App:
     dashboard_group: Azure Logic Apps
     view_support: instance
-    importQualifiers: BillableActionExecutions (resource_type =  Microsoft.Logic/workflows)
-      & (primary_aggregation_type =  true);  OR ActionsSucceeded (resource_type =  Microsoft.Logic/workflows)
-      & (primary_aggregation_type =  true);  OR ActionsFailed (resource_type =  Microsoft.Logic/workflows)
+    importQualifiers: BillableActionExecutions (resource_type =  Microsoft.Logic/workflows
+      | microsoft.logic/workflows) & (primary_aggregation_type =  true);  OR ActionsSucceeded
+      (resource_type =  Microsoft.Logic/workflows | microsoft.logic/workflows) & (primary_aggregation_type
+      =  true);  OR ActionsFailed (resource_type =  Microsoft.Logic/workflows | microsoft.logic/workflows)
       & (primary_aggregation_type =  true);  OR ActionThrottledEvents (resource_type
-      =  Microsoft.Logic/workflows) & (primary_aggregation_type =  true);
+      =  Microsoft.Logic/workflows | microsoft.logic/workflows) & (primary_aggregation_type
+      =  true);
   Azure Logic Apps:
     dashboard_group: Azure Logic Apps
     view_support: aggregated
-    importQualifiers: BillableActionExecutions (resource_type =  Microsoft.Logic/workflows)
-      & (primary_aggregation_type =  true);  OR ActionsSucceeded (resource_type =  Microsoft.Logic/workflows)
-      & (primary_aggregation_type =  true);  OR ActionsFailed (resource_type =  Microsoft.Logic/workflows)
+    importQualifiers: BillableActionExecutions (resource_type =  Microsoft.Logic/workflows
+      | microsoft.logic/workflows) & (primary_aggregation_type =  true);  OR ActionsSucceeded
+      (resource_type =  Microsoft.Logic/workflows | microsoft.logic/workflows) & (primary_aggregation_type
+      =  true);  OR ActionsFailed (resource_type =  Microsoft.Logic/workflows | microsoft.logic/workflows)
       & (primary_aggregation_type =  true);  OR ActionThrottledEvents (resource_type
-      =  Microsoft.Logic/workflows) & (primary_aggregation_type =  true);
+      =  Microsoft.Logic/workflows | microsoft.logic/workflows) & (primary_aggregation_type
+      =  true);
   Azure Managed Cluster:
     dashboard_group: Azure Kubernetes service
     view_support: N/A
@@ -346,14 +362,16 @@ Dashboards:
   Azure SQL database:
     dashboard_group: Azure SQL databases
     view_support: instance
-    importQualifiers: dtu_consumption_percent (resource_type =  Microsoft.Sql/servers/databases)
-      & (primary_aggregation_type =  true);  OR storage (resource_type =  Microsoft.Sql/servers/databases)
+    importQualifiers: dtu_consumption_percent (resource_type =  microsoft.sql/servers/databases
+      | Microsoft.Sql/servers/databases) & (primary_aggregation_type =  true);  OR
+      storage (resource_type =  microsoft.sql/servers/databases | Microsoft.Sql/servers/databases)
       & (primary_aggregation_type =  true);
   Azure SQL databases:
     dashboard_group: Azure SQL databases
     view_support: aggregated
-    importQualifiers: dtu_consumption_percent (resource_type =  Microsoft.Sql/servers/databases)
-      & (primary_aggregation_type =  true);  OR storage (resource_type =  Microsoft.Sql/servers/databases)
+    importQualifiers: dtu_consumption_percent (resource_type =  microsoft.sql/servers/databases
+      | Microsoft.Sql/servers/databases) & (primary_aggregation_type =  true);  OR
+      storage (resource_type =  microsoft.sql/servers/databases | Microsoft.Sql/servers/databases)
       & (primary_aggregation_type =  true);
   Azure Storage account:
     dashboard_group: Azure Storage
@@ -370,18 +388,18 @@ Dashboards:
   Azure VM Scale Set:
     dashboard_group: Azure VM Scale Sets
     view_support: instance
-    importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets)
-      & (primary_aggregation_type =  true);
+    importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets
+      | microsoft.compute/virtualmachinescalesets) & (primary_aggregation_type =  true);
   Azure VM Scale Sets:
     dashboard_group: Azure VM Scale Sets
     view_support: aggregated
-    importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets)
-      & (primary_aggregation_type =  true);
+    importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets
+      | microsoft.compute/virtualmachinescalesets) & (primary_aggregation_type =  true);
   Azure VM Scale Sets logs:
     dashboard_group: Azure VM Scale Sets
     view_support: aggregated
-    importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets)
-      & (primary_aggregation_type =  true);
+    importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets
+      | microsoft.compute/virtualmachinescalesets) & (primary_aggregation_type =  true);
   Azure Virtual Machine:
     dashboard_group: Azure Virtual Machines
     view_support: instance
@@ -427,30 +445,30 @@ Dashboards:
   Azure batch account:
     dashboard_group: Azure batch
     view_support: instance
-    importQualifiers: CoreCount (resource_type =  Microsoft.Batch/batchAccounts) &
-      (primary_aggregation_type =  true);
+    importQualifiers: CoreCount (resource_type =  Microsoft.Batch/batchAccounts |
+      microsoft.batch/batchaccounts) & (primary_aggregation_type =  true);
   Azure batch account logs:
     dashboard_group: Azure batch
     view_support: aggregated
-    importQualifiers: CoreCount (resource_type =  Microsoft.Batch/batchAccounts) &
-      (primary_aggregation_type =  true);
+    importQualifiers: CoreCount (resource_type =  Microsoft.Batch/batchAccounts |
+      microsoft.batch/batchaccounts) & (primary_aggregation_type =  true);
   Azure batch accounts:
     dashboard_group: Azure batch
     view_support: aggregated
-    importQualifiers: CoreCount (resource_type =  Microsoft.Batch/batchAccounts) &
-      (primary_aggregation_type =  true);
+    importQualifiers: CoreCount (resource_type =  Microsoft.Batch/batchAccounts |
+      microsoft.batch/batchaccounts) & (primary_aggregation_type =  true);
   Azure redis cache:
     dashboard_group: Azure redis caches
     view_support: instance
     importQualifiers: totalkeys (primary_aggregation_type =  true) & (resource_type
-      =  Microsoft.Cache/Redis);  OR totalkeys0 (primary_aggregation_type =  true)
-      & (resource_type =  Microsoft.Cache/Redis);
+      =  microsoft.cache/redis | Microsoft.Cache/Redis);  OR totalkeys0 (primary_aggregation_type
+      =  true) & (resource_type =  microsoft.cache/redis | Microsoft.Cache/Redis);
   Azure redis caches:
     dashboard_group: Azure redis caches
     view_support: aggregated
     importQualifiers: totalkeys (primary_aggregation_type =  true) & (resource_type
-      =  Microsoft.Cache/Redis);  OR totalkeys0 (primary_aggregation_type =  true)
-      & (resource_type =  Microsoft.Cache/Redis);
+      =  microsoft.cache/redis | Microsoft.Cache/Redis);  OR totalkeys0 (primary_aggregation_type
+      =  true) & (resource_type =  microsoft.cache/redis | Microsoft.Cache/Redis);
   Azure/SignalR hub:
     dashboard_group: Azure SignalR hubs
     view_support: N/A
@@ -1000,17 +1018,21 @@ Dashboards:
   Elastic pool:
     dashboard_group: Azure SQL server elastic pools
     view_support: instance
-    importQualifiers: eDTU_used (resource_type =  Microsoft.Sql/servers/elasticpools)
-      & (primary_aggregation_type =  true);  OR eDTU_limit (resource_type =  Microsoft.Sql/servers/elasticpools)
+    importQualifiers: eDTU_used (resource_type =  Microsoft.Sql/servers/elasticpools
+      | microsoft.sql/servers/elasticpools) & (primary_aggregation_type =  true);  OR
+      eDTU_limit (resource_type =  Microsoft.Sql/servers/elasticpools | microsoft.sql/servers/elasticpools)
       & (primary_aggregation_type =  true);  OR dtu_consumption_percent (resource_type
-      =  Microsoft.Sql/servers/elasticpools) & (primary_aggregation_type =  true);
+      =  Microsoft.Sql/servers/elasticpools | microsoft.sql/servers/elasticpools)
+      & (primary_aggregation_type =  true);
   Elastic pools:
     dashboard_group: Azure SQL server elastic pools
     view_support: aggregated
-    importQualifiers: eDTU_used (resource_type =  Microsoft.Sql/servers/elasticpools)
-      & (primary_aggregation_type =  true);  OR eDTU_limit (resource_type =  Microsoft.Sql/servers/elasticpools)
+    importQualifiers: eDTU_used (resource_type =  Microsoft.Sql/servers/elasticpools
+      | microsoft.sql/servers/elasticpools) & (primary_aggregation_type =  true);  OR
+      eDTU_limit (resource_type =  Microsoft.Sql/servers/elasticpools | microsoft.sql/servers/elasticpools)
       & (primary_aggregation_type =  true);  OR dtu_consumption_percent (resource_type
-      =  Microsoft.Sql/servers/elasticpools) & (primary_aggregation_type =  true);
+      =  Microsoft.Sql/servers/elasticpools | microsoft.sql/servers/elasticpools)
+      & (primary_aggregation_type =  true);
   Elasticsearch:
     dashboard_group: Elasticsearch
     view_support: N/A
@@ -1141,9 +1163,10 @@ Dashboards:
   Flexibleserver:
     dashboard_group: Azure PostgreSQL - Flexible server
     view_support: instance
-    importQualifiers: cpu_percent (resource_type =  Microsoft.DBforPostgreSQL/flexibleServers)
-      & (azure_resource_name =  *);  OR active_connections (resource_type =  Microsoft.DBforPostgreSQL/flexibleServers)
-      & (azure_resource_name =  *);
+    importQualifiers: cpu_percent (resource_type =  microsoft.dbforpostgresql/flexibleservers
+      | Microsoft.DBforPostgreSQL/flexibleServers) & (azure_resource_name =  *);  OR
+      active_connections (resource_type =  Microsoft.DBforPostgreSQL/flexibleServers
+      | microsoft.dbforpostgresql/flexibleservers) & (azure_resource_name =  *);
   Flexibleserver - Azure MySQL - Flexible server:
     dashboard_group: Azure MySQL - Flexible server
     view_support: instance
@@ -1152,9 +1175,10 @@ Dashboards:
   Flexibleserver overview:
     dashboard_group: Azure PostgreSQL - Flexible server
     view_support: aggregated
-    importQualifiers: cpu_percent (resource_type =  Microsoft.DBforPostgreSQL/flexibleServers)
-      & (azure_resource_name =  *);  OR active_connections (resource_type =  Microsoft.DBforPostgreSQL/flexibleServers)
-      & (azure_resource_name =  *);
+    importQualifiers: cpu_percent (resource_type =  microsoft.dbforpostgresql/flexibleservers
+      | Microsoft.DBforPostgreSQL/flexibleServers) & (azure_resource_name =  *);  OR
+      active_connections (resource_type =  Microsoft.DBforPostgreSQL/flexibleServers
+      | microsoft.dbforpostgresql/flexibleservers) & (azure_resource_name =  *);
   Flexibleserver overview - Azure MySQL - Flexible server:
     dashboard_group: Azure MySQL - Flexible server
     view_support: aggregated
@@ -1275,6 +1299,10 @@ Dashboards:
     dashboard_group: SAP HANA
     view_support: N/A
     importQualifiers: sap.hana.host.cpu.user (*);
+  Host - Weaviate:
+    dashboard_group: Weaviate
+    view_support: instance
+    importQualifiers: object_count (*);
   Host with agent installed:
     dashboard_group: Hosts with agent installed
     view_support: N/A
@@ -1293,6 +1321,10 @@ Dashboards:
     dashboard_group: PostgreSQL(OTel)
     view_support: aggregated
     importQualifiers: postgresql.backends (*);  OR postgresql.db_size (*);
+  Hosts - Weaviate:
+    dashboard_group: Weaviate
+    view_support: aggregated
+    importQualifiers: object_count (*);
   Hosts with agent installed:
     dashboard_group: Hosts with agent installed
     view_support: N/A
@@ -1740,6 +1772,14 @@ Dashboards:
     importQualifiers: ConcurrentExecutions (namespace =  AWS/Lambda) & (stat =  upper)
       & (Resource =  *);  OR Duration (namespace =  AWS/Lambda) & (Resource =  *)
       & (stat =  mean);
+  LangChain:
+    dashboard_group: LangChain
+    view_support: instance
+    importQualifiers: gen_ai.total.requests (gen_ai.system =  langchain);
+  LangChains:
+    dashboard_group: LangChain
+    view_support: aggregated
+    importQualifiers: gen_ai.total.requests (gen_ai.system =  langchain);
   License usage overview:
     dashboard_group: Executive Level
     view_support: N/A
@@ -1906,6 +1946,14 @@ Dashboards:
     dashboard_group: APM NodeJS services
     view_support: N/A
     importQualifiers: nodejs.memory.heap.total (*);
+  OpenAI:
+    dashboard_group: OpenAI
+    view_support: instance
+    importQualifiers: gen_ai.client.token.usage (*);
+  OpenAIs:
+    dashboard_group: OpenAI
+    view_support: aggregated
+    importQualifiers: gen_ai.client.token.usage (*);
   OpenSearch Domain:
     dashboard_group: AWS OpenSearch
     view_support: instance
@@ -2083,6 +2131,10 @@ Dashboards:
       (sf_ua_browsername =  *);  OR sf.org.apm.numContainers (*);  OR synthetics.run.count
       (test_type =  *) & (test =  *);  OR synthetics.run.uptime.percent (test =  *)
       & (location =  *);
+  RUM THROTTLING:
+    dashboard_group: Organization metrics
+    view_support: N/A
+    importQualifiers: sf.org.subscription.customMetrics (*);
   RUM entitlements:
     dashboard_group: Organization metrics
     view_support: N/A
