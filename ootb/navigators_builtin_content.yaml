@@ -40,6 +40,14 @@ Navigators:
       instance:
       - Apache web server
     importQualifiers: apache_bytes (sf_key =  host);
+  Apache web servers (OTel):
+    category_display_name: Web Servers
+    associated_dashboards:
+      aggregated:
+      - Apache web servers
+      instance:
+      - Apache web server
+    importQualifiers: apache.requests (host.name =  *);
   App engine:
     category_display_name: Google Cloud Platform
     associated_dashboards:
@@ -603,6 +611,14 @@ Navigators:
     importQualifiers: lambda.function.lifetime (aws_function_name =  *) & (AWSUniqueId
       =  *);  OR lambda.function.invocation (aws_function_name =  *) & (AWSUniqueId
       =  *);
+  LangChain:
+    category_display_name: AI Frameworks
+    associated_dashboards:
+      aggregated:
+      - LangChains
+      instance:
+      - LangChain
+    importQualifiers: gen_ai.total.requests (gen_ai.system =  langchain);
   Logic apps:
     category_display_name: Microsoft Azure
     associated_dashboards:
@@ -715,6 +731,14 @@ Navigators:
       - DNS
       - HTTP - Outbound
     importQualifiers: tcp.bytes (source.workload.name =  *);
+  OpenAI:
+    category_display_name: AI Frameworks
+    associated_dashboards:
+      aggregated:
+      - OpenAIs
+      instance:
+      - OpenAI
+    importQualifiers: gen_ai.client.token.usage (*);
   OpenSearch domains:
     category_display_name: Amazon Web Services
     associated_dashboards:
@@ -925,6 +949,14 @@ Navigators:
     importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachines);  OR
       system.memory.usage (cloud.provider =  azure);  OR Percentage CPU (resource_type
       =  Microsoft.Compute/virtualMachineScaleSets/virtualMachines);
+  Weaviate:
+    category_display_name: AI Frameworks
+    associated_dashboards:
+      aggregated:
+      - Hosts
+      instance:
+      - Host
+    importQualifiers: object_count (*);
   Windows IIS servers:
     category_display_name: Web Servers
     associated_dashboards:
