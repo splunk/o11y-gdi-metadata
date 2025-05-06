@@ -1151,6 +1151,14 @@ Dashboards:
     dashboard_group: Envoy summary
     view_support: aggregated
     importQualifiers: envoy_cluster_upstream_cx_total (cluster_name =  *);
+  Envoy service:
+    dashboard_group: Envoy istio
+    view_support: N/A
+    importQualifiers: envoy_cluster_membership_healthy (*);  OR  (*);
+  Envoy services:
+    dashboard_group: Envoy istio
+    view_support: N/A
+    importQualifiers: envoy_cluster_membership_healthy (*);  OR  (*);
   Firehose:
     dashboard_group: VMware Tanzu AS
     view_support: N/A
