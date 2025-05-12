@@ -1154,11 +1154,11 @@ Dashboards:
   Envoy service:
     dashboard_group: Envoy istio
     view_support: N/A
-    importQualifiers: envoy_cluster_membership_healthy (*);  OR  (*);
+    importQualifiers: envoy_cluster_membership_healthy (*);
   Envoy services:
     dashboard_group: Envoy istio
     view_support: N/A
-    importQualifiers: envoy_cluster_membership_healthy (*);  OR  (*);
+    importQualifiers: envoy_cluster_membership_healthy (*);
   Firehose:
     dashboard_group: VMware Tanzu AS
     view_support: N/A
