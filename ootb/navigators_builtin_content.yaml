@@ -349,7 +349,7 @@ Navigators:
       - Envoy listeners
       instance:
       - Envoy listener
-    importQualifiers: envoy_cluster_upstream_cx_total (cluster_name =  *);
+    importQualifiers: envoy_listener_downstream_cx_total (cluster_name =  *);
   Event hubs:
     category_display_name: Microsoft Azure
     associated_dashboards:
