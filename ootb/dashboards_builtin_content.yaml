@@ -1225,6 +1225,18 @@ Dashboards:
     dashboard_group: Google Kubernetes Engine
     view_support: aggregated
     importQualifiers: container/memory/request_utilization (*);
+  GPU health:
+    dashboard_group: Nvidia GPU
+    view_support: aggregated
+    importQualifiers: DCGM_FI_DEV_GPU_UTIL (sf_key =  gpu) & (sf_key =  UUID);
+  GPU performance:
+    dashboard_group: Nvidia GPU
+    view_support: aggregated
+    importQualifiers: DCGM_FI_DEV_GPU_UTIL (sf_key =  gpu) & (sf_key =  UUID);
+  GPU usage:
+    dashboard_group: Nvidia GPU
+    view_support: instance
+    importQualifiers: DCGM_FI_DEV_GPU_UTIL (sf_key =  gpu) & (sf_key =  UUID);
   Garden container:
     dashboard_group: Cloud foundry
     view_support: N/A
