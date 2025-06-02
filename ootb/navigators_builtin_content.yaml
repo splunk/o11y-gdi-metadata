@@ -731,6 +731,15 @@ Navigators:
       - DNS
       - HTTP - Outbound
     importQualifiers: tcp.bytes (source.workload.name =  *);
+  Nvidia GPU:
+    category_display_name: AI Frameworks
+    associated_dashboards:
+      aggregated:
+      - GPU health
+      - GPU performance
+      instance:
+      - GPU usage
+    importQualifiers: DCGM_FI_DEV_GPU_UTIL (sf_key =  gpu) & (sf_key =  UUID);
   OpenAI:
     category_display_name: AI Frameworks
     associated_dashboards:
