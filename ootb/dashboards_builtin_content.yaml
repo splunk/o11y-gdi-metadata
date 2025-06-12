@@ -116,6 +116,14 @@ Dashboards:
     view_support: aggregated
     importQualifiers: GroupTotalInstances (namespace =  AWS/AutoScaling) & (stat =  count)
       & (AutoScalingGroupName =  *);
+  AWS Bedrock Aggregate:
+    dashboard_group: AWS Bedrock
+    view_support: aggregated
+    importQualifiers: InputTokenCount (sf_key =  AWSUniqueId) & (namespace =  AWS/Bedrock);
+  AWS Bedrock Instance:
+    dashboard_group: AWS Bedrock
+    view_support: instance
+    importQualifiers: InputTokenCount (sf_key =  AWSUniqueId) & (namespace =  AWS/Bedrock);
   AWS DynamoDB:
     dashboard_group: AWS DynamoDB
     view_support: aggregated
