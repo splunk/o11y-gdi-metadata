@@ -8,6 +8,14 @@ Navigators:
       - AWS ALB instance
     importQualifiers: HealthyHostCount (namespace =  AWS/ApplicationELB) & (LoadBalancer
       =  *);
+  AWS Bedrock:
+    category_display_name: AI Frameworks
+    associated_dashboards:
+      aggregated:
+      - AWS Bedrock Aggregate
+      instance:
+      - AWS Bedrock Instance
+    importQualifiers: InputTokenCount (sf_key =  AWSUniqueId) & (namespace =  AWS/Bedrock);
   Apache Solr cluster:
     category_display_name: Datastores
     associated_dashboards:
