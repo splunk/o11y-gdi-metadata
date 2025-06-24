@@ -554,10 +554,12 @@ Navigators:
       - K8s nodes
       - K8s clusters
       - K8s node logs
+      - K8s node events
       instance:
       - K8s node
       - K8s pods
       - K8s node logs
+      - K8s node events
     importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);
   Kubernetes pods:
     category_display_name: Kubernetes
@@ -568,6 +570,7 @@ Navigators:
       - K8s pod
       - K8s containers
       - K8s pod logs
+      - K8s pod events
     importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);
   Kubernetes replicasets:
     category_display_name: Kubernetes
