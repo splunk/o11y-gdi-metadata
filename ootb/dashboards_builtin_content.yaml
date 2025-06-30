@@ -2197,10 +2197,18 @@ Dashboards:
     view_support: N/A
     importQualifiers: sf.org.subscription.customMetrics (*);
   RabbitMQ:
+    dashboard_group: RabbitMQ(OTel)
+    view_support: aggregated
+    importQualifiers: rabbitmq.message.current (rabbitmq.node.name =  *);
+  RabbitMQ - RabbitMQ:
     dashboard_group: RabbitMQ
     view_support: aggregated
     importQualifiers: gauge.node.uptime (plugin =  rabbitmq);
   RabbitMQ node:
+    dashboard_group: RabbitMQ(OTel)
+    view_support: instance
+    importQualifiers: rabbitmq.message.current (rabbitmq.node.name =  *);
+  RabbitMQ node - RabbitMQ:
     dashboard_group: RabbitMQ
     view_support: instance
     importQualifiers: gauge.node.uptime (plugin =  rabbitmq);
