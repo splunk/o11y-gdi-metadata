@@ -831,6 +831,14 @@ Navigators:
       instance:
       - RabbitMQ node
     importQualifiers: gauge.node.uptime (plugin =  rabbitmq);
+  RabbitMQ nodes (OTel):
+    category_display_name: Messaging
+    associated_dashboards:
+      aggregated:
+      - RabbitMQ
+      instance:
+      - RabbitMQ node
+    importQualifiers: rabbitmq.message.current (rabbitmq.node.name =  *);
   Redis cache:
     category_display_name: Microsoft Azure
     associated_dashboards:
