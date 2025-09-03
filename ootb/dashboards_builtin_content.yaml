@@ -116,6 +116,14 @@ Dashboards:
     view_support: aggregated
     importQualifiers: GroupTotalInstances (namespace =  AWS/AutoScaling) & (stat =  count)
       & (AutoScalingGroupName =  *);
+  AWS Bedrock Aggregate:
+    dashboard_group: AWS Bedrock
+    view_support: aggregated
+    importQualifiers: InputTokenCount (sf_key =  AWSUniqueId) & (namespace =  AWS/Bedrock);
+  AWS Bedrock Instance:
+    dashboard_group: AWS Bedrock
+    view_support: instance
+    importQualifiers: InputTokenCount (sf_key =  AWSUniqueId) & (namespace =  AWS/Bedrock);
   AWS DynamoDB:
     dashboard_group: AWS DynamoDB
     view_support: aggregated
@@ -1225,6 +1233,18 @@ Dashboards:
     dashboard_group: Google Kubernetes Engine
     view_support: aggregated
     importQualifiers: container/memory/request_utilization (*);
+  GPU health:
+    dashboard_group: Nvidia GPU
+    view_support: aggregated
+    importQualifiers: DCGM_FI_DEV_GPU_UTIL (sf_key =  gpu) & (sf_key =  UUID);
+  GPU performance:
+    dashboard_group: Nvidia GPU
+    view_support: aggregated
+    importQualifiers: DCGM_FI_DEV_GPU_UTIL (sf_key =  gpu) & (sf_key =  UUID);
+  GPU usage:
+    dashboard_group: Nvidia GPU
+    view_support: instance
+    importQualifiers: DCGM_FI_DEV_GPU_UTIL (sf_key =  gpu) & (sf_key =  UUID);
   Garden container:
     dashboard_group: Cloud foundry
     view_support: N/A
@@ -1584,6 +1604,13 @@ Dashboards:
       (sf_key =  k8s.workload.name);  OR kubernetes.pod_phase (sf_key =  kubernetes_workload_name);  OR
       container_cpu_utilization (sf_key =  kubernetes_pod_uid);  OR container.cpu.time
       (sf_key =  k8s.pod.uid);
+  K8s node events:
+    dashboard_group: Kubernetes
+    view_support: aggregated
+    importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);  OR k8s.pod.phase
+      (sf_key =  k8s.workload.name);  OR kubernetes.pod_phase (sf_key =  kubernetes_workload_name);  OR
+      container_cpu_utilization (sf_key =  kubernetes_pod_uid);  OR container.cpu.time
+      (sf_key =  k8s.pod.uid);
   K8s node logs:
     dashboard_group: Kubernetes
     view_support: aggregated
@@ -1613,6 +1640,13 @@ Dashboards:
       container_cpu_utilization (sf_key =  kubernetes_pod_uid);  OR container.cpu.time
       (sf_key =  k8s.pod.uid);
   K8s pod:
+    dashboard_group: Kubernetes
+    view_support: instance
+    importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);  OR k8s.pod.phase
+      (sf_key =  k8s.workload.name);  OR kubernetes.pod_phase (sf_key =  kubernetes_workload_name);  OR
+      container_cpu_utilization (sf_key =  kubernetes_pod_uid);  OR container.cpu.time
+      (sf_key =  k8s.pod.uid);
+  K8s pod events:
     dashboard_group: Kubernetes
     view_support: instance
     importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);  OR k8s.pod.phase
@@ -1663,6 +1697,13 @@ Dashboards:
   K8s workloads:
     dashboard_group: Kubernetes
     view_support: aggregated
+    importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);  OR k8s.pod.phase
+      (sf_key =  k8s.workload.name);  OR kubernetes.pod_phase (sf_key =  kubernetes_workload_name);  OR
+      container_cpu_utilization (sf_key =  kubernetes_pod_uid);  OR container.cpu.time
+      (sf_key =  k8s.pod.uid);
+  K8s workloads events:
+    dashboard_group: Kubernetes
+    view_support: N/A
     importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);  OR k8s.pod.phase
       (sf_key =  k8s.workload.name);  OR kubernetes.pod_phase (sf_key =  kubernetes_workload_name);  OR
       container_cpu_utilization (sf_key =  kubernetes_pod_uid);  OR container.cpu.time
@@ -2156,10 +2197,18 @@ Dashboards:
     view_support: N/A
     importQualifiers: sf.org.subscription.customMetrics (*);
   RabbitMQ:
+    dashboard_group: RabbitMQ(OTel)
+    view_support: aggregated
+    importQualifiers: rabbitmq.message.current (rabbitmq.node.name =  *);
+  RabbitMQ - RabbitMQ:
     dashboard_group: RabbitMQ
     view_support: aggregated
     importQualifiers: gauge.node.uptime (plugin =  rabbitmq);
   RabbitMQ node:
+    dashboard_group: RabbitMQ(OTel)
+    view_support: instance
+    importQualifiers: rabbitmq.message.current (rabbitmq.node.name =  *);
+  RabbitMQ node - RabbitMQ:
     dashboard_group: RabbitMQ
     view_support: instance
     importQualifiers: gauge.node.uptime (plugin =  rabbitmq);
