@@ -670,7 +670,7 @@ Navigators:
       - LangChains
       instance:
       - LangChain
-    importQualifiers: gen_ai.total.requests (gen_ai.system =  langchain);
+    importQualifiers: gen_ai.client.operation.duration (gen_ai.system =  langchain);
   Logic apps:
     category_display_name: Microsoft Azure
     associated_dashboards:
