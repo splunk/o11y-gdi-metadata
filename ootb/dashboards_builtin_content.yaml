@@ -1935,11 +1935,11 @@ Dashboards:
   LangChain:
     dashboard_group: LangChain
     view_support: instance
-    importQualifiers: gen_ai.total.requests (gen_ai.system =  langchain);
+    importQualifiers: gen_ai.client.operation.duration (gen_ai.system =  langchain);
   LangChains:
     dashboard_group: LangChain
     view_support: aggregated
-    importQualifiers: gen_ai.total.requests (gen_ai.system =  langchain);
+    importQualifiers: gen_ai.client.operation.duration (gen_ai.system =  langchain);
   License usage overview:
     dashboard_group: Executive Level
     view_support: N/A
