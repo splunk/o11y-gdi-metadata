@@ -2759,6 +2759,14 @@ Dashboards:
     importQualifiers: ActiveControllerCount (namespace =  AWS/Kafka) & (stat =  sum)
       & (Cluster_Name =  *);  OR GlobalPartitionCount (namespace =  AWS/Kafka) & (stat
       =  sum) & (Cluster_Name =  *);
+  Transaction details:
+    dashboard_group: APM business transactions
+    view_support: N/A
+    importQualifiers: workflows.count (sf_environment =  *);
+  Transactions overview:
+    dashboard_group: APM business transactions
+    view_support: N/A
+    importQualifiers: workflows.count (sf_environment =  *);
   UDP:
     dashboard_group: Network explorer dashboards
     view_support: instance
@@ -2849,14 +2857,6 @@ Dashboards:
     dashboard_group: PerfCounterReporter (deprecated)
     view_support: N/A
     importQualifiers: processor.pct_processor_time (sf_key =  host);
-  Workflow details:
-    dashboard_group: APM Business Workflows
-    view_support: N/A
-    importQualifiers: workflows.count (sf_environment =  *);
-  Workflows overview:
-    dashboard_group: APM Business Workflows
-    view_support: N/A
-    importQualifiers: workflows.count (sf_environment =  *);
   Zookeeper node:
     dashboard_group: Zookeeper
     view_support: instance
