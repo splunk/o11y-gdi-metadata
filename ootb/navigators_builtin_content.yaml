@@ -452,8 +452,8 @@ Navigators:
       - Hosts
       instance:
       - Host
-    importQualifiers: system.memory.usage (sf_key =  host) & (sf_key !=  gcp_id) &
-      (sf_key !=  azure_resource_id) & (sf_key !=  cloud.provider) & (sf_key !=  AWSUniqueId);
+    importQualifiers: system.memory.usage (sf_key =  host.name) & (sf_key !=  gcp_id)
+      & (sf_key !=  azure_resource_id) & (sf_key !=  cloud.provider) & (sf_key !=  AWSUniqueId);
   JMX (collectd):
     category_display_name: Others
     associated_dashboards:
