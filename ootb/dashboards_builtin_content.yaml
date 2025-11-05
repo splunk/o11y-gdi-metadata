@@ -2240,6 +2240,16 @@ Dashboards:
     dashboard_group: Sample data
     view_support: N/A
     importQualifiers: demo.trans.count (*);
+  Pinecone index:
+    dashboard_group: Pinecone
+    view_support: N/A
+    importQualifiers: pinecone_db_record_total (index_name =  *);  OR pinecone_db_storage_size_bytes
+      (index_name =  *) & (capacity_mode =  *);
+  Pinecone indexes:
+    dashboard_group: Pinecone
+    view_support: N/A
+    importQualifiers: pinecone_db_record_total (index_name =  *);  OR pinecone_db_storage_size_bytes
+      (index_name =  *) & (capacity_mode =  *);
   PostgreSQL node:
     dashboard_group: PostgreSQL(Smart Agent)
     view_support: N/A
