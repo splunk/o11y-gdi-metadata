@@ -2009,6 +2009,16 @@ Dashboards:
     dashboard_group: Microsoft SQL server
     view_support: aggregated
     importQualifiers: sqlserver_server_properties.db_online (plugin =  telegraf-sqlserver);
+  Milvus Instance:
+    dashboard_group: Milvus
+    view_support: N/A
+    importQualifiers: milvus_num_node (role_name =  *);  OR milvus_proxy_req_count
+      (function_name =  *);
+  Milvus Instances:
+    dashboard_group: Milvus
+    view_support: N/A
+    importQualifiers: milvus_num_node (role_name =  *);  OR milvus_proxy_req_count
+      (function_name =  *);
   Mobile app health:
     dashboard_group: RUM applications
     view_support: N/A
