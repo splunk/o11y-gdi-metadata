@@ -51,6 +51,21 @@ Dashboards:
     dashboard_group: AWS optimizer
     view_support: N/A
     importQualifiers: instance.cost (*);
+  AI POD GPUs:
+    dashboard_group: Cisco AI PODs Dashboard
+    view_support: N/A
+    importQualifiers: DCGM_FI_DEV_POWER_USAGE (*);  OR num_requests_waiting (*);  OR
+      k8s.deployment.available (k8s.nimservice.name =  *);  OR cisco_up (*);
+  AI Pod Hosts:
+    dashboard_group: Cisco AI PODs Dashboard
+    view_support: N/A
+    importQualifiers: DCGM_FI_DEV_POWER_USAGE (*);  OR num_requests_waiting (*);  OR
+      k8s.deployment.available (k8s.nimservice.name =  *);  OR cisco_up (*);
+  AI Pod overview:
+    dashboard_group: Cisco AI PODs Dashboard
+    view_support: N/A
+    importQualifiers: DCGM_FI_DEV_POWER_USAGE (*);  OR num_requests_waiting (*);  OR
+      k8s.deployment.available (k8s.nimservice.name =  *);  OR cisco_up (*);
   API Gateway logs:
     dashboard_group: AWS API Gateway
     view_support: N/A
@@ -1519,6 +1534,11 @@ Dashboards:
     view_support: aggregated
     importQualifiers: mongodb.storage.size (server.address =  *);  OR mongodb.memory.usage
       (server.address =  *) & (database =  *);
+  Intersight:
+    dashboard_group: Cisco AI PODs Dashboard
+    view_support: N/A
+    importQualifiers: DCGM_FI_DEV_POWER_USAGE (*);  OR num_requests_waiting (*);  OR
+      k8s.deployment.available (k8s.nimservice.name =  *);  OR cisco_up (*);
   Intro to Splunk Observability Cloud:
     dashboard_group: Sample data
     view_support: N/A
@@ -2068,20 +2088,15 @@ Dashboards:
     dashboard_group: NGINX
     view_support: aggregated
     importQualifiers: nginx_connections.active (plugin =  nginx);
+  NIM for LLMs:
+    dashboard_group: Cisco AI PODs Dashboard
+    view_support: N/A
+    importQualifiers: DCGM_FI_DEV_POWER_USAGE (*);  OR num_requests_waiting (*);  OR
+      k8s.deployment.available (k8s.nimservice.name =  *);  OR cisco_up (*);
   NIM usage:
     dashboard_group: NVIDIA NIM
     view_support: aggregated
     importQualifiers: num_requests_waiting (*);
-  NIM usage (aggregate):
-    dashboard_group: Cisco AI Pod
-    view_support: N/A
-    importQualifiers: DCGM_FI_DEV_POWER_USAGE (*);  OR num_requests_waiting (*);  OR
-      k8s.deployment.available (k8s.nimservice.name =  *);  OR cisco_up (*);
-  NIM usage (instance):
-    dashboard_group: Cisco AI Pod
-    view_support: N/A
-    importQualifiers: DCGM_FI_DEV_POWER_USAGE (*);  OR num_requests_waiting (*);  OR
-      k8s.deployment.available (k8s.nimservice.name =  *);  OR cisco_up (*);
   NIM usage - NVIDIA NIM:
     dashboard_group: NVIDIA NIM
     view_support: instance
@@ -2096,7 +2111,7 @@ Dashboards:
     view_support: N/A
     importQualifiers: gauge.openstack.nova.hypervisor.vcpus (plugin =  openstack);
   Nexus Switches:
-    dashboard_group: Cisco AI Pod
+    dashboard_group: Cisco AI PODs Dashboard
     view_support: N/A
     importQualifiers: DCGM_FI_DEV_POWER_USAGE (*);  OR num_requests_waiting (*);  OR
       k8s.deployment.available (k8s.nimservice.name =  *);  OR cisco_up (*);
@@ -2120,26 +2135,6 @@ Dashboards:
     dashboard_group: APM NodeJS services
     view_support: N/A
     importQualifiers: nodejs.memory.heap.total (*);
-  Nvidia GPU health:
-    dashboard_group: Cisco AI Pod
-    view_support: N/A
-    importQualifiers: DCGM_FI_DEV_POWER_USAGE (*);  OR num_requests_waiting (*);  OR
-      k8s.deployment.available (k8s.nimservice.name =  *);  OR cisco_up (*);
-  Nvidia GPU performance:
-    dashboard_group: Cisco AI Pod
-    view_support: N/A
-    importQualifiers: DCGM_FI_DEV_POWER_USAGE (*);  OR num_requests_waiting (*);  OR
-      k8s.deployment.available (k8s.nimservice.name =  *);  OR cisco_up (*);
-  Nvidia GPU usage:
-    dashboard_group: Cisco AI Pod
-    view_support: N/A
-    importQualifiers: DCGM_FI_DEV_POWER_USAGE (*);  OR num_requests_waiting (*);  OR
-      k8s.deployment.available (k8s.nimservice.name =  *);  OR cisco_up (*);
-  Nvidia NIM Service:
-    dashboard_group: Cisco AI Pod
-    view_support: N/A
-    importQualifiers: DCGM_FI_DEV_POWER_USAGE (*);  OR num_requests_waiting (*);  OR
-      k8s.deployment.available (k8s.nimservice.name =  *);  OR cisco_up (*);
   OpenAI:
     dashboard_group: OpenAI
     view_support: instance
@@ -2314,6 +2309,11 @@ Dashboards:
     dashboard_group: Ray Clusters
     view_support: aggregated
     importQualifiers: ray_cluster_active_nodes (sf_key =  SessionName);
+  Pure storage:
+    dashboard_group: Cisco AI PODs Dashboard
+    view_support: N/A
+    importQualifiers: DCGM_FI_DEV_POWER_USAGE (*);  OR num_requests_waiting (*);  OR
+      k8s.deployment.available (k8s.nimservice.name =  *);  OR cisco_up (*);
   Queries:
     dashboard_group: PostgreSQL (New)
     view_support: N/A
@@ -2385,6 +2385,11 @@ Dashboards:
     dashboard_group: Ray Clusters
     view_support: aggregated
     importQualifiers: ray_cluster_active_nodes (sf_key =  SessionName);
+  Red Hat OpenShift:
+    dashboard_group: Cisco AI PODs Dashboard
+    view_support: N/A
+    importQualifiers: DCGM_FI_DEV_POWER_USAGE (*);  OR num_requests_waiting (*);  OR
+      k8s.deployment.available (k8s.nimservice.name =  *);  OR cisco_up (*);
   Redis instance:
     dashboard_group: Redis (OTel)
     view_support: instance
@@ -2772,6 +2777,11 @@ Dashboards:
       (sf_ua_browsername =  *);  OR sf.org.apm.numContainers (*);  OR synthetics.run.count
       (test_type =  *) & (test =  *);  OR synthetics.run.uptime.percent (test =  *)
       & (location =  *);
+  Tokenomics:
+    dashboard_group: Cisco AI PODs Dashboard
+    view_support: N/A
+    importQualifiers: DCGM_FI_DEV_POWER_USAGE (*);  OR num_requests_waiting (*);  OR
+      k8s.deployment.available (k8s.nimservice.name =  *);  OR cisco_up (*);
   Topic:
     dashboard_group: Amazon MSK
     view_support: N/A
