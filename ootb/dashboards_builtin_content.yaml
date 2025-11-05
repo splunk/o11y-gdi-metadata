@@ -1948,6 +1948,11 @@ Dashboards:
       (sf_ua_browsername =  *);  OR sf.org.apm.numContainers (*);  OR synthetics.run.count
       (test_type =  *) & (test =  *);  OR synthetics.run.uptime.percent (test =  *)
       & (location =  *);
+  LiteLLM:
+    dashboard_group: LiteLLM
+    view_support: N/A
+    importQualifiers: en_ai.client.operation.duration (gen_ai.system =  litellm);  OR
+      gen_ai.client.token.usage (gen_ai.system =  litellm);
   Log Observer data usage:
     dashboard_group: Log Observer usage
     view_support: N/A
