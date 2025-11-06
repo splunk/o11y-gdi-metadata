@@ -991,9 +991,9 @@ Navigators:
     category_display_name: Amazon Web Services
     associated_dashboards:
       aggregated:
-      - SQS queues
+      - SQS Queues
       instance:
-      - SQS queue
+      - SQS Queue
     importQualifiers: NumberOfMessagesSent (sf_key =  QueueName);
   Storage:
     category_display_name: Microsoft Azure
