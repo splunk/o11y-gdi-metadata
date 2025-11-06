@@ -2478,11 +2478,11 @@ Dashboards:
     dashboard_group: Microsoft SQL server
     view_support: N/A
     importQualifiers: sqlserver_server_properties.db_online (plugin =  telegraf-sqlserver);
-  SQS queue:
+  SQS Queue:
     dashboard_group: AWS SQS
     view_support: instance
     importQualifiers: NumberOfMessagesSent (namespace =  AWS/SQS) & (stat =  sum);
-  SQS queues:
+  SQS Queues:
     dashboard_group: AWS SQS
     view_support: aggregated
     importQualifiers: NumberOfMessagesSent (namespace =  AWS/SQS) & (stat =  sum);
