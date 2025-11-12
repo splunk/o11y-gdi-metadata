@@ -1971,8 +1971,8 @@ Dashboards:
   LiteLLM:
     dashboard_group: LiteLLM
     view_support: N/A
-    importQualifiers: en_ai.client.operation.duration (gen_ai.system =  litellm);  OR
-      gen_ai.client.token.usage (gen_ai.system =  litellm);
+    importQualifiers: gen_ai.client.operation.duration_sum (gen_ai.framework =  litellm);  OR
+      gen_ai.client.token.usage_sum (gen_ai.framework =  litellm);
   Log Observer data usage:
     dashboard_group: Log Observer usage
     view_support: N/A
