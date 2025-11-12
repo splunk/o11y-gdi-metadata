@@ -332,16 +332,16 @@ Dashboards:
   Azure App service:
     dashboard_group: Azure App service
     view_support: instance
-    importQualifiers: BytesReceived (resource_type =  Microsoft.Web/sites | microsoft.web/sites)
+    importQualifiers: BytesReceived (resource_type =  microsoft.web/sites | Microsoft.Web/sites)
       & (is_Azure_Function =  false) & (primary_aggregation_type =  true);  OR CpuTime
-      (resource_type =  Microsoft.Web/sites | microsoft.web/sites) & (is_Azure_Function
+      (resource_type =  microsoft.web/sites | Microsoft.Web/sites) & (is_Azure_Function
       =  false) & (primary_aggregation_type =  true);
   Azure App services:
     dashboard_group: Azure App service
     view_support: aggregated
-    importQualifiers: BytesReceived (resource_type =  Microsoft.Web/sites | microsoft.web/sites)
+    importQualifiers: BytesReceived (resource_type =  microsoft.web/sites | Microsoft.Web/sites)
       & (is_Azure_Function =  false) & (primary_aggregation_type =  true);  OR CpuTime
-      (resource_type =  Microsoft.Web/sites | microsoft.web/sites) & (is_Azure_Function
+      (resource_type =  microsoft.web/sites | Microsoft.Web/sites) & (is_Azure_Function
       =  false) & (primary_aggregation_type =  true);
   Azure Event Hub:
     dashboard_group: Azure Event Hubs
