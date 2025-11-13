@@ -1601,6 +1601,13 @@ Dashboards:
       =  *) & (k8s.cluster.name =  *);  OR k8s.job.active_pods (k8s.job.name =  *)
       & (k8s.cluster.name =  *);  OR k8s.cronjob.active_jobs (k8s.cronjob.name =  *)
       & (k8s.cluster.name =  *);
+  K8s HPA:
+    dashboard_group: Kubernetes
+    view_support: N/A
+    importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);  OR k8s.pod.phase
+      (sf_key =  k8s.workload.name);  OR kubernetes.pod_phase (sf_key =  kubernetes_workload_name);  OR
+      container_cpu_utilization (sf_key =  kubernetes_pod_uid);  OR container.cpu.time
+      (sf_key =  k8s.pod.uid);
   K8s HPA events:
     dashboard_group: Kubernetes
     view_support: N/A
@@ -1704,13 +1711,6 @@ Dashboards:
       =  *) & (k8s.cluster.name =  *);  OR k8s.job.active_pods (k8s.job.name =  *)
       & (k8s.cluster.name =  *);  OR k8s.cronjob.active_jobs (k8s.cronjob.name =  *)
       & (k8s.cluster.name =  *);
-  K8s hpa:
-    dashboard_group: Kubernetes
-    view_support: N/A
-    importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);  OR k8s.pod.phase
-      (sf_key =  k8s.workload.name);  OR kubernetes.pod_phase (sf_key =  kubernetes_workload_name);  OR
-      container_cpu_utilization (sf_key =  kubernetes_pod_uid);  OR container.cpu.time
-      (sf_key =  k8s.pod.uid);
   K8s job:
     dashboard_group: Kubernetes - Workloads
     view_support: instance
