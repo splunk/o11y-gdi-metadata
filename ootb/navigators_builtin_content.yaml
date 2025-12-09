@@ -85,9 +85,9 @@ Navigators:
       - Azure App services
       instance:
       - Azure App service
-    importQualifiers: CpuTime (is_Azure_Function =  false) & (resource_type =  microsoft.web/sites
+    importQualifiers: CpuTime (is_azure_function =  false) & (resource_type =  microsoft.web/sites
       | Microsoft.Web/sites) & (primary_aggregation_type =  true);  OR BytesReceived
-      (is_Azure_Function =  false) & (resource_type =  microsoft.web/sites | Microsoft.Web/sites)
+      (is_azure_function =  false) & (resource_type =  microsoft.web/sites | Microsoft.Web/sites)
       & (primary_aggregation_type =  true);
   Autoscaling groups:
     category_display_name: Amazon Web Services
@@ -123,9 +123,9 @@ Navigators:
       - (Azure) Function Apps
       instance:
       - (Azure) Function App
-    importQualifiers: FunctionExecutionCount (is_Azure_Function =  true) & (primary_aggregation_type
+    importQualifiers: FunctionExecutionCount (is_azure_function =  true) & (primary_aggregation_type
       =  true) & (resource_type =  microsoft.web/sites | Microsoft.Web/sites);  OR
-      FunctionExecutionUnits (is_Azure_Function =  true) & (primary_aggregation_type
+      FunctionExecutionUnits (is_azure_function =  true) & (primary_aggregation_type
       =  true) & (resource_type =  microsoft.web/sites | Microsoft.Web/sites);
   Batch accounts:
     category_display_name: Microsoft Azure
