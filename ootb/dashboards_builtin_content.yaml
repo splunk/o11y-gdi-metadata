@@ -3,37 +3,37 @@ Dashboards:
     dashboard_group: Azure Functions
     view_support: instance
     importQualifiers: FunctionExecutionCount (resource_type =  microsoft.web/sites
-      | Microsoft.Web/sites) & (is_Azure_Function =  true) & (primary_aggregation_type
+      | Microsoft.Web/sites) & (is_azure_function =  true) & (primary_aggregation_type
       =  true);  OR FunctionExecutionUnits (resource_type =  microsoft.web/sites |
-      Microsoft.Web/sites) & (is_Azure_Function =  true) & (primary_aggregation_type
-      =  true);  OR azure.function.invocations (is_Azure_Function =  true) & (metric_source
+      Microsoft.Web/sites) & (is_azure_function =  true) & (primary_aggregation_type
+      =  true);  OR azure.function.invocations (is_azure_function =  true) & (metric_source
       =  azure_function_wrapper);
   (Azure) Function Apps:
     dashboard_group: Azure Functions
     view_support: aggregated
     importQualifiers: FunctionExecutionCount (resource_type =  microsoft.web/sites
-      | Microsoft.Web/sites) & (is_Azure_Function =  true) & (primary_aggregation_type
+      | Microsoft.Web/sites) & (is_azure_function =  true) & (primary_aggregation_type
       =  true);  OR FunctionExecutionUnits (resource_type =  microsoft.web/sites |
-      Microsoft.Web/sites) & (is_Azure_Function =  true) & (primary_aggregation_type
-      =  true);  OR azure.function.invocations (is_Azure_Function =  true) & (metric_source
+      Microsoft.Web/sites) & (is_azure_function =  true) & (primary_aggregation_type
+      =  true);  OR azure.function.invocations (is_azure_function =  true) & (metric_source
       =  azure_function_wrapper);
   (SignalFx) Azure Function (deprecated):
     dashboard_group: Azure Functions
     view_support: instance
     importQualifiers: FunctionExecutionCount (resource_type =  microsoft.web/sites
-      | Microsoft.Web/sites) & (is_Azure_Function =  true) & (primary_aggregation_type
+      | Microsoft.Web/sites) & (is_azure_function =  true) & (primary_aggregation_type
       =  true);  OR FunctionExecutionUnits (resource_type =  microsoft.web/sites |
-      Microsoft.Web/sites) & (is_Azure_Function =  true) & (primary_aggregation_type
-      =  true);  OR azure.function.invocations (is_Azure_Function =  true) & (metric_source
+      Microsoft.Web/sites) & (is_azure_function =  true) & (primary_aggregation_type
+      =  true);  OR azure.function.invocations (is_azure_function =  true) & (metric_source
       =  azure_function_wrapper);
   (SignalFx) Azure Functions (deprecated):
     dashboard_group: Azure Functions
     view_support: aggregated
     importQualifiers: FunctionExecutionCount (resource_type =  microsoft.web/sites
-      | Microsoft.Web/sites) & (is_Azure_Function =  true) & (primary_aggregation_type
+      | Microsoft.Web/sites) & (is_azure_function =  true) & (primary_aggregation_type
       =  true);  OR FunctionExecutionUnits (resource_type =  microsoft.web/sites |
-      Microsoft.Web/sites) & (is_Azure_Function =  true) & (primary_aggregation_type
-      =  true);  OR azure.function.invocations (is_Azure_Function =  true) & (metric_source
+      Microsoft.Web/sites) & (is_azure_function =  true) & (primary_aggregation_type
+      =  true);  OR azure.function.invocations (is_azure_function =  true) & (metric_source
       =  azure_function_wrapper);
   .NET runtime metrics:
     dashboard_group: APM .NET services
@@ -333,15 +333,15 @@ Dashboards:
     dashboard_group: Azure App service
     view_support: instance
     importQualifiers: BytesReceived (resource_type =  microsoft.web/sites | Microsoft.Web/sites)
-      & (is_Azure_Function =  false) & (primary_aggregation_type =  true);  OR CpuTime
-      (resource_type =  microsoft.web/sites | Microsoft.Web/sites) & (is_Azure_Function
+      & (is_azure_function =  false) & (primary_aggregation_type =  true);  OR CpuTime
+      (resource_type =  microsoft.web/sites | Microsoft.Web/sites) & (is_azure_function
       =  false) & (primary_aggregation_type =  true);
   Azure App services:
     dashboard_group: Azure App service
     view_support: aggregated
     importQualifiers: BytesReceived (resource_type =  microsoft.web/sites | Microsoft.Web/sites)
-      & (is_Azure_Function =  false) & (primary_aggregation_type =  true);  OR CpuTime
-      (resource_type =  microsoft.web/sites | Microsoft.Web/sites) & (is_Azure_Function
+      & (is_azure_function =  false) & (primary_aggregation_type =  true);  OR CpuTime
+      (resource_type =  microsoft.web/sites | Microsoft.Web/sites) & (is_azure_function
       =  false) & (primary_aggregation_type =  true);
   Azure Event Hub:
     dashboard_group: Azure Event Hubs
