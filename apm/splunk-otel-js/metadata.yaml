@@ -715,7 +715,7 @@ dependencies:
   - name: "@opentelemetry/propagator-aws-xray"
     version: "2.1.0"
     stability: "stable"
-    source_href: "https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/propagators/propagator-aws-xray#readme"
+    source_href: "https://github.com/open-telemetry/opentelemetry-js-contrib/blob/main/packages/propagator-aws-xray/README.md"
   - name: "@opentelemetry/propagator-b3"
     version: "2.0.1"
     stability: "stable"
