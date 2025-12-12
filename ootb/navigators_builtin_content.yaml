@@ -8,6 +8,22 @@ Navigators:
       - AWS ALB instance
     importQualifiers: HealthyHostCount (namespace =  AWS/ApplicationELB) & (LoadBalancer
       =  *);
+  AWS Bedrock:
+    category_display_name: AI Frameworks
+    associated_dashboards:
+      aggregated:
+      - AWS Bedrocks
+      instance:
+      - AWS Bedrock
+    importQualifiers: InputTokenCount (sf_key =  AWSUniqueId) & (namespace =  AWS/Bedrock);
+  Active hosts (OTel):
+    category_display_name: Hosts overview
+    associated_dashboards:
+      aggregated:
+      - Hosts (OTel)
+      instance:
+      - Host (OTel)
+    importQualifiers: cpu.utilization (sf_key =  host.name);
   Apache Solr cluster:
     category_display_name: Datastores
     associated_dashboards:
@@ -40,6 +56,14 @@ Navigators:
       instance:
       - Apache web server
     importQualifiers: apache_bytes (sf_key =  host);
+  Apache web servers (OTel):
+    category_display_name: Web Servers
+    associated_dashboards:
+      aggregated:
+      - Apache web servers
+      instance:
+      - Apache web server
+    importQualifiers: apache.requests (host.name =  *);
   App engine:
     category_display_name: Google Cloud Platform
     associated_dashboards:
@@ -61,9 +85,10 @@ Navigators:
       - Azure App services
       instance:
       - Azure App service
-    importQualifiers: CpuTime (is_Azure_Function =  false) & (resource_type =  Microsoft.Web/sites)
-      & (primary_aggregation_type =  true);  OR BytesReceived (is_Azure_Function =  false)
-      & (resource_type =  Microsoft.Web/sites) & (primary_aggregation_type =  true);
+    importQualifiers: CpuTime (is_Azure_Function =  false) & (resource_type =  microsoft.web/sites
+      | Microsoft.Web/sites) & (primary_aggregation_type =  true);  OR BytesReceived
+      (is_Azure_Function =  false) & (resource_type =  microsoft.web/sites | Microsoft.Web/sites)
+      & (primary_aggregation_type =  true);
   Autoscaling groups:
     category_display_name: Amazon Web Services
     associated_dashboards:
@@ -82,6 +107,15 @@ Navigators:
     importQualifiers: azure.function.invocations (sf_key =  azure_function_name);  OR
       azure.function.errors (sf_key =  azure_function_name);  OR azure.function.duration
       (sf_key =  azure_function_name);
+  Azure OpenAI:
+    category_display_name: AI Frameworks
+    associated_dashboards:
+      aggregated:
+      - Azure OpenAIs
+      instance:
+      - Azure OpenAI
+    importQualifiers: ProcessedPromptTokens (sf_key =  modeldeploymentname) & (azure_subscription_state
+      =  Enabled | enabled);
   Azure functions:
     category_display_name: Microsoft Azure
     associated_dashboards:
@@ -90,9 +124,9 @@ Navigators:
       instance:
       - (Azure) Function App
     importQualifiers: FunctionExecutionCount (is_Azure_Function =  true) & (primary_aggregation_type
-      =  true) & (resource_type =  Microsoft.Web/sites);  OR FunctionExecutionUnits
-      (is_Azure_Function =  true) & (primary_aggregation_type =  true) & (resource_type
-      =  Microsoft.Web/sites);
+      =  true) & (resource_type =  microsoft.web/sites | Microsoft.Web/sites);  OR
+      FunctionExecutionUnits (is_Azure_Function =  true) & (primary_aggregation_type
+      =  true) & (resource_type =  microsoft.web/sites | Microsoft.Web/sites);
   Batch accounts:
     category_display_name: Microsoft Azure
     associated_dashboards:
@@ -101,8 +135,8 @@ Navigators:
       - Azure batch account logs
       instance:
       - Azure batch account
-    importQualifiers: CoreCount (resource_type =  Microsoft.Batch/batchAccounts) &
-      (primary_aggregation_type =  true);
+    importQualifiers: CoreCount (resource_type =  Microsoft.Batch/batchAccounts |
+      microsoft.batch/batchaccounts) & (primary_aggregation_type =  true);
   Cloud BigQuery:
     category_display_name: Google Cloud Platform
     associated_dashboards:
@@ -187,7 +221,7 @@ Navigators:
     category_display_name: Google Cloud Platform
     associated_dashboards:
       aggregated:
-      - Compute Engine instances
+      - Compute engines instances
       - Compute Engine instances (StackDriver)
       instance:
       - Compute Engine instance
@@ -271,6 +305,17 @@ Navigators:
       instance:
       - ECS (AWS) cluster
     importQualifiers: CPUUtilization (sf_key =  ClusterName);
+  ECS (OTel):
+    category_display_name: Amazon Web Services
+    associated_dashboards:
+      aggregated:
+      - ECS Clusters
+      - ECS Tasks
+      - ECS Containers
+      instance:
+      - ECS Cluster
+    importQualifiers: container.cpu.utilized (sf_key =  aws.ecs.cluster.name);  OR
+      container.cpu.utilized (container.name =  *) & (aws.ecs.task.id =  *);
   ELB:
     category_display_name: Amazon Web Services
     associated_dashboards:
@@ -296,10 +341,12 @@ Navigators:
       - Elastic pools
       instance:
       - Elastic pool
-    importQualifiers: eDTU_used (resource_type =  Microsoft.Sql/servers/elasticpools)
-      & (primary_aggregation_type =  true);  OR eDTU_limit (resource_type =  Microsoft.Sql/servers/elasticpools)
+    importQualifiers: eDTU_used (resource_type =  Microsoft.Sql/servers/elasticpools
+      | microsoft.sql/servers/elasticpools) & (primary_aggregation_type =  true);  OR
+      eDTU_limit (resource_type =  Microsoft.Sql/servers/elasticpools | microsoft.sql/servers/elasticpools)
       & (primary_aggregation_type =  true);  OR dtu_consumption_percent (resource_type
-      =  Microsoft.Sql/servers/elasticpools) & (primary_aggregation_type =  true);
+      =  Microsoft.Sql/servers/elasticpools | microsoft.sql/servers/elasticpools)
+      & (primary_aggregation_type =  true);
   Elasticsearch clusters:
     category_display_name: Datastores
     associated_dashboards:
@@ -326,6 +373,22 @@ Navigators:
       - Elasticsearch node
     importQualifiers: counter.indices.indexing.index-total (plugin =  elasticsearch);  OR
       elasticsearch.indices.indexing.index-total (plugin =  elasticsearch);
+  Envoy clusters:
+    category_display_name: Messaging
+    associated_dashboards:
+      aggregated:
+      - Envoy clusters
+      instance:
+      - Envoy cluster
+    importQualifiers: envoy_cluster_upstream_cx_total (cluster_name =  *);
+  Envoy listeners:
+    category_display_name: Messaging
+    associated_dashboards:
+      aggregated:
+      - Envoy listeners
+      instance:
+      - Envoy listener
+    importQualifiers: envoy_listener_downstream_cx_total (cluster_name =  *);
   Event hubs:
     category_display_name: Microsoft Azure
     associated_dashboards:
@@ -335,8 +398,17 @@ Navigators:
       instance:
       - Azure Event Hub
     importQualifiers: SuccessfulRequests (primary_aggregation_type =  true) & (resource_type
-      =  Microsoft.EventHub/namespaces);  OR IncomingRequests (primary_aggregation_type
-      =  true) & (resource_type =  Microsoft.EventHub/namespaces);
+      =  microsoft.eventhub/namespaces | Microsoft.EventHub/namespaces);  OR IncomingRequests
+      (primary_aggregation_type =  true) & (resource_type =  microsoft.eventhub/namespaces
+      | Microsoft.EventHub/namespaces);
+  GCP Vertex AI:
+    category_display_name: AI Frameworks
+    associated_dashboards:
+      aggregated:
+      - GCP Vertex AIs
+      instance:
+      - GCP Vertex AI
+    importQualifiers: publisher/online_serving/token_count (sf_key =  gcp_id);
   GKE clusters:
     category_display_name: Google Cloud Platform
     associated_dashboards:
@@ -380,8 +452,8 @@ Navigators:
       - Hosts
       instance:
       - Host
-    importQualifiers: cpu.utilization (sf_key =  host) & (sf_key !=  gcp_id) & (sf_key
-      !=  azure_resource_id) & (sf_key !=  cloud.provider) & (sf_key !=  AWSUniqueId);
+    importQualifiers: system.memory.usage (sf_key =  host.name) & (sf_key !=  gcp_id)
+      & (sf_key !=  azure_resource_id) & (sf_key !=  cloud.provider) & (sf_key !=  AWSUniqueId);
   JMX (collectd):
     category_display_name: Others
     associated_dashboards:
@@ -398,6 +470,15 @@ Navigators:
       instance:
       - Broker
     importQualifiers: counter.kafka-bytes-out (*);
+  Kafka brokers (OTel):
+    category_display_name: Messaging
+    associated_dashboards:
+      aggregated:
+      - Brokers
+      instance:
+      - Broker
+    importQualifiers: kafka.brokers (host.name =  *);  OR kafka.topic.partitions (host.name
+      =  *) & (topic =  *) & (partition =  *);
   Kafka consumers:
     category_display_name: Messaging
     associated_dashboards:
@@ -442,6 +523,15 @@ Navigators:
       =  *);  OR kong_request_latency_ms_sum (host.name =  *) & (route =  *) & (service
       =  *);  OR kong_bandwidth_bytes (host.name =  *) & (route =  *) & (service =  *);  OR
       kong_memory_workers_lua_vms_bytes (host.name =  *);
+  Kubernetes clusters:
+    category_display_name: Kubernetes
+    associated_dashboards:
+      aggregated:
+      - K8s clusters
+      instance:
+      - K8s cluster
+    importQualifiers: container_cpu_utilization (sf_key =  k8s.cluster.name);  OR
+      container.cpu.time (sf_key =  k8s.cluster.name);
   Kubernetes containers:
     category_display_name: Kubernetes
     associated_dashboards:
@@ -450,6 +540,53 @@ Navigators:
       instance:
       - K8s container
     importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);
+  Kubernetes cronjobs:
+    category_display_name: Kubernetes
+    associated_dashboards:
+      aggregated:
+      - K8s cronjobs
+      instance:
+      - K8s cronjob
+    importQualifiers: k8s.cronjob.active_jobs (k8s.cronjob.name =  *) & (k8s.cluster.name
+      =  *);
+  Kubernetes daemonsets:
+    category_display_name: Kubernetes
+    associated_dashboards:
+      aggregated:
+      - K8s Daemonsets
+      instance:
+      - K8s Daemonset
+    importQualifiers: k8s.daemonset.current_scheduled_nodes (k8s.daemonsets.name =  *)
+      & (k8s.node.name =  *);  OR k8s.daemonset.desired_scheduled_nodes (k8s.daemonset.name
+      =  *) & (k8s.cluster.name =  *);
+  Kubernetes deployments:
+    category_display_name: Kubernetes
+    associated_dashboards:
+      aggregated:
+      - K8s deployments
+      instance:
+      - K8s deployment
+    importQualifiers: k8s.deployment.available (k8s.deployment.name =  *) & (k8s.cluster.name
+      =  *);  OR k8s.deployment.desired (k8s.deployment.name =  *) & (k8s.cluster.name
+      =  *);
+  Kubernetes jobs:
+    category_display_name: Kubernetes
+    associated_dashboards:
+      aggregated:
+      - K8s jobs
+      instance:
+      - K8s job
+    importQualifiers: k8s.job.active_pods (k8s.job.name =  *) & (k8s.cluster.name
+      =  *);  OR k8s.job.desired_successful_pods (k8s.job.name =  *) & (k8s.cluster.name
+      =  *);
+  Kubernetes namespaces:
+    category_display_name: Kubernetes
+    associated_dashboards:
+      aggregated:
+      - K8s namespaces
+      instance:
+      - K8s namespace
+    importQualifiers: k8s.namespace.phase (sf_key =  k8s.namespace.name);
   Kubernetes nodes:
     category_display_name: Kubernetes
     associated_dashboards:
@@ -457,10 +594,12 @@ Navigators:
       - K8s nodes
       - K8s clusters
       - K8s node logs
+      - K8s node events
       instance:
       - K8s node
       - K8s pods
       - K8s node logs
+      - K8s node events
     importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);
   Kubernetes pods:
     category_display_name: Kubernetes
@@ -471,15 +610,37 @@ Navigators:
       - K8s pod
       - K8s containers
       - K8s pod logs
+      - K8s pod events
     importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);
+  Kubernetes replicasets:
+    category_display_name: Kubernetes
+    associated_dashboards:
+      aggregated:
+      - k8s replicasets
+      instance:
+      - k8s replicaset
+    importQualifiers: k8s.replicaset.available (k8s.replicaset.name =  *) & (k8s.cluster.name
+      =  *);  OR k8s.replicaset.desired (k8s.replicaset.name =  *) & (k8s.cluster.name
+      =  *);
+  Kubernetes statefulsets:
+    category_display_name: Kubernetes
+    associated_dashboards:
+      aggregated:
+      - K8s statefulsets
+      instance:
+      - K8s statefulset
+    importQualifiers: k8s.statefulset.current_pods (k8s.statefulset.name =  *) & (k8s.cluster.name
+      =  *);  OR k8s.statefulset.desired_pods (k8s.statefulset.name =  *) & (k8s.cluster.name
+      =  *);
   Kubernetes workloads:
     category_display_name: Kubernetes
     associated_dashboards:
       aggregated:
       - K8s workloads
+      - K8s workloads events
       instance:
-      - K8s workload
       - K8s pods
+      - K8s workload
     importQualifiers: k8s.pod.phase (sf_key =  k8s.workload.name);  OR kubernetes.pod_phase
       (sf_key =  kubernetes_workload_name);
   Lambda functions:
@@ -502,6 +663,14 @@ Navigators:
     importQualifiers: lambda.function.lifetime (aws_function_name =  *) & (AWSUniqueId
       =  *);  OR lambda.function.invocation (aws_function_name =  *) & (AWSUniqueId
       =  *);
+  LangChain:
+    category_display_name: AI Frameworks
+    associated_dashboards:
+      aggregated:
+      - LangChains
+      instance:
+      - LangChain
+    importQualifiers: gen_ai.client.operation.duration (gen_ai.system =  langchain);
   Logic apps:
     category_display_name: Microsoft Azure
     associated_dashboards:
@@ -509,7 +678,8 @@ Navigators:
       - Azure Logic Apps
       instance:
       - Azure Logic App
-    importQualifiers: TotalBillableExecutions (resource_type =  Microsoft.Logic/workflows);
+    importQualifiers: TotalBillableExecutions (resource_type =  microsoft.logic/workflows
+      | Microsoft.Logic/workflows);
   Microsoft SQL databases:
     category_display_name: Datastores
     associated_dashboards:
@@ -558,9 +728,10 @@ Navigators:
       - Flexibleserver overview
       instance:
       - Flexibleserver
-    importQualifiers: cpu_percent (resource_type =  Microsoft.DBforMySQL/flexibleServers)
-      & (primary_aggregation_type =  true);  OR active_connections (resource_type
-      =  Microsoft.DBforMySQL/flexibleServers) & (primary_aggregation_type =  true);
+    importQualifiers: cpu_percent (resource_type =  microsoft.dbformysql/flexibleservers
+      | Microsoft.DBforMySQL/flexibleServers) & (primary_aggregation_type =  true);  OR
+      active_connections (resource_type =  microsoft.dbformysql/flexibleservers |
+      Microsoft.DBforMySQL/flexibleServers) & (primary_aggregation_type =  true);
   MySQL hosts:
     category_display_name: Datastores
     associated_dashboards:
@@ -598,7 +769,7 @@ Navigators:
       - TCP
       - HTTP
       - UDP
-    importQualifiers: tcp.bytes (source.workload.name =  *) & (dest.workload.name
+    importQualifiers: tetragon_socket_stats_txbytes_total (workload =  *) & (dstworkload
       =  *);
   Network workloads:
     category_display_name: Network Explorer
@@ -613,7 +784,32 @@ Navigators:
       - UDP - Outbound
       - DNS
       - HTTP - Outbound
-    importQualifiers: tcp.bytes (source.workload.name =  *);
+    importQualifiers: tetragon_socket_stats_txbytes_total (workload =  *);
+  Nvidia GPU:
+    category_display_name: AI Frameworks
+    associated_dashboards:
+      aggregated:
+      - GPU health
+      - GPU performance
+      instance:
+      - GPU usage
+    importQualifiers: DCGM_FI_DEV_GPU_UTIL (sf_key =  gpu) & (sf_key =  UUID);
+  Nvidia NIM:
+    category_display_name: AI Frameworks
+    associated_dashboards:
+      aggregated:
+      - NIM usage
+      instance:
+      - NIM usage
+    importQualifiers: num_requests_waiting (*);
+  OpenAI:
+    category_display_name: AI Frameworks
+    associated_dashboards:
+      aggregated:
+      - OpenAIs
+      instance:
+      - OpenAI
+    importQualifiers: gen_ai.client.token.usage (*);
   OpenSearch domains:
     category_display_name: Amazon Web Services
     associated_dashboards:
@@ -657,9 +853,10 @@ Navigators:
       - Flexibleserver overview
       instance:
       - Flexibleserver
-    importQualifiers: cpu_percent (resource_type =  Microsoft.DBforPostgreSQL/flexibleServers)
-      & (azure_resource_name =  *);  OR active_connections (resource_type =  Microsoft.DBforPostgreSQL/flexibleServers)
-      & (azure_resource_name =  *);
+    importQualifiers: cpu_percent (resource_type =  microsoft.dbforpostgresql/flexibleservers
+      | Microsoft.DBforPostgreSQL/flexibleServers) & (azure_resource_name =  *);  OR
+      active_connections (resource_type =  microsoft.dbforpostgresql/flexibleservers
+      | Microsoft.DBforPostgreSQL/flexibleServers) & (azure_resource_name =  *);
   PostgreSQL hosts:
     category_display_name: Datastores
     associated_dashboards:
@@ -686,6 +883,24 @@ Navigators:
       instance:
       - RabbitMQ node
     importQualifiers: gauge.node.uptime (plugin =  rabbitmq);
+  RabbitMQ nodes (OTel):
+    category_display_name: Messaging
+    associated_dashboards:
+      aggregated:
+      - RabbitMQ
+      instance:
+      - RabbitMQ node
+    importQualifiers: rabbitmq.message.current (rabbitmq.node.name =  *);
+  Ray Cluster:
+    category_display_name: AI Frameworks
+    associated_dashboards:
+      aggregated:
+      - Ray Clusters
+      - Ray Components
+      - Pull/Spill Managers
+      instance:
+      - Ray Cluster
+    importQualifiers: ray_cluster_active_nodes (sf_key =  SessionName);
   Redis cache:
     category_display_name: Microsoft Azure
     associated_dashboards:
@@ -693,7 +908,7 @@ Navigators:
       - Azure redis caches
       instance:
       - Azure redis cache
-    importQualifiers: cachehits (resource_type =  Microsoft.Cache/Redis);
+    importQualifiers: cachehits (resource_type =  microsoft.cache/redis | Microsoft.Cache/Redis);
   Redis instances:
     category_display_name: Datastores
     associated_dashboards:
@@ -745,6 +960,24 @@ Navigators:
       instance:
       - SNS
     importQualifiers: NumberOfMessagesPublished (sf_key =  TopicName);
+  SQL Server databases (OTel):
+    category_display_name: Datastores
+    associated_dashboards:
+      aggregated:
+      - SQL Server databases
+      instance:
+      - SQL Server database
+    importQualifiers: sqlserver.user.connection.count (sqlserver.instance.name =  *)
+      & (host.name =  *);
+  SQL Server instances (OTel):
+    category_display_name: Datastores
+    associated_dashboards:
+      aggregated:
+      - SQL Server instances
+      instance:
+      - SQL Server instance
+    importQualifiers: sqlserver.user.connection.count (sqlserver.instance.name =  *)
+      & (host.name =  *);
   SQL database:
     category_display_name: Microsoft Azure
     associated_dashboards:
@@ -752,14 +985,15 @@ Navigators:
       - Azure SQL databases
       instance:
       - Azure SQL database
-    importQualifiers: dtu_consumption_percent (resource_type =  Microsoft.Sql/servers/databases);
+    importQualifiers: dtu_consumption_percent (resource_type =  microsoft.sql/servers/databases
+      | Microsoft.Sql/servers/databases);
   SQS queues:
     category_display_name: Amazon Web Services
     associated_dashboards:
       aggregated:
-      - SQS queues
+      - SQS Queues
       instance:
-      - SQS queue
+      - SQS Queue
     importQualifiers: NumberOfMessagesSent (sf_key =  QueueName);
   Storage:
     category_display_name: Microsoft Azure
@@ -768,7 +1002,8 @@ Navigators:
       - Azure Storage accounts
       instance:
       - Azure Storage account
-    importQualifiers: Ingress (resource_type =  Microsoft.Storage/storageAccounts);
+    importQualifiers: Ingress (resource_type =  microsoft.storage/storageaccounts
+      | Microsoft.Storage/storageAccounts);
   Traefik backends:
     category_display_name: Others
     associated_dashboards:
@@ -793,8 +1028,8 @@ Navigators:
       - Azure VM Scale Sets logs
       instance:
       - Azure VM Scale Set
-    importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets)
-      & (primary_aggregation_type =  true);
+    importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets
+      | microsoft.compute/virtualmachinescalesets) & (primary_aggregation_type =  true);
   Virtual machines:
     category_display_name: Microsoft Azure
     associated_dashboards:
@@ -803,9 +1038,18 @@ Navigators:
       - Azure Virtual Machines logs
       instance:
       - Azure Virtual Machine
-    importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachines);  OR
-      system.memory.usage (cloud.provider =  azure);  OR Percentage CPU (resource_type
-      =  Microsoft.Compute/virtualMachineScaleSets/virtualMachines);
+    importQualifiers: Percentage CPU (resource_type =  microsoft.compute/virtualmachines
+      | Microsoft.Compute/virtualMachines);  OR system.memory.usage (cloud.provider
+      =  azure);  OR Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets/virtualMachines
+      | microsoft.compute/virtualmachinescalesets/virtualmachines);
+  Weaviate:
+    category_display_name: AI Frameworks
+    associated_dashboards:
+      aggregated:
+      - Hosts
+      instance:
+      - Host
+    importQualifiers: object_count (*);
   Windows IIS servers:
     category_display_name: Web Servers
     associated_dashboards:
@@ -814,6 +1058,14 @@ Navigators:
       instance:
       - IIS server
     importQualifiers: web_service.total_method_requests_sec (*);
+  Windows IIS servers (OTel):
+    category_display_name: Web Servers
+    associated_dashboards:
+      aggregated:
+      - IIS Servers
+      instance:
+      - IIS server
+    importQualifiers: iis.uptime (host.name =  *);
   ZooKeeper:
     category_display_name: Configuration
     associated_dashboards:

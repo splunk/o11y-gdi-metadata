@@ -1,21 +1,21 @@
 component: Splunk Distribution of OpenTelemetry Java
-version: 2.13.1
+version: 2.19.0
 dependencies:
   - name: OpenTelemetry Java
     source_href: https://github.com/open-telemetry/opentelemetry-java
-    version: 1.47.0
+    version: 1.53.0
     stability: stable
   - name: OpenTelemetry Instrumentation for Java
     source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation
-    version: 2.13.3
+    version: 2.19.0
     stability: stable
   - name: OpenTelemetry Java Contrib Resource Providers
     source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/tree/main/resource-providers
-    version: 1.43.0-alpha
+    version: 1.48.0-alpha
     stability: experimental
   - name: OpenTelemetry Java Contrib Samplers
     source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/tree/main/samplers
-    version: 1.43.0-alpha
+    version: 1.48.0-alpha
     stability: experimental
 settings:
   - property: otel.sdk.disabled
@@ -33,14 +33,14 @@ settings:
     category: exporter
   - property: otel.metrics.exporter
     env: OTEL_METRICS_EXPORTER
-    description: List of exporters to be used for tracing, separated by commas. Default
+    description: List of exporters to be used for metrics, separated by commas. Default
       is otlp. none means no autoconfigured exporter.
     default: otlp
     type: string
     category: exporter
   - property: otel.logs.exporter
     env: OTEL_LOGS_EXPORTER
-    description: List of exporters to be used for tracing, separated by commas. Default
+    description: List of exporters to be used for logging, separated by commas. Default
       is otlp. none means no autoconfigured exporter.
     default: otlp
     type: string
@@ -451,13 +451,6 @@ settings:
     default: '128'
     type: int
     category: instrumentation
-  - property: otel.metrics.exemplar.filter
-    env: OTEL_METRICS_EXEMPLAR_FILTER
-    description: The filter for exemplar sampling. Can be ALWAYS_OFF, ALWAYS_ON or
-      TRACE_BASED. Default is TRACE_BASED.
-    default: TRACE_BASED
-    type: string
-    category: general
   - property: otel.metric.export.interval
     env: OTEL_METRIC_EXPORT_INTERVAL
     description: The interval, in milliseconds, between the start of two export attempts.
@@ -465,6 +458,20 @@ settings:
     default: '60000'
     type: int
     category: exporter
+  - property: otel.metrics.exemplar.filter
+    env: OTEL_METRICS_EXEMPLAR_FILTER
+    description: The filter for exemplar sampling. Can be ALWAYS_OFF, ALWAYS_ON or
+      TRACE_BASED. Default is TRACE_BASED.
+    default: TRACE_BASED
+    type: string
+    category: general
+  - property: otel.java.metrics.cardinality.limit
+    env: OTEL_JAVA_METRICS_CARDINALITY_LIMIT
+    description: If set, configure cardinality limit. The value dictates the maximum
+      number of distinct points per metric. Default is 2000.
+    default: '2000'
+    type: int
+    category: instrumentation
   - property: otel.exporter.prometheus.port
     env: OTEL_EXPORTER_PROMETHEUS_PORT
     description: The local port used to bind the prometheus metric server. Default
@@ -479,13 +486,6 @@ settings:
     default: 0.0.0.0
     type: int
     category: exporter
-  - property: otel.experimental.metrics.cardinality.limit
-    env: OTEL_EXPERIMENTAL_METRICS_CARDINALITY_LIMIT
-    description: If set, configure experimental cardinality limit. The value dictates
-      the maximum number of distinct points per metric. Default is 2000.
-    default: '2000'
-    type: int
-    category: instrumentation
   - property: otel.blrp.schedule.delay
     env: OTEL_BLRP_SCHEDULE_DELAY
     description: The interval, in milliseconds, between two consecutive exports. Default
@@ -635,6 +635,12 @@ settings:
     default: 'false'
     type: boolean
     category: instrumentation
+  - property: otel.instrumentation.http.client.experimental.redact-query-parameters
+    env: OTEL_INSTRUMENTATION_HTTP_CLIENT_EXPERIMENTAL_REDACT_QUERY_PARAMETERS
+    description: Redact sensitive parameter values from URL query string, see https://opentelemetry.io/docs/specs/semconv/http/http-spans.
+    default: 'true'
+    type: boolean
+    category: instrumentation
   - property: otel.instrumentation.common.default-enabled
     env: OTEL_INSTRUMENTATION_COMMON_DEFAULT_ENABLED
     description: Disable all instrumentations in the agent.
@@ -690,6 +696,13 @@ settings:
     default: 'false'
     type: boolean
     category: general
+  - property: otel.experimental.javascript-snippet
+    env: OTEL_EXPERIMENTAL_JAVASCRIPT_SNIPPET
+    description: Experimental setting to inject a JavaScript snippet into servlet
+      HTML responses after the opening `<head>` tag.
+    default: ''
+    type: string
+    category: instrumentation
   - property: otel.resource.providers.aws.enabled
     env: OTEL_RESOURCE_PROVIDERS_AWS_ENABLED
     description: Enables the AWS Resource Provider.
@@ -833,6 +846,12 @@ settings:
     default: 'false'
     type: boolean
     category: instrumentation
+  - property: otel.instrumentation.genai.capture-message-content
+    env: OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT
+    description: v2 only, record content of user and LLM messages when using Bedrock.
+    default: 'false'
+    type: boolean
+    category: instrumentation
   - property: otel.instrumentation.camel.experimental-span-attributes
     env: OTEL_INSTRUMENTATION_CAMEL_EXPERIMENTAL_SPAN_ATTRIBUTES
     description: Enable the capture of experimental span attributes.
@@ -872,6 +891,14 @@ settings:
     default: 'true'
     type: boolean
     category: instrumentation
+  - property: otel.instrumentation.graphql.add-operation-name-to-span-name.enabled
+    env: OTEL_INSTRUMENTATION_GRAPHQL_ADD_OPERATION_NAME_TO_SPAN_NAME_ENABLED
+    description: 'Whether GraphQL operation name is added to the span name. <p>**WARNING**:
+      GraphQL operation name is provided by the client and can have high cardinality.
+      Use only when the server is not exposed to malicious clients.'
+    default: 'false'
+    type: boolean
+    category: instrumentation
   - property: otel.instrumentation.graphql.data-fetcher.enabled
     env: OTEL_INSTRUMENTATION_GRAPHQL_DATA_FETCHER_ENABLED
     description: Whether to create spans for data fetchers (GraphQL 20 and later).
@@ -884,6 +911,13 @@ settings:
       fetcher is one that simply maps data from an object to a field (GraphQL 20 and
       later).
     default: 'false'
+    type: boolean
+    category: instrumentation
+  - property: otel.instrumentation.grpc.emit-message-events
+    env: OTEL_INSTRUMENTATION_GRPC_EMIT_MESSAGE_EVENTS
+    description: Determines whether to emit span event for each individual message
+      received and sent.
+    default: 'true'
     type: boolean
     category: instrumentation
   - property: otel.instrumentation.grpc.experimental-span-attributes
@@ -953,6 +987,22 @@ settings:
   - property: otel.instrumentation.jdbc.statement-sanitizer.enabled
     env: OTEL_INSTRUMENTATION_JDBC_STATEMENT_SANITIZER_ENABLED
     description: Enables the DB statement sanitization.
+    default: 'true'
+    type: boolean
+    category: instrumentation
+  - property: otel.instrumentation.jdbc.experimental.capture-query-parameters
+    env: OTEL_INSTRUMENTATION_JDBC_EXPERIMENTAL_CAPTURE_QUERY_PARAMETERS
+    description: 'Enable the capture of query parameters as span attributes. Enabling
+      this option disables the statement sanitization. <p>WARNING: captured query
+      parameters may contain sensitive information such as passwords, personally identifiable
+      information or protected health info.'
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - property: otel.instrumentation.jdbc.experimental.transaction.enabled
+    env: OTEL_INSTRUMENTATION_JDBC_EXPERIMENTAL_TRANSACTION_ENABLED
+    description: Enables experimental instrumentation to create spans for COMMIT and
+      ROLLBACK operations.
     default: 'false'
     type: boolean
     category: instrumentation
@@ -971,13 +1021,6 @@ settings:
   - property: otel.instrumentation.kafka.producer-propagation.enabled
     env: OTEL_INSTRUMENTATION_KAFKA_PRODUCER_PROPAGATION_ENABLED
     description: Enable context propagation for kafka message producer.
-    default: 'true'
-    type: boolean
-    category: instrumentation
-  - property: otel.instrumentation.kafka.metric-reporter.enabled
-    env: OTEL_INSTRUMENTATION_KAFKA_METRIC_REPORTER_ENABLED
-    description: Enable kafka consumer and producer metrics. Deprecated, disable instrumentation
-      with name `kafka-clients-metrics` instead.
     default: 'true'
     type: boolean
     category: instrumentation
@@ -1141,7 +1184,7 @@ settings:
   - property: otel.instrumentation.mongo.statement-sanitizer.enabled
     env: OTEL_INSTRUMENTATION_MONGO_STATEMENT_SANITIZER_ENABLED
     description: Enables the DB statement sanitization.
-    default: 'false'
+    default: 'true'
     type: boolean
     category: instrumentation
   - property: otel.instrumentation.netty.connection-telemetry.enabled
@@ -1154,6 +1197,12 @@ settings:
   - property: otel.instrumentation.netty.ssl-telemetry.enabled
     env: OTEL_INSTRUMENTATION_NETTY_SSL_TELEMETRY_ENABLED
     description: Enable SSL telemetry for Netty 4.0 and higher instrumentation.
+    default: 'false'
+    type: boolean
+    category: instrumentation
+  - property: otel.instrumentation.genai.capture-message-content
+    env: OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT
+    description: Record content of user and LLM messages.
     default: 'false'
     type: boolean
     category: instrumentation
@@ -1198,7 +1247,7 @@ settings:
   - property: otel.instrumentation.r2dbc.statement-sanitizer.enabled
     env: OTEL_INSTRUMENTATION_R2DBC_STATEMENT_SANITIZER_ENABLED
     description: Enables the DB statement sanitization.
-    default: 'false'
+    default: 'true'
     type: boolean
     category: instrumentation
   - property: otel.instrumentation.rabbitmq.experimental-span-attributes
@@ -1368,27 +1417,65 @@ metrics:
     metric_name: queueSize
     instrument: gauge
     description: The number of items queued
+    category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+      attribute.
   - instrumentation_scope_name: io.opentelemetry.sdk.trace
     metric_name: processedSpans
     instrument: counter
     description: The number of spans processed by the BatchSpanProcessor. [dropped=true
       if they were dropped due to high throughput]
+    category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+      attribute.
   - instrumentation_scope_name: io.opentelemetry.sdk.logs
     metric_name: queueSize
     instrument: gauge
     description: The number of items queued
+    category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+      attribute.
   - instrumentation_scope_name: io.opentelemetry.sdk.logs
     metric_name: processedLogs
     instrument: counter
     description: The number of logs processed by the BatchLogRecordProcessor. [dropped=true
       if they were dropped due to high throughput]
+    category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+      attribute.
   - metric_name: otlp.exporter.exported
     instrument: counter
     description: The number of items exported by the otlp exporter.
+    category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+      attribute.
   - metric_name: otlp.exporter.seen
     instrument: counter
     description: The number of items seen by the otlp exporter.
+    category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+      attribute.
 instrumentations:
+  - keys:
+      - activej-http
+    instrumented_components:
+      - name: ActiveJ HTTP Server
+        supported_versions: 6.0 and higher
+    stability: experimental
+    support: community
+    signals:
+      - metrics:
+          - metric_name: http.server.request.duration
+            instrument: histogram
+            description: Duration of HTTP server requests.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
+          - metric_name: http.server.active_requests
+            instrument: updowncounter
+            description: Number of active HTTP server requests (disabled by default).
+            category_notes: Custom metric.
+          - metric_name: http.server.request.body.size
+            instrument: histogram
+            description: Size of HTTP server request bodies (disabled by default).
+            category_notes: Custom metric.
+          - metric_name: http.server.response.body.size
+            instrument: histogram
+            description: Size of HTTP server response bodies (disabled by default).
+            category_notes: Custom metric.
   - keys:
       - methods
     instrumented_components:
@@ -1420,24 +1507,33 @@ instrumentations:
           - metric_name: http.client.request.duration
             instrument: histogram
             description: Duration of HTTP client requests.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: http.client.request.body.size
             instrument: histogram
             description: Size of HTTP client request bodies (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.client.response.body.size
             instrument: histogram
             description: Size of HTTP client response bodies (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.server.request.duration
             instrument: histogram
             description: Duration of HTTP server requests.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: http.server.active_requests
             instrument: updowncounter
             description: Number of active HTTP server requests (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.server.request.body.size
             instrument: histogram
             description: Size of HTTP server request bodies (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.server.response.body.size
             instrument: histogram
             description: Size of HTTP server response bodies (disabled by default).
+            category_notes: Custom metric.
   - keys:
       - axis2
     instrumented_components:
@@ -1474,15 +1570,19 @@ instrumentations:
             instrument: updowncounter
             description: The number of connections that are currently in state described
               by the state attribute.
+            category_notes: Custom metric.
           - metric_name: db.client.connections.idle.max
             instrument: updowncounter
             description: The maximum number of idle open connections allowed.
+            category_notes: Custom metric.
           - metric_name: db.client.connections.idle.min
             instrument: updowncounter
             description: The minimum number of idle open connections allowed.
+            category_notes: Custom metric.
           - metric_name: db.client.connections.max
             instrument: updowncounter
             description: The maximum number of open connections allowed.
+            category_notes: Custom metric.
   - keys:
       - apache-dubbo
     instrumented_components:
@@ -1502,12 +1602,16 @@ instrumentations:
           - metric_name: http.client.request.duration
             instrument: histogram
             description: Duration of HTTP client requests.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: http.client.request.body.size
             instrument: histogram
             description: Size of HTTP client request bodies (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.client.response.body.size
             instrument: histogram
             description: Size of HTTP client response bodies (disabled by default).
+            category_notes: Custom metric.
   - keys:
       - apache-httpclient
     instrumented_components:
@@ -1520,12 +1624,16 @@ instrumentations:
           - metric_name: http.client.request.duration
             instrument: histogram
             description: Duration of HTTP client requests.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: http.client.request.body.size
             instrument: histogram
             description: Size of HTTP client request bodies (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.client.response.body.size
             instrument: histogram
             description: Size of HTTP client response bodies (disabled by default).
+            category_notes: Custom metric.
   - keys:
       - kafka
       - kafka-clients-metrics
@@ -1543,576 +1651,750 @@ instrumentations:
           - metric_name: kafka.consumer.assigned_partitions
             instrument: gauge
             description: The number of partitions currently assigned to this consumer.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.commit_latency_avg
             instrument: gauge
             description: The average time taken for a commit request.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.commit_latency_max
             instrument: gauge
             description: The max time taken for a commit request.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.commit_rate
             instrument: gauge
             description: The number of commit calls per second.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.commit_total
             instrument: counter
             description: The total number of commit calls.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.failed_rebalance_rate_per_hour
             instrument: gauge
             description: The number of failed rebalance events per hour.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.failed_rebalance_total
             instrument: counter
             description: The total number of failed rebalance events.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.heartbeat_rate
             instrument: gauge
             description: The number of heartbeats per second.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.heartbeat_response_time_max
             instrument: gauge
             description: The max time taken to receive a response to a heartbeat request.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.heartbeat_total
             instrument: counter
             description: The total number of heartbeats.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.join_rate
             instrument: gauge
             description: The number of group joins per second.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.join_time_avg
             instrument: gauge
             description: The average time taken for a group rejoin.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.join_time_max
             instrument: gauge
             description: The max time taken for a group rejoin.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.join_total
             instrument: counter
             description: The total number of group joins.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.last_heartbeat_seconds_ago
             instrument: gauge
             description: The number of seconds since the last coordinator heartbeat
               was sent.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.last_rebalance_seconds_ago
             instrument: gauge
             description: The number of seconds since the last successful rebalance
               event.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.partition_assigned_latency_avg
             instrument: gauge
             description: The average time taken for a partition-assigned rebalance
               listener callback.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.partition_assigned_latency_max
             instrument: gauge
             description: The max time taken for a partition-assigned rebalance listener
               callback.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.partition_lost_latency_avg
             instrument: gauge
             description: The average time taken for a partition-lost rebalance listener
               callback.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.partition_lost_latency_max
             instrument: gauge
             description: The max time taken for a partition-lost rebalance listener
               callback.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.partition_revoked_latency_avg
             instrument: gauge
             description: The average time taken for a partition-revoked rebalance
               listener callback.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.partition_revoked_latency_max
             instrument: gauge
             description: The max time taken for a partition-revoked rebalance listener
               callback.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.rebalance_latency_avg
             instrument: gauge
             description: The average time taken for a group to complete a successful
               rebalance, which may be composed of several failed re-trials until it
               succeeded.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.rebalance_latency_max
             instrument: gauge
             description: The max time taken for a group to complete a successful rebalance,
               which may be composed of several failed re-trials until it succeeded.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.rebalance_latency_total
             instrument: counter
             description: The total number of milliseconds this consumer has spent
               in successful rebalances since creation.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.rebalance_rate_per_hour
             instrument: gauge
             description: The number of successful rebalance events per hour, each
               event is composed of several failed re-trials until it succeeded.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.rebalance_total
             instrument: counter
             description: The total number of successful rebalance events, each event
               is composed of several failed re-trials until it succeeded.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.sync_rate
             instrument: gauge
             description: The number of group syncs per second.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.sync_time_avg
             instrument: gauge
             description: The average time taken for a group sync.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.sync_time_max
             instrument: gauge
             description: The max time taken for a group sync.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.sync_total
             instrument: counter
             description: The total number of group syncs.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.bytes_consumed_rate
             instrument: gauge
             description: The average number of bytes consumed per second.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.bytes_consumed_total
             instrument: counter
             description: The total number of bytes consumed.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.fetch_latency_avg
             instrument: gauge
             description: The average time taken for a fetch request.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.fetch_latency_max
             instrument: gauge
             description: The max time taken for any fetch request.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.fetch_rate
             instrument: gauge
             description: The number of fetch requests per second.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.fetch_size_avg
             instrument: gauge
             description: The average number of bytes fetched per request.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.fetch_size_max
             instrument: gauge
             description: The maximum number of bytes fetched per request.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.fetch_throttle_time_avg
             instrument: gauge
             description: The average throttle time in ms.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.fetch_throttle_time_max
             instrument: gauge
             description: The maximum throttle time in ms.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.fetch_total
             instrument: counter
             description: The total number of fetch requests.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.records_consumed_rate
             instrument: gauge
             description: The average number of records consumed per second.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.records_consumed_total
             instrument: counter
             description: The total number of records consumed.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.records_lag
             instrument: gauge
             description: The latest lag of the partition.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.records_lag_avg
             instrument: gauge
             description: The average lag of the partition.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.records_lag_max
             instrument: gauge
             description: 'The maximum lag in terms of number of records for any partition
               in this window. NOTE: This is based on current offset and not committed
               offset.'
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.records_lead
             instrument: gauge
             description: The latest lead of the partition.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.records_lead_avg
             instrument: gauge
             description: The average lead of the partition.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.records_lead_min
             instrument: gauge
             description: The minimum lead in terms of number of records for any partition
               in this window.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.records_per_request_avg
             instrument: gauge
             description: The average number of records in each request.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.commit_sync_time_ns_total
             instrument: counter
             description: The total time the consumer has spent in commitSync in nanoseconds.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.committed_time_ns_total
             instrument: counter
             description: The total time the consumer has spent in committed in nanoseconds.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.connection_close_rate
             instrument: gauge
             description: The number of connections closed per second.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.connection_close_total
             instrument: counter
             description: The total number of connections closed.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.connection_count
             instrument: gauge
             description: The current number of active connections.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.connection_creation_rate
             instrument: gauge
             description: The number of new connections established per second.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.connection_creation_total
             instrument: counter
             description: The total number of new connections established.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.failed_authentication_rate
             instrument: gauge
             description: The number of connections with failed authentication per
               second.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.failed_authentication_total
             instrument: counter
             description: The total number of connections with failed authentication.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.failed_reauthentication_rate
             instrument: gauge
             description: The number of failed re-authentication of connections per
               second.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.failed_reauthentication_total
             instrument: counter
             description: The total number of failed re-authentication of connections.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.io_ratio
             instrument: gauge
             description: ' *Deprecated* The fraction of time the I/O thread spent
               doing I/O.'
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.io_time_ns_avg
             instrument: gauge
             description: The average length of time for I/O per select call in nanoseconds.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.io_time_ns_total
             instrument: counter
             description: The total time the I/O thread spent doing I/O.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.io_wait_ratio
             instrument: gauge
             description: '*Deprecated* The fraction of time the I/O thread spent waiting.'
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.io_wait_time_ns_avg
             instrument: gauge
             description: The average length of time the I/O thread spent waiting for
               a socket ready for reads or writes in nanoseconds.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.io_wait_time_ns_total
             instrument: counter
             description: The total time the I/O thread spent waiting
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.io_waittime_total
             instrument: counter
             description: '*Deprecated* The total time the I/O thread spent waiting.'
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.iotime_total
             instrument: counter
             description: '*Deprecated* The total time the I/O thread spent doing I/O.'
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.last_poll_seconds_ago
             instrument: gauge
             description: The number of seconds since the last poll() invocation.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.network_io_rate
             instrument: gauge
             description: The number of network operations (reads or writes) on all
               connections per second.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.network_io_total
             instrument: counter
             description: The total number of network operations (reads or writes)
               on all connections.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.poll_idle_ratio_avg
             instrument: gauge
             description: The average fraction of time the consumer's poll() is idle
               as opposed to waiting for the user code to process records.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.reauthentication_latency_avg
             instrument: gauge
             description: The average latency observed due to re-authentication.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.reauthentication_latency_max
             instrument: gauge
             description: The max latency observed due to re-authentication.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.select_rate
             instrument: gauge
             description: The number of times the I/O layer checked for new I/O to
               perform per second.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.select_total
             instrument: counter
             description: The total number of times the I/O layer checked for new I/O
               to perform.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.successful_authentication_no_reauth_total
             instrument: counter
             description: The total number of connections with successful authentication
               where the client does not support re-authentication.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.successful_authentication_rate
             instrument: gauge
             description: The number of connections with successful authentication
               per second.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.successful_authentication_total
             instrument: counter
             description: The total number of connections with successful authentication.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.successful_reauthentication_rate
             instrument: gauge
             description: The number of successful re-authentication of connections
               per second.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.successful_reauthentication_total
             instrument: counter
             description: The total number of successful re-authentication of connections.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.time_between_poll_avg
             instrument: gauge
             description: The average delay between invocations of poll() in milliseconds.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.time_between_poll_max
             instrument: gauge
             description: The max delay between invocations of poll() in milliseconds.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.incoming_byte_rate
             instrument: gauge
             description: The number of bytes read off all sockets per second.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.incoming_byte_total
             instrument: counter
             description: The total number of bytes read off all sockets.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.outgoing_byte_rate
             instrument: gauge
             description: The number of outgoing bytes sent to all servers per second.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.outgoing_byte_total
             instrument: counter
             description: The total number of outgoing bytes sent to all servers.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.request_latency_avg
             instrument: gauge
             description: The average request latency in ms.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.request_latency_max
             instrument: gauge
             description: The maximum request latency in ms.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.request_rate
             instrument: gauge
             description: The number of requests sent per second.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.request_size_avg
             instrument: gauge
             description: The average size of requests sent.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.request_size_max
             instrument: gauge
             description: The maximum size of any request sent.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.request_total
             instrument: counter
             description: The total number of requests sent.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.response_rate
             instrument: gauge
             description: The number of responses received per second.
+            category_notes: Custom metric.
           - metric_name: kafka.consumer.response_total
             instrument: counter
             description: The total number of responses received.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.batch_size_avg
             instrument: gauge
             description: The average number of bytes sent per partition per-request.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.batch_size_max
             instrument: gauge
             description: The max number of bytes sent per partition per-request.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.batch_split_rate
             instrument: gauge
             description: The average number of batch splits per second.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.batch_split_total
             instrument: counter
             description: The total number of batch splits.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.buffer_available_bytes
             instrument: gauge
             description: The total amount of buffer memory that is not being used
               (either unallocated or in the free list).
+            category_notes: Custom metric.
           - metric_name: kafka.producer.buffer_exhausted_rate
             instrument: gauge
             description: The average per-second number of record sends that are dropped
               due to buffer exhaustion.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.buffer_exhausted_total
             instrument: counter
             description: The total number of record sends that are dropped due to
               buffer exhaustion.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.buffer_total_bytes
             instrument: gauge
             description: The maximum amount of buffer memory the client can use (whether
               or not it is currently used).
+            category_notes: Custom metric.
           - metric_name: kafka.producer.bufferpool_wait_ratio
             instrument: gauge
             description: The fraction of time an appender waits for space allocation.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.bufferpool_wait_time_ns_total
             instrument: counter
             description: The total time in nanoseconds an appender waits for space
               allocation.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.bufferpool_wait_time_total
             instrument: counter
             description: '*Deprecated* The total time an appender waits for space
               allocation.'
+            category_notes: Custom metric.
           - metric_name: kafka.producer.compression_rate_avg
             instrument: gauge
             description: The average compression rate of record batches.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.connection_close_rate
             instrument: gauge
             description: The number of connections closed per second.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.connection_close_total
             instrument: counter
             description: The total number of connections closed.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.connection_count
             instrument: gauge
             description: The current number of active connections.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.connection_creation_rate
             instrument: gauge
             description: The number of new connections established per second.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.connection_creation_total
             instrument: counter
             description: The total number of new connections established.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.failed_authentication_rate
             instrument: gauge
             description: The number of connections with failed authentication per
               second.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.failed_authentication_total
             instrument: counter
             description: The total number of connections with failed authentication.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.failed_reauthentication_rate
             instrument: gauge
             description: The number of failed re-authentication of connections per
               second.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.failed_reauthentication_total
             instrument: counter
             description: The total number of failed re-authentication of connections.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.flush_time_ns_total
             instrument: counter
             description: Total time producer has spent in flush in nanoseconds.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.io_ratio
             instrument: gauge
             description: '*Deprecated* The fraction of time the I/O thread spent doing
               I/O.'
+            category_notes: Custom metric.
           - metric_name: kafka.producer.io_time_ns_avg
             instrument: gauge
             description: The average length of time for I/O per select call in nanoseconds.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.io_time_ns_total
             instrument: counter
             description: The total time the I/O thread spent doing I/O.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.io_wait_ratio
             instrument: gauge
             description: '*Deprecated* The fraction of time the I/O thread spent waiting.'
+            category_notes: Custom metric.
           - metric_name: kafka.producer.io_wait_time_ns_avg
             instrument: gauge
             description: The average length of time the I/O thread spent waiting for
               a socket ready for reads or writes in nanoseconds.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.io_wait_time_ns_total
             instrument: counter
             description: The total time the I/O thread spent waiting.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.io_waittime_total
             instrument: counter
             description: '*Deprecated* The total time the I/O thread spent waiting.'
+            category_notes: Custom metric.
           - metric_name: kafka.producer.iotime_total
             instrument: counter
             description: '*Deprecated* The total time the I/O thread spent doing I/O.'
+            category_notes: Custom metric.
           - metric_name: kafka.producer.metadata_age
             instrument: gauge
             description: The age in seconds of the current producer metadata being
               used.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.metadata_wait_time_ns_total
             instrument: counter
             description: Total time producer has spent waiting on topic metadata in
               nanoseconds.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.network_io_rate
             instrument: gauge
             description: The number of network operations (reads or writes) on all
               connections per second.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.network_io_total
             instrument: counter
             description: The total number of network operations (reads or writes)
               on all connections.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.produce_throttle_time_avg
             instrument: gauge
             description: The average time in ms a request was throttled by a broker.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.produce_throttle_time_max
             instrument: gauge
             description: The maximum time in ms a request was throttled by a broker.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.reauthentication_latency_avg
             instrument: gauge
             description: The average latency observed due to re-authentication.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.reauthentication_latency_max
             instrument: gauge
             description: The max latency observed due to re-authentication.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.record_queue_time_avg
             instrument: gauge
             description: The average time in ms record batches spent in the send buffer.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.record_queue_time_max
             instrument: gauge
             description: The maximum time in ms record batches spent in the send buffer.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.record_size_avg
             instrument: gauge
             description: The average record size.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.record_size_max
             instrument: gauge
             description: The maximum record size.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.records_per_request_avg
             instrument: gauge
             description: The average number of records per request.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.requests_in_flight
             instrument: gauge
             description: The current number of in-flight requests awaiting a response.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.select_rate
             instrument: gauge
             description: The number of times the I/O layer checked for new I/O to
               perform per second.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.select_total
             instrument: counter
             description: The total number of times the I/O layer checked for new I/O
               to perform.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.successful_authentication_no_reauth_total
             instrument: counter
             description: The total number of connections with successful authentication
               where the client does not support re-authentication.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.successful_authentication_rate
             instrument: gauge
             description: The number of connections with successful authentication
               per second.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.successful_authentication_total
             instrument: counter
             description: The total number of connections with successful authentication.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.successful_reauthentication_rate
             instrument: gauge
             description: The number of successful re-authentication of connections
               per second.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.successful_reauthentication_total
             instrument: counter
             description: The total number of successful re-authentication of connections.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.txn_abort_time_ns_total
             instrument: counter
             description: Total time producer has spent in abortTransaction in nanoseconds.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.txn_begin_time_ns_total
             instrument: counter
             description: Total time producer has spent in beginTransaction in nanoseconds.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.txn_commit_time_ns_total
             instrument: counter
             description: Total time producer has spent in commitTransaction in nanoseconds.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.txn_init_time_ns_total
             instrument: counter
             description: Total time producer has spent in initTransactions in nanoseconds.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.txn_send_offsets_time_ns_total
             instrument: counter
             description: Total time producer has spent in sendOffsetsToTransaction
               in nanoseconds.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.waiting_threads
             instrument: gauge
             description: The number of user threads blocked waiting for buffer memory
               to enqueue their records.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.incoming_byte_rate
             instrument: gauge
             description: The number of bytes read off all sockets per second.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.incoming_byte_total
             instrument: counter
             description: The total number of bytes read off all sockets.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.outgoing_byte_rate
             instrument: gauge
             description: The number of outgoing bytes sent to all servers per second.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.outgoing_byte_total
             instrument: counter
             description: The total number of outgoing bytes sent to all servers.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.request_latency_avg
             instrument: gauge
             description: The average request latency in ms.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.request_latency_max
             instrument: gauge
             description: The maximum request latency in ms.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.request_rate
             instrument: gauge
             description: The number of requests sent per second.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.request_size_avg
             instrument: gauge
             description: The average size of requests sent.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.request_size_max
             instrument: gauge
             description: The maximum size of any request sent.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.request_total
             instrument: counter
             description: The total number of requests sent.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.response_rate
             instrument: gauge
             description: The number of responses received per second.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.response_total
             instrument: counter
             description: The total number of responses received.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.byte_rate
             instrument: gauge
             description: The average number of bytes sent per second for a topic.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.byte_total
             instrument: counter
             description: The total number of bytes sent for a topic.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.compression_rate
             instrument: gauge
             description: The average compression rate of record batches for a topic.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.record_error_rate
             instrument: gauge
             description: The average per-second number of record sends that resulted
               in errors.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.record_error_total
             instrument: counter
             description: The total number of record sends that resulted in errors.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.record_retry_rate
             instrument: gauge
             description: The average per-second number of retried record sends.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.record_retry_total
             instrument: counter
             description: The total number of retried record sends.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.record_send_rate
             instrument: gauge
             description: The average number of records sent per second.
+            category_notes: Custom metric.
           - metric_name: kafka.producer.record_send_total
             instrument: counter
             description: The total number of records sent.
+            category_notes: Custom metric.
   - keys:
       - jsf-myfaces
     instrumented_components:
@@ -2139,24 +2421,33 @@ instrumentations:
           - metric_name: http.client.request.duration
             instrument: histogram
             description: Duration of HTTP client requests.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: http.client.request.body.size
             instrument: histogram
             description: Size of HTTP client request bodies (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.client.response.body.size
             instrument: histogram
             description: Size of HTTP client response bodies (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.server.request.duration
             instrument: histogram
             description: Duration of HTTP server requests.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: http.server.active_requests
             instrument: updowncounter
             description: Number of active HTTP server requests (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.server.request.body.size
             instrument: histogram
             description: Size of HTTP server request bodies (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.server.response.body.size
             instrument: histogram
             description: Size of HTTP server response bodies (disabled by default).
+            category_notes: Custom metric.
   - keys:
       - pulsar
     instrumented_components:
@@ -2169,12 +2460,15 @@ instrumentations:
           - metric_name: messaging.publish.duration
             instrument: histogram
             description: Measures the duration of publish operation.
+            category_notes: Custom metric.
           - metric_name: messaging.receive.duration
             instrument: histogram
             description: Measures the duration of receive operation.
+            category_notes: Custom metric.
           - metric_name: messaging.receive.messages
             instrument: counter
             description: Measures the number of received messages.
+            category_notes: Custom metric.
   - keys:
       - rocketmq-client
     instrumented_components:
@@ -2210,15 +2504,20 @@ instrumentations:
           - metric_name: http.server.request.duration
             instrument: histogram
             description: Duration of HTTP server requests.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: http.server.active_requests
             instrument: updowncounter
             description: Number of active HTTP server requests (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.server.request.body.size
             instrument: histogram
             description: Size of HTTP server request bodies (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.server.response.body.size
             instrument: histogram
             description: Size of HTTP server response bodies (disabled by default).
+            category_notes: Custom metric.
   - keys:
       - tapestry
     instrumented_components:
@@ -2245,24 +2544,33 @@ instrumentations:
           - metric_name: http.client.request.duration
             instrument: histogram
             description: Duration of HTTP client requests.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: http.client.request.body.size
             instrument: histogram
             description: Size of HTTP client request bodies (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.client.response.body.size
             instrument: histogram
             description: Size of HTTP client response bodies (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.server.request.duration
             instrument: histogram
             description: Duration of HTTP server requests.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: http.server.active_requests
             instrument: updowncounter
             description: Number of active HTTP server requests (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.server.request.body.size
             instrument: histogram
             description: Size of HTTP server request bodies (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.server.response.body.size
             instrument: histogram
             description: Size of HTTP server response bodies (disabled by default).
+            category_notes: Custom metric.
   - keys:
       - armeria
     instrumented_components:
@@ -2274,10 +2582,12 @@ instrumentations:
       - metrics:
           - metric_name: rpc.client.duration
             instrument: histogram
-            description: Measures the duration of outbound RPC.
+            description: The duration of an outbound RPC invocation.
+            category_notes: Custom metric.
           - metric_name: rpc.server.duration
             instrument: histogram
-            description: Measures the duration of inbound RPC.
+            description: The duration of an inbound RPC invocation.
+            category_notes: Custom metric.
   - keys:
       - async-http-client
     instrumented_components:
@@ -2290,12 +2600,23 @@ instrumentations:
           - metric_name: http.client.request.duration
             instrument: histogram
             description: Duration of HTTP client requests.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: http.client.request.body.size
             instrument: histogram
             description: Size of HTTP client request bodies (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.client.response.body.size
             instrument: histogram
             description: Size of HTTP client response bodies (disabled by default).
+            category_notes: Custom metric.
+  - keys:
+      - avaje-jex
+    instrumented_components:
+      - name: Avaje Jex
+        supported_versions: 3.0 and higher
+    stability: experimental
+    support: community
   - keys:
       - aws-lambda
     instrumented_components:
@@ -2317,6 +2638,15 @@ instrumentations:
           - metric_name: db.client.operation.duration
             instrument: histogram
             description: Duration of database client operations.
+            category_notes: Custom metric.
+          - metric_name: gen_ai.client.token.usage
+            instrument: histogram
+            description: Measures number of input and output tokens used.
+            category_notes: Custom metric.
+          - metric_name: gen_ai.client.operation.duration
+            instrument: histogram
+            description: GenAI operation duration.
+            category_notes: Custom metric.
   - keys:
       - azure-core
     instrumented_components:
@@ -2336,6 +2666,7 @@ instrumentations:
           - metric_name: db.client.operation.duration
             instrument: histogram
             description: Duration of database client operations.
+            category_notes: Custom metric.
   - keys:
       - clickhouse
     instrumented_components:
@@ -2348,6 +2679,7 @@ instrumentations:
           - metric_name: db.client.operation.duration
             instrument: histogram
             description: Duration of database client operations.
+            category_notes: Custom metric.
   - keys:
       - couchbase
     instrumented_components:
@@ -2360,6 +2692,7 @@ instrumentations:
           - metric_name: db.client.operation.duration
             instrument: histogram
             description: Duration of database client operations.
+            category_notes: Custom metric.
   - keys:
       - c3p0
     instrumented_components:
@@ -2373,10 +2706,12 @@ instrumentations:
             instrument: updowncounter
             description: The number of connections that are currently in state described
               by the state attribute.
+            category_notes: Custom metric.
           - metric_name: db.client.connections.pending_requests
             instrument: updowncounter
             description: The number of pending requests for an open connection, cumulative
               for the entire pool.
+            category_notes: Custom metric.
   - keys:
       - dropwizard-metrics
     instrumented_components:
@@ -2404,15 +2739,20 @@ instrumentations:
           - metric_name: http.server.request.duration
             instrument: histogram
             description: Duration of HTTP server requests.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: http.server.active_requests
             instrument: updowncounter
             description: Number of active HTTP server requests (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.server.request.body.size
             instrument: histogram
             description: Size of HTTP server request bodies (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.server.response.body.size
             instrument: histogram
             description: Size of HTTP server response bodies (disabled by default).
+            category_notes: Custom metric.
   - keys:
       - jersey
     instrumented_components:
@@ -2432,15 +2772,20 @@ instrumentations:
           - metric_name: http.server.request.duration
             instrument: histogram
             description: Duration of HTTP server requests.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: http.server.active_requests
             instrument: updowncounter
             description: Number of active HTTP server requests (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.server.request.body.size
             instrument: histogram
             description: Size of HTTP server request bodies (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.server.response.body.size
             instrument: histogram
             description: Size of HTTP server response bodies (disabled by default).
+            category_notes: Custom metric.
   - keys:
       - jetty-httpclient
     instrumented_components:
@@ -2453,12 +2798,16 @@ instrumentations:
           - metric_name: http.client.request.duration
             instrument: histogram
             description: Duration of HTTP client requests.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: http.client.request.body.size
             instrument: histogram
             description: Size of HTTP client request bodies (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.client.response.body.size
             instrument: histogram
             description: Size of HTTP client response bodies (disabled by default).
+            category_notes: Custom metric.
   - keys:
       - metro
     instrumented_components:
@@ -2492,6 +2841,7 @@ instrumentations:
           - metric_name: db.client.operation.duration
             instrument: histogram
             description: Duration of database client operations.
+            category_notes: Custom metric.
   - keys:
       - elasticsearch-transport
     instrumented_components:
@@ -2504,6 +2854,7 @@ instrumentations:
           - metric_name: db.client.operation.duration
             instrument: histogram
             description: Duration of database client operations.
+            category_notes: Custom metric.
   - keys:
       - finagle-http
     instrumented_components:
@@ -2530,6 +2881,7 @@ instrumentations:
           - metric_name: db.client.operation.duration
             instrument: histogram
             description: Duration of database client operations.
+            category_notes: Custom metric.
   - keys:
       - google-http-client
     instrumented_components:
@@ -2542,12 +2894,16 @@ instrumentations:
           - metric_name: http.client.request.duration
             instrument: histogram
             description: Duration of HTTP client requests.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: http.client.request.body.size
             instrument: histogram
             description: Size of HTTP client request bodies (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.client.response.body.size
             instrument: histogram
             description: Size of HTTP client response bodies (disabled by default).
+            category_notes: Custom metric.
   - keys:
       - grails
     instrumented_components:
@@ -2573,10 +2929,12 @@ instrumentations:
       - metrics:
           - metric_name: rpc.client.duration
             instrument: histogram
-            description: Measures the duration of outbound RPC.
+            description: The duration of an outbound RPC invocation.
+            category_notes: Custom metric.
           - metric_name: rpc.server.duration
             instrument: histogram
-            description: Measures the duration of inbound RPC.
+            description: The duration of an inbound RPC invocation.
+            category_notes: Custom metric.
   - keys:
       - guava
     instrumented_components:
@@ -2618,30 +2976,38 @@ instrumentations:
             instrument: updowncounter
             description: The number of connections that are currently in state described
               by the state attribute.
+            category_notes: Custom metric.
           - metric_name: db.client.connections.idle.min
             instrument: updowncounter
             description: The minimum number of idle open connections allowed.
+            category_notes: Custom metric.
           - metric_name: db.client.connections.max
             instrument: updowncounter
             description: The maximum number of open connections allowed.
+            category_notes: Custom metric.
           - metric_name: db.client.connections.pending_requests
             instrument: updowncounter
             description: The number of pending requests for an open connection, cumulative
               for the entire pool.
+            category_notes: Custom metric.
           - metric_name: db.client.connections.timeouts
             instrument: counter
             description: The number of connection timeouts that have occurred trying
               to obtain a connection from the pool.
+            category_notes: Custom metric.
           - metric_name: db.client.connections.create_time
             instrument: histogram
             description: The time it took to create a new connection.
+            category_notes: Custom metric.
           - metric_name: db.client.connections.use_time
             instrument: histogram
             description: The time between borrowing a connection and returning it
               to the pool.
+            category_notes: Custom metric.
           - metric_name: db.client.connections.wait_time
             instrument: histogram
             description: The time it took to obtain an open connection from the pool.
+            category_notes: Custom metric.
   - keys:
       - http-url-connection
     instrumented_components:
@@ -2653,12 +3019,16 @@ instrumentations:
           - metric_name: http.client.request.duration
             instrument: histogram
             description: Duration of HTTP client requests.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: http.client.request.body.size
             instrument: histogram
             description: Size of HTTP client request bodies (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.client.response.body.size
             instrument: histogram
             description: Size of HTTP client response bodies (disabled by default).
+            category_notes: Custom metric.
   - keys:
       - hystrix
     instrumented_components:
@@ -2678,6 +3048,7 @@ instrumentations:
           - metric_name: db.client.operation.duration
             instrument: histogram
             description: Duration of database client operations.
+            category_notes: Custom metric.
   - keys:
       - executors
     instrumented_components:
@@ -2695,12 +3066,16 @@ instrumentations:
           - metric_name: http.client.request.duration
             instrument: histogram
             description: Duration of HTTP client requests.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: http.client.request.body.size
             instrument: histogram
             description: Size of HTTP client request bodies (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.client.response.body.size
             instrument: histogram
             description: Size of HTTP client response bodies (disabled by default).
+            category_notes: Custom metric.
   - keys:
       - java-http-server
     instrumented_components:
@@ -2712,15 +3087,20 @@ instrumentations:
           - metric_name: http.server.request.duration
             instrument: histogram
             description: Duration of HTTP server requests.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: http.server.active_requests
             instrument: updowncounter
             description: Number of active HTTP server requests (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.server.request.body.size
             instrument: histogram
             description: Size of HTTP server request bodies (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.server.response.body.size
             instrument: histogram
             description: Size of HTTP server response bodies (disabled by default).
+            category_notes: Custom metric.
   - keys:
       - java-util-logging
     instrumented_components:
@@ -2738,62 +3118,97 @@ instrumentations:
           - metric_name: jvm.class.loaded
             instrument: counter
             description: Number of classes loaded since JVM start.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: jvm.class.unloaded
             instrument: counter
             description: Number of classes unloaded since JVM start.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: jvm.class.count
             instrument: updowncounter
             description: Number of classes currently loaded.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: jvm.cpu.time
             instrument: counter
             description: CPU time used by the process as reported by the JVM.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: jvm.cpu.count
             instrument: updowncounter
             description: Number of processors available to the Java virtual machine.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: jvm.cpu.recent_utilization
             instrument: gauge
             description: Recent CPU utilization for the process as reported by the
               JVM.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: jvm.gc.duration
             instrument: histogram
             description: Duration of JVM garbage collection actions.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: jvm.memory.used
             instrument: updowncounter
             description: Measure of memory used.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: jvm.memory.committed
             instrument: updowncounter
             description: Measure of memory committed.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: jvm.memory.limit
             instrument: updowncounter
             description: Measure of max obtainable memory.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: jvm.memory.used_after_last_gc
             instrument: updowncounter
             description: Measure of memory used, as measured after the most recent
               garbage collection event on this pool.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: jvm.thread.count
             instrument: updowncounter
             description: Number of executing platform threads (disabled by default).
-          - metric_name: jvm.buffer.memory.usage
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
+          - metric_name: jvm.buffer.memory.used
             instrument: updowncounter
             description: Measure of memory used by buffers (disabled by default).
+            category_notes: Custom metric.
           - metric_name: jvm.buffer.memory.limit
             instrument: updowncounter
             description: Measure of total memory capacity of buffers (disabled by
               default).
+            category_notes: Custom metric.
           - metric_name: jvm.buffer.count
             instrument: updowncounter
             description: Number of buffers in the pool (disabled by default).
+            category_notes: Custom metric.
           - metric_name: jvm.system.cpu.load_1m
             instrument: gauge
             description: Average CPU load of the whole system for the last minute
               as reported by the JVM (disabled by default).
+            category_notes: Custom metric.
           - metric_name: jvm.system.cpu.utilization
             instrument: gauge
             description: Recent CPU utilization for the whole system as reported by
               the JVM (disabled by default).
+            category_notes: Custom metric.
           - metric_name: jvm.memory.init
             instrument: updowncounter
             description: Measure of initial memory requested (disabled by default).
+            category_notes: Custom metric.
+          - metric_name: jvm.file_descriptor.count
+            instrument: updowncounter
+            description: Number of open file descriptors as reported by the JVM (disabled
+              by default).
+            category_notes: Custom metric.
   - keys:
       - javalin
     instrumented_components:
@@ -2820,12 +3235,16 @@ instrumentations:
           - metric_name: http.client.request.duration
             instrument: histogram
             description: Duration of HTTP client requests.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: http.client.request.body.size
             instrument: histogram
             description: Size of HTTP client request bodies (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.client.response.body.size
             instrument: histogram
             description: Size of HTTP client response bodies (disabled by default).
+            category_notes: Custom metric.
   - keys:
       - jaxws
     instrumented_components:
@@ -2853,6 +3272,7 @@ instrumentations:
           - metric_name: db.client.operation.duration
             instrument: histogram
             description: Duration of database client operations.
+            category_notes: Custom metric.
   - keys:
       - jedis
     instrumented_components:
@@ -2865,6 +3285,7 @@ instrumentations:
           - metric_name: db.client.operation.duration
             instrument: histogram
             description: Duration of database client operations.
+            category_notes: Custom metric.
   - keys:
       - jms
     instrumented_components:
@@ -2884,12 +3305,16 @@ instrumentations:
           - metric_name: http.client.request.duration
             instrument: histogram
             description: Duration of HTTP client requests.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: http.client.request.body.size
             instrument: histogram
             description: Size of HTTP client request bodies (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.client.response.body.size
             instrument: histogram
             description: Size of HTTP client response bodies (disabled by default).
+            category_notes: Custom metric.
   - keys:
       - jsp
     instrumented_components:
@@ -2916,24 +3341,33 @@ instrumentations:
           - metric_name: http.client.request.duration
             instrument: histogram
             description: Duration of HTTP client requests.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: http.client.request.body.size
             instrument: histogram
             description: Size of HTTP client request bodies (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.client.response.body.size
             instrument: histogram
             description: Size of HTTP client response bodies (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.server.request.duration
             instrument: histogram
             description: Duration of HTTP server requests.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: http.server.active_requests
             instrument: updowncounter
             description: Number of active HTTP server requests (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.server.request.body.size
             instrument: histogram
             description: Size of HTTP server request bodies (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.server.response.body.size
             instrument: histogram
             description: Size of HTTP server response bodies (disabled by default).
+            category_notes: Custom metric.
   - keys:
       - kubernetes-client
     instrumented_components:
@@ -2953,6 +3387,7 @@ instrumentations:
           - metric_name: db.client.operation.duration
             instrument: histogram
             description: Duration of database client operations.
+            category_notes: Custom metric.
   - keys:
       - liberty
     instrumented_components:
@@ -2996,6 +3431,7 @@ instrumentations:
           - metric_name: db.client.operation.duration
             instrument: histogram
             description: Duration of database client operations.
+            category_notes: Custom metric.
   - keys:
       - mybatis
     instrumented_components:
@@ -3015,24 +3451,33 @@ instrumentations:
           - metric_name: http.client.request.duration
             instrument: histogram
             description: Duration of HTTP client requests.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: http.client.request.body.size
             instrument: histogram
             description: Size of HTTP client request bodies (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.client.response.body.size
             instrument: histogram
             description: Size of HTTP client response bodies (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.server.request.duration
             instrument: histogram
             description: Duration of HTTP server requests.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: http.server.active_requests
             instrument: updowncounter
             description: Number of active HTTP server requests (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.server.request.body.size
             instrument: histogram
             description: Size of HTTP server request bodies (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.server.response.body.size
             instrument: histogram
             description: Size of HTTP server response bodies (disabled by default).
+            category_notes: Custom metric.
   - keys:
       - okhttp
     instrumented_components:
@@ -3045,12 +3490,16 @@ instrumentations:
           - metric_name: http.client.request.duration
             instrument: histogram
             description: Duration of HTTP client requests.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: http.client.request.body.size
             instrument: histogram
             description: Size of HTTP client request bodies (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.client.response.body.size
             instrument: histogram
             description: Size of HTTP client response bodies (disabled by default).
+            category_notes: Custom metric.
   - keys:
       - liberty
     instrumented_components:
@@ -3063,15 +3512,20 @@ instrumentations:
           - metric_name: http.server.request.duration
             instrument: histogram
             description: Duration of HTTP server requests.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: http.server.active_requests
             instrument: updowncounter
             description: Number of active HTTP server requests (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.server.request.body.size
             instrument: histogram
             description: Size of HTTP server request bodies (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.server.response.body.size
             instrument: histogram
             description: Size of HTTP server response bodies (disabled by default).
+            category_notes: Custom metric.
   - keys:
       - opensearch
     instrumented_components:
@@ -3084,6 +3538,24 @@ instrumentations:
           - metric_name: db.client.operation.duration
             instrument: histogram
             description: Duration of database client operations.
+            category_notes: Custom metric.
+  - keys:
+      - openai-java
+    instrumented_components:
+      - name: OpenAI Java SDK
+        supported_versions: 1.1 and higher
+    stability: experimental
+    support: community
+    signals:
+      - metrics:
+          - metric_name: gen_ai.client.token.usage
+            instrument: histogram
+            description: Measures number of input and output tokens used.
+            category_notes: Custom metric.
+          - metric_name: gen_ai.client.operation.duration
+            instrument: histogram
+            description: GenAI operation duration.
+            category_notes: Custom metric.
   - keys:
       - opentelemetry-api
     instrumented_components:
@@ -3115,13 +3587,16 @@ instrumentations:
             instrument: updowncounter
             description: The number of connections that are currently in state described
               by the state attribute.
+            category_notes: Custom metric.
           - metric_name: db.client.connections.max
             instrument: updowncounter
             description: The maximum number of open connections allowed.
+            category_notes: Custom metric.
           - metric_name: db.client.connections.pending_requests
             instrument: updowncounter
             description: The number of pending requests for an open connection, cumulative
               for the entire pool.
+            category_notes: Custom metric.
   - keys:
       - oshi
     instrumented_components:
@@ -3155,12 +3630,16 @@ instrumentations:
           - metric_name: http.client.request.duration
             instrument: histogram
             description: Duration of HTTP client requests.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: http.client.request.body.size
             instrument: histogram
             description: Size of HTTP client request bodies (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.client.response.body.size
             instrument: histogram
             description: Size of HTTP client response bodies (disabled by default).
+            category_notes: Custom metric.
   - keys:
       - powerjob
     instrumented_components:
@@ -3194,6 +3673,7 @@ instrumentations:
           - metric_name: db.client.operation.duration
             instrument: histogram
             description: Duration of database client operations.
+            category_notes: Custom metric.
   - keys:
       - rabbitmq
     instrumented_components:
@@ -3213,24 +3693,33 @@ instrumentations:
           - metric_name: http.client.request.duration
             instrument: histogram
             description: Duration of HTTP client requests.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: http.client.request.body.size
             instrument: histogram
             description: Size of HTTP client request bodies (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.client.response.body.size
             instrument: histogram
             description: Size of HTTP client response bodies (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.server.request.duration
             instrument: histogram
             description: Duration of HTTP server requests.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: http.server.active_requests
             instrument: updowncounter
             description: Number of active HTTP server requests (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.server.request.body.size
             instrument: histogram
             description: Size of HTTP server request bodies (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.server.response.body.size
             instrument: histogram
             description: Size of HTTP server response bodies (disabled by default).
+            category_notes: Custom metric.
   - keys:
       - reactor
     instrumented_components:
@@ -3250,12 +3739,16 @@ instrumentations:
           - metric_name: http.client.request.duration
             instrument: histogram
             description: Duration of HTTP client requests.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: http.client.request.body.size
             instrument: histogram
             description: Size of HTTP client request bodies (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.client.response.body.size
             instrument: histogram
             description: Size of HTTP client response bodies (disabled by default).
+            category_notes: Custom metric.
   - keys:
       - rediscala
     instrumented_components:
@@ -3268,6 +3761,7 @@ instrumentations:
           - metric_name: db.client.operation.duration
             instrument: histogram
             description: Duration of database client operations.
+            category_notes: Custom metric.
   - keys:
       - redisson
     instrumented_components:
@@ -3280,6 +3774,7 @@ instrumentations:
           - metric_name: db.client.operation.duration
             instrument: histogram
             description: Duration of database client operations.
+            category_notes: Custom metric.
   - keys:
       - resteasy
     instrumented_components:
@@ -3299,15 +3794,20 @@ instrumentations:
           - metric_name: http.server.request.duration
             instrument: histogram
             description: Duration of HTTP server requests.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: http.server.active_requests
             instrument: updowncounter
             description: Number of active HTTP server requests (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.server.request.body.size
             instrument: histogram
             description: Size of HTTP server request bodies (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.server.response.body.size
             instrument: histogram
             description: Size of HTTP server response bodies (disabled by default).
+            category_notes: Custom metric.
   - keys:
       - rmi
     instrumented_components:
@@ -3340,15 +3840,20 @@ instrumentations:
           - metric_name: http.server.request.duration
             instrument: histogram
             description: Duration of HTTP server requests.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: http.server.active_requests
             instrument: updowncounter
             description: Number of active HTTP server requests (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.server.request.body.size
             instrument: histogram
             description: Size of HTTP server request bodies (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.server.response.body.size
             instrument: histogram
             description: Size of HTTP server response bodies (disabled by default).
+            category_notes: Custom metric.
   - keys:
       - spark
     instrumented_components:
@@ -3414,6 +3919,13 @@ instrumentations:
     stability: experimental
     support: community
   - keys:
+      - spring-pulsar
+    instrumented_components:
+      - name: Spring Pulsar
+        supported_versions: 1.0 and higher
+    stability: experimental
+    support: community
+  - keys:
       - spring-rabbit
     instrumented_components:
       - name: Spring RabbitMQ
@@ -3432,12 +3944,16 @@ instrumentations:
           - metric_name: http.client.request.duration
             instrument: histogram
             description: Duration of HTTP client requests.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: http.client.request.body.size
             instrument: histogram
             description: Size of HTTP client request bodies (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.client.response.body.size
             instrument: histogram
             description: Size of HTTP client response bodies (disabled by default).
+            category_notes: Custom metric.
   - keys:
       - spring-rmi
     instrumented_components:
@@ -3478,12 +3994,16 @@ instrumentations:
           - metric_name: http.client.request.duration
             instrument: histogram
             description: Duration of HTTP client requests.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: http.client.request.body.size
             instrument: histogram
             description: Size of HTTP client request bodies (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.client.response.body.size
             instrument: histogram
             description: Size of HTTP client response bodies (disabled by default).
+            category_notes: Custom metric.
   - keys:
       - spymemcached
     instrumented_components:
@@ -3496,6 +4016,7 @@ instrumentations:
           - metric_name: db.client.operation.duration
             instrument: histogram
             description: Duration of database client operations.
+            category_notes: Custom metric.
   - keys:
       - tomcat-jdbc
     instrumented_components:
@@ -3509,19 +4030,24 @@ instrumentations:
             instrument: updowncounter
             description: The number of connections that are currently in state described
               by the state attribute.
+            category_notes: Custom metric.
           - metric_name: db.client.connections.idle.max
             instrument: updowncounter
             description: The maximum number of idle open connections allowed.
+            category_notes: Custom metric.
           - metric_name: db.client.connections.idle.min
             instrument: updowncounter
             description: The minimum number of idle open connections allowed.
+            category_notes: Custom metric.
           - metric_name: db.client.connections.max
             instrument: updowncounter
             description: The maximum number of open connections allowed.
+            category_notes: Custom metric.
           - metric_name: db.client.connections.pending_requests
             instrument: updowncounter
             description: The number of pending requests for an open connection, cumulative
               for the entire pool.
+            category_notes: Custom metric.
   - keys:
       - twilio
     instrumented_components:
@@ -3541,15 +4067,20 @@ instrumentations:
           - metric_name: http.server.request.duration
             instrument: histogram
             description: Duration of HTTP server requests.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: http.server.active_requests
             instrument: updowncounter
             description: Number of active HTTP server requests (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.server.request.body.size
             instrument: histogram
             description: Size of HTTP server request bodies (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.server.response.body.size
             instrument: histogram
             description: Size of HTTP server response bodies (disabled by default).
+            category_notes: Custom metric.
   - keys:
       - vaadin
     instrumented_components:
@@ -3569,12 +4100,16 @@ instrumentations:
           - metric_name: http.client.request.duration
             instrument: histogram
             description: Duration of HTTP client requests.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: http.client.request.body.size
             instrument: histogram
             description: Size of HTTP client request bodies (disabled by default).
+            category_notes: Custom metric.
           - metric_name: http.client.response.body.size
             instrument: histogram
             description: Size of HTTP client response bodies (disabled by default).
+            category_notes: Custom metric.
   - keys:
       - vertx-kafka-client
     instrumented_components:
@@ -3594,6 +4129,7 @@ instrumentations:
           - metric_name: db.client.operation.duration
             instrument: histogram
             description: Duration of database client operations.
+            category_notes: Custom metric.
   - keys:
       - vertx-rx-java
     instrumented_components:
@@ -3613,6 +4149,7 @@ instrumentations:
           - metric_name: db.client.operation.duration
             instrument: histogram
             description: Duration of database client operations.
+            category_notes: Custom metric.
   - keys:
       - vertx-web
     instrumented_components:
@@ -3633,9 +4170,11 @@ instrumentations:
             instrument: updowncounter
             description: The number of connections that are currently in state described
               by the state attribute.
+            category_notes: Custom metric.
           - metric_name: db.client.connections.max
             instrument: updowncounter
             description: The maximum number of open connections allowed.
+            category_notes: Custom metric.
   - keys:
       - xxl-job
     instrumented_components:
@@ -3661,14 +4200,20 @@ instrumentations:
           - metric_name: jvm.memory.allocated
             instrument: counter
             description: Approximate sum of heap allocations.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: jvm.gc.pause.count
             instrument: counter
             description: Number of gc pauses. This metric will be removed in a future
               release.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
           - metric_name: jvm.gc.pause.totalTime
             instrument: counter
             description: Time spent in GC pause. This metric will be removed in a
               future release.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
   - keys:
       - khttp
     instrumented_components:
@@ -3745,7 +4290,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.13.3-alpha
+        version: 2.19.0-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.resources.HostIdResourceProvider
     description: Host id detector.
@@ -3757,7 +4302,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.13.3-alpha
+        version: 2.19.0-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.resources.HostResourceProvider
     description: Host detector.
@@ -3770,7 +4315,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.13.3-alpha
+        version: 2.19.0-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.resources.JarServiceNameDetector
     description: Jar service name detector.
@@ -3782,7 +4327,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.13.3-alpha
+        version: 2.19.0-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.resources.ManifestResourceProvider
     description: Manifest service name and version detector.
@@ -3795,7 +4340,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.13.3-alpha
+        version: 2.19.0-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.resources.OsResourceProvider
     description: Os detector.
@@ -3808,7 +4353,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.13.3-alpha
+        version: 2.19.0-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.resources.ProcessResourceProvider
     description: Process detector.
@@ -3823,7 +4368,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.13.3-alpha
+        version: 2.19.0-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.resources.ProcessRuntimeResourceProvider
     description: Process runtime detector.
@@ -3837,7 +4382,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.13.3-alpha
+        version: 2.19.0-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.spring.resources.SpringBootServiceNameDetector
     description: Spring boot service name detector.
@@ -3849,7 +4394,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Spring Boot Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/spring/spring-boot-resources/javaagent
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-spring-boot-resources
-        version: 2.13.3-alpha
+        version: 2.19.0-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.spring.resources.SpringBootServiceVersionDetector
     description: Spring boot service version detector.
@@ -3861,7 +4406,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Spring Boot Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/spring/spring-boot-resources/javaagent
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-spring-boot-resources
-        version: 2.13.3-alpha
+        version: 2.19.0-alpha
         stability: experimental
   - key: io.opentelemetry.contrib.resourceproviders.AppServerServiceNameProvider
     description: Application server service name detector.
@@ -3873,7 +4418,7 @@ resource_detectors:
       - name: OpenTelemetry Java Contrib Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/tree/main/resource-providers
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-resource-providers
-        version: 1.43.0-alpha
+        version: 1.48.0-alpha
         stability: experimental
   - key: io.opentelemetry.contrib.aws.resource.BeanstalkResourceProvider
     description: Beanstalk detector.
@@ -3889,7 +4434,7 @@ resource_detectors:
       - name: OpenTelemetry AWS Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/aws-resources
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-aws-resources
-        version: 1.43.0-alpha
+        version: 1.48.0-alpha
         stability: experimental
   - key: io.opentelemetry.contrib.aws.resource.Ec2ResourceProvider
     description: Ec2 detector.
@@ -3909,7 +4454,7 @@ resource_detectors:
       - name: OpenTelemetry AWS Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/aws-resources
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-aws-resources
-        version: 1.43.0-alpha
+        version: 1.48.0-alpha
         stability: experimental
   - key: io.opentelemetry.contrib.aws.resource.EcsResourceProvider
     description: Ecs detector.
@@ -3935,7 +4480,7 @@ resource_detectors:
       - name: OpenTelemetry AWS Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/aws-resources
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-aws-resources
-        version: 1.43.0-alpha
+        version: 1.48.0-alpha
         stability: experimental
   - key: io.opentelemetry.contrib.aws.resource.EksResourceProvider
     description: Eks detector.
@@ -3950,7 +4495,7 @@ resource_detectors:
       - name: OpenTelemetry AWS Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/aws-resources
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-aws-resources
-        version: 1.43.0-alpha
+        version: 1.48.0-alpha
         stability: experimental
   - key: io.opentelemetry.contrib.aws.resource.LambdaResourceProvider
     description: Lambda detector.
@@ -3966,7 +4511,7 @@ resource_detectors:
       - name: OpenTelemetry AWS Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/aws-resources
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-aws-resources
-        version: 1.43.0-alpha
+        version: 1.48.0-alpha
         stability: experimental
   - key: io.opentelemetry.contrib.gcp.resource.GCPResourceProvider
     description: GCP detector.
@@ -3992,5 +4537,95 @@ resource_detectors:
       - name: OpenTelemetry GCP Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/gcp-resources
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-gcp-resources
-        version: 1.43.0-alpha
+        version: 1.48.0-alpha
+        stability: experimental
+  - key: io.opentelemetry.contrib.azure.resource.AzureAksResourceProvider
+    description: AKS detector.
+    attributes:
+      - id: cloud.platform
+      - id: cloud.provider
+      - id: k8s.cluster.name
+    stability: experimental
+    support: community
+    dependencies:
+      - name: OpenTelemetry Azure Resource Providers
+        source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/azure-resources
+        package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-azure-resources
+        version: 1.48.0-alpha
+        stability: experimental
+  - key: io.opentelemetry.contrib.azure.resource.AzureAppServiceResourceProvider
+    description: App service detector.
+    attributes:
+      - id: cloud.platform
+      - id: cloud.provider
+      - id: service.name
+      - id: cloud.region
+      - id: cloud.resource_id
+      - id: deployment.environment.name
+      - id: host.id
+      - id: service.instance.id
+      - id: azure.app.service.stamp
+    stability: experimental
+    support: community
+    dependencies:
+      - name: OpenTelemetry Azure Resource Providers
+        source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/azure-resources
+        package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-azure-resources
+        version: 1.48.0-alpha
+        stability: experimental
+  - key: io.opentelemetry.contrib.azure.resource.AzureContainersResourceProvider
+    description: Container detector.
+    attributes:
+      - id: cloud.platform
+      - id: cloud.provider
+      - id: service.name
+      - id: service.instance.id
+      - id: service.version
+    stability: experimental
+    support: community
+    dependencies:
+      - name: OpenTelemetry Azure Resource Providers
+        source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/azure-resources
+        package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-azure-resources
+        version: 1.48.0-alpha
+        stability: experimental
+  - key: io.opentelemetry.contrib.azure.resource.AzureFunctionsResourceProvider
+    description: Function detector.
+    attributes:
+      - id: cloud.platform
+      - id: cloud.provider
+      - id: faas.max_memory
+      - id: cloud.region
+      - id: faas.name
+      - id: faas.version
+      - id: faas.instance
+    stability: experimental
+    support: community
+    dependencies:
+      - name: OpenTelemetry Azure Resource Providers
+        source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/azure-resources
+        package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-azure-resources
+        version: 1.48.0-alpha
+        stability: experimental
+  - key: io.opentelemetry.contrib.azure.resource.AzureVmResourceProvider
+    description: Vm detector.
+    attributes:
+      - id: cloud.platform
+      - id: cloud.provider
+      - id: cloud.region
+      - id: cloud.resource_id
+      - id: host.id
+      - id: host.name
+      - id: host.type
+      - id: os.type
+      - id: os.version
+      - id: azure.vm.scaleset.name
+      - id: azure.vm.sku
+    stability: experimental
+    support: community
+    dependencies:
+      - name: OpenTelemetry Azure Resource Providers
+        source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/azure-resources
+        package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-azure-resources
+        version: 1.48.0-alpha
         stability: experimental

@@ -2,33 +2,37 @@ Dashboards:
   (Azure) Function App:
     dashboard_group: Azure Functions
     view_support: instance
-    importQualifiers: FunctionExecutionCount (resource_type =  Microsoft.Web/sites)
-      & (is_Azure_Function =  true) & (primary_aggregation_type =  true);  OR FunctionExecutionUnits
-      (resource_type =  Microsoft.Web/sites) & (is_Azure_Function =  true) & (primary_aggregation_type
+    importQualifiers: FunctionExecutionCount (resource_type =  microsoft.web/sites
+      | Microsoft.Web/sites) & (is_Azure_Function =  true) & (primary_aggregation_type
+      =  true);  OR FunctionExecutionUnits (resource_type =  microsoft.web/sites |
+      Microsoft.Web/sites) & (is_Azure_Function =  true) & (primary_aggregation_type
       =  true);  OR azure.function.invocations (is_Azure_Function =  true) & (metric_source
       =  azure_function_wrapper);
   (Azure) Function Apps:
     dashboard_group: Azure Functions
     view_support: aggregated
-    importQualifiers: FunctionExecutionCount (resource_type =  Microsoft.Web/sites)
-      & (is_Azure_Function =  true) & (primary_aggregation_type =  true);  OR FunctionExecutionUnits
-      (resource_type =  Microsoft.Web/sites) & (is_Azure_Function =  true) & (primary_aggregation_type
+    importQualifiers: FunctionExecutionCount (resource_type =  microsoft.web/sites
+      | Microsoft.Web/sites) & (is_Azure_Function =  true) & (primary_aggregation_type
+      =  true);  OR FunctionExecutionUnits (resource_type =  microsoft.web/sites |
+      Microsoft.Web/sites) & (is_Azure_Function =  true) & (primary_aggregation_type
       =  true);  OR azure.function.invocations (is_Azure_Function =  true) & (metric_source
       =  azure_function_wrapper);
   (SignalFx) Azure Function (deprecated):
     dashboard_group: Azure Functions
     view_support: instance
-    importQualifiers: FunctionExecutionCount (resource_type =  Microsoft.Web/sites)
-      & (is_Azure_Function =  true) & (primary_aggregation_type =  true);  OR FunctionExecutionUnits
-      (resource_type =  Microsoft.Web/sites) & (is_Azure_Function =  true) & (primary_aggregation_type
+    importQualifiers: FunctionExecutionCount (resource_type =  microsoft.web/sites
+      | Microsoft.Web/sites) & (is_Azure_Function =  true) & (primary_aggregation_type
+      =  true);  OR FunctionExecutionUnits (resource_type =  microsoft.web/sites |
+      Microsoft.Web/sites) & (is_Azure_Function =  true) & (primary_aggregation_type
       =  true);  OR azure.function.invocations (is_Azure_Function =  true) & (metric_source
       =  azure_function_wrapper);
   (SignalFx) Azure Functions (deprecated):
     dashboard_group: Azure Functions
     view_support: aggregated
-    importQualifiers: FunctionExecutionCount (resource_type =  Microsoft.Web/sites)
-      & (is_Azure_Function =  true) & (primary_aggregation_type =  true);  OR FunctionExecutionUnits
-      (resource_type =  Microsoft.Web/sites) & (is_Azure_Function =  true) & (primary_aggregation_type
+    importQualifiers: FunctionExecutionCount (resource_type =  microsoft.web/sites
+      | Microsoft.Web/sites) & (is_Azure_Function =  true) & (primary_aggregation_type
+      =  true);  OR FunctionExecutionUnits (resource_type =  microsoft.web/sites |
+      Microsoft.Web/sites) & (is_Azure_Function =  true) & (primary_aggregation_type
       =  true);  OR azure.function.invocations (is_Azure_Function =  true) & (metric_source
       =  azure_function_wrapper);
   .NET runtime metrics:
@@ -47,6 +51,21 @@ Dashboards:
     dashboard_group: AWS optimizer
     view_support: N/A
     importQualifiers: instance.cost (*);
+  AI POD GPUs:
+    dashboard_group: Cisco AI PODs Dashboard
+    view_support: N/A
+    importQualifiers: DCGM_FI_DEV_POWER_USAGE (*);  OR num_requests_waiting (*);  OR
+      k8s.deployment.available (k8s.nimservice.name =  *);  OR cisco_up (*);
+  AI Pod Hosts:
+    dashboard_group: Cisco AI PODs Dashboard
+    view_support: N/A
+    importQualifiers: DCGM_FI_DEV_POWER_USAGE (*);  OR num_requests_waiting (*);  OR
+      k8s.deployment.available (k8s.nimservice.name =  *);  OR cisco_up (*);
+  AI Pod overview:
+    dashboard_group: Cisco AI PODs Dashboard
+    view_support: N/A
+    importQualifiers: DCGM_FI_DEV_POWER_USAGE (*);  OR num_requests_waiting (*);  OR
+      k8s.deployment.available (k8s.nimservice.name =  *);  OR cisco_up (*);
   API Gateway logs:
     dashboard_group: AWS API Gateway
     view_support: N/A
@@ -80,7 +99,9 @@ Dashboards:
     view_support: N/A
     importQualifiers: service.request.count (sf_environment =  *) & (sf_service =  *);  OR
       sf.org.numLogsReceivedByToken (*);  OR rum.page_view.count (*);  OR rum.page_view.count
-      (sf_ua_browsername =  *);  OR sf.org.apm.numContainers (*);
+      (sf_ua_browsername =  *);  OR sf.org.apm.numContainers (*);  OR synthetics.run.count
+      (test_type =  *) & (test =  *);  OR synthetics.run.uptime.percent (test =  *)
+      & (location =  *);
   APM entitlements:
     dashboard_group: Organization metrics
     view_support: N/A
@@ -114,6 +135,14 @@ Dashboards:
     view_support: aggregated
     importQualifiers: GroupTotalInstances (namespace =  AWS/AutoScaling) & (stat =  count)
       & (AutoScalingGroupName =  *);
+  AWS Bedrock:
+    dashboard_group: AWS Bedrock
+    view_support: instance
+    importQualifiers: InputTokenCount (sf_key =  AWSUniqueId) & (namespace =  AWS/Bedrock);
+  AWS Bedrocks:
+    dashboard_group: AWS Bedrock
+    view_support: aggregated
+    importQualifiers: InputTokenCount (sf_key =  AWSUniqueId) & (namespace =  AWS/Bedrock);
   AWS DynamoDB:
     dashboard_group: AWS DynamoDB
     view_support: aggregated
@@ -212,10 +241,20 @@ Dashboards:
     dashboard_group: Apache
     view_support: instance
     importQualifiers: apache_bytes (plugin =  apache);
+  Apache web server - Apache (OTel):
+    dashboard_group: Apache (OTel)
+    view_support: instance
+    importQualifiers: apache.uptime (host.name =  *);  OR apache.requests (host.name
+      =  *);
   Apache web servers:
     dashboard_group: Apache
     view_support: aggregated
     importQualifiers: apache_bytes (plugin =  apache);
+  Apache web servers - Apache (OTel):
+    dashboard_group: Apache (OTel)
+    view_support: aggregated
+    importQualifiers: apache.uptime (host.name =  *);  OR apache.requests (host.name
+      =  *);
   App Engine HTTP:
     dashboard_group: Google App Engine
     view_support: aggregated
@@ -293,170 +332,202 @@ Dashboards:
   Azure App service:
     dashboard_group: Azure App service
     view_support: instance
-    importQualifiers: BytesReceived (resource_type =  Microsoft.Web/sites) & (is_Azure_Function
-      =  false) & (primary_aggregation_type =  true);  OR CpuTime (resource_type =  Microsoft.Web/sites)
-      & (is_Azure_Function =  false) & (primary_aggregation_type =  true);
+    importQualifiers: BytesReceived (resource_type =  Microsoft.Web/sites | microsoft.web/sites)
+      & (is_Azure_Function =  false) & (primary_aggregation_type =  true);  OR CpuTime
+      (resource_type =  Microsoft.Web/sites | microsoft.web/sites) & (is_Azure_Function
+      =  false) & (primary_aggregation_type =  true);
   Azure App services:
     dashboard_group: Azure App service
     view_support: aggregated
-    importQualifiers: BytesReceived (resource_type =  Microsoft.Web/sites) & (is_Azure_Function
-      =  false) & (primary_aggregation_type =  true);  OR CpuTime (resource_type =  Microsoft.Web/sites)
-      & (is_Azure_Function =  false) & (primary_aggregation_type =  true);
+    importQualifiers: BytesReceived (resource_type =  Microsoft.Web/sites | microsoft.web/sites)
+      & (is_Azure_Function =  false) & (primary_aggregation_type =  true);  OR CpuTime
+      (resource_type =  Microsoft.Web/sites | microsoft.web/sites) & (is_Azure_Function
+      =  false) & (primary_aggregation_type =  true);
   Azure Event Hub:
     dashboard_group: Azure Event Hubs
     view_support: instance
     importQualifiers: SuccessfulRequests (primary_aggregation_type =  true) & (resource_type
-      =  Microsoft.EventHub/namespaces);  OR IncomingRequests (primary_aggregation_type
-      =  true) & (resource_type =  Microsoft.EventHub/namespaces);
+      =  microsoft.eventhub/namespaces | Microsoft.EventHub/namespaces);  OR IncomingRequests
+      (primary_aggregation_type =  true) & (resource_type =  microsoft.eventhub/namespaces
+      | Microsoft.EventHub/namespaces);
   Azure Event Hubs:
     dashboard_group: Azure Event Hubs
     view_support: aggregated
     importQualifiers: SuccessfulRequests (primary_aggregation_type =  true) & (resource_type
-      =  Microsoft.EventHub/namespaces);  OR IncomingRequests (primary_aggregation_type
-      =  true) & (resource_type =  Microsoft.EventHub/namespaces);
+      =  microsoft.eventhub/namespaces | Microsoft.EventHub/namespaces);  OR IncomingRequests
+      (primary_aggregation_type =  true) & (resource_type =  microsoft.eventhub/namespaces
+      | Microsoft.EventHub/namespaces);
   Azure Event Hubs logs:
     dashboard_group: Azure Event Hubs
     view_support: aggregated
     importQualifiers: SuccessfulRequests (primary_aggregation_type =  true) & (resource_type
-      =  Microsoft.EventHub/namespaces);  OR IncomingRequests (primary_aggregation_type
-      =  true) & (resource_type =  Microsoft.EventHub/namespaces);
+      =  microsoft.eventhub/namespaces | Microsoft.EventHub/namespaces);  OR IncomingRequests
+      (primary_aggregation_type =  true) & (resource_type =  microsoft.eventhub/namespaces
+      | Microsoft.EventHub/namespaces);
   Azure Logic App:
     dashboard_group: Azure Logic Apps
     view_support: instance
-    importQualifiers: BillableActionExecutions (resource_type =  Microsoft.Logic/workflows)
-      & (primary_aggregation_type =  true);  OR ActionsSucceeded (resource_type =  Microsoft.Logic/workflows)
-      & (primary_aggregation_type =  true);  OR ActionsFailed (resource_type =  Microsoft.Logic/workflows)
+    importQualifiers: BillableActionExecutions (resource_type =  Microsoft.Logic/workflows
+      | microsoft.logic/workflows) & (primary_aggregation_type =  true);  OR ActionsSucceeded
+      (resource_type =  Microsoft.Logic/workflows | microsoft.logic/workflows) & (primary_aggregation_type
+      =  true);  OR ActionsFailed (resource_type =  Microsoft.Logic/workflows | microsoft.logic/workflows)
       & (primary_aggregation_type =  true);  OR ActionThrottledEvents (resource_type
-      =  Microsoft.Logic/workflows) & (primary_aggregation_type =  true);
+      =  Microsoft.Logic/workflows | microsoft.logic/workflows) & (primary_aggregation_type
+      =  true);
   Azure Logic Apps:
     dashboard_group: Azure Logic Apps
     view_support: aggregated
-    importQualifiers: BillableActionExecutions (resource_type =  Microsoft.Logic/workflows)
-      & (primary_aggregation_type =  true);  OR ActionsSucceeded (resource_type =  Microsoft.Logic/workflows)
-      & (primary_aggregation_type =  true);  OR ActionsFailed (resource_type =  Microsoft.Logic/workflows)
+    importQualifiers: BillableActionExecutions (resource_type =  Microsoft.Logic/workflows
+      | microsoft.logic/workflows) & (primary_aggregation_type =  true);  OR ActionsSucceeded
+      (resource_type =  Microsoft.Logic/workflows | microsoft.logic/workflows) & (primary_aggregation_type
+      =  true);  OR ActionsFailed (resource_type =  Microsoft.Logic/workflows | microsoft.logic/workflows)
       & (primary_aggregation_type =  true);  OR ActionThrottledEvents (resource_type
-      =  Microsoft.Logic/workflows) & (primary_aggregation_type =  true);
+      =  Microsoft.Logic/workflows | microsoft.logic/workflows) & (primary_aggregation_type
+      =  true);
   Azure Managed Cluster:
     dashboard_group: Azure Kubernetes service
     view_support: N/A
-    importQualifiers: kube_node_status_allocatable_cpu_cores (resource_type =  Microsoft.ContainerService/managedClusters);  OR
-      kube_node_status_allocatable_memory_bytes (resource_type =  Microsoft.ContainerService/managedClusters);
+    importQualifiers: kube_node_status_allocatable_cpu_cores (resource_type =  microsoft.containerservice/managedclusters
+      | Microsoft.ContainerService/managedClusters);  OR kube_node_status_allocatable_memory_bytes
+      (resource_type =  microsoft.containerservice/managedclusters | Microsoft.ContainerService/managedClusters);
+  Azure OpenAI:
+    dashboard_group: Azure OpenAI
+    view_support: instance
+    importQualifiers: ProcessedPromptTokens (sf_key =  modeldeploymentname) & (azure_subscription_state
+      =  Enabled | enabled);
+  Azure OpenAIs:
+    dashboard_group: Azure OpenAI
+    view_support: aggregated
+    importQualifiers: ProcessedPromptTokens (sf_key =  modeldeploymentname) & (azure_subscription_state
+      =  Enabled | enabled);
   Azure SQL database:
     dashboard_group: Azure SQL databases
     view_support: instance
-    importQualifiers: dtu_consumption_percent (resource_type =  Microsoft.Sql/servers/databases)
-      & (primary_aggregation_type =  true);  OR storage (resource_type =  Microsoft.Sql/servers/databases)
+    importQualifiers: dtu_consumption_percent (resource_type =  microsoft.sql/servers/databases
+      | Microsoft.Sql/servers/databases) & (primary_aggregation_type =  true);  OR
+      storage (resource_type =  microsoft.sql/servers/databases | Microsoft.Sql/servers/databases)
       & (primary_aggregation_type =  true);
   Azure SQL databases:
     dashboard_group: Azure SQL databases
     view_support: aggregated
-    importQualifiers: dtu_consumption_percent (resource_type =  Microsoft.Sql/servers/databases)
-      & (primary_aggregation_type =  true);  OR storage (resource_type =  Microsoft.Sql/servers/databases)
+    importQualifiers: dtu_consumption_percent (resource_type =  microsoft.sql/servers/databases
+      | Microsoft.Sql/servers/databases) & (primary_aggregation_type =  true);  OR
+      storage (resource_type =  microsoft.sql/servers/databases | Microsoft.Sql/servers/databases)
       & (primary_aggregation_type =  true);
   Azure Storage account:
     dashboard_group: Azure Storage
     view_support: instance
-    importQualifiers: Availability (resource_type =  Microsoft.Storage/storageAccounts)
-      & (primary_aggregation_type =  true);  OR SuccessE2ELatency (resource_type =  Microsoft.Storage/storageAccounts)
+    importQualifiers: Availability (resource_type =  Microsoft.Storage/storageAccounts
+      | microsoft.storage/storageaccounts) & (primary_aggregation_type =  true);  OR
+      SuccessE2ELatency (resource_type =  Microsoft.Storage/storageAccounts | microsoft.storage/storageaccounts)
       & (primary_aggregation_type =  true);
   Azure Storage accounts:
     dashboard_group: Azure Storage
     view_support: aggregated
-    importQualifiers: Availability (resource_type =  Microsoft.Storage/storageAccounts)
-      & (primary_aggregation_type =  true);  OR SuccessE2ELatency (resource_type =  Microsoft.Storage/storageAccounts)
+    importQualifiers: Availability (resource_type =  Microsoft.Storage/storageAccounts
+      | microsoft.storage/storageaccounts) & (primary_aggregation_type =  true);  OR
+      SuccessE2ELatency (resource_type =  Microsoft.Storage/storageAccounts | microsoft.storage/storageaccounts)
       & (primary_aggregation_type =  true);
   Azure VM Scale Set:
     dashboard_group: Azure VM Scale Sets
     view_support: instance
-    importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets)
-      & (primary_aggregation_type =  true);
+    importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets
+      | microsoft.compute/virtualmachinescalesets) & (primary_aggregation_type =  true);
   Azure VM Scale Sets:
     dashboard_group: Azure VM Scale Sets
     view_support: aggregated
-    importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets)
-      & (primary_aggregation_type =  true);
+    importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets
+      | microsoft.compute/virtualmachinescalesets) & (primary_aggregation_type =  true);
   Azure VM Scale Sets logs:
     dashboard_group: Azure VM Scale Sets
     view_support: aggregated
-    importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets)
-      & (primary_aggregation_type =  true);
+    importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets
+      | microsoft.compute/virtualmachinescalesets) & (primary_aggregation_type =  true);
   Azure Virtual Machine:
     dashboard_group: Azure Virtual Machines
     view_support: instance
-    importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachines)
-      & (primary_aggregation_type =  true);  OR Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets/virtualMachines)
-      & (primary_aggregation_type =  true);  OR system.memory.usage (cloud.provider
-      =  azure);
+    importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachines
+      | microsoft.compute/virtualmachines) & (primary_aggregation_type =  true);  OR
+      Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets/virtualMachines
+      | microsoft.compute/virtualmachinescalesets/virtualmachines) & (primary_aggregation_type
+      =  true);  OR system.memory.usage (cloud.provider =  azure);
   Azure Virtual Machine (Azure monitor):
     dashboard_group: Azure Virtual Machines
     view_support: instance
-    importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachines)
-      & (primary_aggregation_type =  true);  OR Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets/virtualMachines)
-      & (primary_aggregation_type =  true);  OR system.memory.usage (cloud.provider
-      =  azure);
+    importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachines
+      | microsoft.compute/virtualmachines) & (primary_aggregation_type =  true);  OR
+      Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets/virtualMachines
+      | microsoft.compute/virtualmachinescalesets/virtualmachines) & (primary_aggregation_type
+      =  true);  OR system.memory.usage (cloud.provider =  azure);
   Azure Virtual Machine classic (Azure monitor):
     dashboard_group: Azure Virtual Machines
     view_support: N/A
-    importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachines)
-      & (primary_aggregation_type =  true);  OR Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets/virtualMachines)
-      & (primary_aggregation_type =  true);  OR system.memory.usage (cloud.provider
-      =  azure);
+    importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachines
+      | microsoft.compute/virtualmachines) & (primary_aggregation_type =  true);  OR
+      Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets/virtualMachines
+      | microsoft.compute/virtualmachinescalesets/virtualmachines) & (primary_aggregation_type
+      =  true);  OR system.memory.usage (cloud.provider =  azure);
   Azure Virtual Machines:
     dashboard_group: Azure Virtual Machines
     view_support: aggregated
-    importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachines)
-      & (primary_aggregation_type =  true);  OR Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets/virtualMachines)
-      & (primary_aggregation_type =  true);  OR system.memory.usage (cloud.provider
-      =  azure);
+    importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachines
+      | microsoft.compute/virtualmachines) & (primary_aggregation_type =  true);  OR
+      Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets/virtualMachines
+      | microsoft.compute/virtualmachinescalesets/virtualmachines) & (primary_aggregation_type
+      =  true);  OR system.memory.usage (cloud.provider =  azure);
   Azure Virtual Machines (Azure monitor):
     dashboard_group: Azure Virtual Machines
     view_support: aggregated
-    importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachines)
-      & (primary_aggregation_type =  true);  OR Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets/virtualMachines)
-      & (primary_aggregation_type =  true);  OR system.memory.usage (cloud.provider
-      =  azure);
+    importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachines
+      | microsoft.compute/virtualmachines) & (primary_aggregation_type =  true);  OR
+      Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets/virtualMachines
+      | microsoft.compute/virtualmachinescalesets/virtualmachines) & (primary_aggregation_type
+      =  true);  OR system.memory.usage (cloud.provider =  azure);
   Azure Virtual Machines logs:
     dashboard_group: Azure Virtual Machines
     view_support: aggregated
-    importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachines)
-      & (primary_aggregation_type =  true);  OR Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets/virtualMachines)
-      & (primary_aggregation_type =  true);  OR system.memory.usage (cloud.provider
-      =  azure);
+    importQualifiers: Percentage CPU (resource_type =  Microsoft.Compute/virtualMachines
+      | microsoft.compute/virtualmachines) & (primary_aggregation_type =  true);  OR
+      Percentage CPU (resource_type =  Microsoft.Compute/virtualMachineScaleSets/virtualMachines
+      | microsoft.compute/virtualmachinescalesets/virtualmachines) & (primary_aggregation_type
+      =  true);  OR system.memory.usage (cloud.provider =  azure);
   Azure batch account:
     dashboard_group: Azure batch
     view_support: instance
-    importQualifiers: CoreCount (resource_type =  Microsoft.Batch/batchAccounts) &
-      (primary_aggregation_type =  true);
+    importQualifiers: CoreCount (resource_type =  Microsoft.Batch/batchAccounts |
+      microsoft.batch/batchaccounts) & (primary_aggregation_type =  true);
   Azure batch account logs:
     dashboard_group: Azure batch
     view_support: aggregated
-    importQualifiers: CoreCount (resource_type =  Microsoft.Batch/batchAccounts) &
-      (primary_aggregation_type =  true);
+    importQualifiers: CoreCount (resource_type =  Microsoft.Batch/batchAccounts |
+      microsoft.batch/batchaccounts) & (primary_aggregation_type =  true);
   Azure batch accounts:
     dashboard_group: Azure batch
     view_support: aggregated
-    importQualifiers: CoreCount (resource_type =  Microsoft.Batch/batchAccounts) &
-      (primary_aggregation_type =  true);
+    importQualifiers: CoreCount (resource_type =  Microsoft.Batch/batchAccounts |
+      microsoft.batch/batchaccounts) & (primary_aggregation_type =  true);
   Azure redis cache:
     dashboard_group: Azure redis caches
     view_support: instance
     importQualifiers: totalkeys (primary_aggregation_type =  true) & (resource_type
-      =  Microsoft.Cache/Redis);  OR totalkeys0 (primary_aggregation_type =  true)
-      & (resource_type =  Microsoft.Cache/Redis);
+      =  microsoft.cache/redis | Microsoft.Cache/Redis);  OR totalkeys0 (primary_aggregation_type
+      =  true) & (resource_type =  microsoft.cache/redis | Microsoft.Cache/Redis);
   Azure redis caches:
     dashboard_group: Azure redis caches
     view_support: aggregated
     importQualifiers: totalkeys (primary_aggregation_type =  true) & (resource_type
-      =  Microsoft.Cache/Redis);  OR totalkeys0 (primary_aggregation_type =  true)
-      & (resource_type =  Microsoft.Cache/Redis);
+      =  microsoft.cache/redis | Microsoft.Cache/Redis);  OR totalkeys0 (primary_aggregation_type
+      =  true) & (resource_type =  microsoft.cache/redis | Microsoft.Cache/Redis);
   Azure/SignalR hub:
     dashboard_group: Azure SignalR hubs
     view_support: N/A
-    importQualifiers: ConnectionCount (resource_type =  Microsoft.SignalRService/SignalR);
+    importQualifiers: ConnectionCount (resource_type =  Microsoft.SignalRService/SignalR
+      | microsoft.signalrservice/signalr);
   Azure/SignalR hubs:
     dashboard_group: Azure SignalR hubs
     view_support: N/A
-    importQualifiers: ConnectionCount (resource_type =  Microsoft.SignalRService/SignalR);
+    importQualifiers: ConnectionCount (resource_type =  Microsoft.SignalRService/SignalR
+      | microsoft.signalrservice/signalr);
   Backend:
     dashboard_group: Traefik
     view_support: instance
@@ -491,9 +562,10 @@ Dashboards:
     importQualifiers: cluster/node_count (service =  bigtable);  OR server/latencies
       (service =  bigtable);
   Broker:
-    dashboard_group: Kafka
+    dashboard_group: Kafka (OTeL)
     view_support: instance
-    importQualifiers: counter.kafka.produce.total-time.count (plugin =  GenericJMX);
+    importQualifiers: kafka.brokers (host.name =  *);  OR kafka.topic.partitions (host.name
+      =  *) & (topic =  *) & (partition =  *);
   Broker (Default):
     dashboard_group: Amazon MSK
     view_support: N/A
@@ -506,10 +578,15 @@ Dashboards:
     importQualifiers: ActiveControllerCount (namespace =  AWS/Kafka) & (stat =  sum)
       & (Cluster_Name =  *);  OR GlobalPartitionCount (namespace =  AWS/Kafka) & (stat
       =  sum) & (Cluster_Name =  *);
-  Brokers:
+  Broker - Kafka:
     dashboard_group: Kafka
-    view_support: aggregated
+    view_support: instance
     importQualifiers: counter.kafka.produce.total-time.count (plugin =  GenericJMX);
+  Brokers:
+    dashboard_group: Kafka (OTeL)
+    view_support: aggregated
+    importQualifiers: kafka.brokers (host.name =  *);  OR kafka.topic.partitions (host.name
+      =  *) & (topic =  *) & (partition =  *);
   Brokers (Default):
     dashboard_group: Amazon MSK
     view_support: N/A
@@ -522,6 +599,10 @@ Dashboards:
     importQualifiers: ActiveControllerCount (namespace =  AWS/Kafka) & (stat =  sum)
       & (Cluster_Name =  *);  OR GlobalPartitionCount (namespace =  AWS/Kafka) & (stat
       =  sum) & (Cluster_Name =  *);
+  Brokers - Kafka:
+    dashboard_group: Kafka
+    view_support: aggregated
+    importQualifiers: counter.kafka.produce.total-time.count (plugin =  GenericJMX);
   Browser app health:
     dashboard_group: RUM applications
     view_support: N/A
@@ -635,33 +716,39 @@ Dashboards:
       BytesDownloaded (namespace =  AWS/CloudFront) & (stat =  sum);  OR BytesUploaded
       (namespace =  AWS/CloudFront) & (stat =  sum);
   Cluster:
-    dashboard_group: vSphere
+    dashboard_group: Kafka (OTeL)
     view_support: N/A
-    importQualifiers: vsphere.cpu_usage_percent (*);
+    importQualifiers: kafka.brokers (host.name =  *);  OR kafka.topic.partitions (host.name
+      =  *) & (topic =  *) & (partition =  *);
   Cluster - Amazon MSK:
     dashboard_group: Amazon MSK
     view_support: N/A
     importQualifiers: ActiveControllerCount (namespace =  AWS/Kafka) & (stat =  sum)
       & (Cluster_Name =  *);  OR GlobalPartitionCount (namespace =  AWS/Kafka) & (stat
       =  sum) & (Cluster_Name =  *);
+  Cluster - vSphere:
+    dashboard_group: vSphere
+    view_support: N/A
+    importQualifiers: vsphere.cpu_usage_percent (*);
   Cluster overview:
     dashboard_group: Google Kubernetes Engine
     view_support: aggregated
     importQualifiers: container/memory/request_utilization (*);
-  Cluster(s):
-    dashboard_group: Smart Gateway
-    view_support: N/A
-    importQualifiers: traces.totalUnique (cluster =  *);
   Clusters:
-    dashboard_group: vSphere
+    dashboard_group: Kafka (OTeL)
     view_support: N/A
-    importQualifiers: vsphere.cpu_usage_percent (*);
+    importQualifiers: kafka.brokers (host.name =  *);  OR kafka.topic.partitions (host.name
+      =  *) & (topic =  *) & (partition =  *);
   Clusters - Amazon MSK:
     dashboard_group: Amazon MSK
     view_support: N/A
     importQualifiers: ActiveControllerCount (namespace =  AWS/Kafka) & (stat =  sum)
       & (Cluster_Name =  *);  OR GlobalPartitionCount (namespace =  AWS/Kafka) & (stat
       =  sum) & (Cluster_Name =  *);
+  Clusters - vSphere:
+    dashboard_group: vSphere
+    view_support: N/A
+    importQualifiers: vsphere.cpu_usage_percent (*);
   Compute Engine instance:
     dashboard_group: Google Compute Engine
     view_support: instance
@@ -672,11 +759,6 @@ Dashboards:
     view_support: instance
     importQualifiers: instance/cpu/utilization (service =  compute);  OR system.memory.usage
       (cloud.provider =  gcp);
-  Compute Engine instances:
-    dashboard_group: Google Compute Engine
-    view_support: aggregated
-    importQualifiers: instance/cpu/utilization (service =  compute);  OR system.memory.usage
-      (cloud.provider =  gcp);
   Compute Engine instances (StackDriver):
     dashboard_group: Google Compute Engine
     view_support: aggregated
@@ -685,6 +767,11 @@ Dashboards:
   Compute Engine logs:
     dashboard_group: Google Compute Engine
     view_support: N/A
+    importQualifiers: instance/cpu/utilization (service =  compute);  OR system.memory.usage
+      (cloud.provider =  gcp);
+  Compute engines instances:
+    dashboard_group: Google Compute Engine
+    view_support: aggregated
     importQualifiers: instance/cpu/utilization (service =  compute);  OR system.memory.usage
       (cloud.provider =  gcp);
   Connections:
@@ -712,10 +799,20 @@ Dashboards:
     view_support: N/A
     importQualifiers: gauge.consul.health.nodes.passing (plugin =  consul);
   Consumer:
+    dashboard_group: Kafka (OTeL)
+    view_support: N/A
+    importQualifiers: kafka.brokers (host.name =  *);  OR kafka.topic.partitions (host.name
+      =  *) & (topic =  *) & (partition =  *);
+  Consumer - Kafka:
     dashboard_group: Kafka
     view_support: instance
     importQualifiers: counter.kafka.produce.total-time.count (plugin =  GenericJMX);
   Consumers:
+    dashboard_group: Kafka (OTeL)
+    view_support: N/A
+    importQualifiers: kafka.brokers (host.name =  *);  OR kafka.topic.partitions (host.name
+      =  *) & (topic =  *) & (partition =  *);
+  Consumers - Kafka:
     dashboard_group: Kafka
     view_support: aggregated
     importQualifiers: counter.kafka.produce.total-time.count (plugin =  GenericJMX);
@@ -780,11 +877,21 @@ Dashboards:
     view_support: instance
     importQualifiers: tcp.bytes (source.workload.name =  *);  OR tcp.bytes (dest.workload.name
       =  *);
+  DNS - Network explorer tetragon:
+    dashboard_group: Network explorer tetragon
+    view_support: instance
+    importQualifiers: tetragon_socket_stats_txbytes_total (workload =  *);  OR tetragon_socket_stats_txbytes_total
+      (dstworkload =  *);
   DNS overview:
     dashboard_group: Network explorer dashboards
     view_support: aggregated
     importQualifiers: tcp.bytes (source.workload.name =  *);  OR tcp.bytes (dest.workload.name
       =  *);
+  DNS overview - Network explorer tetragon:
+    dashboard_group: Network explorer tetragon
+    view_support: aggregated
+    importQualifiers: tetragon_socket_stats_txbytes_total (workload =  *);  OR tetragon_socket_stats_txbytes_total
+      (dstworkload =  *);
   Data ingest:
     dashboard_group: Organization
     view_support: N/A
@@ -937,6 +1044,22 @@ Dashboards:
     view_support: N/A
     importQualifiers: CPUUtilization (namespace =  AWS/ECS) & (stat =  mean) & (ClusterName
       =  *);  OR cpu.usage.system (ClusterName =  *);
+  ECS Cluster:
+    dashboard_group: AWS ECS (OTel)
+    view_support: instance
+    importQualifiers: container.cpu.utilized (aws.ecs.cluster.name =  *);
+  ECS Clusters:
+    dashboard_group: AWS ECS (OTel)
+    view_support: aggregated
+    importQualifiers: container.cpu.utilized (aws.ecs.cluster.name =  *);
+  ECS Containers:
+    dashboard_group: AWS ECS (OTel)
+    view_support: aggregated
+    importQualifiers: container.cpu.utilized (aws.ecs.cluster.name =  *);
+  ECS Tasks:
+    dashboard_group: AWS ECS (OTel)
+    view_support: aggregated
+    importQualifiers: container.cpu.utilized (aws.ecs.cluster.name =  *);
   ELB instance:
     dashboard_group: AWS ELB
     view_support: instance
@@ -988,17 +1111,21 @@ Dashboards:
   Elastic pool:
     dashboard_group: Azure SQL server elastic pools
     view_support: instance
-    importQualifiers: eDTU_used (resource_type =  Microsoft.Sql/servers/elasticpools)
-      & (primary_aggregation_type =  true);  OR eDTU_limit (resource_type =  Microsoft.Sql/servers/elasticpools)
+    importQualifiers: eDTU_used (resource_type =  Microsoft.Sql/servers/elasticpools
+      | microsoft.sql/servers/elasticpools) & (primary_aggregation_type =  true);  OR
+      eDTU_limit (resource_type =  Microsoft.Sql/servers/elasticpools | microsoft.sql/servers/elasticpools)
       & (primary_aggregation_type =  true);  OR dtu_consumption_percent (resource_type
-      =  Microsoft.Sql/servers/elasticpools) & (primary_aggregation_type =  true);
+      =  Microsoft.Sql/servers/elasticpools | microsoft.sql/servers/elasticpools)
+      & (primary_aggregation_type =  true);
   Elastic pools:
     dashboard_group: Azure SQL server elastic pools
     view_support: aggregated
-    importQualifiers: eDTU_used (resource_type =  Microsoft.Sql/servers/elasticpools)
-      & (primary_aggregation_type =  true);  OR eDTU_limit (resource_type =  Microsoft.Sql/servers/elasticpools)
+    importQualifiers: eDTU_used (resource_type =  Microsoft.Sql/servers/elasticpools
+      | microsoft.sql/servers/elasticpools) & (primary_aggregation_type =  true);  OR
+      eDTU_limit (resource_type =  Microsoft.Sql/servers/elasticpools | microsoft.sql/servers/elasticpools)
       & (primary_aggregation_type =  true);  OR dtu_consumption_percent (resource_type
-      =  Microsoft.Sql/servers/elasticpools) & (primary_aggregation_type =  true);
+      =  Microsoft.Sql/servers/elasticpools | microsoft.sql/servers/elasticpools)
+      & (primary_aggregation_type =  true);
   Elasticsearch:
     dashboard_group: Elasticsearch
     view_support: N/A
@@ -1101,6 +1228,30 @@ Dashboards:
     dashboard_group: Envoy
     view_support: N/A
     importQualifiers: upstream_rq_completed (mesh =  *) & (_exists_ !=  plugin);
+  Envoy cluster:
+    dashboard_group: Envoy summary
+    view_support: instance
+    importQualifiers: envoy_cluster_upstream_cx_total (cluster_name =  *);
+  Envoy clusters:
+    dashboard_group: Envoy summary
+    view_support: aggregated
+    importQualifiers: envoy_cluster_upstream_cx_total (cluster_name =  *);
+  Envoy listener:
+    dashboard_group: Envoy summary
+    view_support: instance
+    importQualifiers: envoy_cluster_upstream_cx_total (cluster_name =  *);
+  Envoy listeners:
+    dashboard_group: Envoy summary
+    view_support: aggregated
+    importQualifiers: envoy_cluster_upstream_cx_total (cluster_name =  *);
+  Envoy service:
+    dashboard_group: Envoy istio
+    view_support: N/A
+    importQualifiers: envoy_cluster_membership_healthy (*);
+  Envoy services:
+    dashboard_group: Envoy istio
+    view_support: N/A
+    importQualifiers: envoy_cluster_membership_healthy (*);
   Firehose:
     dashboard_group: VMware Tanzu AS
     view_support: N/A
@@ -1113,25 +1264,29 @@ Dashboards:
   Flexibleserver:
     dashboard_group: Azure PostgreSQL - Flexible server
     view_support: instance
-    importQualifiers: cpu_percent (resource_type =  Microsoft.DBforPostgreSQL/flexibleServers)
-      & (azure_resource_name =  *);  OR active_connections (resource_type =  Microsoft.DBforPostgreSQL/flexibleServers)
-      & (azure_resource_name =  *);
+    importQualifiers: cpu_percent (resource_type =  microsoft.dbforpostgresql/flexibleservers
+      | Microsoft.DBforPostgreSQL/flexibleServers) & (azure_resource_name =  *);  OR
+      active_connections (resource_type =  Microsoft.DBforPostgreSQL/flexibleServers
+      | microsoft.dbforpostgresql/flexibleservers) & (azure_resource_name =  *);
   Flexibleserver - Azure MySQL - Flexible server:
     dashboard_group: Azure MySQL - Flexible server
     view_support: instance
-    importQualifiers: cpu_percent (resource_type =  Microsoft.DBforMySQL/flexibleServers);  OR
-      active_connections (resource_type =  Microsoft.DBforMySQL/flexibleServers);
+    importQualifiers: cpu_percent (resource_type =  microsoft.dbformysql/flexibleservers
+      | Microsoft.DBforMySQL/flexibleServers);  OR active_connections (resource_type
+      =  microsoft.dbformysql/flexibleservers | Microsoft.DBforMySQL/flexibleServers);
   Flexibleserver overview:
     dashboard_group: Azure PostgreSQL - Flexible server
     view_support: aggregated
-    importQualifiers: cpu_percent (resource_type =  Microsoft.DBforPostgreSQL/flexibleServers)
-      & (azure_resource_name =  *);  OR active_connections (resource_type =  Microsoft.DBforPostgreSQL/flexibleServers)
-      & (azure_resource_name =  *);
+    importQualifiers: cpu_percent (resource_type =  microsoft.dbforpostgresql/flexibleservers
+      | Microsoft.DBforPostgreSQL/flexibleServers) & (azure_resource_name =  *);  OR
+      active_connections (resource_type =  Microsoft.DBforPostgreSQL/flexibleServers
+      | microsoft.dbforpostgresql/flexibleservers) & (azure_resource_name =  *);
   Flexibleserver overview - Azure MySQL - Flexible server:
     dashboard_group: Azure MySQL - Flexible server
     view_support: aggregated
-    importQualifiers: cpu_percent (resource_type =  Microsoft.DBforMySQL/flexibleServers);  OR
-      active_connections (resource_type =  Microsoft.DBforMySQL/flexibleServers);
+    importQualifiers: cpu_percent (resource_type =  microsoft.dbformysql/flexibleservers
+      | Microsoft.DBforMySQL/flexibleServers);  OR active_connections (resource_type
+      =  microsoft.dbformysql/flexibleservers | Microsoft.DBforMySQL/flexibleServers);
   GCF (SignalFx) function:
     dashboard_group: Google Cloud Functions (SignalFx)
     view_support: N/A
@@ -1157,6 +1312,14 @@ Dashboards:
     view_support: N/A
     importQualifiers: sf.org.num.azureServiceClientCallCount (*);  OR sf.org.num.gcpServiceClientCallCount
       (*);
+  GCP Vertex AI:
+    dashboard_group: GCP Vertex AI
+    view_support: instance
+    importQualifiers: publisher/online_serving/token_count (sf_key =  gcp_id);
+  GCP Vertex AIs:
+    dashboard_group: GCP Vertex AI
+    view_support: aggregated
+    importQualifiers: publisher/online_serving/token_count (sf_key =  gcp_id);
   GKE node:
     dashboard_group: Google Kubernetes Engine
     view_support: aggregated
@@ -1165,6 +1328,18 @@ Dashboards:
     dashboard_group: Google Kubernetes Engine
     view_support: aggregated
     importQualifiers: container/memory/request_utilization (*);
+  GPU health:
+    dashboard_group: Nvidia GPU
+    view_support: aggregated
+    importQualifiers: DCGM_FI_DEV_GPU_UTIL (sf_key =  gpu) & (sf_key =  UUID);
+  GPU performance:
+    dashboard_group: Nvidia GPU
+    view_support: aggregated
+    importQualifiers: DCGM_FI_DEV_GPU_UTIL (sf_key =  gpu) & (sf_key =  UUID);
+  GPU usage:
+    dashboard_group: Nvidia GPU
+    view_support: instance
+    importQualifiers: DCGM_FI_DEV_GPU_UTIL (sf_key =  gpu) & (sf_key =  UUID);
   Garden container:
     dashboard_group: Cloud foundry
     view_support: N/A
@@ -1179,6 +1354,10 @@ Dashboards:
     importQualifiers: sidekiq_queue_size (host.name =  *);  OR sidekiq_queue_latency
       (host.name =  *);  OR grpc_server_handled_total (host.name =  *);  OR gitlab_workhorse_http_request_duration_seconds
       (host.name =  *);  OR nginx_vts_server_requests_total (host.name =  *);
+  Global Host Overview:
+    dashboard_group: Host overview
+    view_support: N/A
+    importQualifiers: cpu.utilization (host.name =  *);
   Google Cloud SQL:
     dashboard_group: Google Cloud SQL
     view_support: N/A
@@ -1207,16 +1386,31 @@ Dashboards:
     view_support: instance
     importQualifiers: tcp.bytes (source.workload.name =  *);  OR tcp.bytes (dest.workload.name
       =  *);
+  HTTP - Network explorer tetragon:
+    dashboard_group: Network explorer tetragon
+    view_support: instance
+    importQualifiers: tetragon_socket_stats_txbytes_total (workload =  *);  OR tetragon_socket_stats_txbytes_total
+      (dstworkload =  *);
   HTTP - Outbound:
     dashboard_group: Network explorer dashboards
     view_support: instance
     importQualifiers: tcp.bytes (source.workload.name =  *);  OR tcp.bytes (dest.workload.name
       =  *);
+  HTTP - Outbound - Network explorer tetragon:
+    dashboard_group: Network explorer tetragon
+    view_support: instance
+    importQualifiers: tetragon_socket_stats_txbytes_total (workload =  *);  OR tetragon_socket_stats_txbytes_total
+      (dstworkload =  *);
   HTTP overview:
     dashboard_group: Network explorer dashboards
     view_support: aggregated
     importQualifiers: tcp.bytes (source.workload.name =  *);  OR tcp.bytes (dest.workload.name
       =  *);
+  HTTP overview - Network explorer tetragon:
+    dashboard_group: Network explorer tetragon
+    view_support: aggregated
+    importQualifiers: tetragon_socket_stats_txbytes_total (workload =  *);  OR tetragon_socket_stats_txbytes_total
+      (dstworkload =  *);
   Heroku Dynos:
     dashboard_group: Heroku
     view_support: N/A
@@ -1234,6 +1428,10 @@ Dashboards:
     view_support: instance
     importQualifiers: mysql.operations (operation =  *) & (host.name =  *);  OR mysql.commands
       (host.name =  *) & (command =  *);
+  Host (OTel):
+    dashboard_group: Host overview
+    view_support: instance
+    importQualifiers: cpu.utilization (host.name =  *);
   Host - Data Center Hosts:
     dashboard_group: Data Center Hosts
     view_support: instance
@@ -1247,6 +1445,10 @@ Dashboards:
     dashboard_group: SAP HANA
     view_support: N/A
     importQualifiers: sap.hana.host.cpu.user (*);
+  Host - Weaviate:
+    dashboard_group: Weaviate
+    view_support: instance
+    importQualifiers: object_count (*);
   Host with agent installed:
     dashboard_group: Hosts with agent installed
     view_support: N/A
@@ -1256,6 +1458,10 @@ Dashboards:
     view_support: aggregated
     importQualifiers: mysql.operations (operation =  *) & (host.name =  *);  OR mysql.commands
       (host.name =  *) & (command =  *);
+  Hosts (OTel):
+    dashboard_group: Host overview
+    view_support: aggregated
+    importQualifiers: cpu.utilization (host.name =  *);
   Hosts - Data Center Hosts:
     dashboard_group: Data Center Hosts
     view_support: aggregated
@@ -1265,6 +1471,10 @@ Dashboards:
     dashboard_group: PostgreSQL(OTel)
     view_support: aggregated
     importQualifiers: postgresql.backends (*);  OR postgresql.db_size (*);
+  Hosts - Weaviate:
+    dashboard_group: Weaviate
+    view_support: aggregated
+    importQualifiers: object_count (*);
   Hosts with agent installed:
     dashboard_group: Hosts with agent installed
     view_support: N/A
@@ -1277,7 +1487,15 @@ Dashboards:
     dashboard_group: SAP HANA
     view_support: N/A
     importQualifiers: sap.hana.host.cpu.user (*);
+  IIS Servers:
+    dashboard_group: Windows IIS (OTel)
+    view_support: aggregated
+    importQualifiers: iis.uptime (*);
   IIS server:
+    dashboard_group: Windows IIS (OTel)
+    view_support: instance
+    importQualifiers: iis.uptime (*);
+  IIS server - Windows IIS:
     dashboard_group: Windows IIS
     view_support: instance
     importQualifiers: web_service.total_method_requests_sec (*);
@@ -1316,10 +1534,11 @@ Dashboards:
     view_support: aggregated
     importQualifiers: mongodb.storage.size (server.address =  *);  OR mongodb.memory.usage
       (server.address =  *) & (database =  *);
-  Internals:
-    dashboard_group: Smart Gateway
+  Intersight:
+    dashboard_group: Cisco AI PODs Dashboard
     view_support: N/A
-    importQualifiers: traces.totalUnique (cluster =  *);
+    importQualifiers: DCGM_FI_DEV_POWER_USAGE (*);  OR num_requests_waiting (*);  OR
+      k8s.deployment.available (k8s.nimservice.name =  *);  OR cisco_up (*);
   Intro to Splunk Observability Cloud:
     dashboard_group: Sample data
     view_support: N/A
@@ -1362,9 +1581,29 @@ Dashboards:
     view_support: N/A
     importQualifiers: jira_all_users_gauge (service.name =  jira) & (host.name =  *);  OR
       jira_active_users_gauge (service.name =  jira) & (host.name =  *);
+  K8s Daemonset:
+    dashboard_group: Kubernetes - Workloads
+    view_support: instance
+    importQualifiers: k8s.deployment.available (k8s.deployment.name =  *) & (k8s.cluster.name
+      =  *);  OR k8s.replicaset.available (k8s.replicaset.name =  *) & (k8s.cluster.name
+      =  *);  OR k8s.daemonset.current_scheduled_nodes (k8s.daemonsets.name =  *)
+      & (k8s.node.name =  *);  OR k8s.statefulset.current_pods (k8s.statefulset.name
+      =  *) & (k8s.cluster.name =  *);  OR k8s.job.active_pods (k8s.job.name =  *)
+      & (k8s.cluster.name =  *);  OR k8s.cronjob.active_jobs (k8s.cronjob.name =  *)
+      & (k8s.cluster.name =  *);
+  K8s Daemonsets:
+    dashboard_group: Kubernetes - Workloads
+    view_support: aggregated
+    importQualifiers: k8s.deployment.available (k8s.deployment.name =  *) & (k8s.cluster.name
+      =  *);  OR k8s.replicaset.available (k8s.replicaset.name =  *) & (k8s.cluster.name
+      =  *);  OR k8s.daemonset.current_scheduled_nodes (k8s.daemonsets.name =  *)
+      & (k8s.node.name =  *);  OR k8s.statefulset.current_pods (k8s.statefulset.name
+      =  *) & (k8s.cluster.name =  *);  OR k8s.job.active_pods (k8s.job.name =  *)
+      & (k8s.cluster.name =  *);  OR k8s.cronjob.active_jobs (k8s.cronjob.name =  *)
+      & (k8s.cluster.name =  *);
   K8s cluster:
     dashboard_group: Kubernetes
-    view_support: N/A
+    view_support: instance
     importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);  OR k8s.pod.phase
       (sf_key =  k8s.workload.name);  OR kubernetes.pod_phase (sf_key =  kubernetes_workload_name);  OR
       container_cpu_utilization (sf_key =  kubernetes_pod_uid);  OR container.cpu.time
@@ -1392,7 +1631,7 @@ Dashboards:
       (sf_key =  k8s.pod.uid);
   K8s containers:
     dashboard_group: Kubernetes
-    view_support: aggregated
+    view_support: instance
     importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);  OR k8s.pod.phase
       (sf_key =  k8s.workload.name);  OR kubernetes.pod_phase (sf_key =  kubernetes_workload_name);  OR
       container_cpu_utilization (sf_key =  kubernetes_pod_uid);  OR container.cpu.time
@@ -1404,13 +1643,101 @@ Dashboards:
       (sf_key =  k8s.workload.name);  OR kubernetes.pod_phase (sf_key =  kubernetes_workload_name);  OR
       container_cpu_utilization (sf_key =  kubernetes_pod_uid);  OR container.cpu.time
       (sf_key =  k8s.pod.uid);
+  K8s control plane summary:
+    dashboard_group: Kubernetes
+    view_support: N/A
+    importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);  OR k8s.pod.phase
+      (sf_key =  k8s.workload.name);  OR kubernetes.pod_phase (sf_key =  kubernetes_workload_name);  OR
+      container_cpu_utilization (sf_key =  kubernetes_pod_uid);  OR container.cpu.time
+      (sf_key =  k8s.pod.uid);
+  K8s cronjob:
+    dashboard_group: Kubernetes - Workloads
+    view_support: instance
+    importQualifiers: k8s.deployment.available (k8s.deployment.name =  *) & (k8s.cluster.name
+      =  *);  OR k8s.replicaset.available (k8s.replicaset.name =  *) & (k8s.cluster.name
+      =  *);  OR k8s.daemonset.current_scheduled_nodes (k8s.daemonsets.name =  *)
+      & (k8s.node.name =  *);  OR k8s.statefulset.current_pods (k8s.statefulset.name
+      =  *) & (k8s.cluster.name =  *);  OR k8s.job.active_pods (k8s.job.name =  *)
+      & (k8s.cluster.name =  *);  OR k8s.cronjob.active_jobs (k8s.cronjob.name =  *)
+      & (k8s.cluster.name =  *);
+  K8s cronjobs:
+    dashboard_group: Kubernetes - Workloads
+    view_support: aggregated
+    importQualifiers: k8s.deployment.available (k8s.deployment.name =  *) & (k8s.cluster.name
+      =  *);  OR k8s.replicaset.available (k8s.replicaset.name =  *) & (k8s.cluster.name
+      =  *);  OR k8s.daemonset.current_scheduled_nodes (k8s.daemonsets.name =  *)
+      & (k8s.node.name =  *);  OR k8s.statefulset.current_pods (k8s.statefulset.name
+      =  *) & (k8s.cluster.name =  *);  OR k8s.job.active_pods (k8s.job.name =  *)
+      & (k8s.cluster.name =  *);  OR k8s.cronjob.active_jobs (k8s.cronjob.name =  *)
+      & (k8s.cluster.name =  *);
+  K8s deployment:
+    dashboard_group: Kubernetes - Workloads
+    view_support: instance
+    importQualifiers: k8s.deployment.available (k8s.deployment.name =  *) & (k8s.cluster.name
+      =  *);  OR k8s.replicaset.available (k8s.replicaset.name =  *) & (k8s.cluster.name
+      =  *);  OR k8s.daemonset.current_scheduled_nodes (k8s.daemonsets.name =  *)
+      & (k8s.node.name =  *);  OR k8s.statefulset.current_pods (k8s.statefulset.name
+      =  *) & (k8s.cluster.name =  *);  OR k8s.job.active_pods (k8s.job.name =  *)
+      & (k8s.cluster.name =  *);  OR k8s.cronjob.active_jobs (k8s.cronjob.name =  *)
+      & (k8s.cluster.name =  *);
+  K8s deployments:
+    dashboard_group: Kubernetes - Workloads
+    view_support: aggregated
+    importQualifiers: k8s.deployment.available (k8s.deployment.name =  *) & (k8s.cluster.name
+      =  *);  OR k8s.replicaset.available (k8s.replicaset.name =  *) & (k8s.cluster.name
+      =  *);  OR k8s.daemonset.current_scheduled_nodes (k8s.daemonsets.name =  *)
+      & (k8s.node.name =  *);  OR k8s.statefulset.current_pods (k8s.statefulset.name
+      =  *) & (k8s.cluster.name =  *);  OR k8s.job.active_pods (k8s.job.name =  *)
+      & (k8s.cluster.name =  *);  OR k8s.cronjob.active_jobs (k8s.cronjob.name =  *)
+      & (k8s.cluster.name =  *);
+  K8s job:
+    dashboard_group: Kubernetes - Workloads
+    view_support: instance
+    importQualifiers: k8s.deployment.available (k8s.deployment.name =  *) & (k8s.cluster.name
+      =  *);  OR k8s.replicaset.available (k8s.replicaset.name =  *) & (k8s.cluster.name
+      =  *);  OR k8s.daemonset.current_scheduled_nodes (k8s.daemonsets.name =  *)
+      & (k8s.node.name =  *);  OR k8s.statefulset.current_pods (k8s.statefulset.name
+      =  *) & (k8s.cluster.name =  *);  OR k8s.job.active_pods (k8s.job.name =  *)
+      & (k8s.cluster.name =  *);  OR k8s.cronjob.active_jobs (k8s.cronjob.name =  *)
+      & (k8s.cluster.name =  *);
+  K8s jobs:
+    dashboard_group: Kubernetes - Workloads
+    view_support: aggregated
+    importQualifiers: k8s.deployment.available (k8s.deployment.name =  *) & (k8s.cluster.name
+      =  *);  OR k8s.replicaset.available (k8s.replicaset.name =  *) & (k8s.cluster.name
+      =  *);  OR k8s.daemonset.current_scheduled_nodes (k8s.daemonsets.name =  *)
+      & (k8s.node.name =  *);  OR k8s.statefulset.current_pods (k8s.statefulset.name
+      =  *) & (k8s.cluster.name =  *);  OR k8s.job.active_pods (k8s.job.name =  *)
+      & (k8s.cluster.name =  *);  OR k8s.cronjob.active_jobs (k8s.cronjob.name =  *)
+      & (k8s.cluster.name =  *);
   K8s metrics adapter:
     dashboard_group: SignalFx k8s metric adapter
     view_support: N/A
     importQualifiers: hpas_with_metrics (*);
+  K8s namespace:
+    dashboard_group: Kubernetes
+    view_support: instance
+    importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);  OR k8s.pod.phase
+      (sf_key =  k8s.workload.name);  OR kubernetes.pod_phase (sf_key =  kubernetes_workload_name);  OR
+      container_cpu_utilization (sf_key =  kubernetes_pod_uid);  OR container.cpu.time
+      (sf_key =  k8s.pod.uid);
+  K8s namespaces:
+    dashboard_group: Kubernetes
+    view_support: aggregated
+    importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);  OR k8s.pod.phase
+      (sf_key =  k8s.workload.name);  OR kubernetes.pod_phase (sf_key =  kubernetes_workload_name);  OR
+      container_cpu_utilization (sf_key =  kubernetes_pod_uid);  OR container.cpu.time
+      (sf_key =  k8s.pod.uid);
   K8s node:
     dashboard_group: Kubernetes
     view_support: instance
+    importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);  OR k8s.pod.phase
+      (sf_key =  k8s.workload.name);  OR kubernetes.pod_phase (sf_key =  kubernetes_workload_name);  OR
+      container_cpu_utilization (sf_key =  kubernetes_pod_uid);  OR container.cpu.time
+      (sf_key =  k8s.pod.uid);
+  K8s node events:
+    dashboard_group: Kubernetes
+    view_support: aggregated
     importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);  OR k8s.pod.phase
       (sf_key =  k8s.workload.name);  OR kubernetes.pod_phase (sf_key =  kubernetes_workload_name);  OR
       container_cpu_utilization (sf_key =  kubernetes_pod_uid);  OR container.cpu.time
@@ -1450,6 +1777,13 @@ Dashboards:
       (sf_key =  k8s.workload.name);  OR kubernetes.pod_phase (sf_key =  kubernetes_workload_name);  OR
       container_cpu_utilization (sf_key =  kubernetes_pod_uid);  OR container.cpu.time
       (sf_key =  k8s.pod.uid);
+  K8s pod events:
+    dashboard_group: Kubernetes
+    view_support: instance
+    importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);  OR k8s.pod.phase
+      (sf_key =  k8s.workload.name);  OR kubernetes.pod_phase (sf_key =  kubernetes_workload_name);  OR
+      container_cpu_utilization (sf_key =  kubernetes_pod_uid);  OR container.cpu.time
+      (sf_key =  k8s.pod.uid);
   K8s pod logs:
     dashboard_group: Kubernetes
     view_support: instance
@@ -1459,11 +1793,31 @@ Dashboards:
       (sf_key =  k8s.pod.uid);
   K8s pods:
     dashboard_group: Kubernetes
-    view_support: instance
+    view_support: aggregated
     importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);  OR k8s.pod.phase
       (sf_key =  k8s.workload.name);  OR kubernetes.pod_phase (sf_key =  kubernetes_workload_name);  OR
       container_cpu_utilization (sf_key =  kubernetes_pod_uid);  OR container.cpu.time
       (sf_key =  k8s.pod.uid);
+  K8s statefulset:
+    dashboard_group: Kubernetes - Workloads
+    view_support: instance
+    importQualifiers: k8s.deployment.available (k8s.deployment.name =  *) & (k8s.cluster.name
+      =  *);  OR k8s.replicaset.available (k8s.replicaset.name =  *) & (k8s.cluster.name
+      =  *);  OR k8s.daemonset.current_scheduled_nodes (k8s.daemonsets.name =  *)
+      & (k8s.node.name =  *);  OR k8s.statefulset.current_pods (k8s.statefulset.name
+      =  *) & (k8s.cluster.name =  *);  OR k8s.job.active_pods (k8s.job.name =  *)
+      & (k8s.cluster.name =  *);  OR k8s.cronjob.active_jobs (k8s.cronjob.name =  *)
+      & (k8s.cluster.name =  *);
+  K8s statefulsets:
+    dashboard_group: Kubernetes - Workloads
+    view_support: aggregated
+    importQualifiers: k8s.deployment.available (k8s.deployment.name =  *) & (k8s.cluster.name
+      =  *);  OR k8s.replicaset.available (k8s.replicaset.name =  *) & (k8s.cluster.name
+      =  *);  OR k8s.daemonset.current_scheduled_nodes (k8s.daemonsets.name =  *)
+      & (k8s.node.name =  *);  OR k8s.statefulset.current_pods (k8s.statefulset.name
+      =  *) & (k8s.cluster.name =  *);  OR k8s.job.active_pods (k8s.job.name =  *)
+      & (k8s.cluster.name =  *);  OR k8s.cronjob.active_jobs (k8s.cronjob.name =  *)
+      & (k8s.cluster.name =  *);
   K8s workload:
     dashboard_group: Kubernetes
     view_support: instance
@@ -1472,6 +1826,13 @@ Dashboards:
       container_cpu_utilization (sf_key =  kubernetes_pod_uid);  OR container.cpu.time
       (sf_key =  k8s.pod.uid);
   K8s workloads:
+    dashboard_group: Kubernetes
+    view_support: aggregated
+    importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);  OR k8s.pod.phase
+      (sf_key =  k8s.workload.name);  OR kubernetes.pod_phase (sf_key =  kubernetes_workload_name);  OR
+      container_cpu_utilization (sf_key =  kubernetes_pod_uid);  OR container.cpu.time
+      (sf_key =  k8s.pod.uid);
+  K8s workloads events:
     dashboard_group: Kubernetes
     view_support: aggregated
     importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);  OR k8s.pod.phase
@@ -1591,12 +1952,27 @@ Dashboards:
     importQualifiers: ConcurrentExecutions (namespace =  AWS/Lambda) & (stat =  upper)
       & (Resource =  *);  OR Duration (namespace =  AWS/Lambda) & (Resource =  *)
       & (stat =  mean);
+  LangChain:
+    dashboard_group: LangChain
+    view_support: instance
+    importQualifiers: gen_ai.client.operation.duration (gen_ai.system =  langchain);
+  LangChains:
+    dashboard_group: LangChain
+    view_support: aggregated
+    importQualifiers: gen_ai.client.operation.duration (gen_ai.system =  langchain);
   License usage overview:
     dashboard_group: Executive Level
     view_support: N/A
     importQualifiers: service.request.count (sf_environment =  *) & (sf_service =  *);  OR
       sf.org.numLogsReceivedByToken (*);  OR rum.page_view.count (*);  OR rum.page_view.count
-      (sf_ua_browsername =  *);  OR sf.org.apm.numContainers (*);
+      (sf_ua_browsername =  *);  OR sf.org.apm.numContainers (*);  OR synthetics.run.count
+      (test_type =  *) & (test =  *);  OR synthetics.run.uptime.percent (test =  *)
+      & (location =  *);
+  LiteLLM:
+    dashboard_group: LiteLLM
+    view_support: N/A
+    importQualifiers: en_ai.client.operation.duration (gen_ai.system =  litellm);  OR
+      gen_ai.client.token.usage (gen_ai.system =  litellm);
   Log Observer data usage:
     dashboard_group: Log Observer usage
     view_support: N/A
@@ -1607,7 +1983,9 @@ Dashboards:
     view_support: N/A
     importQualifiers: service.request.count (sf_environment =  *) & (sf_service =  *);  OR
       sf.org.numLogsReceivedByToken (*);  OR rum.page_view.count (*);  OR rum.page_view.count
-      (sf_ua_browsername =  *);  OR sf.org.apm.numContainers (*);
+      (sf_ua_browsername =  *);  OR sf.org.apm.numContainers (*);  OR synthetics.run.count
+      (test_type =  *) & (test =  *);  OR synthetics.run.uptime.percent (test =  *)
+      & (location =  *);
   Logstash:
     dashboard_group: Logstash
     view_support: N/A
@@ -1627,22 +2005,6 @@ Dashboards:
     view_support: N/A
     importQualifiers: gauge.hadoop.resource.manager.apps.progress (plugin =  apache_hadoop);  OR
       gauge.hadoop.resource.manager.apps.vcoreSeconds (plugin =  apache_hadoop);
-  Marathon:
-    dashboard_group: Mesosphere marathon
-    view_support: N/A
-    importQualifiers: gauge.marathon.app.instances.total (plugin =  marathon);
-  Marathon application:
-    dashboard_group: Mesosphere marathon
-    view_support: N/A
-    importQualifiers: gauge.marathon.app.instances.total (plugin =  marathon);
-  Marathon resources:
-    dashboard_group: Mesosphere marathon
-    view_support: N/A
-    importQualifiers: gauge.marathon.app.instances.total (plugin =  marathon);
-  Marathon task:
-    dashboard_group: Mesosphere marathon
-    view_support: N/A
-    importQualifiers: gauge.marathon.app.instances.total (plugin =  marathon);
   Memcached:
     dashboard_group: Memcached
     view_support: N/A
@@ -1651,22 +2013,6 @@ Dashboards:
     dashboard_group: Memcached
     view_support: N/A
     importQualifiers: df.cache.used (plugin =  memcached);
-  Mesos agent:
-    dashboard_group: Mesos
-    view_support: N/A
-    importQualifiers: percent.slave_cpus_percent (plugin =  mesos);
-  Mesos cluster:
-    dashboard_group: Mesos
-    view_support: N/A
-    importQualifiers: percent.slave_cpus_percent (plugin =  mesos);
-  Mesos clusters:
-    dashboard_group: Mesos
-    view_support: N/A
-    importQualifiers: percent.slave_cpus_percent (plugin =  mesos);
-  Mesos master:
-    dashboard_group: Mesos
-    view_support: N/A
-    importQualifiers: percent.slave_cpus_percent (plugin =  mesos);
   Microsoft SQL database:
     dashboard_group: Microsoft SQL server
     view_support: instance
@@ -1683,6 +2029,16 @@ Dashboards:
     dashboard_group: Microsoft SQL server
     view_support: aggregated
     importQualifiers: sqlserver_server_properties.db_online (plugin =  telegraf-sqlserver);
+  Milvus Instance:
+    dashboard_group: Milvus
+    view_support: N/A
+    importQualifiers: milvus_num_node (role_name =  *);  OR milvus_proxy_req_count
+      (function_name =  *);
+  Milvus Instances:
+    dashboard_group: Milvus
+    view_support: N/A
+    importQualifiers: milvus_num_node (role_name =  *);  OR milvus_proxy_req_count
+      (function_name =  *);
   Mobile app health:
     dashboard_group: RUM applications
     view_support: N/A
@@ -1717,13 +2073,34 @@ Dashboards:
     importQualifiers: mysql.operations (operation =  *) & (host.name =  *);  OR mysql.commands
       (host.name =  *) & (command =  *);
   NGINX server:
+    dashboard_group: NGINX (OTel)
+    view_support: N/A
+    importQualifiers: nginx.requests (*);
+  NGINX server - NGINX:
     dashboard_group: NGINX
     view_support: instance
     importQualifiers: nginx_connections.active (plugin =  nginx);
   NGINX servers:
+    dashboard_group: NGINX (OTel)
+    view_support: N/A
+    importQualifiers: nginx.requests (*);
+  NGINX servers - NGINX:
     dashboard_group: NGINX
     view_support: aggregated
     importQualifiers: nginx_connections.active (plugin =  nginx);
+  NIM for LLMs:
+    dashboard_group: Cisco AI PODs Dashboard
+    view_support: N/A
+    importQualifiers: DCGM_FI_DEV_POWER_USAGE (*);  OR num_requests_waiting (*);  OR
+      k8s.deployment.available (k8s.nimservice.name =  *);  OR cisco_up (*);
+  NIM usage:
+    dashboard_group: NVIDIA NIM
+    view_support: aggregated
+    importQualifiers: num_requests_waiting (*);
+  NIM usage - NVIDIA NIM:
+    dashboard_group: NVIDIA NIM
+    view_support: instance
+    importQualifiers: num_requests_waiting (*);
   Namenode:
     dashboard_group: Hadoop HDFS
     view_support: N/A
@@ -1733,6 +2110,11 @@ Dashboards:
     dashboard_group: OpenStack
     view_support: N/A
     importQualifiers: gauge.openstack.nova.hypervisor.vcpus (plugin =  openstack);
+  Nexus Switches:
+    dashboard_group: Cisco AI PODs Dashboard
+    view_support: N/A
+    importQualifiers: DCGM_FI_DEV_POWER_USAGE (*);  OR num_requests_waiting (*);  OR
+      k8s.deployment.available (k8s.nimservice.name =  *);  OR cisco_up (*);
   Nginx+ overview:
     dashboard_group: NGINX plus
     view_support: N/A
@@ -1753,6 +2135,15 @@ Dashboards:
     dashboard_group: APM NodeJS services
     view_support: N/A
     importQualifiers: process.runtime.nodejs.memory.heap.total (*);
+    importQualifiers: nodejs.memory.heap.total (*);
+  OpenAI:
+    dashboard_group: OpenAI
+    view_support: instance
+    importQualifiers: gen_ai.client.token.usage (*);
+  OpenAIs:
+    dashboard_group: OpenAI
+    view_support: aggregated
+    importQualifiers: gen_ai.client.token.usage (*);
   OpenSearch Domain:
     dashboard_group: AWS OpenSearch
     view_support: instance
@@ -1855,6 +2246,16 @@ Dashboards:
     dashboard_group: Sample data
     view_support: N/A
     importQualifiers: demo.trans.count (*);
+  Pinecone index:
+    dashboard_group: Pinecone
+    view_support: N/A
+    importQualifiers: pinecone_db_record_total (index_name =  *);  OR pinecone_db_storage_size_bytes
+      (index_name =  *) & (capacity_mode =  *);
+  Pinecone indexes:
+    dashboard_group: Pinecone
+    view_support: N/A
+    importQualifiers: pinecone_db_record_total (index_name =  *);  OR pinecone_db_storage_size_bytes
+      (index_name =  *) & (capacity_mode =  *);
   PostgreSQL node:
     dashboard_group: PostgreSQL(Smart Agent)
     view_support: N/A
@@ -1873,10 +2274,20 @@ Dashboards:
     importQualifiers: connections.current (*);  OR opcounter.query (*);  OR mongodbatlas.process.connections
       (*);
   Producer:
+    dashboard_group: Kafka (OTeL)
+    view_support: N/A
+    importQualifiers: kafka.brokers (host.name =  *);  OR kafka.topic.partitions (host.name
+      =  *) & (topic =  *) & (partition =  *);
+  Producer - Kafka:
     dashboard_group: Kafka
     view_support: instance
     importQualifiers: counter.kafka.produce.total-time.count (plugin =  GenericJMX);
   Producers:
+    dashboard_group: Kafka (OTeL)
+    view_support: N/A
+    importQualifiers: kafka.brokers (host.name =  *);  OR kafka.topic.partitions (host.name
+      =  *) & (topic =  *) & (partition =  *);
+  Producers - Kafka:
     dashboard_group: Kafka
     view_support: aggregated
     importQualifiers: counter.kafka.produce.total-time.count (plugin =  GenericJMX);
@@ -1895,6 +2306,15 @@ Dashboards:
     view_support: N/A
     importQualifiers: subscription/backlog_bytes (service =  pubsub);  OR subscription/oldest_unacked_message_age
       (service =  pubsub);  OR topic/send_request_count (service =  pubsub);
+  Pull/Spill Managers:
+    dashboard_group: Ray Clusters
+    view_support: aggregated
+    importQualifiers: ray_cluster_active_nodes (sf_key =  SessionName);
+  Pure storage:
+    dashboard_group: Cisco AI PODs Dashboard
+    view_support: N/A
+    importQualifiers: DCGM_FI_DEV_POWER_USAGE (*);  OR num_requests_waiting (*);  OR
+      k8s.deployment.available (k8s.nimservice.name =  *);  OR cisco_up (*);
   Queries:
     dashboard_group: PostgreSQL (New)
     view_support: N/A
@@ -1927,19 +2347,50 @@ Dashboards:
     view_support: N/A
     importQualifiers: service.request.count (sf_environment =  *) & (sf_service =  *);  OR
       sf.org.numLogsReceivedByToken (*);  OR rum.page_view.count (*);  OR rum.page_view.count
-      (sf_ua_browsername =  *);  OR sf.org.apm.numContainers (*);
+      (sf_ua_browsername =  *);  OR sf.org.apm.numContainers (*);  OR synthetics.run.count
+      (test_type =  *) & (test =  *);  OR synthetics.run.uptime.percent (test =  *)
+      & (location =  *);
+  RUM THROTTLING:
+    dashboard_group: Organization metrics
+    view_support: N/A
+    importQualifiers: sf.org.subscription.customMetrics (*);
   RUM entitlements:
     dashboard_group: Organization metrics
     view_support: N/A
     importQualifiers: sf.org.subscription.customMetrics (*);
   RabbitMQ:
+    dashboard_group: RabbitMQ(OTel)
+    view_support: aggregated
+    importQualifiers: rabbitmq.message.current (rabbitmq.node.name =  *);
+  RabbitMQ - RabbitMQ:
     dashboard_group: RabbitMQ
     view_support: aggregated
     importQualifiers: gauge.node.uptime (plugin =  rabbitmq);
   RabbitMQ node:
+    dashboard_group: RabbitMQ(OTel)
+    view_support: instance
+    importQualifiers: rabbitmq.message.current (rabbitmq.node.name =  *);
+  RabbitMQ node - RabbitMQ:
     dashboard_group: RabbitMQ
     view_support: instance
     importQualifiers: gauge.node.uptime (plugin =  rabbitmq);
+  Ray Cluster:
+    dashboard_group: Ray Clusters
+    view_support: instance
+    importQualifiers: ray_cluster_active_nodes (sf_key =  SessionName);
+  Ray Clusters:
+    dashboard_group: Ray Clusters
+    view_support: aggregated
+    importQualifiers: ray_cluster_active_nodes (sf_key =  SessionName);
+  Ray Components:
+    dashboard_group: Ray Clusters
+    view_support: aggregated
+    importQualifiers: ray_cluster_active_nodes (sf_key =  SessionName);
+  Red Hat OpenShift:
+    dashboard_group: Cisco AI PODs Dashboard
+    view_support: N/A
+    importQualifiers: DCGM_FI_DEV_POWER_USAGE (*);  OR num_requests_waiting (*);  OR
+      k8s.deployment.available (k8s.nimservice.name =  *);  OR cisco_up (*);
   Redis instance:
     dashboard_group: Redis (OTel)
     view_support: instance
@@ -2004,15 +2455,35 @@ Dashboards:
     view_support: aggregated
     importQualifiers: NumberOfMessagesPublished (namespace =  AWS/SNS) & (TopicName
       =  *) & (stat =  sum);
+  SQL Server database:
+    dashboard_group: SQL Server (OTel)
+    view_support: instance
+    importQualifiers: sqlserver.user.connection.count (sqlserver.instance.name =  *)
+      & (host.name =  *);
+  SQL Server databases:
+    dashboard_group: SQL Server (OTel)
+    view_support: aggregated
+    importQualifiers: sqlserver.user.connection.count (sqlserver.instance.name =  *)
+      & (host.name =  *);
+  SQL Server instance:
+    dashboard_group: SQL Server (OTel)
+    view_support: instance
+    importQualifiers: sqlserver.user.connection.count (sqlserver.instance.name =  *)
+      & (host.name =  *);
+  SQL Server instances:
+    dashboard_group: SQL Server (OTel)
+    view_support: aggregated
+    importQualifiers: sqlserver.user.connection.count (sqlserver.instance.name =  *)
+      & (host.name =  *);
   SQL server summary:
     dashboard_group: Microsoft SQL server
     view_support: N/A
     importQualifiers: sqlserver_server_properties.db_online (plugin =  telegraf-sqlserver);
-  SQS queue:
+  SQS Queue:
     dashboard_group: AWS SQS
     view_support: instance
     importQualifiers: NumberOfMessagesSent (namespace =  AWS/SQS) & (stat =  sum);
-  SQS queues:
+  SQS Queues:
     dashboard_group: AWS SQS
     view_support: aggregated
     importQualifiers: NumberOfMessagesSent (namespace =  AWS/SQS) & (stat =  sum);
@@ -2218,6 +2689,14 @@ Dashboards:
     view_support: N/A
     importQualifiers: synthetics.run.count (test_type =  *) & (test =  *);  OR synthetics.run.uptime.percent
       (test =  *) & (location =  *);
+  Synthetics overview:
+    dashboard_group: Executive Level
+    view_support: N/A
+    importQualifiers: service.request.count (sf_environment =  *) & (sf_service =  *);  OR
+      sf.org.numLogsReceivedByToken (*);  OR rum.page_view.count (*);  OR rum.page_view.count
+      (sf_ua_browsername =  *);  OR sf.org.apm.numContainers (*);  OR synthetics.run.count
+      (test_type =  *) & (test =  *);  OR synthetics.run.uptime.percent (test =  *)
+      & (location =  *);
   System Overview:
     dashboard_group: PostgreSQL (New)
     view_support: N/A
@@ -2231,16 +2710,31 @@ Dashboards:
     view_support: instance
     importQualifiers: tcp.bytes (source.workload.name =  *);  OR tcp.bytes (dest.workload.name
       =  *);
+  TCP - Network explorer tetragon:
+    dashboard_group: Network explorer tetragon
+    view_support: instance
+    importQualifiers: tetragon_socket_stats_txbytes_total (workload =  *);  OR tetragon_socket_stats_txbytes_total
+      (dstworkload =  *);
   TCP - Outbound:
     dashboard_group: Network explorer dashboards
     view_support: instance
     importQualifiers: tcp.bytes (source.workload.name =  *);  OR tcp.bytes (dest.workload.name
       =  *);
+  TCP - Outbound - Network explorer tetragon:
+    dashboard_group: Network explorer tetragon
+    view_support: instance
+    importQualifiers: tetragon_socket_stats_txbytes_total (workload =  *);  OR tetragon_socket_stats_txbytes_total
+      (dstworkload =  *);
   TCP overview:
     dashboard_group: Network explorer dashboards
     view_support: aggregated
     importQualifiers: tcp.bytes (source.workload.name =  *);  OR tcp.bytes (dest.workload.name
       =  *);
+  TCP overview - Network explorer tetragon:
+    dashboard_group: Network explorer tetragon
+    view_support: aggregated
+    importQualifiers: tetragon_socket_stats_txbytes_total (workload =  *);  OR tetragon_socket_stats_txbytes_total
+      (dstworkload =  *);
   Table:
     dashboard_group: PostgreSQL (New)
     view_support: N/A
@@ -2281,7 +2775,14 @@ Dashboards:
     view_support: N/A
     importQualifiers: service.request.count (sf_environment =  *) & (sf_service =  *);  OR
       sf.org.numLogsReceivedByToken (*);  OR rum.page_view.count (*);  OR rum.page_view.count
-      (sf_ua_browsername =  *);  OR sf.org.apm.numContainers (*);
+      (sf_ua_browsername =  *);  OR sf.org.apm.numContainers (*);  OR synthetics.run.count
+      (test_type =  *) & (test =  *);  OR synthetics.run.uptime.percent (test =  *)
+      & (location =  *);
+  Tokenomics:
+    dashboard_group: Cisco AI PODs Dashboard
+    view_support: N/A
+    importQualifiers: DCGM_FI_DEV_POWER_USAGE (*);  OR num_requests_waiting (*);  OR
+      k8s.deployment.available (k8s.nimservice.name =  *);  OR cisco_up (*);
   Topic:
     dashboard_group: Amazon MSK
     view_support: N/A
@@ -2294,21 +2795,44 @@ Dashboards:
     importQualifiers: ActiveControllerCount (namespace =  AWS/Kafka) & (stat =  sum)
       & (Cluster_Name =  *);  OR GlobalPartitionCount (namespace =  AWS/Kafka) & (stat
       =  sum) & (Cluster_Name =  *);
+  Transaction details:
+    dashboard_group: APM business transactions
+    view_support: N/A
+    importQualifiers: workflows.count (sf_environment =  *);
+  Transactions overview:
+    dashboard_group: APM business transactions
+    view_support: N/A
+    importQualifiers: workflows.count (sf_environment =  *);
   UDP:
     dashboard_group: Network explorer dashboards
     view_support: instance
     importQualifiers: tcp.bytes (source.workload.name =  *);  OR tcp.bytes (dest.workload.name
       =  *);
+  UDP - Network explorer tetragon:
+    dashboard_group: Network explorer tetragon
+    view_support: instance
+    importQualifiers: tetragon_socket_stats_txbytes_total (workload =  *);  OR tetragon_socket_stats_txbytes_total
+      (dstworkload =  *);
   UDP - Outbound:
     dashboard_group: Network explorer dashboards
     view_support: instance
     importQualifiers: tcp.bytes (source.workload.name =  *);  OR tcp.bytes (dest.workload.name
       =  *);
+  UDP - Outbound - Network explorer tetragon:
+    dashboard_group: Network explorer tetragon
+    view_support: instance
+    importQualifiers: tetragon_socket_stats_txbytes_total (workload =  *);  OR tetragon_socket_stats_txbytes_total
+      (dstworkload =  *);
   UDP overview:
     dashboard_group: Network explorer dashboards
     view_support: aggregated
     importQualifiers: tcp.bytes (source.workload.name =  *);  OR tcp.bytes (dest.workload.name
       =  *);
+  UDP overview - Network explorer tetragon:
+    dashboard_group: Network explorer tetragon
+    view_support: aggregated
+    importQualifiers: tetragon_socket_stats_txbytes_total (workload =  *);  OR tetragon_socket_stats_txbytes_total
+      (dstworkload =  *);
   Uptime (HTTP/Port) test:
     dashboard_group: Synthetic Monitoring
     view_support: N/A
@@ -2369,14 +2893,6 @@ Dashboards:
     dashboard_group: PerfCounterReporter (deprecated)
     view_support: N/A
     importQualifiers: processor.pct_processor_time (sf_key =  host);
-  Workflow details:
-    dashboard_group: APM Business Workflows
-    view_support: N/A
-    importQualifiers: workflows.count (sf_environment =  *);
-  Workflows overview:
-    dashboard_group: APM Business Workflows
-    view_support: N/A
-    importQualifiers: workflows.count (sf_environment =  *);
   Zookeeper node:
     dashboard_group: Zookeeper
     view_support: instance
@@ -2397,6 +2913,26 @@ Dashboards:
     dashboard_group: etcd
     view_support: N/A
     importQualifiers: counter.etcd.leader.counts.success (plugin =  etcd);
+  k8s replicaset:
+    dashboard_group: Kubernetes - Workloads
+    view_support: instance
+    importQualifiers: k8s.deployment.available (k8s.deployment.name =  *) & (k8s.cluster.name
+      =  *);  OR k8s.replicaset.available (k8s.replicaset.name =  *) & (k8s.cluster.name
+      =  *);  OR k8s.daemonset.current_scheduled_nodes (k8s.daemonsets.name =  *)
+      & (k8s.node.name =  *);  OR k8s.statefulset.current_pods (k8s.statefulset.name
+      =  *) & (k8s.cluster.name =  *);  OR k8s.job.active_pods (k8s.job.name =  *)
+      & (k8s.cluster.name =  *);  OR k8s.cronjob.active_jobs (k8s.cronjob.name =  *)
+      & (k8s.cluster.name =  *);
+  k8s replicasets:
+    dashboard_group: Kubernetes - Workloads
+    view_support: aggregated
+    importQualifiers: k8s.deployment.available (k8s.deployment.name =  *) & (k8s.cluster.name
+      =  *);  OR k8s.replicaset.available (k8s.replicaset.name =  *) & (k8s.cluster.name
+      =  *);  OR k8s.daemonset.current_scheduled_nodes (k8s.daemonsets.name =  *)
+      & (k8s.node.name =  *);  OR k8s.statefulset.current_pods (k8s.statefulset.name
+      =  *) & (k8s.cluster.name =  *);  OR k8s.job.active_pods (k8s.job.name =  *)
+      & (k8s.cluster.name =  *);  OR k8s.cronjob.active_jobs (k8s.cronjob.name =  *)
+      & (k8s.cluster.name =  *);
   vCenter:
     dashboard_group: vSphere (legacy)
     view_support: N/A
@@ -2414,3 +2950,35 @@ Dashboards:
     dashboard_group: vSphere
     view_support: aggregated
     importQualifiers: vsphere.cpu_usage_percent (*);
+  vSphere Host:
+    dashboard_group: VMWare vSphere (OTel)
+    view_support: N/A
+    importQualifiers: vcenter.datacenter.host.count (*);
+  vSphere Hosts:
+    dashboard_group: VMWare vSphere (OTel)
+    view_support: N/A
+    importQualifiers: vcenter.datacenter.host.count (*);
+  vSphere VM:
+    dashboard_group: VMWare vSphere (OTel)
+    view_support: N/A
+    importQualifiers: vcenter.datacenter.host.count (*);
+  vSphere VMs:
+    dashboard_group: VMWare vSphere (OTel)
+    view_support: N/A
+    importQualifiers: vcenter.datacenter.host.count (*);
+  vSphere cluster:
+    dashboard_group: VMWare vSphere (OTel)
+    view_support: N/A
+    importQualifiers: vcenter.datacenter.host.count (*);
+  vSphere clusters:
+    dashboard_group: VMWare vSphere (OTel)
+    view_support: N/A
+    importQualifiers: vcenter.datacenter.host.count (*);
+  vSphere vCenter:
+    dashboard_group: VMWare vSphere (OTel)
+    view_support: N/A
+    importQualifiers: vcenter.datacenter.host.count (*);
+  vSphere vCenters:
+    dashboard_group: VMWare vSphere (OTel)
+    view_support: N/A
+    importQualifiers: vcenter.datacenter.host.count (*);
