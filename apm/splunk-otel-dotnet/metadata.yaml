@@ -310,7 +310,7 @@ instrumentations:
     support: community
     dependencies:
       - name: ASP.NET Core Instrumentation for OpenTelemetry .NET
-        source_href: https://github.com/open-telemetry/opentelemetry-dotnet-ontrib/tree/main/src/OpenTelemetry.Instrumentation.AspNetCore
+        source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Instrumentation.AspNetCore
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.AspNetCore
         version: 1.12.0
         stability: beta
