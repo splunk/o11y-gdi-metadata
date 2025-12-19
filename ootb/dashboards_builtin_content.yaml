@@ -2134,7 +2134,6 @@ Dashboards:
   NodeJS runtime metrics:
     dashboard_group: APM NodeJS services
     view_support: N/A
-    importQualifiers: process.runtime.nodejs.memory.heap.total (*);
     importQualifiers: nodejs.memory.heap.total (*);
   OpenAI:
     dashboard_group: OpenAI
