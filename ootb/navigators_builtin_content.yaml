@@ -531,8 +531,7 @@ Navigators:
       instance:
       - K8s cluster
     importQualifiers: container_cpu_utilization (sf_key =  k8s.cluster.name);  OR
-      container.cpu.time (sf_key =  k8s.cluster.name);  OR disk.utilization (sf_key
-      =  k8s.cluster.name);
+      container.cpu.time (sf_key =  k8s.cluster.name);
   Kubernetes containers:
     category_display_name: Kubernetes
     associated_dashboards:
