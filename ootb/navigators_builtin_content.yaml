@@ -523,6 +523,17 @@ Navigators:
       =  *);  OR kong_request_latency_ms_sum (host.name =  *) & (route =  *) & (service
       =  *);  OR kong_bandwidth_bytes (host.name =  *) & (route =  *) & (service =  *);  OR
       kong_memory_workers_lua_vms_bytes (host.name =  *);
+  Kubernetes HPAs:
+    category_display_name: Kubernetes
+    associated_dashboards:
+      aggregated:
+      - K8s HPAs
+      - K8s HPA events
+      instance:
+      - K8s HPA
+    importQualifiers: k8s.hpa.current_replicas (k8s.hpa.name =  *) & (k8s.cluster.name
+      =  *);  OR k8s.hpa.desired_replicas (k8s.hpa.name =  *) & (k8s.cluster.name
+      =  *);
   Kubernetes clusters:
     category_display_name: Kubernetes
     associated_dashboards:
