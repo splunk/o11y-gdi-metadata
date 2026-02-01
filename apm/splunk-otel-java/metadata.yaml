@@ -1,13 +1,13 @@
 component: Splunk Distribution of OpenTelemetry Java
-version: 2.22.0
+version: 2.24.0
 dependencies:
   - name: OpenTelemetry Java
     source_href: https://github.com/open-telemetry/opentelemetry-java
-    version: 1.56.0
+    version: 1.58.0
     stability: stable
   - name: OpenTelemetry Instrumentation for Java
     source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation
-    version: 2.22.0
+    version: 2.24.0
     stability: stable
   - name: OpenTelemetry Java Contrib Resource Providers
     source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/tree/main/resource-providers
@@ -860,6 +860,12 @@ settings:
     default: 'false'
     type: boolean
     category: instrumentation
+  - property: otel.instrumentation.apache-elasticjob.experimental-span-attributes
+    env: OTEL_INSTRUMENTATION_APACHE_ELASTICJOB_EXPERIMENTAL_SPAN_ATTRIBUTES
+    description: Enable the capture of experimental span attributes.
+    default: 'false'
+    type: boolean
+    category: instrumentation
   - property: otel.instrumentation.apache-shenyu.experimental-span-attributes
     env: OTEL_INSTRUMENTATION_APACHE_SHENYU_EXPERIMENTAL_SPAN_ATTRIBUTES
     description: Enable the capture of experimental span attributes.
@@ -899,6 +905,12 @@ settings:
       GraphQL operation name is provided by the client and can have high cardinality.
       Use only when the server is not exposed to malicious clients.'
     default: 'false'
+    type: boolean
+    category: instrumentation
+  - property: otel.instrumentation.graphql.capture-query
+    env: OTEL_INSTRUMENTATION_GRAPHQL_CAPTURE_QUERY
+    description: Whether to capture the query in `graphql.document` span attribute.
+    default: 'true'
     type: boolean
     category: instrumentation
   - property: otel.instrumentation.graphql.data-fetcher.enabled
@@ -1365,6 +1377,12 @@ settings:
     default: 'false'
     type: boolean
     category: instrumentation
+  - property: '`otel.instrumentation.servlet.experimental.add-trace-id-request-attribute'
+    env: '`OTEL_INSTRUMENTATION_SERVLET_EXPERIMENTAL_ADD_TRACE_ID_REQUEST_ATTRIBUTE'
+    description: Add `trace_id` and `span_id` as request attributes.
+    default: 'true'
+    type: boolean
+    category: instrumentation
   - property: otel.instrumentation.spring-batch.item.enabled
     env: OTEL_INSTRUMENTATION_SPRING_BATCH_ITEM_ENABLED
     description: Enable creating span for each item.
@@ -1649,6 +1667,13 @@ instrumentations:
             instrument: histogram
             description: The duration of an inbound RPC invocation.
             category_notes: Custom metric.
+  - keys:
+      - apache-elasticjob
+    instrumented_components:
+      - name: Apache ElasticJob
+        supported_versions: 3.0 and higher
+    stability: experimental
+    support: community
   - keys:
       - apache-httpasyncclient
     instrumented_components:
@@ -4438,7 +4463,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.22.0-alpha
+        version: 2.24.0-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.resources.HostIdResourceProvider
     description: Host id detector.
@@ -4450,7 +4475,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.22.0-alpha
+        version: 2.24.0-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.resources.HostResourceProvider
     description: Host detector.
@@ -4463,7 +4488,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.22.0-alpha
+        version: 2.24.0-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.resources.JarServiceNameDetector
     description: Jar service name detector.
@@ -4475,7 +4500,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.22.0-alpha
+        version: 2.24.0-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.resources.ManifestResourceProvider
     description: Manifest service name and version detector.
@@ -4488,7 +4513,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.22.0-alpha
+        version: 2.24.0-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.resources.OsResourceProvider
     description: Os detector.
@@ -4501,7 +4526,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.22.0-alpha
+        version: 2.24.0-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.resources.ProcessResourceProvider
     description: Process detector.
@@ -4516,7 +4541,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.22.0-alpha
+        version: 2.24.0-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.resources.ProcessRuntimeResourceProvider
     description: Process runtime detector.
@@ -4530,7 +4555,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.22.0-alpha
+        version: 2.24.0-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.spring.resources.SpringBootServiceNameDetector
     description: Spring boot service name detector.
@@ -4542,7 +4567,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Spring Boot Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/spring/spring-boot-resources/javaagent
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-spring-boot-resources
-        version: 2.22.0-alpha
+        version: 2.24.0-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.spring.resources.SpringBootServiceVersionDetector
     description: Spring boot service version detector.
@@ -4554,7 +4579,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Spring Boot Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/spring/spring-boot-resources/javaagent
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-spring-boot-resources
-        version: 2.22.0-alpha
+        version: 2.24.0-alpha
         stability: experimental
   - key: io.opentelemetry.contrib.resourceproviders.AppServerServiceNameProvider
     description: Application server service name detector.
