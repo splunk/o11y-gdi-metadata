@@ -1060,6 +1060,11 @@ Dashboards:
     dashboard_group: AWS ECS (OTel)
     view_support: aggregated
     importQualifiers: container.cpu.utilized (aws.ecs.cluster.name =  *);
+  EKS:
+    dashboard_group: Kubernetes Control Plane (Managed)
+    view_support: N/A
+    importQualifiers: apiserver_request_total (cloud.platform =  aws_eks) & (service.name
+      =  apiserver);
   ELB instance:
     dashboard_group: AWS ELB
     view_support: instance
