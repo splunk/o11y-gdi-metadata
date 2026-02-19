@@ -2517,11 +2517,21 @@ Dashboards:
     view_support: N/A
     importQualifiers: demo.trans.count (*);
   Server:
+    dashboard_group: TensorFlow Servings
+    view_support: N/A
+    importQualifiers: :tensorflow:serving:request_count (*);  OR :tensorflow:core:saved_model:read:count
+      (*);
+  Server - Kubeflow:
     dashboard_group: Kubeflow
     view_support: N/A
     importQualifiers: run_server_run_count (*);  OR pipeline_server_pipeline_version_count
       (*);
   Servers:
+    dashboard_group: TensorFlow Servings
+    view_support: N/A
+    importQualifiers: :tensorflow:serving:request_count (*);  OR :tensorflow:core:saved_model:read:count
+      (*);
+  Servers - Kubeflow:
     dashboard_group: Kubeflow
     view_support: N/A
     importQualifiers: run_server_run_count (*);  OR pipeline_server_pipeline_version_count
