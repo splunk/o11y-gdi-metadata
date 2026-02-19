@@ -2588,6 +2588,14 @@ Dashboards:
     dashboard_group: "\xB5APM PG"
     view_support: N/A
     importQualifiers: spans.count (service =  *);
+  Service host:
+    dashboard_group: Chroma DB
+    view_support: N/A
+    importQualifiers: collection_add (*);  OR get_collection (*);
+  Service hosts:
+    dashboard_group: Chroma DB
+    view_support: N/A
+    importQualifiers: collection_add (*);  OR get_collection (*);
   Service limit:
     dashboard_group: AWS service limit
     view_support: N/A
