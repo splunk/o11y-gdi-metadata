@@ -1525,6 +1525,14 @@ Dashboards:
     view_support: N/A
     importQualifiers: conviva.quality_metriclens.total_attempts (*);  OR conviva.attempts
       (*);
+  Inference service:
+    dashboard_group: Kserve
+    view_support: N/A
+    importQualifiers: request_predict_seconds (*);
+  Inference services:
+    dashboard_group: Kserve
+    view_support: N/A
+    importQualifiers: request_predict_seconds (*);
   Instance:
     dashboard_group: MongoDB (OTel)
     view_support: instance
