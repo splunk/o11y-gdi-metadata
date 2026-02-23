@@ -1080,6 +1080,10 @@ Dashboards:
     view_support: aggregated
     importQualifiers: HealthyHostCount (namespace =  AWS/ELB) & (stat =  mean) & (LoadBalancerName
       =  *);
+  ENTITY THROTTLING:
+    dashboard_group: Organization metrics
+    view_support: N/A
+    importQualifiers: sf.org.subscription.customMetrics (*);
   ESX-Host:
     dashboard_group: vSphere (legacy)
     view_support: N/A
