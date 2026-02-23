@@ -933,6 +933,14 @@ Dashboards:
     importQualifiers: entity/read_sizes (service =  datastore) & (monitored_resource
       =  datastore_request) & (project_id =  *);  OR api/request_count (service =  datastore)
       & (monitored_resource =  datastore_request) & (project_id =  *);
+  Deployment:
+    dashboard_group: Seldon
+    view_support: N/A
+    importQualifiers: seldon_api_executor_server_requests_seconds (*);
+  Deployments:
+    dashboard_group: Seldon
+    view_support: N/A
+    importQualifiers: seldon_api_executor_server_requests_seconds (*);
   Devices:
     dashboard_group: Conviva
     view_support: N/A
