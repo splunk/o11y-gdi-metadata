@@ -85,9 +85,9 @@ Navigators:
       - Azure App services
       instance:
       - Azure App service
-    importQualifiers: CpuTime (is_Azure_Function =  false) & (resource_type =  microsoft.web/sites
+    importQualifiers: CpuTime (is_azure_function =  false) & (resource_type =  microsoft.web/sites
       | Microsoft.Web/sites) & (primary_aggregation_type =  true);  OR BytesReceived
-      (is_Azure_Function =  false) & (resource_type =  microsoft.web/sites | Microsoft.Web/sites)
+      (is_azure_function =  false) & (resource_type =  microsoft.web/sites | Microsoft.Web/sites)
       & (primary_aggregation_type =  true);
   Autoscaling groups:
     category_display_name: Amazon Web Services
@@ -123,9 +123,9 @@ Navigators:
       - (Azure) Function Apps
       instance:
       - (Azure) Function App
-    importQualifiers: FunctionExecutionCount (is_Azure_Function =  true) & (primary_aggregation_type
+    importQualifiers: FunctionExecutionCount (is_azure_function =  true) & (primary_aggregation_type
       =  true) & (resource_type =  microsoft.web/sites | Microsoft.Web/sites);  OR
-      FunctionExecutionUnits (is_Azure_Function =  true) & (primary_aggregation_type
+      FunctionExecutionUnits (is_azure_function =  true) & (primary_aggregation_type
       =  true) & (resource_type =  microsoft.web/sites | Microsoft.Web/sites);
   Batch accounts:
     category_display_name: Microsoft Azure
@@ -523,6 +523,17 @@ Navigators:
       =  *);  OR kong_request_latency_ms_sum (host.name =  *) & (route =  *) & (service
       =  *);  OR kong_bandwidth_bytes (host.name =  *) & (route =  *) & (service =  *);  OR
       kong_memory_workers_lua_vms_bytes (host.name =  *);
+  Kubernetes HPAs:
+    category_display_name: Kubernetes
+    associated_dashboards:
+      aggregated:
+      - K8s HPAs
+      - K8s HPA events
+      instance:
+      - K8s HPA
+    importQualifiers: k8s.hpa.current_replicas (k8s.hpa.name =  *) & (k8s.cluster.name
+      =  *);  OR k8s.hpa.desired_replicas (k8s.hpa.name =  *) & (k8s.cluster.name
+      =  *);
   Kubernetes clusters:
     category_display_name: Kubernetes
     associated_dashboards:

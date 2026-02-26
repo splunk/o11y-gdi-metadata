@@ -3,37 +3,37 @@ Dashboards:
     dashboard_group: Azure Functions
     view_support: instance
     importQualifiers: FunctionExecutionCount (resource_type =  microsoft.web/sites
-      | Microsoft.Web/sites) & (is_Azure_Function =  true) & (primary_aggregation_type
+      | Microsoft.Web/sites) & (is_azure_function =  true) & (primary_aggregation_type
       =  true);  OR FunctionExecutionUnits (resource_type =  microsoft.web/sites |
-      Microsoft.Web/sites) & (is_Azure_Function =  true) & (primary_aggregation_type
-      =  true);  OR azure.function.invocations (is_Azure_Function =  true) & (metric_source
+      Microsoft.Web/sites) & (is_azure_function =  true) & (primary_aggregation_type
+      =  true);  OR azure.function.invocations (is_azure_function =  true) & (metric_source
       =  azure_function_wrapper);
   (Azure) Function Apps:
     dashboard_group: Azure Functions
     view_support: aggregated
     importQualifiers: FunctionExecutionCount (resource_type =  microsoft.web/sites
-      | Microsoft.Web/sites) & (is_Azure_Function =  true) & (primary_aggregation_type
+      | Microsoft.Web/sites) & (is_azure_function =  true) & (primary_aggregation_type
       =  true);  OR FunctionExecutionUnits (resource_type =  microsoft.web/sites |
-      Microsoft.Web/sites) & (is_Azure_Function =  true) & (primary_aggregation_type
-      =  true);  OR azure.function.invocations (is_Azure_Function =  true) & (metric_source
+      Microsoft.Web/sites) & (is_azure_function =  true) & (primary_aggregation_type
+      =  true);  OR azure.function.invocations (is_azure_function =  true) & (metric_source
       =  azure_function_wrapper);
   (SignalFx) Azure Function (deprecated):
     dashboard_group: Azure Functions
     view_support: instance
     importQualifiers: FunctionExecutionCount (resource_type =  microsoft.web/sites
-      | Microsoft.Web/sites) & (is_Azure_Function =  true) & (primary_aggregation_type
+      | Microsoft.Web/sites) & (is_azure_function =  true) & (primary_aggregation_type
       =  true);  OR FunctionExecutionUnits (resource_type =  microsoft.web/sites |
-      Microsoft.Web/sites) & (is_Azure_Function =  true) & (primary_aggregation_type
-      =  true);  OR azure.function.invocations (is_Azure_Function =  true) & (metric_source
+      Microsoft.Web/sites) & (is_azure_function =  true) & (primary_aggregation_type
+      =  true);  OR azure.function.invocations (is_azure_function =  true) & (metric_source
       =  azure_function_wrapper);
   (SignalFx) Azure Functions (deprecated):
     dashboard_group: Azure Functions
     view_support: aggregated
     importQualifiers: FunctionExecutionCount (resource_type =  microsoft.web/sites
-      | Microsoft.Web/sites) & (is_Azure_Function =  true) & (primary_aggregation_type
+      | Microsoft.Web/sites) & (is_azure_function =  true) & (primary_aggregation_type
       =  true);  OR FunctionExecutionUnits (resource_type =  microsoft.web/sites |
-      Microsoft.Web/sites) & (is_Azure_Function =  true) & (primary_aggregation_type
-      =  true);  OR azure.function.invocations (is_Azure_Function =  true) & (metric_source
+      Microsoft.Web/sites) & (is_azure_function =  true) & (primary_aggregation_type
+      =  true);  OR azure.function.invocations (is_azure_function =  true) & (metric_source
       =  azure_function_wrapper);
   .NET runtime metrics:
     dashboard_group: APM .NET services
@@ -55,17 +55,17 @@ Dashboards:
     dashboard_group: Cisco AI PODs Dashboard
     view_support: N/A
     importQualifiers: DCGM_FI_DEV_POWER_USAGE (*);  OR num_requests_waiting (*);  OR
-      k8s.deployment.available (k8s.nimservice.name =  *);  OR cisco_up (*);
+      k8s.deployment.available (k8s.nimservice.name =  *);  OR cisco.device.up (*);
   AI Pod Hosts:
     dashboard_group: Cisco AI PODs Dashboard
     view_support: N/A
     importQualifiers: DCGM_FI_DEV_POWER_USAGE (*);  OR num_requests_waiting (*);  OR
-      k8s.deployment.available (k8s.nimservice.name =  *);  OR cisco_up (*);
+      k8s.deployment.available (k8s.nimservice.name =  *);  OR cisco.device.up (*);
   AI Pod overview:
     dashboard_group: Cisco AI PODs Dashboard
     view_support: N/A
     importQualifiers: DCGM_FI_DEV_POWER_USAGE (*);  OR num_requests_waiting (*);  OR
-      k8s.deployment.available (k8s.nimservice.name =  *);  OR cisco_up (*);
+      k8s.deployment.available (k8s.nimservice.name =  *);  OR cisco.device.up (*);
   API Gateway logs:
     dashboard_group: AWS API Gateway
     view_support: N/A
@@ -332,16 +332,16 @@ Dashboards:
   Azure App service:
     dashboard_group: Azure App service
     view_support: instance
-    importQualifiers: BytesReceived (resource_type =  Microsoft.Web/sites | microsoft.web/sites)
-      & (is_Azure_Function =  false) & (primary_aggregation_type =  true);  OR CpuTime
-      (resource_type =  Microsoft.Web/sites | microsoft.web/sites) & (is_Azure_Function
+    importQualifiers: BytesReceived (resource_type =  microsoft.web/sites | Microsoft.Web/sites)
+      & (is_azure_function =  false) & (primary_aggregation_type =  true);  OR CpuTime
+      (resource_type =  microsoft.web/sites | Microsoft.Web/sites) & (is_azure_function
       =  false) & (primary_aggregation_type =  true);
   Azure App services:
     dashboard_group: Azure App service
     view_support: aggregated
-    importQualifiers: BytesReceived (resource_type =  Microsoft.Web/sites | microsoft.web/sites)
-      & (is_Azure_Function =  false) & (primary_aggregation_type =  true);  OR CpuTime
-      (resource_type =  Microsoft.Web/sites | microsoft.web/sites) & (is_Azure_Function
+    importQualifiers: BytesReceived (resource_type =  microsoft.web/sites | Microsoft.Web/sites)
+      & (is_azure_function =  false) & (primary_aggregation_type =  true);  OR CpuTime
+      (resource_type =  microsoft.web/sites | Microsoft.Web/sites) & (is_azure_function
       =  false) & (primary_aggregation_type =  true);
   Azure Event Hub:
     dashboard_group: Azure Event Hubs
@@ -1060,6 +1060,11 @@ Dashboards:
     dashboard_group: AWS ECS (OTel)
     view_support: aggregated
     importQualifiers: container.cpu.utilized (aws.ecs.cluster.name =  *);
+  EKS:
+    dashboard_group: Kubernetes Control Plane (Managed)
+    view_support: N/A
+    importQualifiers: apiserver_request_total (cloud.platform =  aws_eks) & (service.name
+      =  apiserver);
   ELB instance:
     dashboard_group: AWS ELB
     view_support: instance
@@ -1538,7 +1543,7 @@ Dashboards:
     dashboard_group: Cisco AI PODs Dashboard
     view_support: N/A
     importQualifiers: DCGM_FI_DEV_POWER_USAGE (*);  OR num_requests_waiting (*);  OR
-      k8s.deployment.available (k8s.nimservice.name =  *);  OR cisco_up (*);
+      k8s.deployment.available (k8s.nimservice.name =  *);  OR cisco.device.up (*);
   Intro to Splunk Observability Cloud:
     dashboard_group: Sample data
     view_support: N/A
@@ -1601,6 +1606,27 @@ Dashboards:
       =  *) & (k8s.cluster.name =  *);  OR k8s.job.active_pods (k8s.job.name =  *)
       & (k8s.cluster.name =  *);  OR k8s.cronjob.active_jobs (k8s.cronjob.name =  *)
       & (k8s.cluster.name =  *);
+  K8s HPA:
+    dashboard_group: Kubernetes
+    view_support: instance
+    importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);  OR k8s.pod.phase
+      (sf_key =  k8s.workload.name);  OR kubernetes.pod_phase (sf_key =  kubernetes_workload_name);  OR
+      container_cpu_utilization (sf_key =  kubernetes_pod_uid);  OR container.cpu.time
+      (sf_key =  k8s.pod.uid);
+  K8s HPA events:
+    dashboard_group: Kubernetes
+    view_support: aggregated
+    importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);  OR k8s.pod.phase
+      (sf_key =  k8s.workload.name);  OR kubernetes.pod_phase (sf_key =  kubernetes_workload_name);  OR
+      container_cpu_utilization (sf_key =  kubernetes_pod_uid);  OR container.cpu.time
+      (sf_key =  k8s.pod.uid);
+  K8s HPAs:
+    dashboard_group: Kubernetes
+    view_support: aggregated
+    importQualifiers: k8s.node.condition_ready (sf_key =  k8s.node.name);  OR k8s.pod.phase
+      (sf_key =  k8s.workload.name);  OR kubernetes.pod_phase (sf_key =  kubernetes_workload_name);  OR
+      container_cpu_utilization (sf_key =  kubernetes_pod_uid);  OR container.cpu.time
+      (sf_key =  k8s.pod.uid);
   K8s cluster:
     dashboard_group: Kubernetes
     view_support: instance
@@ -1971,8 +1997,8 @@ Dashboards:
   LiteLLM:
     dashboard_group: LiteLLM
     view_support: N/A
-    importQualifiers: en_ai.client.operation.duration (gen_ai.system =  litellm);  OR
-      gen_ai.client.token.usage (gen_ai.system =  litellm);
+    importQualifiers: gen_ai.client.operation.duration_sum (gen_ai.framework =  litellm);  OR
+      gen_ai.client.token.usage_sum (gen_ai.framework =  litellm);
   Log Observer data usage:
     dashboard_group: Log Observer usage
     view_support: N/A
@@ -2092,7 +2118,7 @@ Dashboards:
     dashboard_group: Cisco AI PODs Dashboard
     view_support: N/A
     importQualifiers: DCGM_FI_DEV_POWER_USAGE (*);  OR num_requests_waiting (*);  OR
-      k8s.deployment.available (k8s.nimservice.name =  *);  OR cisco_up (*);
+      k8s.deployment.available (k8s.nimservice.name =  *);  OR cisco.device.up (*);
   NIM usage:
     dashboard_group: NVIDIA NIM
     view_support: aggregated
@@ -2114,7 +2140,7 @@ Dashboards:
     dashboard_group: Cisco AI PODs Dashboard
     view_support: N/A
     importQualifiers: DCGM_FI_DEV_POWER_USAGE (*);  OR num_requests_waiting (*);  OR
-      k8s.deployment.available (k8s.nimservice.name =  *);  OR cisco_up (*);
+      k8s.deployment.available (k8s.nimservice.name =  *);  OR cisco.device.up (*);
   Nginx+ overview:
     dashboard_group: NGINX plus
     view_support: N/A
@@ -2313,7 +2339,7 @@ Dashboards:
     dashboard_group: Cisco AI PODs Dashboard
     view_support: N/A
     importQualifiers: DCGM_FI_DEV_POWER_USAGE (*);  OR num_requests_waiting (*);  OR
-      k8s.deployment.available (k8s.nimservice.name =  *);  OR cisco_up (*);
+      k8s.deployment.available (k8s.nimservice.name =  *);  OR cisco.device.up (*);
   Queries:
     dashboard_group: PostgreSQL (New)
     view_support: N/A
@@ -2389,7 +2415,7 @@ Dashboards:
     dashboard_group: Cisco AI PODs Dashboard
     view_support: N/A
     importQualifiers: DCGM_FI_DEV_POWER_USAGE (*);  OR num_requests_waiting (*);  OR
-      k8s.deployment.available (k8s.nimservice.name =  *);  OR cisco_up (*);
+      k8s.deployment.available (k8s.nimservice.name =  *);  OR cisco.device.up (*);
   Redis instance:
     dashboard_group: Redis (OTel)
     view_support: instance
@@ -2490,6 +2516,16 @@ Dashboards:
     dashboard_group: Sample data
     view_support: N/A
     importQualifiers: demo.trans.count (*);
+  Server:
+    dashboard_group: Kubeflow
+    view_support: N/A
+    importQualifiers: run_server_run_count (*);  OR pipeline_server_pipeline_version_count
+      (*);
+  Servers:
+    dashboard_group: Kubeflow
+    view_support: N/A
+    importQualifiers: run_server_run_count (*);  OR pipeline_server_pipeline_version_count
+      (*);
   Service:
     dashboard_group: APM services
     view_support: N/A
@@ -2781,7 +2817,7 @@ Dashboards:
     dashboard_group: Cisco AI PODs Dashboard
     view_support: N/A
     importQualifiers: DCGM_FI_DEV_POWER_USAGE (*);  OR num_requests_waiting (*);  OR
-      k8s.deployment.available (k8s.nimservice.name =  *);  OR cisco_up (*);
+      k8s.deployment.available (k8s.nimservice.name =  *);  OR cisco.device.up (*);
   Topic:
     dashboard_group: Amazon MSK
     view_support: N/A
