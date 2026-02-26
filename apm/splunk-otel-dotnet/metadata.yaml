@@ -1,20 +1,15 @@
 component: Splunk Distribution of OpenTelemetry .NET
-version: 1.11.0
+version: 1.13.0
 dependencies:
   - name: OpenTelemetry .NET
     source_href: https://github.com/open-telemetry/opentelemetry-dotnet
-    version: 1.12.0
+    version: 1.15.0
     stability: stable
   - name: OpenTelemetry .NET Automatic Instrumentation
     source_href: https://github.com/open-telemetry/opentelemetry-dotnet-instrumentation
-    version: 1.12.0
+    version: 1.14.1
     stability: stable
 settings:
-  - env: SPLUNK_TRACE_RESPONSE_HEADER_ENABLED
-    description: Activated by default. Adds server trace information to HTTP response headers. The default value is `true`.
-    default: 'true'
-    type: boolean
-    category: general
   - env: OTEL_DOTNET_AUTO_EXCLUDE_PROCESSES
     description: "Names of the executable files that you don't want the profiler to instrument. Supports multiple semicolon-separated values, for example: `ReservedProcess.exe;powershell.exe`. Notice that applications launched using dotnet MyApp.dll have process name `dotnet` or `dotnet.exe`. Can't be set using the web.config or app.config files."
     default: ''
@@ -36,7 +31,7 @@ settings:
     type: boolean
     category: general
   - env: OTEL_DOTNET_AUTO_OPENTRACING_ENABLED
-    description: Activates the OpenTracing tracer. The default value is `false`.
+    description: This feature is deprecated. Avoid usage. Convert your OpenTracing dependency to OpenTelemetry. It activates the OpenTracing tracer. The default value is `false`.
     default: 'false'
     type: boolean
     category: general
@@ -75,6 +70,21 @@ settings:
     default: 'otlp'
     type: string
     category: exporter
+  - env: OTEL_EXPORTER_OTLP_CERTIFICATE
+    description: Path to the CA certificate file (PEM format) used to verify the server's TLS certificate. Supported only on .NET.
+    default: ''
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_CLIENT_CERTIFICATE
+    description: Path to the client certificate file (PEM format) for mTLS authentication. Supported only on .NET.
+    default: ''
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_CLIENT_KEY
+    description: Path to the client private key file (PEM format) for mTLS authentication. Supported only on .NET.
+    default: ''
+    type: string
+    category: exporter
   - env: OTEL_EXPORTER_OTLP_ENDPOINT
     description: The URL to where traces, metrics, and logs are sent. The default value is `http://localhost:4318`. Setting a value overrides the `SPLUNK_REALM` environment variable.
     default: ''
@@ -92,6 +102,66 @@ settings:
     category: exporter
   - env: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
     description: Equivalent to `OTEL_EXPORTER_OTLP_ENDPOINT`, but applies only to traces.
+    default: ''
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_PROTOCOL
+    description: OTLP exporter transport protocol. Supported values are `grpc`, `http/protobuf`.
+    default: 'http/protobuf'
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_TRACES_PROTOCOL
+    description: Equivalent to `OTEL_EXPORTER_OTLP_PROTOCOL`, but applies only to traces.
+    default: 'http/protobuf'
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_METRICS_PROTOCOL
+    description: Equivalent to `OTEL_EXPORTER_OTLP_PROTOCOL`, but applies only to metrics.
+    default: 'http/protobuf'
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_LOGS_PROTOCOL
+    description: Equivalent to `OTEL_EXPORTER_OTLP_PROTOCOL`, but applies only to logs.
+    default: 'http/protobuf'
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_TIMEOUT
+    description: The max waiting time (in milliseconds) for the backend to process each batch.
+    default: '10000'
+    type: int
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_TRACES_TIMEOUT
+    description: Equivalent to `OTEL_EXPORTER_OTLP_TIMEOUT`, but applies only to traces.
+    default: '10000'
+    type: int
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_METRICS_TIMEOUT
+    description: Equivalent to `OTEL_EXPORTER_OTLP_TIMEOUT`, but applies only to metrics.
+    default: '10000'
+    type: int
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_LOGS_TIMEOUT
+    description: Equivalent to `OTEL_EXPORTER_OTLP_TIMEOUT`, but applies only to logs.
+    default: '10000'
+    type: int
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_HEADERS
+    description: 'Comma-separated list of additional HTTP headers sent with each export, for example: `Authorization=secret,X-Key=Value`.'
+    default: ''
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_TRACES_HEADERS
+    description: Equivalent to `OTEL_EXPORTER_OTLP_HEADERS`, but applies only to traces.
+    default: ''
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_METRICS_HEADERS
+    description: Equivalent to `OTEL_EXPORTER_OTLP_HEADERS`, but applies only to metrics.
+    default: ''
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_LOGS_HEADERS
+    description: Equivalent to `OTEL_EXPORTER_OTLP_HEADERS`, but applies only to logs.
     default: ''
     type: string
     category: exporter
@@ -130,6 +200,41 @@ settings:
     default: '10000'
     type: int
     category: profiling
+  - env: SPLUNK_PROFILER_EXPORT_TIMEOUT
+    description: Export timeout, in milliseconds.
+    default: '3000'
+    type: int
+    category: profiling
+  - env: SPLUNK_PROFILER_MAX_MEMORY_SAMPLES
+    description: Maximum memory samples collected per minute. Maximum value is 200.
+    default: '200'
+    type: int
+    category: profiling
+  - env: SPLUNK_PROFILER_EXPORT_INTERVAL
+    description: Export interval timeout, in milliseconds. Minimum value is 500.
+    default: '500'
+    type: int
+    category: profiling
+  - env: SPLUNK_SNAPSHOT_PROFILER_ENABLED
+    description: Activates snapshots collection.
+    default: 'false'
+    type: boolean
+    category: profiling
+  - env: SPLUNK_SNAPSHOT_SAMPLING_INTERVAL
+    description: Sampling interval for snapshot collections, in milliseconds.
+    default: '40'
+    type: int
+    category: profiling
+  - env: SPLUNK_SNAPSHOT_SELECTION_PROBABILITY
+    description: Sets probability of selecting trace for snapshots.
+    default: '0.01'
+    type: double
+    category: profiling
+  - env: SPLUNK_SNAPSHOT_HIGH_RES_TIMER_ENABLED
+    description: Sets default timer precision on Windows to 1ms.
+    default: 'false'
+    type: bool
+    category: profiling
   - env: OTEL_PROPAGATORS
     description: Comma-separated list of propagators for the tracer. The default value is `tracecontext,baggage`. Supported values are `b3multi`, `b3`, `tracecontext`, and `baggage`.
     default: 'tracecontext,baggage'
@@ -159,11 +264,16 @@ settings:
     description: Name of the service or application you're instrumenting. Takes precedence over the service name defined in the `OTEL_RESOURCE_ATTRIBUTES` variable.
     default: ''
     type: string
-    category: instrumentation
+    category: resource attributes
   - env: OTEL_RESOURCE_ATTRIBUTES
     description: Comma-separated list of resource attributes added to every reported span. For example, `key1=val1,key2=val2`.
     default: ''
     type: string
+    category: resource attributes
+  - env: SPLUNK_TRACE_RESPONSE_HEADER_ENABLED
+    description: Activated by default. Adds server trace information to HTTP response headers. The default value is `true`.
+    default: 'true'
+    type: boolean
     category: instrumentation
   - env: OTEL_DOTNET_AUTO_TRACES_ADDITIONAL_SOURCES
     description: Comma-separated list of additional `System.Diagnostics.ActivitySource` names to be added to the tracer at startup. Use it to capture spans from manual instrumentation.
@@ -174,26 +284,6 @@ settings:
     description: Comma-separated list of additional `System.Diagnostics.Metrics.Meter` names to be added to the meter at the startup. Use it to capture custom metrics.
     default: ''
     type: string
-    category: instrumentation
-  - env: OTEL_SPAN_ATTRIBUTE_COUNT_LIMIT
-    description: Maximum number of attributes per span. Default value is unlimited.
-    default: ''
-    type: int
-    category: instrumentation
-  - env: OTEL_SPAN_EVENT_COUNT_LIMIT
-    description: Maximum number of events per span. Default value is unlimited.
-    default: ''
-    type: int
-    category: instrumentation
-  - env: OTEL_SPAN_LINK_COUNT_LIMIT
-    description: Maximum number of links per span. Default value is `1000`.
-    default: '1000'
-    type: int
-    category: instrumentation
-  - env: OTEL_ATTRIBUTE_VALUE_LENGTH_LIMIT
-    description: Maximum length of strings for attribute values. Values larger than the limit are truncated. Default value is `1200`. Empty values are treated as infinity.
-    default: '1200'
-    type: int
     category: instrumentation
   - env: OTEL_DOTNET_AUTO_TRACES_ADDITIONAL_LEGACY_SOURCES
     description: Comma-separated list of additional legacy source names to be added to the tracer at the startup. Use it to capture `System.Diagnostics.Activity` objects created without using the `System.Diagnostics.ActivitySource` API.
@@ -231,14 +321,62 @@ settings:
     type: boolean
     category: instrumentation
   - env: OTEL_DOTNET_AUTO_LOGS_{INSTRUMENTATION}_INSTRUMENTATION_ENABLED
-    description: >+
-      Activates or deactivates a specific log instrumentation, where `{INSTRUMENTATION}` is the case-sensitive name of the instrumentation. Overrides `OTEL_DOTNET_AUTO_LOGS_INSTRUMENTATION_ENABLED`. Inherits the value of the `OTEL_DOTNET_AUTO_LOGS_INSTRUMENTATION_ENABLED` environment variable. Can’t be set using the web.config or app.config files. See Supported libraries for a complete list of supported instrumentations and their names.
-
+    description: Activates or deactivates a specific log instrumentation, where `{INSTRUMENTATION}` is the case-sensitive name of the instrumentation. Overrides `OTEL_DOTNET_AUTO_LOGS_INSTRUMENTATION_ENABLED`. Inherits the value of the `OTEL_DOTNET_AUTO_LOGS_INSTRUMENTATION_ENABLED` environment variable. Can’t be set using the web.config or app.config files. See Supported libraries for a complete list of supported instrumentations and their names.
     default: ''
     type: boolean
     category: instrumentation
+  - env: OTEL_ATTRIBUTE_VALUE_LENGTH_LIMIT
+    description: Maximum length of strings for attribute values. Values larger than the limit are truncated. Default value is `1200`. Empty values are treated as infinity.
+    default: '1200'
+    type: int
+    category: otlp
+  - env: OTEL_ATTRIBUTE_COUNT_LIMIT
+    description: Maximum allowed span attribute count. Default value is `128`.
+    default: '128'
+    type: int
+    category: otlp
+  - env: OTEL_SPAN_ATTRIBUTE_VALUE_LENGTH_LIMIT
+    description: Maximum allowed attribute value size. Not applicable for metrics.
+    default: ''
+    type: int
+    category: otlp
+  - env: OTEL_SPAN_ATTRIBUTE_COUNT_LIMIT
+    description: Maximum number of attributes per span. Default value is unlimited.
+    default: ''
+    type: int
+    category: otlp
+  - env: OTEL_SPAN_EVENT_COUNT_LIMIT
+    description: Maximum number of events per span. Default value is unlimited.
+    default: ''
+    type: int
+    category: otlp
+  - env: OTEL_SPAN_LINK_COUNT_LIMIT
+    description: Maximum number of links per span. Default value is `1000`.
+    default: '1000'
+    type: int
+    category: otlp
+  - env: OTEL_EVENT_ATTRIBUTE_COUNT_LIMIT
+    description: Maximum allowed attribute per span event count. Default value is `128`.
+    default: '128'
+    type: int
+    category: otlp
+  - env: OTEL_LINK_ATTRIBUTE_COUNT_LIMIT
+    description: Maximum allowed attribute per span link count. Default value is `128`.
+    default: '128'
+    type: int
+    category: otlp
+  - env: OTEL_LOGRECORD_ATTRIBUTE_VALUE_LENGTH_LIMIT
+    description: Maximum allowed log record attribute value size.
+    default: ''
+    type: int
+    category: otlp
+  - env: OTEL_LOGRECORD_ATTRIBUTE_COUNT_LIMIT
+    description: Maximum allowed log record attribute count. Default value is `128`.
+    default: '128'
+    type: int
+    category: otlp
   - env: OTEL_DOTNET_AUTO_LOGGER
-    description: 'AutoInstrumentation diagnostic logs sink. (supported values: `none`,`file`,`console`.'
+    description: 'AutoInstrumentation diagnostic logs sink. (supported values: `none`,`file`,`console`).'
     default: 'file'
     type: string
     category: diagnostic logging
@@ -252,6 +390,11 @@ settings:
     default: ''
     type: string
     category: diagnostic logging
+  - env: OTEL_DOTNET_AUTO_LOG_FILE_SIZE
+    description: Maximum size (in bytes) of a single log file created by the Auto Instrumentation.
+    default: '10485760'
+    type: int
+    category: diagnostic logging
   - env: OTEL_DOTNET_AUTO_TRACES_CONSOLE_EXPORTER_ENABLED
     description: Deprecated. Whether the traces console exporter is activated. It can be configured by `OTEL_TRACES_EXPORTER`.
     default: 'false'
@@ -263,19 +406,19 @@ instrumentations:
     instrumented_components:
       - name: ASP.NET Framework (.NET Framework)
         supported_versions: See general requirements
-    description: MVC / WebApi (Only integrated pipeline mode supported). Metrics requires trace instrumentation.
-    stability: beta
+    description: MVC / WebApi (Only integrated pipeline mode supported).
+    stability: release candidate
     support: community
     dependencies:
       - name: ASP.NET Instrumentation for OpenTelemetry
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Instrumentation.AspNet
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.AspNet
-        version: 1.12.0-beta.1
-        stability: beta
+        version: 1.15.1
+        stability: release candidate
       - name: ASP.NET Telemetry HttpModule for OpenTelemetry
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Instrumentation.AspNet.TelemetryHttpModule
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.AspNet.TelemetryHttpModule
-        version: 1.12.0-beta.2
+        version: 1.15.1
         stability: beta
     signals:
       - traces: []
@@ -310,9 +453,9 @@ instrumentations:
     support: community
     dependencies:
       - name: ASP.NET Core Instrumentation for OpenTelemetry .NET
-        source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Instrumentation.AspNetCore
+        source_href: https://github.com/open-telemetry/opentelemetry-dotnet-ontrib/tree/main/src/OpenTelemetry.Instrumentation.AspNetCore
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.AspNetCore
-        version: 1.12.0
+        version: 1.15.0
         stability: beta
     signals:
       - traces: []
@@ -393,6 +536,66 @@ instrumentations:
             instrument: counter
             description: Number of requests that tried to acquire a rate limiting lease. Requests could be rejected by global or endpoint rate limiting policies. Or the request could be canceled while waiting for the lease.
             category_notes: Custom metric.
+          - metric_name: aspnetcore.components.navigation
+            instrument: counter
+            description: Tracks the total number of route changes in the app. Supported only on .NET 10+
+            category_notes: Custom metric.
+          - metric_name: aspnetcore.components.event_handler
+            instrument: histogram
+            description: Measures the duration of processing browser events, including business logic of the component, excluding the duration of child component event handling. Supported only on .NET 10+
+            category_notes: Custom metric.
+          - metric_name: aspnetcore.components.update_parameters
+            instrument: histogram
+            description: Measures the duration of processing component parameters, including business logic. Supported only on .NET 10+
+            category_notes: Custom metric.
+          - metric_name: aspnetcore.components.render_diff
+            instrument: histogram
+            description: Tracks the duration of rendering batches. Supported only on .NET 10+
+            category_notes: Custom metric.
+          - metric_name: aspnetcore.components.circuit.active
+            instrument: updowncounter
+            description: Shows the number of active circuits currently in memory. Supported only on .NET 10+
+            category_notes: Custom metric.
+          - metric_name: aspnetcore.components.circuit.connected
+            instrument: updowncounter
+            description: Tracks the number of circuits connected to clients. Supported only on .NET 10+
+            category_notes: Custom metric.
+          - metric_name: aspnetcore.components.circuit.duration
+            instrument: histogram
+            description: Measures circuit lifetime duration and provides total circuit count. Supported only on .NET 10+
+            category_notes: Custom metric.
+          - metric_name: aspnetcore.header_parsing.parse_errors
+            instrument: counter
+            description: Number of errors that occurred when parsing HTTP request headers. Supported only on .NET 10+
+            category_notes: Custom metric.
+          - metric_name: aspnetcore.header_parsing.cache_accesses
+            instrument: counter
+            description: Number of times a cache storing parsed header values was accessed. Supported only on .NET 10+
+            category_notes: Custom metric.
+          - metric_name: aspnetcore.authorization.attempts
+            instrument: counter
+            description: The total number of requests for which authorization was attempted. Supported only on .NET 10+
+            category_notes: Custom metric.
+          - metric_name: aspnetcore.authentication.authenticate.duration
+            instrument: histogram
+            description: The authentication duration for a request. Supported only on .NET 10+
+            category_notes: Custom metric.
+          - metric_name: aspnetcore.authentication.challenges
+            instrument: counter
+            description: The total number of times a scheme is challenged. Supported only on .NET 10+
+            category_notes: Custom metric.
+          - metric_name: aspnetcore.authentication.forbids
+            instrument: counter
+            description: The total number of times an authenticated user attempts to access a resource they aren't permitted to access. Supported only on .NET 10+
+            category_notes: Custom metric.
+          - metric_name: aspnetcore.authentication.sign_ins
+            instrument: counter
+            description: The total number of times a principal is signed in with a scheme. Supported only on .NET 10+
+            category_notes: Custom metric.
+          - metric_name: aspnetcore.authentication.sign_outs
+            instrument: counter
+            description: The total number of times a principal is signed out with a scheme. Supported only on .NET 10+
+            category_notes: Custom metric.
     settings:
       - env: OTEL_DOTNET_AUTO_TRACES_ASPNETCORE_INSTRUMENTATION_CAPTURE_REQUEST_HEADERS
         description: A comma-separated list of HTTP header names. ASP.NET Core instrumentations will capture HTTP request header values for all configured header names.
@@ -449,16 +652,10 @@ instrumentations:
       - name: EntityFrameworkCore Instrumentation for OpenTelemetry .NET
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Instrumentation.EntityFrameworkCore
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.EntityFrameworkCore
-        version: 1.12.0-beta.1
+        version: 1.15.0-beta.1
         stability: beta
     signals:
       - traces: []
-    settings:
-      - env: OTEL_DOTNET_AUTO_ENTITYFRAMEWORKCORE_SET_DBSTATEMENT_FOR_TEXT
-        description: Whether the Entity Framework Core instrumentation can pass SQL statements through the `db.statement` attribute. Queries might contain sensitive information. If set to `false`, `db.statement` is recorded only for executing stored procedures.
-        default: 'false'
-        type: boolean
-        category: instrumentation
   - keys:
       - GRAPHQL
     instrumented_components:
@@ -486,7 +683,7 @@ instrumentations:
       - name: Grpc.Net.Client Instrumentation for OpenTelemetry
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Instrumentation.GrpcNetClient
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.GrpcNetClient
-        version: 1.12.0-beta.1
+        version: 1.15.0-beta.1
         stability: beta
     signals:
       - traces: []
@@ -514,7 +711,7 @@ instrumentations:
       - name: HttpClient and HttpWebRequest instrumentation for OpenTelemetry
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Instrumentation.Http
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.Http
-        version: 1.12.0
+        version: 1.15.0
         stability: beta
     signals:
       - traces: []
@@ -582,9 +779,7 @@ instrumentations:
       - MONGODB
     instrumented_components:
       - name: MongoDB.Driver.Core
-        supported_versions: 2.7.0 to 3.0.0
-      - name: MongoDB.Driver.Core
-        supported_versions: 3.0.0 to 4.0.0
+        supported_versions: 2.7.0 to 3.5.0
     description: Not supported on .NET Framework
     stability: beta
     support: third-party
@@ -716,7 +911,7 @@ instrumentations:
       - name: QuartzNET Instrumentation for OpenTelemetry .NET
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Instrumentation.Quartz
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.Quartz
-        version: 1.12.0-beta.1
+        version: 1.15.0-beta.1
         stability: beta
     signals:
       - traces: []
@@ -724,7 +919,7 @@ instrumentations:
       - RABBITMQ
     instrumented_components:
       - name: RabbitMQ.Client
-        supported_versions: 6.0.0 and higher
+        supported_versions: 5.0.0 and higher
     stability: beta
     support: third-party
     signals:
@@ -744,18 +939,18 @@ instrumentations:
       - name: SqlClient instrumentation for OpenTelemetry .NET
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Instrumentation.SqlClient
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.SqlClient
-        version: 1.12.0-beta.2
-        stability: beta
+        version: 1.15.0
+        stability: stable
     signals:
       - traces: []
     settings:
-      - env: OTEL_DOTNET_AUTO_SQLCLIENT_SET_DBSTATEMENT_FOR_TEXT
-        description: Whether the SQL Client instrumentation can pass SQL statements through the `db.statement` attribute. Queries might contain sensitive information. If set to `false`, `db.statement` is recorded only for executing stored procedures. Not supported on .NET Framework for System.Data.SqlClient.
+      - env: OTEL_DOTNET_EXPERIMENTAL_SQLCLIENT_ENABLE_TRACE_CONTEXT_PROPAGATION
+        description: This is an experimental feature and is subject to change without prior notice. Not supported on .NET Framework. This feature propagates 'traceparent' for 'CommandType.Text' commands utilizing 'SET CONTEXT_INFO'.
         default: 'false'
         type: boolean
         category: instrumentation
-      - env: OTEL_DOTNET_EXPERIMENTAL_SQLCLIENT_ENABLE_TRACE_CONTEXT_PROPAGATION
-        description: This is an experimental feature and is subject to change without prior notice. Not supported on .NET Framework. This feature propagates 'traceparent' for 'CommandType.Text' commands utilizing 'SET CONTEXT_INFO'.
+      - env: OTEL_DOTNET_AUTO_SQLCLIENT_NETFX_ILREWRITE_ENABLED
+        description: Enables IL rewriting of `SqlCommand` on .NET Framework to ensure `CommandText` is present for `SqlClient` instrumentation, which is required for `db.query.text` and `db.query.summary` to be populated. Previously, `CommandText` was only available for stored procedures. With this setting enabled, it is also available for raw queries. This changes the behavior of events emitted by the `SqlEventSource`, which might impact other parts of the application if this mechanism is used.
         default: 'false'
         type: boolean
         category: instrumentation
@@ -764,14 +959,13 @@ instrumentations:
     instrumented_components:
       - name: StackExchange.Redis
         supported_versions: 2.6.122 to 3.0.0
-    description: Not supported on .NET Framework
     stability: beta
     support: community
     dependencies:
       - name: StackExchange.Redis Instrumentation for OpenTelemetry
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Instrumentation.StackExchangeRedis
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.StackExchangeRedis
-        version: 1.12.0-beta.1
+        version: 1.15.0-beta.1
         stability: beta
     signals:
       - traces: []
@@ -788,8 +982,18 @@ instrumentations:
       - name: WCF Instrumentation for OpenTelemetry .NET
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Instrumentation.Wcf
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.Wcf
-        version: 1.12.0-beta.1
+        version: 1.15.0-beta.1
         stability: beta
+    signals:
+      - traces: []
+  - keys:
+      - WCFCORE
+    instrumented_components:
+      - name: CoreWCF.Primitives
+        supported_versions: 1.8.0 and higher
+    description: Not supported on .NET Framework
+    stability: beta
+    support: third-party
     signals:
       - traces: []
   - keys:
@@ -802,81 +1006,81 @@ instrumentations:
       - name: Runtime Instrumentation for OpenTelemetry .NET
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Instrumentation.Runtime
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.Runtime
-        version: 1.12.0
+        version: 1.15.0
         stability: stable
     signals:
       - metrics:
           - metric_name: dotnet.process.cpu.time
             instrument: counter
-            description: CPU time used by the process. Only available for .NET 9.
+            description: CPU time used by the process. Only available for .NET 9+.
             category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language` attribute.
           - metric_name: dotnet.process.memory.working_set
             instrument: updowncounter
-            description: The number of bytes of physical memory mapped to the process context. Only available for .NET 9.
+            description: The number of bytes of physical memory mapped to the process context. Only available for .NET 9+.
             category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language` attribute.
           - metric_name: dotnet.gc.collections
             instrument: counter
-            description: The number of garbage collections that have occurred since the process has started. Only available for .NET 9.
+            description: The number of garbage collections that have occurred since the process has started. Only available for .NET 9+.
             category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language` attribute.
           - metric_name: dotnet.gc.heap.total_allocated
             instrument: counter
-            description: The approximate number of bytes allocated on the managed GC heap since the process started. The returned value does not include any native allocations. Only available for .NET 9.
+            description: The approximate number of bytes allocated on the managed GC heap since the process started. The returned value does not include any native allocations. Only available for .NET 9+.
             category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language` attribute.
           - metric_name: dotnet.gc.last_collection.memory.committed_size
             instrument: updowncounter
-            description: The amount of committed virtual memory in use by the .NET GC, as observed during the latest garbage collection. Only available for .NET 9.
+            description: The amount of committed virtual memory in use by the .NET GC, as observed during the latest garbage collection. Only available for .NET 9+.
             category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language` attribute.
           - metric_name: dotnet.gc.last_collection.heap.size
             instrument: updowncounter
-            description: The managed GC heap size (including fragmentation), as observed during the latest garbage collection. Only available for .NET 9.
+            description: The managed GC heap size (including fragmentation), as observed during the latest garbage collection. Only available for .NET 9+.
             category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language` attribute.
           - metric_name: dotnet.gc.last_collection.heap.fragmentation.size
             instrument: updowncounter
-            description: The heap fragmentation, as observed during the latest garbage collection. Only available for .NET 9.
+            description: The heap fragmentation, as observed during the latest garbage collection. Only available for .NET 9+.
             category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language` attribute.
           - metric_name: dotnet.gc.pause.time
             instrument: counter
-            description: The total amount of time paused in GC since the process started. Only available for .NET 9.
+            description: The total amount of time paused in GC since the process started. Only available for .NET 9+.
             category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language` attribute.
           - metric_name: dotnet.jit.compiled_il.size
             instrument: counter
-            description: Count of bytes of intermediate language that have been compiled since the process started. Only available for .NET 9.
+            description: Count of bytes of intermediate language that have been compiled since the process started. Only available for .NET 9+.
             category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language` attribute.
           - metric_name: dotnet.jit.compiled_methods
             instrument: counter
-            description: The number of times the JIT compiler (re)compiled methods since the process started. Only available for .NET 9.
+            description: The number of times the JIT compiler (re)compiled methods since the process started. Only available for .NET 9+.
             category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language` attribute.
           - metric_name: dotnet.jit.compilation.time
             instrument: counter
-            description: The amount of time the JIT compiler has spent compiling methods since the process started. Only available for .NET 9.
+            description: The amount of time the JIT compiler has spent compiling methods since the process started. Only available for .NET 9+.
             category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language` attribute.
           - metric_name: dotnet.thread_pool.thread.count
             instrument: updowncounter
-            description: The number of thread pool threads that currently exist. Only available for .NET 9.
+            description: The number of thread pool threads that currently exist. Only available for .NET 9+.
             category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language` attribute.
           - metric_name: dotnet.thread_pool.work_item.count
             instrument: counter
-            description: The number of work items that the thread pool has completed since the process started. Only available for .NET 9.
+            description: The number of work items that the thread pool has completed since the process started. Only available for .NET 9+.
             category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language` attribute.
           - metric_name: dotnet.thread_pool.queue.length
             instrument: updowncounter
-            description: The number of work items that are currently queued to be processed by the thread pool. Only available for .NET 9.
+            description: The number of work items that are currently queued to be processed by the thread pool. Only available for .NET 9+.
             category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language` attribute.
           - metric_name: dotnet.monitor.lock_contentions
             instrument: counter
-            description: The number of times there was contention when trying to acquire a monitor lock since the process started. Only available for .NET 9.
+            description: The number of times there was contention when trying to acquire a monitor lock since the process started. Only available for .NET 9+.
             category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language` attribute.
           - metric_name: dotnet.timer.count
             instrument: updowncounter
-            description: The number of timer instances that are currently active. Only available for .NET 9.
+            description: The number of timer instances that are currently active. Only available for .NET 9+.
             category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language` attribute.
           - metric_name: dotnet.assembly.count
             instrument: updowncounter
-            description: The number of .NET assemblies that are currently loaded. Only available for .NET 9.
+            description: The number of .NET assemblies that are currently loaded. Only available for .NET 9+.
             category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language` attribute.
           - metric_name: dotnet.exceptions
             instrument: counter
-            description: The number of exceptions that have been thrown in managed code. Only available for .NET 9.
+            description: The number of exceptions that have been thrown in managed code. Only available for .NET 9+.
             category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language` attribute.
           - metric_name: process.runtime.dotnet.gc.collections.count
             instrument: counter
@@ -956,7 +1160,7 @@ instrumentations:
       - name: Process Instrumentation for OpenTelemetry .NET
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Instrumentation.Process
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.Process
-        version: 1.12.0-beta.1
+        version: 1.15.0-beta.1
         stability: beta
     signals:
       - metrics:
@@ -984,7 +1188,7 @@ instrumentations:
       - ILOGGER
     instrumented_components:
       - name: Microsoft.Extensions.Logging
-        supported_versions: 9.0.0 and higher
+        supported_versions: 8.0.0 and higher
     description: Not supported on .NET Framework
     stability: beta
     support: community
@@ -1002,6 +1206,21 @@ instrumentations:
     settings:
       - env: OTEL_DOTNET_AUTO_LOGS_ENABLE_LOG4NET_BRIDGE
         description: Enables `log4net` bridge. When `log4net` logs bridge is enabled, and `log4net` is configured with at least 1 appender, application logs are exported in OTLP format in addition to being written into their currently configured destination.
+        default: 'false'
+        type: boolean
+        category: instrumentation
+  - keys:
+      - NLOG
+    instrumented_components:
+      - name: NLOG
+        supported_versions: 5.0.0 to 7.0.0
+    stability: beta
+    support: community
+    signals:
+      - logs: []
+    settings:
+      - env: OTEL_DOTNET_AUTO_LOGS_ENABLE_NLOG_BRIDGE
+        description: Enables `NLog` bridge. When `NLog` logs bridge is enabled, application logs are exported in OTLP format in addition to being written into their currently configured destination.
         default: 'false'
         type: boolean
         category: instrumentation
@@ -1025,7 +1244,7 @@ resource_detectors:
       - name: Resource Detectors for Azure cloud environments
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Resources.Azure
         package_href: https://www.nuget.org/packages/OpenTelemetry.Resources.Azure
-        version: 1.12.0-beta.1
+        version: 1.15.0-beta.1
         stability: beta
   - key: CONTAINER
     description: Container detector. For example, Docker or Podman containers. Not supported on .NET Framework.
@@ -1037,7 +1256,7 @@ resource_detectors:
       - name: Container Resource Detectors
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Resources.Container
         package_href: https://www.nuget.org/packages/OpenTelemetry.Resources.Container
-        version: 1.12.0-beta.1
+        version: 1.15.0-beta.1
         stability: beta
   - key: HOST
     description: Host detector.
@@ -1050,7 +1269,7 @@ resource_detectors:
       - name: Host Resource Detectors
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Resources.Host
         package_href: https://www.nuget.org/packages/OpenTelemetry.Resources.Host
-        version: 1.12.0-beta.1
+        version: 1.15.0-beta.2
         stability: beta
   - key: OPERATINGSYSTEM
     description: Operating System detector.
@@ -1066,7 +1285,7 @@ resource_detectors:
       - name: Operating System Detectors
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/blob/main/src/OpenTelemetry.Resources.OperatingSystem
         package_href: https://www.nuget.org/packages/OpenTelemetry.Resources.OperatingSystem
-        version: 1.12.0-beta.1
+        version: 1.15.0-beta.1
         stability: beta
   - key: PROCESS
     description: Process detector.
@@ -1079,7 +1298,7 @@ resource_detectors:
       - name: Process Resource Detectors
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Resources.Process
         package_href: https://www.nuget.org/packages/OpenTelemetry.Resources.Process
-        version: 1.12.0-beta.1
+        version: 1.15.0-beta.1
         stability: beta
   - key: PROCESSRUNTIME
     description: Process Runtime detector.
@@ -1093,5 +1312,5 @@ resource_detectors:
       - name: Process Runtime Resource Detectors
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Resources.ProcessRuntime
         package_href: https://www.nuget.org/packages/OpenTelemetry.Resources.ProcessRuntime
-        version: 1.12.0-beta.1
+        version: 1.15.0-beta.1
         stability: beta
