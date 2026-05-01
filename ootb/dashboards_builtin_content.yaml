@@ -933,6 +933,14 @@ Dashboards:
     importQualifiers: entity/read_sizes (service =  datastore) & (monitored_resource
       =  datastore_request) & (project_id =  *);  OR api/request_count (service =  datastore)
       & (monitored_resource =  datastore_request) & (project_id =  *);
+  Deployment:
+    dashboard_group: Seldon
+    view_support: N/A
+    importQualifiers: seldon_api_executor_server_requests_seconds (*);
+  Deployments:
+    dashboard_group: Seldon
+    view_support: N/A
+    importQualifiers: seldon_api_executor_server_requests_seconds (*);
   Devices:
     dashboard_group: Conviva
     view_support: N/A
@@ -1080,6 +1088,10 @@ Dashboards:
     view_support: aggregated
     importQualifiers: HealthyHostCount (namespace =  AWS/ELB) & (stat =  mean) & (LoadBalancerName
       =  *);
+  ENTITY THROTTLING:
+    dashboard_group: Organization metrics
+    view_support: N/A
+    importQualifiers: sf.org.subscription.customMetrics (*);
   ESX-Host:
     dashboard_group: vSphere (legacy)
     view_support: N/A
@@ -1525,6 +1537,14 @@ Dashboards:
     view_support: N/A
     importQualifiers: conviva.quality_metriclens.total_attempts (*);  OR conviva.attempts
       (*);
+  Inference service:
+    dashboard_group: Kserve
+    view_support: N/A
+    importQualifiers: request_predict_seconds (*);
+  Inference services:
+    dashboard_group: Kserve
+    view_support: N/A
+    importQualifiers: request_predict_seconds (*);
   Instance:
     dashboard_group: MongoDB (OTel)
     view_support: instance
@@ -2517,11 +2537,21 @@ Dashboards:
     view_support: N/A
     importQualifiers: demo.trans.count (*);
   Server:
+    dashboard_group: TensorFlow Servings
+    view_support: N/A
+    importQualifiers: :tensorflow:serving:request_count (*);  OR :tensorflow:core:saved_model:read:count
+      (*);
+  Server - Kubeflow:
     dashboard_group: Kubeflow
     view_support: N/A
     importQualifiers: run_server_run_count (*);  OR pipeline_server_pipeline_version_count
       (*);
   Servers:
+    dashboard_group: TensorFlow Servings
+    view_support: N/A
+    importQualifiers: :tensorflow:serving:request_count (*);  OR :tensorflow:core:saved_model:read:count
+      (*);
+  Servers - Kubeflow:
     dashboard_group: Kubeflow
     view_support: N/A
     importQualifiers: run_server_run_count (*);  OR pipeline_server_pipeline_version_count
@@ -2578,6 +2608,14 @@ Dashboards:
     dashboard_group: "\xB5APM PG"
     view_support: N/A
     importQualifiers: spans.count (service =  *);
+  Service host:
+    dashboard_group: Chroma DB
+    view_support: N/A
+    importQualifiers: collection_add (*);  OR get_collection (*);
+  Service hosts:
+    dashboard_group: Chroma DB
+    view_support: N/A
+    importQualifiers: collection_add (*);  OR get_collection (*);
   Service limit:
     dashboard_group: AWS service limit
     view_support: N/A
