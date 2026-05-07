@@ -1,0 +1,343 @@
+component: Splunk Distribution of OpenTelemetry Python
+version: 2.8.0
+settings:
+instrumentations:
+  - keys:
+      - "opentelemetry-instrumentation-aio-pika"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-aio-pika](./opentelemetry-instrumentation-aio-pika)"
+        supported_versions: "aio_pika >= 7.2.0, < 10.0.0"
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-aiohttp-client"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-aiohttp-client](./opentelemetry-instrumentation-aiohttp-client)"
+        supported_versions: aiohttp ~= 3.0
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-aiohttp-server"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-aiohttp-server](./opentelemetry-instrumentation-aiohttp-server)"
+        supported_versions: aiohttp ~= 3.0
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-aiokafka"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-aiokafka](./opentelemetry-instrumentation-aiokafka)"
+        supported_versions: "aiokafka >= 0.8, < 1.0"
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-aiopg"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-aiopg](./opentelemetry-instrumentation-aiopg)"
+        supported_versions: "aiopg >= 0.13.0, < 2.0.0"
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-asgi"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-asgi](./opentelemetry-instrumentation-asgi)"
+        supported_versions: asgiref ~= 3.0
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-asyncclick"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-asyncclick](./opentelemetry-instrumentation-asyncclick)"
+        supported_versions: asyncclick ~= 8.0
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-asyncio"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-asyncio](./opentelemetry-instrumentation-asyncio)"
+        supported_versions: asyncio
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-asyncpg"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-asyncpg](./opentelemetry-instrumentation-asyncpg)"
+        supported_versions: asyncpg >= 0.12.0
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-aws-lambda"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-aws-lambda](./opentelemetry-instrumentation-aws-lambda)"
+        supported_versions: aws_lambda
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-boto"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-boto](./opentelemetry-instrumentation-boto)"
+        supported_versions: boto~=2.0
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-boto3sqs"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-boto3sqs](./opentelemetry-instrumentation-boto3sqs)"
+        supported_versions: boto3 ~= 1.0
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-botocore"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-botocore](./opentelemetry-instrumentation-botocore)"
+        supported_versions: botocore ~= 1.0
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-cassandra"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-cassandra](./opentelemetry-instrumentation-cassandra)"
+        supported_versions: "cassandra-driver ~= 3.25, scylla-driver ~= 3.25"
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-celery"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-celery](./opentelemetry-instrumentation-celery)"
+        supported_versions: "celery >= 4.0, < 6.0"
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-click"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-click](./opentelemetry-instrumentation-click)"
+        supported_versions: "click >= 8.1.3, < 9.0.0"
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-confluent-kafka"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-confluent-kafka](./opentelemetry-instrumentation-confluent-kafka)"
+        supported_versions: "confluent-kafka >= 1.8.2, <= 2.11.0"
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-dbapi"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-dbapi](./opentelemetry-instrumentation-dbapi)"
+        supported_versions: dbapi
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-django"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-django](./opentelemetry-instrumentation-django)"
+        supported_versions: django >= 1.10
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-elasticsearch"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-elasticsearch](./opentelemetry-instrumentation-elasticsearch)"
+        supported_versions: elasticsearch >= 6.0
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-falcon"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-falcon](./opentelemetry-instrumentation-falcon)"
+        supported_versions: "falcon >= 1.4.1, < 5.0.0"
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-fastapi"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-fastapi](./opentelemetry-instrumentation-fastapi)"
+        supported_versions: fastapi ~= 0.92
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-flask"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-flask](./opentelemetry-instrumentation-flask)"
+        supported_versions: flask >= 1.0
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-grpc"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-grpc](./opentelemetry-instrumentation-grpc)"
+        supported_versions: grpcio >= 1.42.0
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-httpx"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-httpx](./opentelemetry-instrumentation-httpx)"
+        supported_versions: httpx >= 0.18.0
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-jinja2"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-jinja2](./opentelemetry-instrumentation-jinja2)"
+        supported_versions: "jinja2 >= 2.7, < 4.0"
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-kafka-python"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-kafka-python](./opentelemetry-instrumentation-kafka-python)"
+        supported_versions: "kafka-python >= 2.0, < 3.0,kafka-python-ng >= 2.0, < 3.0"
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-logging"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-logging](./opentelemetry-instrumentation-logging)"
+        supported_versions: logging
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-mysql"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-mysql](./opentelemetry-instrumentation-mysql)"
+        supported_versions: "mysql-connector-python >= 8.0, < 10.0"
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-mysqlclient"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-mysqlclient](./opentelemetry-instrumentation-mysqlclient)"
+        supported_versions: mysqlclient < 3
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-pika"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-pika](./opentelemetry-instrumentation-pika)"
+        supported_versions: pika >= 0.12.0
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-psycopg"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-psycopg](./opentelemetry-instrumentation-psycopg)"
+        supported_versions: psycopg >= 3.1.0
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-psycopg2"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-psycopg2](./opentelemetry-instrumentation-psycopg2)"
+        supported_versions: "psycopg2 >= 2.7.3.1,psycopg2-binary >= 2.7.3.1"
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-pymemcache"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-pymemcache](./opentelemetry-instrumentation-pymemcache)"
+        supported_versions: "pymemcache >= 1.3.5, < 5"
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-pymongo"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-pymongo](./opentelemetry-instrumentation-pymongo)"
+        supported_versions: "pymongo >= 3.1, < 5.0"
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-pymssql"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-pymssql](./opentelemetry-instrumentation-pymssql)"
+        supported_versions: "pymssql >= 2.1.5, < 3"
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-pymysql"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-pymysql](./opentelemetry-instrumentation-pymysql)"
+        supported_versions: PyMySQL < 2
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-pyramid"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-pyramid](./opentelemetry-instrumentation-pyramid)"
+        supported_versions: pyramid >= 1.7
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-redis"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-redis](./opentelemetry-instrumentation-redis)"
+        supported_versions: redis >= 2.6
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-remoulade"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-remoulade](./opentelemetry-instrumentation-remoulade)"
+        supported_versions: remoulade >= 0.50
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-requests"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-requests](./opentelemetry-instrumentation-requests)"
+        supported_versions: requests ~= 2.0
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-sqlalchemy"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-sqlalchemy](./opentelemetry-instrumentation-sqlalchemy)"
+        supported_versions: "sqlalchemy >= 1.0.0, < 2.1.0"
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-sqlite3"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-sqlite3](./opentelemetry-instrumentation-sqlite3)"
+        supported_versions: sqlite3
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-starlette"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-starlette](./opentelemetry-instrumentation-starlette)"
+        supported_versions: starlette >= 0.13
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-system-metrics"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-system-metrics](./opentelemetry-instrumentation-system-metrics)"
+        supported_versions: psutil >= 5
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-threading"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-threading](./opentelemetry-instrumentation-threading)"
+        supported_versions: threading
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-tornado"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-tornado](./opentelemetry-instrumentation-tornado)"
+        supported_versions: tornado >= 5.1.1
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-tortoiseorm"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-tortoiseorm](./opentelemetry-instrumentation-tortoiseorm)"
+        supported_versions: "tortoise-orm >= 0.17.0"
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-urllib"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-urllib](./opentelemetry-instrumentation-urllib)"
+        supported_versions: urllib
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-urllib3"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-urllib3](./opentelemetry-instrumentation-urllib3)"
+        supported_versions: "urllib3 >= 1.0.0, < 3.0.0"
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-wsgi"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-wsgi](./opentelemetry-instrumentation-wsgi)"
+        supported_versions: wsgi
+    support: community
+dependencies:
+  - name: OpenTelemetry Python
+    stability: stable
+    source_href: "https://github.com/open-telemetry/opentelemetry-python"
+  - name: OpenTelemetry Python Contrib
+    stability: stable
+    source_href: "https://github.com/open-telemetry/opentelemetry-python-contrib"
+  - name: "opentelemetry-api"
+    version: 1.38.0
+    stability: stable
+  - name: "opentelemetry-sdk"
+    version: 1.38.0
+    stability: stable
+  - name: "opentelemetry-propagator-b3"
+    version: 1.38.0
+    stability: stable
+  - name: "opentelemetry-exporter-otlp-proto-grpc"
+    version: 1.38.0
+    stability: stable
+  - name: "opentelemetry-exporter-otlp-proto-http"
+    version: 1.38.0
+    stability: stable
+  - name: "opentelemetry-instrumentation"
+    version: 0.59b0
+    stability: stable
+  - name: "opentelemetry-instrumentation-system-metrics"
+    version: 0.59b0
+    stability: stable
+  - name: "opentelemetry-semantic-conventions"
+    version: 0.59b0
+    stability: stable
+  - name: protobuf>=6.31.1
+    stability: stable
