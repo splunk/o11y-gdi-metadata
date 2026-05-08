@@ -1,6 +1,183 @@
-component: Splunk Distribution of OpenTelemetry Python
-version: 2.8.0
+component: "Splunk Distribution of OpenTelemetry Python"
+version: "2.10.1"
+dependencies:
+  - name: "OpenTelemetry Python"
+    source_href: "https://github.com/open-telemetry/opentelemetry-python"
+    version: "1.41.0"
+    stability: stable
+  - name: "OpenTelemetry Python Contrib"
+    source_href: "https://github.com/open-telemetry/opentelemetry-python-contrib"
+    version: "0.62b0"
+    stability: stable
+  - name: "opentelemetry-api"
+    version: "1.41.0"
+    stability: stable
+  - name: "opentelemetry-sdk"
+    version: "1.41.0"
+    stability: stable
+  - name: "opentelemetry-propagator-b3"
+    version: "1.41.0"
+    stability: stable
+  - name: "opentelemetry-exporter-otlp-proto-grpc"
+    version: "1.41.0"
+    stability: stable
+  - name: "opentelemetry-exporter-otlp-proto-http"
+    version: "1.41.0"
+    stability: stable
+  - name: "opentelemetry-instrumentation"
+    version: "0.62b0"
+    stability: stable
+  - name: "opentelemetry-instrumentation-logging"
+    version: "0.62b0"
+    stability: stable
+  - name: "opentelemetry-instrumentation-system-metrics"
+    version: "0.62b0"
+    stability: stable
+  - name: "opentelemetry-semantic-conventions"
+    version: "0.62b0"
+    stability: stable
+  - name: "protobuf"
+    version: ">=6.33.5"
+    stability: stable
+  - name: "wrapt"
+    version: ">=1.0.0,<2.0.0"
+    stability: stable
 settings:
+  - env: OTEL_TRACES_EXPORTER
+    description: "Comma-separated list of trace exporters. The Splunk distribution defaults to OTLP."
+    default: "otlp"
+    type: string
+    category: exporter
+  - env: OTEL_METRICS_EXPORTER
+    description: "Comma-separated list of metric exporters. The Splunk distribution defaults to OTLP."
+    default: "otlp"
+    type: string
+    category: exporter
+  - env: OTEL_LOGS_EXPORTER
+    description: "Comma-separated list of log exporters. The Splunk distribution defaults to OTLP."
+    default: "otlp"
+    type: string
+    category: exporter
+  - env: SPLUNK_REALM
+    description: "Splunk Observability Cloud realm. When set, OTLP traces and metrics endpoints default to the realm ingest endpoints."
+    default: ""
+    type: string
+    category: exporter
+  - env: SPLUNK_ACCESS_TOKEN
+    description: "Splunk authentication token added to OTLP exporter headers as x-sf-token when set."
+    default: ""
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_PROTOCOL
+    description: "OTLP exporter transport protocol. When SPLUNK_REALM is set, the default is http/protobuf."
+    default: ""
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_HEADERS
+    description: "Comma-separated list of additional OTLP exporter headers. The Splunk access token is appended here when configured."
+    default: ""
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+    description: "OTLP traces endpoint. When SPLUNK_REALM is set, the default is the Splunk trace ingest endpoint for that realm."
+    default: ""
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_METRICS_ENDPOINT
+    description: "OTLP metrics endpoint. When SPLUNK_REALM is set, the default is the Splunk metric ingest endpoint for that realm."
+    default: ""
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_LOGS_ENDPOINT
+    description: "OTLP logs endpoint. Profiling can use SPLUNK_PROFILER_LOGS_ENDPOINT to set this endpoint."
+    default: ""
+    type: string
+    category: exporter
+  - env: OTEL_ATTRIBUTE_COUNT_LIMIT
+    description: "Maximum number of attributes allowed on spans, events, links, and resources. The Splunk distribution leaves this unlimited by default."
+    default: ""
+    type: int
+    category: limits
+  - env: OTEL_ATTRIBUTE_VALUE_LENGTH_LIMIT
+    description: "Maximum length of attribute values."
+    default: "12000"
+    type: int
+    category: limits
+  - env: OTEL_SPAN_ATTRIBUTE_COUNT_LIMIT
+    description: "Maximum number of attributes allowed on a span. The Splunk distribution leaves this unlimited by default."
+    default: ""
+    type: int
+    category: limits
+  - env: OTEL_SPAN_EVENT_COUNT_LIMIT
+    description: "Maximum number of events allowed on a span. The Splunk distribution leaves this unlimited by default."
+    default: ""
+    type: int
+    category: limits
+  - env: OTEL_EVENT_ATTRIBUTE_COUNT_LIMIT
+    description: "Maximum number of attributes allowed on a span event. The Splunk distribution leaves this unlimited by default."
+    default: ""
+    type: int
+    category: limits
+  - env: OTEL_LINK_ATTRIBUTE_COUNT_LIMIT
+    description: "Maximum number of attributes allowed on a span link. The Splunk distribution leaves this unlimited by default."
+    default: ""
+    type: int
+    category: limits
+  - env: OTEL_SPAN_LINK_COUNT_LIMIT
+    description: "Maximum number of links allowed on a span."
+    default: "1000"
+    type: int
+    category: limits
+  - env: OTEL_EXPERIMENTAL_RESOURCE_DETECTORS
+    description: "Comma-separated list of resource detectors enabled by the SDK."
+    default: "host,process"
+    type: string
+    category: resource
+  - env: OTEL_TRACES_SAMPLER
+    description: "Sampler used for traces."
+    default: "always_on"
+    type: string
+    category: sampler
+  - env: SPLUNK_TRACE_RESPONSE_HEADER_ENABLED
+    description: "Activates the Splunk Server-Timing trace response header propagator."
+    default: "true"
+    type: boolean
+    category: trace propagation
+  - env: SPLUNK_OTEL_SYSTEM_METRICS_ENABLED
+    description: "Activates system metrics instrumentation when set to true."
+    default: "false"
+    type: boolean
+    category: instrumentation
+  - env: SPLUNK_PROFILER_ENABLED
+    description: "Activates continuous profiling."
+    default: "false"
+    type: boolean
+    category: profiling
+  - env: SPLUNK_PROFILER_CALL_STACK_INTERVAL
+    description: "Frequency in milliseconds for continuous profiling call stack collection."
+    default: "1000"
+    type: int
+    category: profiling
+  - env: SPLUNK_PROFILER_LOGS_ENDPOINT
+    description: "Collector endpoint for profiling logs. When set, it is forwarded to OTEL_EXPORTER_OTLP_LOGS_ENDPOINT."
+    default: ""
+    type: string
+    category: profiling
+  - env: SPLUNK_SNAPSHOT_PROFILER_ENABLED
+    description: "Activates call graph snapshot profiling."
+    default: "false"
+    type: boolean
+    category: profiling
+  - env: SPLUNK_SNAPSHOT_SAMPLING_INTERVAL
+    description: "Frequency in milliseconds for snapshot profiling stack sample collection."
+    default: "10"
+    type: int
+    category: profiling
+  - env: SPLUNK_SNAPSHOT_SELECTION_PROBABILITY
+    description: "Fraction of traces selected for snapshot profiling."
+    default: "0.01"
+    type: double
+    category: profiling
 instrumentations:
   - keys:
       - "opentelemetry-instrumentation-aio-pika"
@@ -12,13 +189,13 @@ instrumentations:
       - "opentelemetry-instrumentation-aiohttp-client"
     instrumented_components:
       - name: "[opentelemetry-instrumentation-aiohttp-client](./opentelemetry-instrumentation-aiohttp-client)"
-        supported_versions: aiohttp ~= 3.0
+        supported_versions: "aiohttp ~= 3.0"
     support: community
   - keys:
       - "opentelemetry-instrumentation-aiohttp-server"
     instrumented_components:
       - name: "[opentelemetry-instrumentation-aiohttp-server](./opentelemetry-instrumentation-aiohttp-server)"
-        supported_versions: aiohttp ~= 3.0
+        supported_versions: "aiohttp ~= 3.0"
     support: community
   - keys:
       - "opentelemetry-instrumentation-aiokafka"
@@ -36,55 +213,49 @@ instrumentations:
       - "opentelemetry-instrumentation-asgi"
     instrumented_components:
       - name: "[opentelemetry-instrumentation-asgi](./opentelemetry-instrumentation-asgi)"
-        supported_versions: asgiref ~= 3.0
+        supported_versions: "asgiref ~= 3.0"
     support: community
   - keys:
       - "opentelemetry-instrumentation-asyncclick"
     instrumented_components:
       - name: "[opentelemetry-instrumentation-asyncclick](./opentelemetry-instrumentation-asyncclick)"
-        supported_versions: asyncclick ~= 8.0
+        supported_versions: "asyncclick ~= 8.0"
     support: community
   - keys:
       - "opentelemetry-instrumentation-asyncio"
     instrumented_components:
       - name: "[opentelemetry-instrumentation-asyncio](./opentelemetry-instrumentation-asyncio)"
-        supported_versions: asyncio
+        supported_versions: "asyncio"
     support: community
   - keys:
       - "opentelemetry-instrumentation-asyncpg"
     instrumented_components:
       - name: "[opentelemetry-instrumentation-asyncpg](./opentelemetry-instrumentation-asyncpg)"
-        supported_versions: asyncpg >= 0.12.0
+        supported_versions: "asyncpg >= 0.12.0"
     support: community
   - keys:
       - "opentelemetry-instrumentation-aws-lambda"
     instrumented_components:
       - name: "[opentelemetry-instrumentation-aws-lambda](./opentelemetry-instrumentation-aws-lambda)"
-        supported_versions: aws_lambda
-    support: community
-  - keys:
-      - "opentelemetry-instrumentation-boto"
-    instrumented_components:
-      - name: "[opentelemetry-instrumentation-boto](./opentelemetry-instrumentation-boto)"
-        supported_versions: boto~=2.0
+        supported_versions: "aws_lambda"
     support: community
   - keys:
       - "opentelemetry-instrumentation-boto3sqs"
     instrumented_components:
       - name: "[opentelemetry-instrumentation-boto3sqs](./opentelemetry-instrumentation-boto3sqs)"
-        supported_versions: boto3 ~= 1.0
+        supported_versions: "boto3 ~= 1.0"
     support: community
   - keys:
       - "opentelemetry-instrumentation-botocore"
     instrumented_components:
       - name: "[opentelemetry-instrumentation-botocore](./opentelemetry-instrumentation-botocore)"
-        supported_versions: botocore ~= 1.0
+        supported_versions: "botocore~=1.0,aiobotocore~=2.0"
     support: community
   - keys:
       - "opentelemetry-instrumentation-cassandra"
     instrumented_components:
       - name: "[opentelemetry-instrumentation-cassandra](./opentelemetry-instrumentation-cassandra)"
-        supported_versions: "cassandra-driver ~= 3.25, scylla-driver ~= 3.25"
+        supported_versions: "cassandra-driver ~= 3.25,scylla-driver ~= 3.25"
     support: community
   - keys:
       - "opentelemetry-instrumentation-celery"
@@ -102,25 +273,25 @@ instrumentations:
       - "opentelemetry-instrumentation-confluent-kafka"
     instrumented_components:
       - name: "[opentelemetry-instrumentation-confluent-kafka](./opentelemetry-instrumentation-confluent-kafka)"
-        supported_versions: "confluent-kafka >= 1.8.2, <= 2.11.0"
+        supported_versions: "confluent-kafka >= 1.8.2, < 3.0.0"
     support: community
   - keys:
       - "opentelemetry-instrumentation-dbapi"
     instrumented_components:
       - name: "[opentelemetry-instrumentation-dbapi](./opentelemetry-instrumentation-dbapi)"
-        supported_versions: dbapi
+        supported_versions: "dbapi"
     support: community
   - keys:
       - "opentelemetry-instrumentation-django"
     instrumented_components:
       - name: "[opentelemetry-instrumentation-django](./opentelemetry-instrumentation-django)"
-        supported_versions: django >= 1.10
+        supported_versions: "django >= 2.0"
     support: community
   - keys:
       - "opentelemetry-instrumentation-elasticsearch"
     instrumented_components:
       - name: "[opentelemetry-instrumentation-elasticsearch](./opentelemetry-instrumentation-elasticsearch)"
-        supported_versions: elasticsearch >= 6.0
+        supported_versions: "elasticsearch >= 6.0"
     support: community
   - keys:
       - "opentelemetry-instrumentation-falcon"
@@ -132,25 +303,25 @@ instrumentations:
       - "opentelemetry-instrumentation-fastapi"
     instrumented_components:
       - name: "[opentelemetry-instrumentation-fastapi](./opentelemetry-instrumentation-fastapi)"
-        supported_versions: fastapi ~= 0.92
+        supported_versions: "fastapi ~= 0.92"
     support: community
   - keys:
       - "opentelemetry-instrumentation-flask"
     instrumented_components:
       - name: "[opentelemetry-instrumentation-flask](./opentelemetry-instrumentation-flask)"
-        supported_versions: flask >= 1.0
+        supported_versions: "flask >= 1.0"
     support: community
   - keys:
       - "opentelemetry-instrumentation-grpc"
     instrumented_components:
       - name: "[opentelemetry-instrumentation-grpc](./opentelemetry-instrumentation-grpc)"
-        supported_versions: grpcio >= 1.42.0
+        supported_versions: "grpcio >= 1.42.0"
     support: community
   - keys:
       - "opentelemetry-instrumentation-httpx"
     instrumented_components:
       - name: "[opentelemetry-instrumentation-httpx](./opentelemetry-instrumentation-httpx)"
-        supported_versions: httpx >= 0.18.0
+        supported_versions: "httpx >= 0.18.0"
     support: community
   - keys:
       - "opentelemetry-instrumentation-jinja2"
@@ -168,7 +339,7 @@ instrumentations:
       - "opentelemetry-instrumentation-logging"
     instrumented_components:
       - name: "[opentelemetry-instrumentation-logging](./opentelemetry-instrumentation-logging)"
-        supported_versions: logging
+        supported_versions: "logging"
     support: community
   - keys:
       - "opentelemetry-instrumentation-mysql"
@@ -180,19 +351,19 @@ instrumentations:
       - "opentelemetry-instrumentation-mysqlclient"
     instrumented_components:
       - name: "[opentelemetry-instrumentation-mysqlclient](./opentelemetry-instrumentation-mysqlclient)"
-        supported_versions: mysqlclient < 3
+        supported_versions: "mysqlclient < 3"
     support: community
   - keys:
       - "opentelemetry-instrumentation-pika"
     instrumented_components:
       - name: "[opentelemetry-instrumentation-pika](./opentelemetry-instrumentation-pika)"
-        supported_versions: pika >= 0.12.0
+        supported_versions: "pika >= 0.12.0"
     support: community
   - keys:
       - "opentelemetry-instrumentation-psycopg"
     instrumented_components:
       - name: "[opentelemetry-instrumentation-psycopg](./opentelemetry-instrumentation-psycopg)"
-        supported_versions: psycopg >= 3.1.0
+        supported_versions: "psycopg >= 3.1.0"
     support: community
   - keys:
       - "opentelemetry-instrumentation-psycopg2"
@@ -222,31 +393,31 @@ instrumentations:
       - "opentelemetry-instrumentation-pymysql"
     instrumented_components:
       - name: "[opentelemetry-instrumentation-pymysql](./opentelemetry-instrumentation-pymysql)"
-        supported_versions: PyMySQL < 2
+        supported_versions: "PyMySQL < 2"
     support: community
   - keys:
       - "opentelemetry-instrumentation-pyramid"
     instrumented_components:
       - name: "[opentelemetry-instrumentation-pyramid](./opentelemetry-instrumentation-pyramid)"
-        supported_versions: pyramid >= 1.7
+        supported_versions: "pyramid >= 1.7"
     support: community
   - keys:
       - "opentelemetry-instrumentation-redis"
     instrumented_components:
       - name: "[opentelemetry-instrumentation-redis](./opentelemetry-instrumentation-redis)"
-        supported_versions: redis >= 2.6
+        supported_versions: "redis >= 2.6"
     support: community
   - keys:
       - "opentelemetry-instrumentation-remoulade"
     instrumented_components:
       - name: "[opentelemetry-instrumentation-remoulade](./opentelemetry-instrumentation-remoulade)"
-        supported_versions: remoulade >= 0.50
+        supported_versions: "remoulade >= 0.50"
     support: community
   - keys:
       - "opentelemetry-instrumentation-requests"
     instrumented_components:
       - name: "[opentelemetry-instrumentation-requests](./opentelemetry-instrumentation-requests)"
-        supported_versions: requests ~= 2.0
+        supported_versions: "requests ~= 2.0"
     support: community
   - keys:
       - "opentelemetry-instrumentation-sqlalchemy"
@@ -258,31 +429,31 @@ instrumentations:
       - "opentelemetry-instrumentation-sqlite3"
     instrumented_components:
       - name: "[opentelemetry-instrumentation-sqlite3](./opentelemetry-instrumentation-sqlite3)"
-        supported_versions: sqlite3
+        supported_versions: "sqlite3"
     support: community
   - keys:
       - "opentelemetry-instrumentation-starlette"
     instrumented_components:
       - name: "[opentelemetry-instrumentation-starlette](./opentelemetry-instrumentation-starlette)"
-        supported_versions: starlette >= 0.13
+        supported_versions: "starlette >= 0.13"
     support: community
   - keys:
       - "opentelemetry-instrumentation-system-metrics"
     instrumented_components:
       - name: "[opentelemetry-instrumentation-system-metrics](./opentelemetry-instrumentation-system-metrics)"
-        supported_versions: psutil >= 5
+        supported_versions: "psutil >= 5"
     support: community
   - keys:
       - "opentelemetry-instrumentation-threading"
     instrumented_components:
       - name: "[opentelemetry-instrumentation-threading](./opentelemetry-instrumentation-threading)"
-        supported_versions: threading
+        supported_versions: "threading"
     support: community
   - keys:
       - "opentelemetry-instrumentation-tornado"
     instrumented_components:
       - name: "[opentelemetry-instrumentation-tornado](./opentelemetry-instrumentation-tornado)"
-        supported_versions: tornado >= 5.1.1
+        supported_versions: "tornado >= 5.1.1"
     support: community
   - keys:
       - "opentelemetry-instrumentation-tortoiseorm"
@@ -294,7 +465,7 @@ instrumentations:
       - "opentelemetry-instrumentation-urllib"
     instrumented_components:
       - name: "[opentelemetry-instrumentation-urllib](./opentelemetry-instrumentation-urllib)"
-        supported_versions: urllib
+        supported_versions: "urllib"
     support: community
   - keys:
       - "opentelemetry-instrumentation-urllib3"
@@ -306,38 +477,53 @@ instrumentations:
       - "opentelemetry-instrumentation-wsgi"
     instrumented_components:
       - name: "[opentelemetry-instrumentation-wsgi](./opentelemetry-instrumentation-wsgi)"
-        supported_versions: wsgi
+        supported_versions: "wsgi"
     support: community
-dependencies:
-  - name: OpenTelemetry Python
-    stability: stable
-    source_href: "https://github.com/open-telemetry/opentelemetry-python"
-  - name: OpenTelemetry Python Contrib
-    stability: stable
-    source_href: "https://github.com/open-telemetry/opentelemetry-python-contrib"
-  - name: "opentelemetry-api"
-    version: 1.38.0
-    stability: stable
-  - name: "opentelemetry-sdk"
-    version: 1.38.0
-    stability: stable
-  - name: "opentelemetry-propagator-b3"
-    version: 1.38.0
-    stability: stable
-  - name: "opentelemetry-exporter-otlp-proto-grpc"
-    version: 1.38.0
-    stability: stable
-  - name: "opentelemetry-exporter-otlp-proto-http"
-    version: 1.38.0
-    stability: stable
-  - name: "opentelemetry-instrumentation"
-    version: 0.59b0
-    stability: stable
-  - name: "opentelemetry-instrumentation-system-metrics"
-    version: 0.59b0
-    stability: stable
-  - name: "opentelemetry-semantic-conventions"
-    version: 0.59b0
-    stability: stable
-  - name: protobuf>=6.31.1
-    stability: stable
+  - keys:
+      - "opentelemetry-instrumentation-anthropic"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-anthropic](./opentelemetry-instrumentation-anthropic)"
+        supported_versions: "anthropic >= 0.16.0"
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-claude-agent-sdk"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-claude-agent-sdk](./opentelemetry-instrumentation-claude-agent-sdk)"
+        supported_versions: "claude-agent-sdk >= 0.1.14"
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-google-genai"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-google-genai](./opentelemetry-instrumentation-google-genai)"
+        supported_versions: "google-genai >= 1.32.0"
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-langchain"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-langchain](./opentelemetry-instrumentation-langchain)"
+        supported_versions: "langchain >= 0.3.21"
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-openai-agents-v2"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-openai-agents-v2](./opentelemetry-instrumentation-openai-agents-v2)"
+        supported_versions: "openai-agents >= 0.3.3"
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-openai-v2"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-openai-v2](./opentelemetry-instrumentation-openai-v2)"
+        supported_versions: "openai >= 1.26.0"
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-vertexai"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-vertexai](./opentelemetry-instrumentation-vertexai)"
+        supported_versions: "google-cloud-aiplatform >= 1.64"
+    support: community
+  - keys:
+      - "opentelemetry-instrumentation-weaviate"
+    instrumented_components:
+      - name: "[opentelemetry-instrumentation-weaviate](./opentelemetry-instrumentation-weaviate)"
+        supported_versions: "weaviate-client >= 3.0.0,<5.0.0"
+    support: community
