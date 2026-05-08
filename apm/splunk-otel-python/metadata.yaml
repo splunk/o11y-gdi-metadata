@@ -44,17 +44,17 @@ dependencies:
     stability: stable
 settings:
   - env: OTEL_TRACES_EXPORTER
-    description: "Comma-separated list of trace exporters. The Splunk distribution defaults to OTLP."
+    description: "A comma-separated list of trace exporters. The Splunk distribution defaults to OTLP."
     default: "otlp"
     type: string
     category: exporter
   - env: OTEL_METRICS_EXPORTER
-    description: "Comma-separated list of metric exporters. The Splunk distribution defaults to OTLP."
+    description: "A comma-separated list of metric exporters. The Splunk distribution defaults to OTLP."
     default: "otlp"
     type: string
     category: exporter
   - env: OTEL_LOGS_EXPORTER
-    description: "Comma-separated list of log exporters. The Splunk distribution defaults to OTLP."
+    description: "A comma-separated list of log exporters. The Splunk distribution defaults to OTLP."
     default: "otlp"
     type: string
     category: exporter
