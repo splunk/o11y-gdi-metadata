@@ -3,7 +3,6 @@
 cmd="./scripts/update-metadata-yaml.sh"
 updates=(
 	"splunk-otel-java"
-	"splunk-otel-python"
 	"splunk-otel-dotnet"
    "splunk-otel-js"
 )
