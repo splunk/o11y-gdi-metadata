@@ -1,13 +1,13 @@
 component: Splunk Distribution of OpenTelemetry .NET
-version: 1.14.0
+version: 1.15.0
 dependencies:
   - name: OpenTelemetry .NET
     source_href: https://github.com/open-telemetry/opentelemetry-dotnet
-    version: 1.15.3
+    version: 1.16.0
     stability: stable
   - name: OpenTelemetry .NET Automatic Instrumentation
     source_href: https://github.com/open-telemetry/opentelemetry-dotnet-instrumentation
-    version: 1.15.0
+    version: 1.16.0
     stability: stable
 settings:
   - env: OTEL_DOTNET_AUTO_EXCLUDE_PROCESSES
@@ -59,6 +59,11 @@ settings:
     description: Activate to let the process fail when automatic instrumentation can't be executed. This setting is for debugging purposes, don't use it in production environments. The default value is `false`. Can't be set using the web.config or app.config files.
     default: 'false'
     type: boolean
+    category: general
+  - env: OTEL_DOTNET_AUTO_APP_DOMAIN_STRATEGY
+    description: .NET Framework-only setting that controls how OpenTelemetry .NET Automatic Instrumentation handles non-default AppDomain creation.
+    default: 'LoaderOptimizationSingleDomain'
+    type: string
     category: general
   - env: OTEL_LOGS_EXPORTER
     description: 'Comma-separated list of exporters. Supported options: `otlp`, `console`, `none`.'
@@ -150,6 +155,26 @@ settings:
     default: '10000'
     type: int
     category: exporter
+  - env: OTEL_EXPORTER_OTLP_COMPRESSION
+    description: Compression method for the OTLP exporter. Supported values are `gzip`, `none`.
+    default: 'none'
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_TRACES_COMPRESSION
+    description: Equivalent to `OTEL_EXPORTER_OTLP_COMPRESSION`, but applies only to traces.
+    default: 'none'
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_METRICS_COMPRESSION
+    description: Equivalent to `OTEL_EXPORTER_OTLP_COMPRESSION`, but applies only to metrics.
+    default: 'none'
+    type: string
+    category: exporter
+  - env: OTEL_EXPORTER_OTLP_LOGS_COMPRESSION
+    description: Equivalent to `OTEL_EXPORTER_OTLP_COMPRESSION`, but applies only to logs.
+    default: 'none'
+    type: string
+    category: exporter
   - env: OTEL_EXPORTER_OTLP_HEADERS
     description: 'Comma-separated list of additional HTTP headers sent with each export, for example: `Authorization=secret,X-Key=Value`.'
     default: ''
@@ -191,7 +216,7 @@ settings:
     type: boolean
     category: profiling
   - env: SPLUNK_PROFILER_MEMORY_ENABLED
-    description: Activates memory profiling.
+    description: Activates memory profiling. Not supported on .NET Framework.
     default: 'false'
     type: boolean
     category: profiling
@@ -405,12 +430,22 @@ settings:
     default: 'false'
     type: boolean
     category: diagnostic logging
+  - env: OTEL_DOTNET_AUTO_OPAMP_ENABLED
+    description: Enables OpAMP client.
+    default: 'false'
+    type: boolean
+    category: opamp
+  - env: OTEL_DOTNET_AUTO_OPAMP_SERVER_URL
+    description: OpAMP server url.
+    default: 'https://localhost:4320/v1/opamp'
+    type: string
+    category: opamp
 instrumentations:
   - keys:
       - ADONET
     instrumented_components:
       - name: System.Data.Common
-        supported_versions: 4.0.0 to 11.0.0
+        supported_versions: 4.0.0 to 12.0.0
       - name: System.Data
         supported_versions: 2.0.0 to 5.0.0 for .NET Framework and 2.0.0 to 3.0.0 for netstandard
     description: Generic ADO.NET instrumentation that covers `DbCommand` methods. It covers only implementations for overridden methods. Typically, a lot of implementations utilize new C# keyword, such cases need specific implementations. What is more this instrumentation does not cover libraries covered by specific instrumentations such as `SQLCLIENT`, `NPGSQL`, `MYSQLDATA`, `MYSQLCONNECTOR`, `ORACLEMDA`, or `SQLITE`
@@ -430,12 +465,12 @@ instrumentations:
       - name: ASP.NET Instrumentation for OpenTelemetry
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Instrumentation.AspNet
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.AspNet
-        version: 1.15.2
+        version: 1.16.0
         stability: release candidate
       - name: ASP.NET Telemetry HttpModule for OpenTelemetry
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Instrumentation.AspNet.TelemetryHttpModule
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.AspNet.TelemetryHttpModule
-        version: 1.15.2
+        version: 1.16.0
         stability: beta
     signals:
       - traces: []
@@ -472,7 +507,7 @@ instrumentations:
       - name: ASP.NET Core Instrumentation for OpenTelemetry .NET
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-ontrib/tree/main/src/OpenTelemetry.Instrumentation.AspNetCore
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.AspNetCore
-        version: 1.15.2
+        version: 1.16.0
         stability: beta
     signals:
       - traces: []
@@ -669,7 +704,7 @@ instrumentations:
       - name: EntityFrameworkCore Instrumentation for OpenTelemetry .NET
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Instrumentation.EntityFrameworkCore
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.EntityFrameworkCore
-        version: 1.15.1-beta.1
+        version: 1.16.0-beta.1
         stability: beta
     signals:
       - traces: []
@@ -700,7 +735,7 @@ instrumentations:
       - name: Grpc.Net.Client Instrumentation for OpenTelemetry
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Instrumentation.GrpcNetClient
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.GrpcNetClient
-        version: 1.15.1-beta.1
+        version: 1.16.0-beta.1
         stability: beta
     signals:
       - traces: []
@@ -728,7 +763,7 @@ instrumentations:
       - name: HttpClient and HttpWebRequest instrumentation for OpenTelemetry
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Instrumentation.Http
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.Http
-        version: 1.15.1
+        version: 1.16.0
         stability: beta
     signals:
       - traces: []
@@ -891,6 +926,11 @@ instrumentations:
     signals:
       - traces: []
     settings:
+      - env: OTEL_DOTNET_AUTO_ORACLEMDA_DATABASE_OPENTELEMETRY_TRACING
+        description: Whether the Oracle Client instrumentation can enable database OpenTelemetry tracing and propagate context to the server.
+        default: 'true'
+        type: boolean
+        category: instrumentation
       - env: OTEL_DOTNET_AUTO_ORACLEMDA_SET_DBSTATEMENT_FOR_TEXT
         description: Whether the Oracle Client instrumentation can pass SQL statements through the `db.statement` attribute. Queries might contain sensitive information. If set to `false`, `db.statement` is recorded only for executing stored procedures.
         default: 'false'
@@ -958,13 +998,13 @@ instrumentations:
       - name: SqlClient instrumentation for OpenTelemetry .NET
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Instrumentation.SqlClient
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.SqlClient
-        version: 1.15.2
+        version: 1.16.0
         stability: stable
     signals:
       - traces: []
     settings:
       - env: OTEL_DOTNET_EXPERIMENTAL_SQLCLIENT_ENABLE_TRACE_CONTEXT_PROPAGATION
-        description: This is an experimental feature and is subject to change without prior notice. Not supported on .NET Framework. This feature propagates 'traceparent' for 'CommandType.Text' commands utilizing 'SET CONTEXT_INFO'.
+        description: Whether the `SQLCLIENT` instrumentation turns on context propagation to the SQL Server.
         default: 'false'
         type: boolean
         category: instrumentation
@@ -977,7 +1017,7 @@ instrumentations:
       - SQLITE
     instrumented_components:
       - name: Microsoft.Data.Sqlite
-        supported_versions: 8.0.0 to 11.0.0
+        supported_versions: 8.0.0 to 12.0.0
     stability: beta
     support: third-party
     signals:
@@ -986,14 +1026,15 @@ instrumentations:
       - STACKEXCHANGEREDIS
     instrumented_components:
       - name: StackExchange.Redis
-        supported_versions: 2.6.122 to 3.0.0
+        supported_versions: 2.6.122 to 3.x.x+
+    description: 3.x.x+ supported only on .NET
     stability: beta
     support: community
     dependencies:
       - name: StackExchange.Redis Instrumentation for OpenTelemetry
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Instrumentation.StackExchangeRedis
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.StackExchangeRedis
-        version: 1.15.1-beta.1
+        version: 1.16.0-beta.1
         stability: beta
     signals:
       - traces: []
@@ -1010,7 +1051,7 @@ instrumentations:
       - name: WCF Instrumentation for OpenTelemetry .NET
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Instrumentation.Wcf
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.Wcf
-        version: 1.15.1-beta.1
+        version: 1.16.0-beta.1
         stability: beta
     signals:
       - traces: []
@@ -1143,7 +1184,7 @@ instrumentations:
             description: Contentions count when trying to acquire a monitor lock since the process started. Only available for .NET 8. and .NET Framework.
             category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language` attribute.
           - metric_name: process.runtime.dotnet.thread_pool.threads.count
-            instrument: counter
+            instrument: updowncounter
             description: Number of thread pool threads, as observed during the last measurement. Only available for .NET 8.
             category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language` attribute.
           - metric_name: process.runtime.dotnet.thread_pool.completed_items.count
@@ -1188,7 +1229,7 @@ instrumentations:
       - name: Process Instrumentation for OpenTelemetry .NET
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Instrumentation.Process
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.Process
-        version: 1.15.1-beta.1
+        version: 1.16.0-beta.1
         stability: beta
     signals:
       - metrics:
@@ -1272,7 +1313,7 @@ resource_detectors:
       - name: Resource Detectors for Azure cloud environments
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Resources.Azure
         package_href: https://www.nuget.org/packages/OpenTelemetry.Resources.Azure
-        version: 1.1510-beta.1
+        version: 1.15.1-beta.1
         stability: beta
   - key: CONTAINER
     description: Container detector. For example, Docker or Podman containers. Not supported on .NET Framework.
@@ -1320,13 +1361,14 @@ resource_detectors:
     attributes:
       - id: process.owner
       - id: process.pid
+      - id: process.creation.time
     stability: alpha
     support: community
     dependencies:
       - name: Process Resource Detectors
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Resources.Process
         package_href: https://www.nuget.org/packages/OpenTelemetry.Resources.Process
-        version: 1.15.1-beta.1
+        version: 1.15.1-beta.2
         stability: beta
   - key: PROCESSRUNTIME
     description: Process Runtime detector.
