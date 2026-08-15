@@ -1,5 +1,5 @@
 component: Splunk Distribution of OpenTelemetry Java
-version: 2.30.0
+version: 2.30.2
 dependencies:
   - name: OpenTelemetry Java
     source_href: https://github.com/open-telemetry/opentelemetry-java
