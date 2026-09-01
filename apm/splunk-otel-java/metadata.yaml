@@ -1,21 +1,21 @@
 component: Splunk Distribution of OpenTelemetry Java
-version: 2.30.0
+version: 2.31.1
 dependencies:
   - name: OpenTelemetry Java
     source_href: https://github.com/open-telemetry/opentelemetry-java
-    version: 1.64.0
+    version: 1.65.0
     stability: stable
   - name: OpenTelemetry Instrumentation for Java
     source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation
-    version: 2.30.0
+    version: 2.31.1
     stability: stable
   - name: OpenTelemetry Java Contrib Resource Providers
     source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/tree/main/resource-providers
-    version: 1.58.0-alpha
+    version: 1.59.0-alpha
     stability: experimental
   - name: OpenTelemetry Java Contrib Samplers
     source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/tree/main/samplers
-    version: 1.58.0-alpha
+    version: 1.59.0-alpha
     stability: experimental
 settings:
   - property: otel.sdk.disabled
@@ -451,6 +451,12 @@ settings:
     default: localhost
     type: string
     category: exporter
+  - property: otel.javaagent.enabled
+    env: OTEL_JAVAAGENT_ENABLED
+    description: Set the value to `false` to disable the agent entirely.
+    default: 'true'
+    type: boolean
+    category: general
   - property: otel.config.file
     env: OTEL_CONFIG_FILE
     description: The path to the SDK configuration file. Defaults to unset.
@@ -968,7 +974,7 @@ instrumentations:
         env: OTEL_INSTRUMENTATION_SANITIZATION_URL_EXPERIMENTAL_SENSITIVE_QUERY_PARAMETERS
         description: List of URL query parameter names whose values are redacted in
           URL attributes. See https://opentelemetry.io/docs/specs/semconv/http/http-spans.
-        default: AWSAccessKeyId,Signature,sig,X-Goog-Signature
+        default: AWSAccessKeyId,Signature,X-Amz-Signature,X-Amz-Credential,X-Amz-Security-Token,sig,X-Goog-Signature
         type: list
         category: instrumentation
   - keys:
@@ -1043,13 +1049,30 @@ instrumentations:
         type: list
         category: instrumentation
   - keys:
+      - apache-commons-pool-2.0
+    instrumented_components:
+      - name: Apache Commons Pool
+        supported_versions: '[org.apache.commons:commons-pool2:[2.0,)]'
+    description: |-
+      This instrumentation enables object pool metrics for Apache Commons Pool GenericObjectPool and GenericKeyedObjectPool instances.
+      This instrumentation is disabled by default.
+    stability: experimental
+    support: community
+    settings:
+      - property: otel.instrumentation.apache-commons-pool.enabled
+        env: OTEL_INSTRUMENTATION_APACHE_COMMONS_POOL_ENABLED
+        description: Enables the Apache Commons Pool instrumentation.
+        default: 'false'
+        type: boolean
+        category: instrumentation
+  - keys:
       - apache-dbcp-2.0
     instrumented_components:
       - name: Apache DBCP
         supported_versions: '[org.apache.commons:commons-dbcp2:[2,)]'
     description: |
       This instrumentation enables database connection pools metrics for Apache DBCP.
-      The instrumentation uses `MBeanRegistration` methods for lifecycle detection, therefore it only activates if the `BasicDataSource` is registered to an `MBeanServer`. If using Spring Boot, this happens automatically as all Spring beans that support JMX registration are automatically registered by default.
+      The auto-instrumentation registers metrics when the connection pool is initialized (`BasicDataSource.startPoolMaintenance()`) or when `BasicDataSource.preRegister(...)` is invoked during MBean registration, whichever comes first, and unregisters them when the `BasicDataSource` is closed. JMX registration is not required. When a JMX `ObjectName` is available, its `name` property is used as the pool name; if the property is absent, the full `ObjectName` is used. Otherwise, the JDBC URL and connection properties are used to derive `server.address[:server.port][/db.namespace]`. If neither server address nor database namespace is available, `apache-dbcp2` is used. A pool registered as an MBean after it has already started switches from the derived name to the `ObjectName`-based name.
     stability: experimental
     support: community
     signals:
@@ -1214,7 +1237,7 @@ instrumentations:
         env: OTEL_INSTRUMENTATION_SANITIZATION_URL_EXPERIMENTAL_SENSITIVE_QUERY_PARAMETERS
         description: List of URL query parameter names whose values are redacted in
           URL attributes. See https://opentelemetry.io/docs/specs/semconv/http/http-spans.
-        default: AWSAccessKeyId,Signature,sig,X-Goog-Signature
+        default: AWSAccessKeyId,Signature,X-Amz-Signature,X-Amz-Credential,X-Amz-Security-Token,sig,X-Goog-Signature
         type: list
         category: instrumentation
   - keys:
@@ -1273,7 +1296,7 @@ instrumentations:
         env: OTEL_INSTRUMENTATION_SANITIZATION_URL_EXPERIMENTAL_SENSITIVE_QUERY_PARAMETERS
         description: List of URL query parameter names whose values are redacted in
           URL attributes. See https://opentelemetry.io/docs/specs/semconv/http/http-spans.
-        default: AWSAccessKeyId,Signature,sig,X-Goog-Signature
+        default: AWSAccessKeyId,Signature,X-Amz-Signature,X-Amz-Credential,X-Amz-Security-Token,sig,X-Goog-Signature
         type: list
         category: instrumentation
   - keys:
@@ -1332,7 +1355,7 @@ instrumentations:
         env: OTEL_INSTRUMENTATION_SANITIZATION_URL_EXPERIMENTAL_SENSITIVE_QUERY_PARAMETERS
         description: List of URL query parameter names whose values are redacted in
           URL attributes. See https://opentelemetry.io/docs/specs/semconv/http/http-spans.
-        default: AWSAccessKeyId,Signature,sig,X-Goog-Signature
+        default: AWSAccessKeyId,Signature,X-Amz-Signature,X-Amz-Credential,X-Amz-Security-Token,sig,X-Goog-Signature
         type: list
         category: instrumentation
   - keys:
@@ -1391,7 +1414,7 @@ instrumentations:
         env: OTEL_INSTRUMENTATION_SANITIZATION_URL_EXPERIMENTAL_SENSITIVE_QUERY_PARAMETERS
         description: List of URL query parameter names whose values are redacted in
           URL attributes. See https://opentelemetry.io/docs/specs/semconv/http/http-spans.
-        default: AWSAccessKeyId,Signature,sig,X-Goog-Signature
+        default: AWSAccessKeyId,Signature,X-Amz-Signature,X-Amz-Credential,X-Amz-Security-Token,sig,X-Goog-Signature
         type: list
         category: instrumentation
   - keys:
@@ -1493,7 +1516,7 @@ instrumentations:
         env: OTEL_INSTRUMENTATION_SANITIZATION_URL_EXPERIMENTAL_SENSITIVE_QUERY_PARAMETERS
         description: List of URL query parameter names whose values are redacted in
           URL attributes. See https://opentelemetry.io/docs/specs/semconv/http/http-spans.
-        default: AWSAccessKeyId,Signature,sig,X-Goog-Signature
+        default: AWSAccessKeyId,Signature,X-Amz-Signature,X-Amz-Credential,X-Amz-Security-Token,sig,X-Goog-Signature
         type: list
         category: instrumentation
   - keys:
@@ -1561,7 +1584,7 @@ instrumentations:
         env: OTEL_INSTRUMENTATION_SANITIZATION_URL_EXPERIMENTAL_SENSITIVE_QUERY_PARAMETERS
         description: List of URL query parameter names whose values are redacted in
           URL attributes. See https://opentelemetry.io/docs/specs/semconv/http/http-spans.
-        default: AWSAccessKeyId,Signature,sig,X-Goog-Signature
+        default: AWSAccessKeyId,Signature,X-Amz-Signature,X-Amz-Credential,X-Amz-Security-Token,sig,X-Goog-Signature
         type: list
         category: instrumentation
   - keys:
@@ -1620,7 +1643,7 @@ instrumentations:
         env: OTEL_INSTRUMENTATION_SANITIZATION_URL_EXPERIMENTAL_SENSITIVE_QUERY_PARAMETERS
         description: List of URL query parameter names whose values are redacted in
           URL attributes. See https://opentelemetry.io/docs/specs/semconv/http/http-spans.
-        default: AWSAccessKeyId,Signature,sig,X-Goog-Signature
+        default: AWSAccessKeyId,Signature,X-Amz-Signature,X-Amz-Credential,X-Amz-Security-Token,sig,X-Goog-Signature
         type: list
         category: instrumentation
   - keys:
@@ -1679,7 +1702,7 @@ instrumentations:
         env: OTEL_INSTRUMENTATION_SANITIZATION_URL_EXPERIMENTAL_SENSITIVE_QUERY_PARAMETERS
         description: List of URL query parameter names whose values are redacted in
           URL attributes. See https://opentelemetry.io/docs/specs/semconv/http/http-spans.
-        default: AWSAccessKeyId,Signature,sig,X-Goog-Signature
+        default: AWSAccessKeyId,Signature,X-Amz-Signature,X-Amz-Credential,X-Amz-Security-Token,sig,X-Goog-Signature
         type: list
         category: instrumentation
   - keys:
@@ -1717,6 +1740,20 @@ instrumentations:
       This instrumentation enables FaaS spans and messaging spans for AWS Lambda functions handling event types.
     stability: experimental
     support: community
+    signals:
+      - metrics:
+          - metric_name: messaging.client.consumed.messages
+            instrument: counter
+            description: |-
+              Number of messages that were delivered to the application.
+              This metric is disabled by default and can be enabled with `otel.instrumentation.common.v3-preview=true`.
+            category_notes: Custom metric.
+          - metric_name: messaging.process.duration
+            instrument: histogram
+            description: |-
+              Duration of processing operation.
+              This metric is disabled by default and can be enabled with `otel.instrumentation.common.v3-preview=true`.
+            category_notes: Custom metric.
     settings:
       - property: otel.instrumentation.http.known-methods
         env: OTEL_INSTRUMENTATION_HTTP_KNOWN_METHODS
@@ -1748,10 +1785,55 @@ instrumentations:
               Duration of database client operations.
               This metric is disabled by default and can be enabled with `otel.semconv-stability.opt-in=database`.
             category_notes: Custom metric.
+          - metric_name: messaging.client.consumed.messages
+            instrument: counter
+            description: |-
+              Number of messages that were delivered to the application.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: messaging.client.operation.duration
+            instrument: histogram
+            description: |-
+              Duration of messaging operation initiated by a producer or consumer client.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: messaging.client.sent.messages
+            instrument: counter
+            description: |-
+              Number of messages producer attempted to send to the broker.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: messaging.process.duration
+            instrument: histogram
+            description: |-
+              Duration of processing operation.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
     settings:
       - property: otel.instrumentation.messaging.experimental.capture-headers
         env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_CAPTURE_HEADERS
-        description: A comma-separated list of header names to capture as span attributes.
+        description: 'Deprecated: use `otel.instrumentation.messaging.experimental.headers.included`
+          instead. A comma-separated list of header names to capture as span attributes.
+          It does not support glob patterns: an entry containing `*` or `?` is ignored
+          with a warning, and every other entry is matched as a literal header name.'
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.messaging.experimental.headers.excluded
+        env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_HEADERS_EXCLUDED
+        description: A comma-separated list of message header name patterns to exclude
+          from span attributes. Excluded patterns take precedence over included patterns.
+          Matching is case-sensitive. `?` matches one character and `*` matches zero
+          or more characters. If included is not configured, all non-excluded headers
+          are captured, which may expose sensitive information.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.messaging.experimental.headers.included
+        env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_HEADERS_INCLUDED
+        description: A comma-separated list of message header name patterns to capture
+          as span attributes. Matching is case-sensitive. `?` matches one character
+          and `*` matches zero or more characters.
         default: ''
         type: list
         category: instrumentation
@@ -1796,10 +1878,55 @@ instrumentations:
               Duration of database client operations.
               This metric is disabled by default and can be enabled with `otel.semconv-stability.opt-in=database`.
             category_notes: Custom metric.
+          - metric_name: messaging.client.consumed.messages
+            instrument: counter
+            description: |-
+              Number of messages that were delivered to the application.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: messaging.client.operation.duration
+            instrument: histogram
+            description: |-
+              Duration of messaging operation initiated by a producer or consumer client.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: messaging.client.sent.messages
+            instrument: counter
+            description: |-
+              Number of messages producer attempted to send to the broker.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: messaging.process.duration
+            instrument: histogram
+            description: |-
+              Duration of processing operation.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
     settings:
       - property: otel.instrumentation.messaging.experimental.capture-headers
         env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_CAPTURE_HEADERS
-        description: A comma-separated list of header names to capture as span attributes.
+        description: 'Deprecated: use `otel.instrumentation.messaging.experimental.headers.included`
+          instead. A comma-separated list of header names to capture as span attributes.
+          It does not support glob patterns: an entry containing `*` or `?` is ignored
+          with a warning, and every other entry is matched as a literal header name.'
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.messaging.experimental.headers.excluded
+        env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_HEADERS_EXCLUDED
+        description: A comma-separated list of message header name patterns to exclude
+          from span attributes. Excluded patterns take precedence over included patterns.
+          Matching is case-sensitive. `?` matches one character and `*` matches zero
+          or more characters. If included is not configured, all non-excluded headers
+          are captured, which may expose sensitive information.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.messaging.experimental.headers.included
+        env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_HEADERS_INCLUDED
+        description: A comma-separated list of message header name patterns to capture
+          as span attributes. Matching is case-sensitive. `?` matches one character
+          and `*` matches zero or more characters.
         default: ''
         type: list
         category: instrumentation
@@ -2229,7 +2356,7 @@ instrumentations:
         supported_versions: '[co.elastic.clients:elasticsearch-java:[7.16,7.17.20),
           co.elastic.clients:elasticsearch-java:[8.0.0,8.10)]'
     description: |
-      This instrumentation enriches Elasticsearch database client spans generated by the elasticsearch-rest-7.0 instrumentation by adding `db.elasticsearch.path_parts.id` and `db.elasticsearch.path_parts.index` attributes. It does not emit any telemetry on its own. Versions 8.10 and later of the Elasticsearch Java client have native OpenTelemetry support.
+      This instrumentation enriches Elasticsearch database client spans generated by the elasticsearch-rest-7.0 instrumentation by adding `db.operation.parameter.id` and `db.operation.parameter.index` attributes, or the deprecated `db.elasticsearch.path_parts.id` and `db.elasticsearch.path_parts.index` attributes when the old database semantic conventions are in use. It does not emit any telemetry on its own. Versions 7.17.20 and later on the 7.x line, and versions 8.10 and later, have native OpenTelemetry support.
     stability: experimental
     support: community
     signals:
@@ -2571,7 +2698,7 @@ instrumentations:
         env: OTEL_INSTRUMENTATION_SANITIZATION_URL_EXPERIMENTAL_SENSITIVE_QUERY_PARAMETERS
         description: List of URL query parameter names whose values are redacted in
           URL attributes. See https://opentelemetry.io/docs/specs/semconv/http/http-spans.
-        default: AWSAccessKeyId,Signature,sig,X-Goog-Signature
+        default: AWSAccessKeyId,Signature,X-Amz-Signature,X-Amz-Credential,X-Amz-Security-Token,sig,X-Goog-Signature
         type: list
         category: instrumentation
   - keys:
@@ -2757,14 +2884,28 @@ instrumentations:
       - property: otel.instrumentation.grpc.capture-metadata.client.request
         env: OTEL_INSTRUMENTATION_GRPC_CAPTURE_METADATA_CLIENT_REQUEST
         description: |
-          A comma-separated list of request metadata keys. gRPC client instrumentation will capture metadata values corresponding to configured keys as span attributes.
+          Deprecated: use `otel.instrumentation.grpc.client.request-metadata.included` instead. A comma-separated list of request metadata keys to capture on client spans. It does not support glob patterns: an entry containing `*` or `?` is ignored with a warning, and every other entry is matched as a literal metadata key.
         default: ''
         type: list
         category: instrumentation
       - property: otel.instrumentation.grpc.capture-metadata.server.request
         env: OTEL_INSTRUMENTATION_GRPC_CAPTURE_METADATA_SERVER_REQUEST
         description: |
-          A comma-separated list of request metadata keys. gRPC server instrumentation will capture metadata values corresponding to configured keys as span attributes.
+          Deprecated: use `otel.instrumentation.grpc.server.request-metadata.included` instead. A comma-separated list of request metadata keys to capture on server spans. It does not support glob patterns: an entry containing `*` or `?` is ignored with a warning, and every other entry is matched as a literal metadata key.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.grpc.client.request-metadata.excluded
+        env: OTEL_INSTRUMENTATION_GRPC_CLIENT_REQUEST_METADATA_EXCLUDED
+        description: |
+          A comma-separated list of ASCII request metadata key patterns to exclude from client spans. Excluded patterns take precedence over included patterns. Matching is case-insensitive. `?` matches one character and `*` matches zero or more characters. If included is not configured, all non-excluded ASCII metadata is captured, which may expose sensitive information.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.grpc.client.request-metadata.included
+        env: OTEL_INSTRUMENTATION_GRPC_CLIENT_REQUEST_METADATA_INCLUDED
+        description: |
+          A comma-separated list of ASCII request metadata key patterns to capture on client spans. Matching is case-insensitive. `?` matches one character and `*` matches zero or more characters.
         default: ''
         type: list
         category: instrumentation
@@ -2781,6 +2922,20 @@ instrumentations:
           Enable the capture of experimental span attributes `grpc.received.message_count`, `grpc.sent.message_count` and `grpc.canceled`.
         default: 'false'
         type: boolean
+        category: instrumentation
+      - property: otel.instrumentation.grpc.server.request-metadata.excluded
+        env: OTEL_INSTRUMENTATION_GRPC_SERVER_REQUEST_METADATA_EXCLUDED
+        description: |
+          A comma-separated list of ASCII request metadata key patterns to exclude from server spans. Excluded patterns take precedence over included patterns. Matching is case-insensitive. `?` matches one character and `*` matches zero or more characters. If included is not configured, all non-excluded ASCII metadata is captured, which may expose sensitive information.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.grpc.server.request-metadata.included
+        env: OTEL_INSTRUMENTATION_GRPC_SERVER_REQUEST_METADATA_INCLUDED
+        description: |
+          A comma-separated list of ASCII request metadata key patterns to capture on server spans. Matching is case-insensitive. `?` matches one character and `*` matches zero or more characters.
+        default: ''
+        type: list
         category: instrumentation
   - keys:
       - guava-10.0
@@ -2807,6 +2962,23 @@ instrumentations:
     description: This instrumentation enables RPC server spans for GWT RPC requests.
     stability: experimental
     support: community
+  - keys:
+      - hbase-client-1.0
+    instrumented_components:
+      - name: HBase Client
+        supported_versions: '[org.apache.hbase:hbase-client:[1.0.0,1.4.0)]'
+    description: |
+      This instrumentation enables database client spans and database client metrics for the Apache HBase client.
+    stability: experimental
+    support: community
+    signals:
+      - metrics:
+          - metric_name: db.client.operation.duration
+            instrument: histogram
+            description: |-
+              Duration of database client operations.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.opt-in=database`.
+            category_notes: Custom metric.
   - keys:
       - hbase-client-1.4
     instrumented_components:
@@ -3107,7 +3279,7 @@ instrumentations:
         env: OTEL_INSTRUMENTATION_SANITIZATION_URL_EXPERIMENTAL_SENSITIVE_QUERY_PARAMETERS
         description: List of URL query parameter names whose values are redacted in
           URL attributes. See https://opentelemetry.io/docs/specs/semconv/http/http-spans.
-        default: AWSAccessKeyId,Signature,sig,X-Goog-Signature
+        default: AWSAccessKeyId,Signature,X-Amz-Signature,X-Amz-Credential,X-Amz-Security-Token,sig,X-Goog-Signature
         type: list
         category: instrumentation
   - keys:
@@ -3148,6 +3320,13 @@ instrumentations:
       - property: otel.instrumentation.common.db.query-sanitization.enabled
         env: OTEL_INSTRUMENTATION_COMMON_DB_QUERY_SANITIZATION_ENABLED
         description: Enables query sanitization for database queries.
+        default: 'true'
+        type: boolean
+        category: instrumentation
+      - property: otel.instrumentation.influxdb.query-sanitization.enabled
+        env: OTEL_INSTRUMENTATION_INFLUXDB_QUERY_SANITIZATION_ENABLED
+        description: |
+          Enables query sanitization for InfluxDB queries. Takes precedence over otel.instrumentation.common.db.query-sanitization.enabled.
         default: 'true'
         type: boolean
         category: instrumentation
@@ -3207,7 +3386,7 @@ instrumentations:
         env: OTEL_INSTRUMENTATION_SANITIZATION_URL_EXPERIMENTAL_SENSITIVE_QUERY_PARAMETERS
         description: List of URL query parameter names whose values are redacted in
           URL attributes. See https://opentelemetry.io/docs/specs/semconv/http/http-spans.
-        default: AWSAccessKeyId,Signature,sig,X-Goog-Signature
+        default: AWSAccessKeyId,Signature,X-Amz-Signature,X-Amz-Credential,X-Amz-Security-Token,sig,X-Goog-Signature
         type: list
         category: instrumentation
   - keys:
@@ -3614,7 +3793,7 @@ instrumentations:
       - property: otel.instrumentation.jboss-logmanager.experimental.capture-mdc-attributes
         env: OTEL_INSTRUMENTATION_JBOSS_LOGMANAGER_EXPERIMENTAL_CAPTURE_MDC_ATTRIBUTES
         description: |
-          Controls which MDC attributes to capture. Use "*" to capture all MDC attributes or provide a comma-separated list of specific keys.
+          Deprecated: use `otel.instrumentation.jboss-logmanager.experimental.mdc-attributes.included` instead. Entries are matched as exact MDC keys rather than as glob patterns, except that a list containing only `*` captures all MDC attributes; in a multi-entry list, `*` and `?` are literal characters. It is ignored when an included or excluded pattern is configured, and it may be removed in the next minor release.
         default: ''
         type: list
         category: instrumentation
@@ -3624,6 +3803,20 @@ instrumentations:
           Enables the capture of the log message template (if arguments are provided).
         default: 'false'
         type: boolean
+        category: instrumentation
+      - property: otel.instrumentation.jboss-logmanager.experimental.mdc-attributes.excluded
+        env: OTEL_INSTRUMENTATION_JBOSS_LOGMANAGER_EXPERIMENTAL_MDC_ATTRIBUTES_EXCLUDED
+        description: |
+          A comma-separated list of case-sensitive glob patterns for MDC keys not to capture as log attributes. `*` matches any number of characters and `?` matches one character. Excluded patterns take precedence over included patterns. No MDC attributes are captured unless an included or excluded pattern, or the deprecated setting, is configured; configuring only excluded patterns captures all MDC attributes that do not match them. Captured MDC attributes may contain sensitive information.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.jboss-logmanager.experimental.mdc-attributes.included
+        env: OTEL_INSTRUMENTATION_JBOSS_LOGMANAGER_EXPERIMENTAL_MDC_ATTRIBUTES_INCLUDED
+        description: |
+          A comma-separated list of case-sensitive glob patterns for MDC keys to capture as log attributes. `*` matches any number of characters and `?` matches one character. Excluded patterns take precedence over included patterns. No MDC attributes are captured unless an included or excluded pattern, or the deprecated setting, is configured; configuring only excluded patterns captures all MDC attributes that do not match them. Captured MDC attributes may contain sensitive information.
+        default: ''
+        type: list
         category: instrumentation
   - keys:
       - jboss-logmanager-mdc-1.1
@@ -4007,7 +4200,7 @@ instrumentations:
         env: OTEL_INSTRUMENTATION_SANITIZATION_URL_EXPERIMENTAL_SENSITIVE_QUERY_PARAMETERS
         description: List of URL query parameter names whose values are redacted in
           URL attributes. See https://opentelemetry.io/docs/specs/semconv/http/http-spans.
-        default: AWSAccessKeyId,Signature,sig,X-Goog-Signature
+        default: AWSAccessKeyId,Signature,X-Amz-Signature,X-Amz-Credential,X-Amz-Security-Token,sig,X-Goog-Signature
         type: list
         category: instrumentation
   - keys:
@@ -4066,7 +4259,7 @@ instrumentations:
         env: OTEL_INSTRUMENTATION_SANITIZATION_URL_EXPERIMENTAL_SENSITIVE_QUERY_PARAMETERS
         description: List of URL query parameter names whose values are redacted in
           URL attributes. See https://opentelemetry.io/docs/specs/semconv/http/http-spans.
-        default: AWSAccessKeyId,Signature,sig,X-Goog-Signature
+        default: AWSAccessKeyId,Signature,X-Amz-Signature,X-Amz-Credential,X-Amz-Security-Token,sig,X-Goog-Signature
         type: list
         category: instrumentation
   - keys:
@@ -4106,7 +4299,28 @@ instrumentations:
     settings:
       - property: otel.instrumentation.messaging.experimental.capture-headers
         env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_CAPTURE_HEADERS
-        description: A comma-separated list of header names to capture as span attributes.
+        description: 'Deprecated: use `otel.instrumentation.messaging.experimental.headers.included`
+          instead. A comma-separated list of header names to capture as span attributes.
+          It does not support glob patterns: an entry containing `*` or `?` is ignored
+          with a warning, and every other entry is matched as a literal header name.'
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.messaging.experimental.headers.excluded
+        env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_HEADERS_EXCLUDED
+        description: A comma-separated list of message header name patterns to exclude
+          from span attributes. Excluded patterns take precedence over included patterns.
+          Matching is case-sensitive. `?` matches one character and `*` matches zero
+          or more characters. If included is not configured, all non-excluded headers
+          are captured, which may expose sensitive information.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.messaging.experimental.headers.included
+        env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_HEADERS_INCLUDED
+        description: A comma-separated list of message header name patterns to capture
+          as span attributes. Matching is case-sensitive. `?` matches one character
+          and `*` matches zero or more characters.
         default: ''
         type: list
         category: instrumentation
@@ -4129,7 +4343,28 @@ instrumentations:
     settings:
       - property: otel.instrumentation.messaging.experimental.capture-headers
         env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_CAPTURE_HEADERS
-        description: A comma-separated list of header names to capture as span attributes.
+        description: 'Deprecated: use `otel.instrumentation.messaging.experimental.headers.included`
+          instead. A comma-separated list of header names to capture as span attributes.
+          It does not support glob patterns: an entry containing `*` or `?` is ignored
+          with a warning, and every other entry is matched as a literal header name.'
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.messaging.experimental.headers.excluded
+        env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_HEADERS_EXCLUDED
+        description: A comma-separated list of message header name patterns to exclude
+          from span attributes. Excluded patterns take precedence over included patterns.
+          Matching is case-sensitive. `?` matches one character and `*` matches zero
+          or more characters. If included is not configured, all non-excluded headers
+          are captured, which may expose sensitive information.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.messaging.experimental.headers.included
+        env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_HEADERS_INCLUDED
+        description: A comma-separated list of message header name patterns to capture
+          as span attributes. Matching is case-sensitive. `?` matches one character
+          and `*` matches zero or more characters.
         default: ''
         type: list
         category: instrumentation
@@ -4229,7 +4464,7 @@ instrumentations:
         env: OTEL_INSTRUMENTATION_SANITIZATION_URL_EXPERIMENTAL_SENSITIVE_QUERY_PARAMETERS
         description: List of URL query parameter names whose values are redacted in
           URL attributes. See https://opentelemetry.io/docs/specs/semconv/http/http-spans.
-        default: AWSAccessKeyId,Signature,sig,X-Goog-Signature
+        default: AWSAccessKeyId,Signature,X-Amz-Signature,X-Amz-Credential,X-Amz-Security-Token,sig,X-Goog-Signature
         type: list
         category: instrumentation
   - keys:
@@ -4356,10 +4591,1027 @@ instrumentations:
       and consumers, and collects internal Kafka client metrics.
     stability: experimental
     support: community
+    signals:
+      - metrics:
+          - metric_name: kafka.consumer.assigned_partitions
+            instrument: gauge
+            description: |-
+              The number of partitions currently assigned to this consumer
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.bytes_consumed_rate
+            instrument: gauge
+            description: |-
+              The average number of bytes consumed per second
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.bytes_consumed_total
+            instrument: counter
+            description: |-
+              The total number of bytes consumed
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.commit_latency_avg
+            instrument: gauge
+            description: |-
+              The average time taken for a commit request
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.commit_latency_max
+            instrument: gauge
+            description: |-
+              The max time taken for a commit request
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.commit_rate
+            instrument: gauge
+            description: |-
+              The number of commit calls per second
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.commit_sync_time_ns_total
+            instrument: counter
+            description: |-
+              The total time the consumer has spent in commitSync in nanoseconds
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.commit_total
+            instrument: counter
+            description: |-
+              The total number of commit calls
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.committed_time_ns_total
+            instrument: counter
+            description: |-
+              The total time the consumer has spent in committed in nanoseconds
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.connection_close_rate
+            instrument: gauge
+            description: |-
+              The number of connections closed per second
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.connection_close_total
+            instrument: counter
+            description: |-
+              The total number of connections closed
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.connection_count
+            instrument: gauge
+            description: |-
+              The current number of active connections.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.connection_creation_rate
+            instrument: gauge
+            description: |-
+              The number of new connections established per second
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.connection_creation_total
+            instrument: counter
+            description: |-
+              The total number of new connections established
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.failed_authentication_rate
+            instrument: gauge
+            description: |-
+              The number of connections with failed authentication per second
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.failed_authentication_total
+            instrument: counter
+            description: |-
+              The total number of connections with failed authentication
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.failed_reauthentication_rate
+            instrument: gauge
+            description: |-
+              The number of failed re-authentication of connections per second
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.failed_reauthentication_total
+            instrument: counter
+            description: |-
+              The total number of failed re-authentication of connections
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.failed_rebalance_rate_per_hour
+            instrument: gauge
+            description: |-
+              The number of failed rebalance events per hour
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.failed_rebalance_total
+            instrument: counter
+            description: |-
+              The total number of failed rebalance events
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.fetch_latency_avg
+            instrument: gauge
+            description: |-
+              The average time taken for a fetch request.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.fetch_latency_max
+            instrument: gauge
+            description: |-
+              The max time taken for any fetch request.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.fetch_rate
+            instrument: gauge
+            description: |-
+              The number of fetch requests per second.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.fetch_size_avg
+            instrument: gauge
+            description: |-
+              The average number of bytes fetched per request
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.fetch_size_max
+            instrument: gauge
+            description: |-
+              The maximum number of bytes fetched per request
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.fetch_throttle_time_avg
+            instrument: gauge
+            description: |-
+              The average throttle time in ms
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.fetch_throttle_time_max
+            instrument: gauge
+            description: |-
+              The maximum throttle time in ms
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.fetch_total
+            instrument: counter
+            description: |-
+              The total number of fetch requests.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.heartbeat_rate
+            instrument: gauge
+            description: |-
+              The number of heartbeats per second
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.heartbeat_response_time_max
+            instrument: gauge
+            description: |-
+              The max time taken to receive a response to a heartbeat request
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.heartbeat_total
+            instrument: counter
+            description: |-
+              The total number of heartbeats
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.incoming_byte_rate
+            instrument: gauge
+            description: |-
+              The number of bytes read off all sockets per second
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.incoming_byte_total
+            instrument: counter
+            description: |-
+              The total number of bytes read off all sockets
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.io_ratio
+            instrument: gauge
+            description: |-
+              The fraction of time the I/O thread spent doing I/O
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.io_time_ns_avg
+            instrument: gauge
+            description: |-
+              The average length of time for I/O per select call in nanoseconds.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.io_time_ns_total
+            instrument: counter
+            description: |-
+              The total time the I/O thread spent doing I/O
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.io_wait_ratio
+            instrument: gauge
+            description: |-
+              The fraction of time the I/O thread spent waiting
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.io_wait_time_ns_avg
+            instrument: gauge
+            description: |-
+              The average length of time the I/O thread spent waiting for a socket ready for reads or writes in nanoseconds.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.io_wait_time_ns_total
+            instrument: counter
+            description: |-
+              The total time the I/O thread spent waiting
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.join_rate
+            instrument: gauge
+            description: |-
+              The number of group joins per second
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.join_time_avg
+            instrument: gauge
+            description: |-
+              The average time taken for a group rejoin
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.join_time_max
+            instrument: gauge
+            description: |-
+              The max time taken for a group rejoin
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.join_total
+            instrument: counter
+            description: |-
+              The total number of group joins
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.last_heartbeat_seconds_ago
+            instrument: gauge
+            description: |-
+              The number of seconds since the last coordinator heartbeat was sent
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.last_poll_seconds_ago
+            instrument: gauge
+            description: |-
+              The number of seconds since the last poll() invocation.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.last_rebalance_seconds_ago
+            instrument: gauge
+            description: |-
+              The number of seconds since the last successful rebalance event
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.network_io_rate
+            instrument: gauge
+            description: |-
+              The number of network operations (reads or writes) on all connections per second
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.network_io_total
+            instrument: counter
+            description: |-
+              The total number of network operations (reads or writes) on all connections
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.outgoing_byte_rate
+            instrument: gauge
+            description: |-
+              The number of outgoing bytes sent to all servers per second
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.outgoing_byte_total
+            instrument: counter
+            description: |-
+              The total number of outgoing bytes sent to all servers
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.partition_assigned_latency_avg
+            instrument: gauge
+            description: |-
+              The average time taken for a partition-assigned rebalance listener callback
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.partition_assigned_latency_max
+            instrument: gauge
+            description: |-
+              The max time taken for a partition-assigned rebalance listener callback
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.poll_idle_ratio_avg
+            instrument: gauge
+            description: |-
+              The average fraction of time the consumer's poll() is idle as opposed to waiting for the user code to process records.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.rebalance_latency_avg
+            instrument: gauge
+            description: |-
+              The average time taken for a group to complete a successful rebalance, which may be composed of several failed re-trials until it succeeded
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.rebalance_latency_max
+            instrument: gauge
+            description: |-
+              The max time taken for a group to complete a successful rebalance, which may be composed of several failed re-trials until it succeeded
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.rebalance_latency_total
+            instrument: counter
+            description: |-
+              The total number of milliseconds this consumer has spent in successful rebalances since creation
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.rebalance_rate_per_hour
+            instrument: gauge
+            description: |-
+              The number of successful rebalance events per hour, each event is composed of several failed re-trials until it succeeded
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.rebalance_total
+            instrument: counter
+            description: |-
+              The total number of successful rebalance events, each event is composed of several failed re-trials until it succeeded
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.records_consumed_rate
+            instrument: gauge
+            description: |-
+              The average number of records consumed per second
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.records_consumed_total
+            instrument: counter
+            description: |-
+              The total number of records consumed
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.records_lag
+            instrument: gauge
+            description: |-
+              The latest lag of the partition. Note: For topic names with periods (.), an additional metric with underscores is emitted. However, the periods replaced metric is deprecated. Please use the metric with actual topic name instead.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.records_lag_avg
+            instrument: gauge
+            description: |-
+              The average lag of the partition. Note: For topic names with periods (.), an additional metric with underscores is emitted. However, the periods replaced metric is deprecated. Please use the metric with actual topic name instead.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.records_lag_max
+            instrument: gauge
+            description: |-
+              The maximum lag in terms of number of records for any partition in this window. NOTE: This is based on current offset and not committed offset
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.records_lead
+            instrument: gauge
+            description: |-
+              The latest lead of the partition. Note: For topic names with periods (.), an additional metric with underscores is emitted. However, the periods replaced metric is deprecated. Please use the metric with actual topic name instead.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.records_lead_avg
+            instrument: gauge
+            description: |-
+              The average lead of the partition. Note: For topic names with periods (.), an additional metric with underscores is emitted. However, the periods replaced metric is deprecated. Please use the metric with actual topic name instead.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.records_lead_min
+            instrument: gauge
+            description: |-
+              The minimum lead in terms of number of records for any partition in this window
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.records_per_request_avg
+            instrument: gauge
+            description: |-
+              The average number of records in each request
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.request_latency_avg
+            instrument: gauge
+            description: This metric is disabled by default and can be enabled with
+              `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.request_latency_max
+            instrument: gauge
+            description: This metric is disabled by default and can be enabled with
+              `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.request_rate
+            instrument: gauge
+            description: |-
+              The number of requests sent per second
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.request_size_avg
+            instrument: gauge
+            description: |-
+              The average size of requests sent.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.request_size_max
+            instrument: gauge
+            description: |-
+              The maximum size of any request sent.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.request_total
+            instrument: counter
+            description: |-
+              The total number of requests sent
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.response_rate
+            instrument: gauge
+            description: |-
+              The number of responses received per second
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.response_total
+            instrument: counter
+            description: |-
+              The total number of responses received
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.select_rate
+            instrument: gauge
+            description: |-
+              The number of times the I/O layer checked for new I/O to perform per second
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.select_total
+            instrument: counter
+            description: |-
+              The total number of times the I/O layer checked for new I/O to perform
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.successful_authentication_no_reauth_total
+            instrument: counter
+            description: |-
+              The total number of connections with successful authentication where the client does not support re-authentication
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.successful_authentication_rate
+            instrument: gauge
+            description: |-
+              The number of connections with successful authentication per second
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.successful_authentication_total
+            instrument: counter
+            description: |-
+              The total number of connections with successful authentication
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.successful_reauthentication_rate
+            instrument: gauge
+            description: |-
+              The number of successful re-authentication of connections per second
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.successful_reauthentication_total
+            instrument: counter
+            description: |-
+              The total number of successful re-authentication of connections
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.sync_rate
+            instrument: gauge
+            description: |-
+              The number of group syncs per second
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.sync_time_avg
+            instrument: gauge
+            description: |-
+              The average time taken for a group sync
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.sync_time_max
+            instrument: gauge
+            description: |-
+              The max time taken for a group sync
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.sync_total
+            instrument: counter
+            description: |-
+              The total number of group syncs
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.time_between_poll_avg
+            instrument: gauge
+            description: |-
+              The average delay between invocations of poll() in milliseconds.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.consumer.time_between_poll_max
+            instrument: gauge
+            description: |-
+              The max delay between invocations of poll() in milliseconds.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.batch_size_avg
+            instrument: gauge
+            description: |-
+              The average number of bytes sent per partition per-request.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.batch_size_max
+            instrument: gauge
+            description: |-
+              The max number of bytes sent per partition per-request.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.batch_split_rate
+            instrument: gauge
+            description: |-
+              The average number of batch splits per second
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.batch_split_total
+            instrument: counter
+            description: |-
+              The total number of batch splits
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.buffer_available_bytes
+            instrument: gauge
+            description: |-
+              The total amount of buffer memory that is not being used (either unallocated or in the free list).
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.buffer_exhausted_rate
+            instrument: gauge
+            description: |-
+              The average per-second number of record sends that are dropped due to buffer exhaustion
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.buffer_exhausted_total
+            instrument: counter
+            description: |-
+              The total number of record sends that are dropped due to buffer exhaustion
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.buffer_total_bytes
+            instrument: gauge
+            description: |-
+              The maximum amount of buffer memory the client can use (whether or not it is currently used).
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.bufferpool_wait_ratio
+            instrument: gauge
+            description: |-
+              The fraction of time an appender waits for space allocation.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.bufferpool_wait_time_ns_total
+            instrument: counter
+            description: |-
+              The total time in nanoseconds an appender waits for space allocation.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.byte_rate
+            instrument: gauge
+            description: |-
+              The average number of bytes sent per second for a topic.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.byte_total
+            instrument: counter
+            description: |-
+              The total number of bytes sent for a topic.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.compression_rate
+            instrument: gauge
+            description: |-
+              The average compression rate of record batches for a topic, defined as the average ratio of the compressed batch size over the uncompressed size.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.compression_rate_avg
+            instrument: gauge
+            description: |-
+              The average compression rate of record batches, defined as the average ratio of the compressed batch size over the uncompressed size.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.connection_close_rate
+            instrument: gauge
+            description: |-
+              The number of connections closed per second
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.connection_close_total
+            instrument: counter
+            description: |-
+              The total number of connections closed
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.connection_count
+            instrument: gauge
+            description: |-
+              The current number of active connections.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.connection_creation_rate
+            instrument: gauge
+            description: |-
+              The number of new connections established per second
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.connection_creation_total
+            instrument: counter
+            description: |-
+              The total number of new connections established
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.failed_authentication_rate
+            instrument: gauge
+            description: |-
+              The number of connections with failed authentication per second
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.failed_authentication_total
+            instrument: counter
+            description: |-
+              The total number of connections with failed authentication
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.failed_reauthentication_rate
+            instrument: gauge
+            description: |-
+              The number of failed re-authentication of connections per second
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.failed_reauthentication_total
+            instrument: counter
+            description: |-
+              The total number of failed re-authentication of connections
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.flush_time_ns_total
+            instrument: counter
+            description: |-
+              Total time producer has spent in flush in nanoseconds.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.incoming_byte_rate
+            instrument: gauge
+            description: |-
+              The number of bytes read off all sockets per second
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.incoming_byte_total
+            instrument: counter
+            description: |-
+              The total number of bytes read off all sockets
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.io_ratio
+            instrument: gauge
+            description: |-
+              The fraction of time the I/O thread spent doing I/O
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.io_time_ns_avg
+            instrument: gauge
+            description: |-
+              The average length of time for I/O per select call in nanoseconds.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.io_time_ns_total
+            instrument: counter
+            description: |-
+              The total time the I/O thread spent doing I/O
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.io_wait_ratio
+            instrument: gauge
+            description: |-
+              The fraction of time the I/O thread spent waiting
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.io_wait_time_ns_avg
+            instrument: gauge
+            description: |-
+              The average length of time the I/O thread spent waiting for a socket ready for reads or writes in nanoseconds.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.io_wait_time_ns_total
+            instrument: counter
+            description: |-
+              The total time the I/O thread spent waiting
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.metadata_age
+            instrument: gauge
+            description: |-
+              The age in seconds of the current producer metadata being used.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.metadata_wait_time_ns_total
+            instrument: counter
+            description: |-
+              Total time producer has spent waiting on topic metadata in nanoseconds.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.network_io_rate
+            instrument: gauge
+            description: |-
+              The number of network operations (reads or writes) on all connections per second
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.network_io_total
+            instrument: counter
+            description: |-
+              The total number of network operations (reads or writes) on all connections
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.outgoing_byte_rate
+            instrument: gauge
+            description: |-
+              The number of outgoing bytes sent to all servers per second
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.outgoing_byte_total
+            instrument: counter
+            description: |-
+              The total number of outgoing bytes sent to all servers
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.produce_throttle_time_avg
+            instrument: gauge
+            description: |-
+              The average time in ms a request was throttled by a broker
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.produce_throttle_time_max
+            instrument: gauge
+            description: |-
+              The maximum time in ms a request was throttled by a broker
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.record_error_rate
+            instrument: gauge
+            description: |-
+              The average per-second number of record sends that resulted in errors
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.record_error_total
+            instrument: counter
+            description: |-
+              The total number of record sends that resulted in errors
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.record_queue_time_avg
+            instrument: gauge
+            description: |-
+              The average time in ms record batches spent in the send buffer.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.record_queue_time_max
+            instrument: gauge
+            description: |-
+              The maximum time in ms record batches spent in the send buffer.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.record_retry_rate
+            instrument: gauge
+            description: |-
+              The average per-second number of retried record sends
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.record_retry_total
+            instrument: counter
+            description: |-
+              The total number of retried record sends
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.record_send_rate
+            instrument: gauge
+            description: |-
+              The average number of records sent per second.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.record_send_total
+            instrument: counter
+            description: |-
+              The total number of records sent.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.record_size_avg
+            instrument: gauge
+            description: |-
+              The average record size
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.record_size_max
+            instrument: gauge
+            description: |-
+              The maximum record size
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.records_per_request_avg
+            instrument: gauge
+            description: |-
+              The average number of records per request.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.request_latency_avg
+            instrument: gauge
+            description: |-
+              The average request latency in ms
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.request_latency_max
+            instrument: gauge
+            description: |-
+              The maximum request latency in ms
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.request_rate
+            instrument: gauge
+            description: |-
+              The number of requests sent per second
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.request_size_avg
+            instrument: gauge
+            description: |-
+              The average size of requests sent.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.request_size_max
+            instrument: gauge
+            description: |-
+              The maximum size of any request sent.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.request_total
+            instrument: counter
+            description: |-
+              The total number of requests sent
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.requests_in_flight
+            instrument: gauge
+            description: |-
+              The current number of in-flight requests awaiting a response.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.response_rate
+            instrument: gauge
+            description: |-
+              The number of responses received per second
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.response_total
+            instrument: counter
+            description: |-
+              The total number of responses received
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.select_rate
+            instrument: gauge
+            description: |-
+              The number of times the I/O layer checked for new I/O to perform per second
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.select_total
+            instrument: counter
+            description: |-
+              The total number of times the I/O layer checked for new I/O to perform
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.successful_authentication_no_reauth_total
+            instrument: counter
+            description: |-
+              The total number of connections with successful authentication where the client does not support re-authentication
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.successful_authentication_rate
+            instrument: gauge
+            description: |-
+              The number of connections with successful authentication per second
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.successful_authentication_total
+            instrument: counter
+            description: |-
+              The total number of connections with successful authentication
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.successful_reauthentication_rate
+            instrument: gauge
+            description: |-
+              The number of successful re-authentication of connections per second
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.successful_reauthentication_total
+            instrument: counter
+            description: |-
+              The total number of successful re-authentication of connections
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.txn_abort_time_ns_total
+            instrument: counter
+            description: |-
+              Total time producer has spent in abortTransaction in nanoseconds.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.txn_begin_time_ns_total
+            instrument: counter
+            description: |-
+              Total time producer has spent in beginTransaction in nanoseconds.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.txn_commit_time_ns_total
+            instrument: counter
+            description: |-
+              Total time producer has spent in commitTransaction in nanoseconds.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.txn_init_time_ns_total
+            instrument: counter
+            description: |-
+              Total time producer has spent in initTransactions in nanoseconds.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.txn_prepare_time_ns_total
+            instrument: counter
+            description: |-
+              Total time producer has spent in prepareTransaction in nanoseconds.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.txn_send_offsets_time_ns_total
+            instrument: counter
+            description: |-
+              Total time producer has spent in sendOffsetsToTransaction in nanoseconds.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: kafka.producer.waiting_threads
+            instrument: gauge
+            description: |-
+              The number of user threads blocked waiting for buffer memory to enqueue their records
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: messaging.client.consumed.messages
+            instrument: counter
+            description: |-
+              Number of messages that were delivered to the application.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: messaging.client.operation.duration
+            instrument: histogram
+            description: |-
+              Duration of messaging operation initiated by a producer or consumer client.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: messaging.client.sent.messages
+            instrument: counter
+            description: |-
+              Number of messages producer attempted to send to the broker.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: messaging.process.duration
+            instrument: histogram
+            description: |-
+              Duration of processing operation.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
     settings:
       - property: otel.instrumentation.messaging.experimental.capture-headers
         env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_CAPTURE_HEADERS
-        description: A comma-separated list of header names to capture as span attributes.
+        description: 'Deprecated: use `otel.instrumentation.messaging.experimental.headers.included`
+          instead. A comma-separated list of header names to capture as span attributes.
+          It does not support glob patterns: an entry containing `*` or `?` is ignored
+          with a warning, and every other entry is matched as a literal header name.'
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.messaging.experimental.headers.excluded
+        env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_HEADERS_EXCLUDED
+        description: A comma-separated list of message header name patterns to exclude
+          from span attributes. Excluded patterns take precedence over included patterns.
+          Matching is case-sensitive. `?` matches one character and `*` matches zero
+          or more characters. If included is not configured, all non-excluded headers
+          are captured, which may expose sensitive information.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.messaging.experimental.headers.included
+        env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_HEADERS_INCLUDED
+        description: A comma-separated list of message header name patterns to capture
+          as span attributes. Matching is case-sensitive. `?` matches one character
+          and `*` matches zero or more characters.
         default: ''
         type: list
         category: instrumentation
@@ -4400,10 +5652,39 @@ instrumentations:
     description: This instrumentation enables messaging spans for Kafka Streams processing.
     stability: experimental
     support: community
+    signals:
+      - metrics:
+          - metric_name: messaging.process.duration
+            instrument: histogram
+            description: |-
+              Duration of processing operation.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
     settings:
       - property: otel.instrumentation.messaging.experimental.capture-headers
         env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_CAPTURE_HEADERS
-        description: A comma-separated list of header names to capture as span attributes.
+        description: 'Deprecated: use `otel.instrumentation.messaging.experimental.headers.included`
+          instead. A comma-separated list of header names to capture as span attributes.
+          It does not support glob patterns: an entry containing `*` or `?` is ignored
+          with a warning, and every other entry is matched as a literal header name.'
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.messaging.experimental.headers.excluded
+        env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_HEADERS_EXCLUDED
+        description: A comma-separated list of message header name patterns to exclude
+          from span attributes. Excluded patterns take precedence over included patterns.
+          Matching is case-sensitive. `?` matches one character and `*` matches zero
+          or more characters. If included is not configured, all non-excluded headers
+          are captured, which may expose sensitive information.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.messaging.experimental.headers.included
+        env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_HEADERS_INCLUDED
+        description: A comma-separated list of message header name patterns to capture
+          as span attributes. Matching is case-sensitive. `?` matches one character
+          and `*` matches zero or more characters.
         default: ''
         type: list
         category: instrumentation
@@ -4580,7 +5861,7 @@ instrumentations:
         env: OTEL_INSTRUMENTATION_SANITIZATION_URL_EXPERIMENTAL_SENSITIVE_QUERY_PARAMETERS
         description: List of URL query parameter names whose values are redacted in
           URL attributes. See https://opentelemetry.io/docs/specs/semconv/http/http-spans.
-        default: AWSAccessKeyId,Signature,sig,X-Goog-Signature
+        default: AWSAccessKeyId,Signature,X-Amz-Signature,X-Amz-Credential,X-Amz-Security-Token,sig,X-Goog-Signature
         type: list
         category: instrumentation
   - keys:
@@ -4677,7 +5958,7 @@ instrumentations:
         env: OTEL_INSTRUMENTATION_SANITIZATION_URL_EXPERIMENTAL_SENSITIVE_QUERY_PARAMETERS
         description: List of URL query parameter names whose values are redacted in
           URL attributes. See https://opentelemetry.io/docs/specs/semconv/http/http-spans.
-        default: AWSAccessKeyId,Signature,sig,X-Goog-Signature
+        default: AWSAccessKeyId,Signature,X-Amz-Signature,X-Amz-Credential,X-Amz-Security-Token,sig,X-Goog-Signature
         type: list
         category: instrumentation
   - keys:
@@ -4743,7 +6024,7 @@ instrumentations:
         env: OTEL_INSTRUMENTATION_SANITIZATION_URL_EXPERIMENTAL_SENSITIVE_QUERY_PARAMETERS
         description: List of URL query parameter names whose values are redacted in
           URL attributes. See https://opentelemetry.io/docs/specs/semconv/http/http-spans.
-        default: AWSAccessKeyId,Signature,sig,X-Goog-Signature
+        default: AWSAccessKeyId,Signature,X-Amz-Signature,X-Amz-Credential,X-Amz-Security-Token,sig,X-Goog-Signature
         type: list
         category: instrumentation
   - keys:
@@ -4903,7 +6184,22 @@ instrumentations:
         category: instrumentation
       - property: otel.instrumentation.servlet.experimental.capture-request-parameters
         env: OTEL_INSTRUMENTATION_SERVLET_EXPERIMENTAL_CAPTURE_REQUEST_PARAMETERS
-        description: List of request parameter names to capture as span attributes.
+        description: |
+          Deprecated include-only alias for `otel.instrumentation.servlet.experimental.request-parameters.included`. It does not support glob patterns: an entry containing `*` or `?` is ignored with a warning, and every other entry is matched as a literal request parameter name. It may be removed in the next minor release.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.servlet.experimental.request-parameters.excluded
+        env: OTEL_INSTRUMENTATION_SERVLET_EXPERIMENTAL_REQUEST_PARAMETERS_EXCLUDED
+        description: |
+          A comma-separated list of case-sensitive request parameter name patterns to exclude from span attributes. `?` matches one character and `*` matches zero or more characters. Excluded patterns take precedence over included patterns. No request parameters are captured unless an included or excluded pattern is configured; configuring only excluded patterns captures all request parameters that do not match them, which may expose sensitive information.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.servlet.experimental.request-parameters.included
+        env: OTEL_INSTRUMENTATION_SERVLET_EXPERIMENTAL_REQUEST_PARAMETERS_INCLUDED
+        description: |
+          A comma-separated list of case-sensitive request parameter name patterns to capture as span attributes. `?` matches one character and `*` matches zero or more characters. Excluded patterns take precedence over included patterns. No request parameters are captured unless an included or excluded pattern is configured; configuring only excluded patterns captures all request parameters that do not match them, which may expose sensitive information.
         default: ''
         type: list
         category: instrumentation
@@ -4979,7 +6275,21 @@ instrumentations:
       - property: otel.instrumentation.log4j-appender.experimental.capture-mdc-attributes
         env: OTEL_INSTRUMENTATION_LOG4J_APPENDER_EXPERIMENTAL_CAPTURE_MDC_ATTRIBUTES
         description: |
-          Controls which MDC attributes to capture. Use "*" to capture all MDC attributes or provide a comma-separated list of specific keys.
+          Deprecated include-only alias for otel.instrumentation.log4j-appender.experimental.mdc-attributes.included. It does not support glob patterns: a list containing only "*" captures all MDC attributes, and otherwise every entry, including one containing "*" or "?", is matched as a literal MDC key. It is ignored when an included or excluded pattern is configured, and it may be removed in the next minor release.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.log4j-appender.experimental.mdc-attributes.excluded
+        env: OTEL_INSTRUMENTATION_LOG4J_APPENDER_EXPERIMENTAL_MDC_ATTRIBUTES_EXCLUDED
+        description: |
+          Comma-separated list of case-sensitive glob patterns for MDC keys not to capture as log attributes. "*" matches any number of characters and "?" matches one character. Excluded patterns take precedence over included patterns. No MDC attributes are captured unless an included pattern, an excluded pattern, or the deprecated otel.instrumentation.log4j-appender.experimental.capture-mdc-attributes setting is configured; configuring only excluded patterns captures all MDC attributes that do not match them. Captured MDC attributes may contain sensitive information.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.log4j-appender.experimental.mdc-attributes.included
+        env: OTEL_INSTRUMENTATION_LOG4J_APPENDER_EXPERIMENTAL_MDC_ATTRIBUTES_INCLUDED
+        description: |
+          Comma-separated list of case-sensitive glob patterns for MDC keys to capture as log attributes. "*" matches any number of characters and "?" matches one character. Excluded patterns take precedence over included patterns. No MDC attributes are captured unless an included pattern, an excluded pattern, or the deprecated otel.instrumentation.log4j-appender.experimental.capture-mdc-attributes setting is configured; configuring only excluded patterns captures all MDC attributes that do not match them. Captured MDC attributes may contain sensitive information.
         default: ''
         type: list
         category: instrumentation
@@ -5017,7 +6327,7 @@ instrumentations:
       - property: otel.instrumentation.log4j-appender.experimental.capture-map-message-attributes
         env: OTEL_INSTRUMENTATION_LOG4J_APPENDER_EXPERIMENTAL_CAPTURE_MAP_MESSAGE_ATTRIBUTES
         description: |
-          Enables the capture of attributes from Log4j MapMessage instances.
+          Deprecated boolean alias for otel.instrumentation.log4j-appender.experimental.map-message-attributes.included, where true captures all MapMessage attributes and false captures none. It is ignored when an included or excluded pattern is configured, and it may be removed in the next minor release.
         default: 'false'
         type: boolean
         category: instrumentation
@@ -5031,7 +6341,7 @@ instrumentations:
       - property: otel.instrumentation.log4j-appender.experimental.capture-mdc-attributes
         env: OTEL_INSTRUMENTATION_LOG4J_APPENDER_EXPERIMENTAL_CAPTURE_MDC_ATTRIBUTES
         description: |
-          Controls which MDC attributes to capture. Use "*" to capture all MDC attributes or provide a comma-separated list of specific keys.
+          Deprecated include-only alias for otel.instrumentation.log4j-appender.experimental.mdc-attributes.included. It does not support glob patterns: a list containing only "*" captures all context data attributes, and otherwise every entry, including one containing "*" or "?", is matched as a literal context data key. It is ignored when an included or excluded pattern is configured, and it may be removed in the next minor release.
         default: ''
         type: list
         category: instrumentation
@@ -5041,6 +6351,34 @@ instrumentations:
           Enables the capture of the log message template (if arguments are provided).
         default: 'false'
         type: boolean
+        category: instrumentation
+      - property: otel.instrumentation.log4j-appender.experimental.map-message-attributes.excluded
+        env: OTEL_INSTRUMENTATION_LOG4J_APPENDER_EXPERIMENTAL_MAP_MESSAGE_ATTRIBUTES_EXCLUDED
+        description: |
+          Comma-separated list of case-sensitive glob patterns for MapMessage keys not to capture as log attributes. "*" matches any number of characters and "?" matches one character. Excluded patterns take precedence over included patterns. No MapMessage attributes are captured unless an included pattern, an excluded pattern, or the deprecated otel.instrumentation.log4j-appender.experimental.capture-map-message-attributes setting is configured; configuring only excluded patterns captures all MapMessage attributes that do not match them. Captured MapMessage attributes may contain sensitive information.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.log4j-appender.experimental.map-message-attributes.included
+        env: OTEL_INSTRUMENTATION_LOG4J_APPENDER_EXPERIMENTAL_MAP_MESSAGE_ATTRIBUTES_INCLUDED
+        description: |
+          Comma-separated list of case-sensitive glob patterns for MapMessage keys to capture as log attributes. "*" matches any number of characters and "?" matches one character. Excluded patterns take precedence over included patterns. No MapMessage attributes are captured unless an included pattern, an excluded pattern, or the deprecated otel.instrumentation.log4j-appender.experimental.capture-map-message-attributes setting is configured; configuring only excluded patterns captures all MapMessage attributes that do not match them. Captured MapMessage attributes may contain sensitive information.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.log4j-appender.experimental.mdc-attributes.excluded
+        env: OTEL_INSTRUMENTATION_LOG4J_APPENDER_EXPERIMENTAL_MDC_ATTRIBUTES_EXCLUDED
+        description: |
+          Comma-separated list of case-sensitive glob patterns for context data keys not to capture as log attributes. "*" matches any number of characters and "?" matches one character. Excluded patterns take precedence over included patterns. No context data attributes are captured unless an included pattern, an excluded pattern, or the deprecated otel.instrumentation.log4j-appender.experimental.capture-mdc-attributes setting is configured; configuring only excluded patterns captures all context data attributes that do not match them. Captured context data attributes may contain sensitive information.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.log4j-appender.experimental.mdc-attributes.included
+        env: OTEL_INSTRUMENTATION_LOG4J_APPENDER_EXPERIMENTAL_MDC_ATTRIBUTES_INCLUDED
+        description: |
+          Comma-separated list of case-sensitive glob patterns for context data keys to capture as log attributes. "*" matches any number of characters and "?" matches one character. Excluded patterns take precedence over included patterns. No context data attributes are captured unless an included pattern, an excluded pattern, or the deprecated otel.instrumentation.log4j-appender.experimental.capture-mdc-attributes setting is configured; configuring only excluded patterns captures all context data attributes that do not match them. Captured context data attributes may contain sensitive information.
+        default: ''
+        type: list
         category: instrumentation
   - keys:
       - log4j-context-data-2.17
@@ -5204,28 +6542,28 @@ instrumentations:
       - property: otel.instrumentation.logback-appender.experimental.capture-key-value-pair-attributes
         env: OTEL_INSTRUMENTATION_LOGBACK_APPENDER_EXPERIMENTAL_CAPTURE_KEY_VALUE_PAIR_ATTRIBUTES
         description: |
-          Enables the capture of attributes from Logback key-value pairs.
+          Deprecated setting that enables the capture of all attributes from Logback key value pairs. It is ignored when otel.instrumentation.logback-appender.experimental.key-value-pair-attributes.included or otel.instrumentation.logback-appender.experimental.key-value-pair-attributes.excluded is configured, and it may be removed in the next minor release. Use otel.instrumentation.logback-appender.experimental.key-value-pair-attributes.included instead.
         default: 'false'
         type: boolean
         category: instrumentation
       - property: otel.instrumentation.logback-appender.experimental.capture-logger-context-attributes
         env: OTEL_INSTRUMENTATION_LOGBACK_APPENDER_EXPERIMENTAL_CAPTURE_LOGGER_CONTEXT_ATTRIBUTES
         description: |
-          Enables the capture of attributes from the Logback logger context.
+          Deprecated setting that enables the capture of all attributes from the Logback logger context. It is ignored when otel.instrumentation.logback-appender.experimental.logger-context-attributes.included or otel.instrumentation.logback-appender.experimental.logger-context-attributes.excluded is configured, and it may be removed in the next minor release. Use otel.instrumentation.logback-appender.experimental.logger-context-attributes.included instead.
         default: 'false'
         type: boolean
         category: instrumentation
       - property: otel.instrumentation.logback-appender.experimental.capture-logstash-marker-attributes
         env: OTEL_INSTRUMENTATION_LOGBACK_APPENDER_EXPERIMENTAL_CAPTURE_LOGSTASH_MARKER_ATTRIBUTES
         description: |
-          Enables the capture of attributes from Logstash markers.
+          Deprecated setting that enables the capture of all attributes from Logstash markers, supported are those added to logs via Markers.append(), Markers.appendEntries(), Markers.appendArray() and Markers.appendRaw() methods. It is ignored when otel.instrumentation.logback-appender.experimental.logstash-marker-attributes.included or otel.instrumentation.logback-appender.experimental.logstash-marker-attributes.excluded is configured, and it may be removed in the next minor release. Use otel.instrumentation.logback-appender.experimental.logstash-marker-attributes.included instead.
         default: 'false'
         type: boolean
         category: instrumentation
       - property: otel.instrumentation.logback-appender.experimental.capture-logstash-structured-arguments
         env: OTEL_INSTRUMENTATION_LOGBACK_APPENDER_EXPERIMENTAL_CAPTURE_LOGSTASH_STRUCTURED_ARGUMENTS
         description: |
-          Enables the capture of attributes from Logstash structured arguments.
+          Deprecated setting that enables the capture of all attributes from Logstash structured arguments (e.g., StructuredArguments.v() and StructuredArguments.keyValue()). It is ignored when otel.instrumentation.logback-appender.experimental.logstash-structured-argument-attributes.included or otel.instrumentation.logback-appender.experimental.logstash-structured-argument-attributes.excluded is configured, and it may be removed in the next minor release. Use otel.instrumentation.logback-appender.experimental.logstash-structured-argument-attributes.included instead.
         default: 'false'
         type: boolean
         category: instrumentation
@@ -5239,7 +6577,7 @@ instrumentations:
       - property: otel.instrumentation.logback-appender.experimental.capture-mdc-attributes
         env: OTEL_INSTRUMENTATION_LOGBACK_APPENDER_EXPERIMENTAL_CAPTURE_MDC_ATTRIBUTES
         description: |
-          Controls which MDC attributes to capture. Use "*" to capture all MDC attributes or provide a comma-separated list of specific keys.
+          Deprecated comma-separated list of MDC keys to capture as log attributes. Keys are matched literally, including "*" and "?", except that the single value "*" captures all MDC attributes. It is ignored when otel.instrumentation.logback-appender.experimental.mdc-attributes.included or otel.instrumentation.logback-appender.experimental.mdc-attributes.excluded is configured, and it may be removed in the next minor release. Use otel.instrumentation.logback-appender.experimental.mdc-attributes.included instead.
         default: ''
         type: list
         category: instrumentation
@@ -5249,6 +6587,76 @@ instrumentations:
           Enables the capture of the log message template before parameter substitution.
         default: 'false'
         type: boolean
+        category: instrumentation
+      - property: otel.instrumentation.logback-appender.experimental.key-value-pair-attributes.excluded
+        env: OTEL_INSTRUMENTATION_LOGBACK_APPENDER_EXPERIMENTAL_KEY_VALUE_PAIR_ATTRIBUTES_EXCLUDED
+        description: |
+          Comma-separated list of case-sensitive glob patterns for Logback key value pair keys not to capture as log attributes. "*" matches any number of characters and "?" matches one character. Excluded patterns take precedence over included patterns. No key value pair attributes are captured unless an included pattern, an excluded pattern, or the deprecated otel.instrumentation.logback-appender.experimental.capture-key-value-pair-attributes setting is configured; configuring only excluded patterns captures all key value pair attributes that do not match them. Captured key value pair attributes may contain sensitive information.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.logback-appender.experimental.key-value-pair-attributes.included
+        env: OTEL_INSTRUMENTATION_LOGBACK_APPENDER_EXPERIMENTAL_KEY_VALUE_PAIR_ATTRIBUTES_INCLUDED
+        description: |
+          Comma-separated list of case-sensitive glob patterns for Logback key value pair keys to capture as log attributes. "*" matches any number of characters and "?" matches one character, so "*" captures all key value pair attributes. Excluded patterns take precedence over included patterns. No key value pair attributes are captured unless an included pattern, an excluded pattern, or the deprecated otel.instrumentation.logback-appender.experimental.capture-key-value-pair-attributes setting is configured; configuring only excluded patterns captures all key value pair attributes that do not match them. Captured key value pair attributes may contain sensitive information.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.logback-appender.experimental.logger-context-attributes.excluded
+        env: OTEL_INSTRUMENTATION_LOGBACK_APPENDER_EXPERIMENTAL_LOGGER_CONTEXT_ATTRIBUTES_EXCLUDED
+        description: |
+          Comma-separated list of case-sensitive glob patterns for Logback logger context property keys not to capture as log attributes. "*" matches any number of characters and "?" matches one character. Excluded patterns take precedence over included patterns. No logger context attributes are captured unless an included pattern, an excluded pattern, or the deprecated otel.instrumentation.logback-appender.experimental.capture-logger-context-attributes setting is configured; configuring only excluded patterns captures all logger context attributes that do not match them. Captured logger context attributes may contain sensitive information.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.logback-appender.experimental.logger-context-attributes.included
+        env: OTEL_INSTRUMENTATION_LOGBACK_APPENDER_EXPERIMENTAL_LOGGER_CONTEXT_ATTRIBUTES_INCLUDED
+        description: |
+          Comma-separated list of case-sensitive glob patterns for Logback logger context property keys to capture as log attributes. "*" matches any number of characters and "?" matches one character, so "*" captures all logger context attributes. Excluded patterns take precedence over included patterns. No logger context attributes are captured unless an included pattern, an excluded pattern, or the deprecated otel.instrumentation.logback-appender.experimental.capture-logger-context-attributes setting is configured; configuring only excluded patterns captures all logger context attributes that do not match them. Captured logger context attributes may contain sensitive information.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.logback-appender.experimental.logstash-marker-attributes.excluded
+        env: OTEL_INSTRUMENTATION_LOGBACK_APPENDER_EXPERIMENTAL_LOGSTASH_MARKER_ATTRIBUTES_EXCLUDED
+        description: |
+          Comma-separated list of case-sensitive glob patterns for Logstash marker keys not to capture as log attributes. "*" matches any number of characters and "?" matches one character. Excluded patterns take precedence over included patterns. No Logstash marker attributes are captured unless an included pattern, an excluded pattern, or the deprecated otel.instrumentation.logback-appender.experimental.capture-logstash-marker-attributes setting is configured; configuring only excluded patterns captures all Logstash marker attributes that do not match them. Captured Logstash marker attributes may contain sensitive information.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.logback-appender.experimental.logstash-marker-attributes.included
+        env: OTEL_INSTRUMENTATION_LOGBACK_APPENDER_EXPERIMENTAL_LOGSTASH_MARKER_ATTRIBUTES_INCLUDED
+        description: |
+          Comma-separated list of case-sensitive glob patterns for Logstash marker keys to capture as log attributes. "*" matches any number of characters and "?" matches one character, so "*" captures all Logstash marker attributes. Excluded patterns take precedence over included patterns. No Logstash marker attributes are captured unless an included pattern, an excluded pattern, or the deprecated otel.instrumentation.logback-appender.experimental.capture-logstash-marker-attributes setting is configured; configuring only excluded patterns captures all Logstash marker attributes that do not match them. Captured Logstash marker attributes may contain sensitive information.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.logback-appender.experimental.logstash-structured-argument-attributes.excluded
+        env: OTEL_INSTRUMENTATION_LOGBACK_APPENDER_EXPERIMENTAL_LOGSTASH_STRUCTURED_ARGUMENT_ATTRIBUTES_EXCLUDED
+        description: |
+          Comma-separated list of case-sensitive glob patterns for Logstash structured argument keys not to capture as log attributes. "*" matches any number of characters and "?" matches one character. Excluded patterns take precedence over included patterns. No Logstash structured argument attributes are captured unless an included pattern, an excluded pattern, or the deprecated otel.instrumentation.logback-appender.experimental.capture-logstash-structured-arguments setting is configured; configuring only excluded patterns captures all Logstash structured argument attributes that do not match them. Captured Logstash structured argument attributes may contain sensitive information.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.logback-appender.experimental.logstash-structured-argument-attributes.included
+        env: OTEL_INSTRUMENTATION_LOGBACK_APPENDER_EXPERIMENTAL_LOGSTASH_STRUCTURED_ARGUMENT_ATTRIBUTES_INCLUDED
+        description: |
+          Comma-separated list of case-sensitive glob patterns for Logstash structured argument keys to capture as log attributes. "*" matches any number of characters and "?" matches one character, so "*" captures all Logstash structured argument attributes. Excluded patterns take precedence over included patterns. No Logstash structured argument attributes are captured unless an included pattern, an excluded pattern, or the deprecated otel.instrumentation.logback-appender.experimental.capture-logstash-structured-arguments setting is configured; configuring only excluded patterns captures all Logstash structured argument attributes that do not match them. Captured Logstash structured argument attributes may contain sensitive information.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.logback-appender.experimental.mdc-attributes.excluded
+        env: OTEL_INSTRUMENTATION_LOGBACK_APPENDER_EXPERIMENTAL_MDC_ATTRIBUTES_EXCLUDED
+        description: |
+          Comma-separated list of case-sensitive glob patterns for MDC keys not to capture as log attributes. "*" matches any number of characters and "?" matches one character. Excluded patterns take precedence over included patterns. No MDC attributes are captured unless an included pattern, an excluded pattern, or the deprecated otel.instrumentation.logback-appender.experimental.capture-mdc-attributes setting is configured; configuring only excluded patterns captures all MDC attributes that do not match them. Captured MDC attributes may contain sensitive information.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.logback-appender.experimental.mdc-attributes.included
+        env: OTEL_INSTRUMENTATION_LOGBACK_APPENDER_EXPERIMENTAL_MDC_ATTRIBUTES_INCLUDED
+        description: |
+          Comma-separated list of case-sensitive glob patterns for MDC keys to capture as log attributes. "*" matches any number of characters and "?" matches one character, so "*" captures all MDC attributes. Excluded patterns take precedence over included patterns. No MDC attributes are captured unless an included pattern, an excluded pattern, or the deprecated otel.instrumentation.logback-appender.experimental.capture-mdc-attributes setting is configured; configuring only excluded patterns captures all MDC attributes that do not match them. Captured MDC attributes may contain sensitive information.
+        default: ''
+        type: list
         category: instrumentation
   - keys:
       - logback-mdc-1.0
@@ -5330,10 +6738,17 @@ instrumentations:
         default: s
         type: string
         category: instrumentation
+      - property: otel.instrumentation.micrometer.experimental.histogram-gauges.enabled
+        env: OTEL_INSTRUMENTATION_MICROMETER_EXPERIMENTAL_HISTOGRAM_GAUGES_ENABLED
+        description: |
+          Enables gauge-based Micrometer histograms for DistributionSummary and Timer instruments.
+        default: 'false'
+        type: boolean
+        category: instrumentation
       - property: otel.instrumentation.micrometer.histogram-gauges.enabled
         env: OTEL_INSTRUMENTATION_MICROMETER_HISTOGRAM_GAUGES_ENABLED
         description: |
-          Enables gauge-based Micrometer histograms for DistributionSummary and Timer instruments.
+          Deprecated alias for `otel.instrumentation.micrometer.experimental.histogram-gauges.enabled`. It will be removed in 3.0.
         default: 'false'
         type: boolean
         category: instrumentation
@@ -5488,10 +6903,57 @@ instrumentations:
       and consumers.
     stability: experimental
     support: community
+    signals:
+      - metrics:
+          - metric_name: messaging.client.consumed.messages
+            instrument: counter
+            description: |-
+              Number of messages that were delivered to the application.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: messaging.client.operation.duration
+            instrument: histogram
+            description: |-
+              Duration of messaging operation initiated by a producer or consumer client.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: messaging.client.sent.messages
+            instrument: counter
+            description: |-
+              Number of messages producer attempted to send to the broker.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: messaging.process.duration
+            instrument: histogram
+            description: |-
+              Duration of processing operation.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
     settings:
       - property: otel.instrumentation.messaging.experimental.capture-headers
         env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_CAPTURE_HEADERS
-        description: A comma-separated list of header names to capture as span attributes.
+        description: 'Deprecated: use `otel.instrumentation.messaging.experimental.headers.included`
+          instead. A comma-separated list of header names to capture as span attributes.
+          It does not support glob patterns: an entry containing `*` or `?` is ignored
+          with a warning, and every other entry is matched as a literal header name.'
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.messaging.experimental.headers.excluded
+        env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_HEADERS_EXCLUDED
+        description: A comma-separated list of message header name patterns to exclude
+          from span attributes. Excluded patterns take precedence over included patterns.
+          Matching is case-sensitive. `?` matches one character and `*` matches zero
+          or more characters. If included is not configured, all non-excluded headers
+          are captured, which may expose sensitive information.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.messaging.experimental.headers.included
+        env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_HEADERS_INCLUDED
+        description: A comma-separated list of message header name patterns to capture
+          as span attributes. Matching is case-sensitive. `?` matches one character
+          and `*` matches zero or more characters.
         default: ''
         type: list
         category: instrumentation
@@ -5577,7 +7039,7 @@ instrumentations:
         env: OTEL_INSTRUMENTATION_SANITIZATION_URL_EXPERIMENTAL_SENSITIVE_QUERY_PARAMETERS
         description: List of URL query parameter names whose values are redacted in
           URL attributes. See https://opentelemetry.io/docs/specs/semconv/http/http-spans.
-        default: AWSAccessKeyId,Signature,sig,X-Goog-Signature
+        default: AWSAccessKeyId,Signature,X-Amz-Signature,X-Amz-Credential,X-Amz-Security-Token,sig,X-Goog-Signature
         type: list
         category: instrumentation
   - keys:
@@ -5674,7 +7136,7 @@ instrumentations:
         env: OTEL_INSTRUMENTATION_SANITIZATION_URL_EXPERIMENTAL_SENSITIVE_QUERY_PARAMETERS
         description: List of URL query parameter names whose values are redacted in
           URL attributes. See https://opentelemetry.io/docs/specs/semconv/http/http-spans.
-        default: AWSAccessKeyId,Signature,sig,X-Goog-Signature
+        default: AWSAccessKeyId,Signature,X-Amz-Signature,X-Amz-Credential,X-Amz-Security-Token,sig,X-Goog-Signature
         type: list
         category: instrumentation
   - keys:
@@ -5771,7 +7233,7 @@ instrumentations:
         env: OTEL_INSTRUMENTATION_SANITIZATION_URL_EXPERIMENTAL_SENSITIVE_QUERY_PARAMETERS
         description: List of URL query parameter names whose values are redacted in
           URL attributes. See https://opentelemetry.io/docs/specs/semconv/http/http-spans.
-        default: AWSAccessKeyId,Signature,sig,X-Goog-Signature
+        default: AWSAccessKeyId,Signature,X-Amz-Signature,X-Amz-Credential,X-Amz-Security-Token,sig,X-Goog-Signature
         type: list
         category: instrumentation
   - keys:
@@ -5830,7 +7292,7 @@ instrumentations:
         env: OTEL_INSTRUMENTATION_SANITIZATION_URL_EXPERIMENTAL_SENSITIVE_QUERY_PARAMETERS
         description: List of URL query parameter names whose values are redacted in
           URL attributes. See https://opentelemetry.io/docs/specs/semconv/http/http-spans.
-        default: AWSAccessKeyId,Signature,sig,X-Goog-Signature
+        default: AWSAccessKeyId,Signature,X-Amz-Signature,X-Amz-Credential,X-Amz-Security-Token,sig,X-Goog-Signature
         type: list
         category: instrumentation
   - keys:
@@ -5889,7 +7351,7 @@ instrumentations:
         env: OTEL_INSTRUMENTATION_SANITIZATION_URL_EXPERIMENTAL_SENSITIVE_QUERY_PARAMETERS
         description: List of URL query parameter names whose values are redacted in
           URL attributes. See https://opentelemetry.io/docs/specs/semconv/http/http-spans.
-        default: AWSAccessKeyId,Signature,sig,X-Goog-Signature
+        default: AWSAccessKeyId,Signature,X-Amz-Signature,X-Amz-Credential,X-Amz-Security-Token,sig,X-Goog-Signature
         type: list
         category: instrumentation
   - keys:
@@ -6217,7 +7679,7 @@ instrumentations:
         env: OTEL_INSTRUMENTATION_SANITIZATION_URL_EXPERIMENTAL_SENSITIVE_QUERY_PARAMETERS
         description: List of URL query parameter names whose values are redacted in
           URL attributes. See https://opentelemetry.io/docs/specs/semconv/http/http-spans.
-        default: AWSAccessKeyId,Signature,sig,X-Goog-Signature
+        default: AWSAccessKeyId,Signature,X-Amz-Signature,X-Amz-Credential,X-Amz-Security-Token,sig,X-Goog-Signature
         type: list
         category: instrumentation
   - keys:
@@ -6310,7 +7772,7 @@ instrumentations:
         env: OTEL_INSTRUMENTATION_SANITIZATION_URL_EXPERIMENTAL_SENSITIVE_QUERY_PARAMETERS
         description: List of URL query parameter names whose values are redacted in
           URL attributes. See https://opentelemetry.io/docs/specs/semconv/http/http-spans.
-        default: AWSAccessKeyId,Signature,sig,X-Goog-Signature
+        default: AWSAccessKeyId,Signature,X-Amz-Signature,X-Amz-Credential,X-Amz-Security-Token,sig,X-Goog-Signature
         type: list
         category: instrumentation
   - keys:
@@ -6370,7 +7832,7 @@ instrumentations:
         env: OTEL_INSTRUMENTATION_SANITIZATION_URL_EXPERIMENTAL_SENSITIVE_QUERY_PARAMETERS
         description: List of URL query parameter names whose values are redacted in
           URL attributes. See https://opentelemetry.io/docs/specs/semconv/http/http-spans.
-        default: AWSAccessKeyId,Signature,sig,X-Goog-Signature
+        default: AWSAccessKeyId,Signature,X-Amz-Signature,X-Amz-Credential,X-Amz-Security-Token,sig,X-Goog-Signature
         type: list
         category: instrumentation
   - keys:
@@ -6430,7 +7892,7 @@ instrumentations:
         env: OTEL_INSTRUMENTATION_SANITIZATION_URL_EXPERIMENTAL_SENSITIVE_QUERY_PARAMETERS
         description: List of URL query parameter names whose values are redacted in
           URL attributes. See https://opentelemetry.io/docs/specs/semconv/http/http-spans.
-        default: AWSAccessKeyId,Signature,sig,X-Goog-Signature
+        default: AWSAccessKeyId,Signature,X-Amz-Signature,X-Amz-Credential,X-Amz-Security-Token,sig,X-Goog-Signature
         type: list
         category: instrumentation
   - keys:
@@ -6461,7 +7923,28 @@ instrumentations:
     settings:
       - property: otel.instrumentation.messaging.experimental.capture-headers
         env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_CAPTURE_HEADERS
-        description: A comma-separated list of header names to capture as span attributes.
+        description: 'Deprecated: use `otel.instrumentation.messaging.experimental.headers.included`
+          instead. A comma-separated list of header names to capture as span attributes.
+          It does not support glob patterns: an entry containing `*` or `?` is ignored
+          with a warning, and every other entry is matched as a literal header name.'
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.messaging.experimental.headers.excluded
+        env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_HEADERS_EXCLUDED
+        description: A comma-separated list of message header name patterns to exclude
+          from span attributes. Excluded patterns take precedence over included patterns.
+          Matching is case-sensitive. `?` matches one character and `*` matches zero
+          or more characters. If included is not configured, all non-excluded headers
+          are captured, which may expose sensitive information.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.messaging.experimental.headers.included
+        env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_HEADERS_INCLUDED
+        description: A comma-separated list of message header name patterns to capture
+          as span attributes. Matching is case-sensitive. `?` matches one character
+          and `*` matches zero or more characters.
         default: ''
         type: list
         category: instrumentation
@@ -6557,17 +8040,64 @@ instrumentations:
       producers and consumers.
     stability: experimental
     support: community
+    signals:
+      - metrics:
+          - metric_name: messaging.client.consumed.messages
+            instrument: counter
+            description: |-
+              Number of messages that were delivered to the application.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: messaging.client.operation.duration
+            instrument: histogram
+            description: |-
+              Duration of messaging operation initiated by a producer or consumer client.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: messaging.client.sent.messages
+            instrument: counter
+            description: |-
+              Number of messages producer attempted to send to the broker.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: messaging.process.duration
+            instrument: histogram
+            description: |-
+              Duration of processing operation.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
     settings:
       - property: otel.instrumentation.messaging.experimental.capture-headers
         env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_CAPTURE_HEADERS
-        description: A comma-separated list of header names to capture as span attributes.
+        description: 'Deprecated: use `otel.instrumentation.messaging.experimental.headers.included`
+          instead. A comma-separated list of header names to capture as span attributes.
+          It does not support glob patterns: an entry containing `*` or `?` is ignored
+          with a warning, and every other entry is matched as a literal header name.'
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.messaging.experimental.headers.excluded
+        env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_HEADERS_EXCLUDED
+        description: A comma-separated list of message header name patterns to exclude
+          from span attributes. Excluded patterns take precedence over included patterns.
+          Matching is case-sensitive. `?` matches one character and `*` matches zero
+          or more characters. If included is not configured, all non-excluded headers
+          are captured, which may expose sensitive information.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.messaging.experimental.headers.included
+        env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_HEADERS_INCLUDED
+        description: A comma-separated list of message header name patterns to capture
+          as span attributes. Matching is case-sensitive. `?` matches one character
+          and `*` matches zero or more characters.
         default: ''
         type: list
         category: instrumentation
       - property: otel.instrumentation.messaging.experimental.receive-telemetry.enabled
         env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_RECEIVE_TELEMETRY_ENABLED
         description: |
-          Enables the creation of consumer spans on messaging receive operations. These spans will measure the time between receiving a message and the consumer processing that message.
+          Enables consumer spans for RabbitMQ `basicGet` receive operations when legacy messaging semantic conventions are emitted. Stable messaging semantic conventions emit these spans regardless of this setting.
         default: 'false'
         type: boolean
         category: instrumentation
@@ -6682,7 +8212,7 @@ instrumentations:
         env: OTEL_INSTRUMENTATION_SANITIZATION_URL_EXPERIMENTAL_SENSITIVE_QUERY_PARAMETERS
         description: List of URL query parameter names whose values are redacted in
           URL attributes. See https://opentelemetry.io/docs/specs/semconv/http/http-spans.
-        default: AWSAccessKeyId,Signature,sig,X-Goog-Signature
+        default: AWSAccessKeyId,Signature,X-Amz-Signature,X-Amz-Credential,X-Amz-Security-Token,sig,X-Goog-Signature
         type: list
         category: instrumentation
   - keys:
@@ -6723,7 +8253,28 @@ instrumentations:
     settings:
       - property: otel.instrumentation.messaging.experimental.capture-headers
         env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_CAPTURE_HEADERS
-        description: A comma-separated list of header names to capture as span attributes.
+        description: 'Deprecated: use `otel.instrumentation.messaging.experimental.headers.included`
+          instead. A comma-separated list of header names to capture as span attributes.
+          It does not support glob patterns: an entry containing `*` or `?` is ignored
+          with a warning, and every other entry is matched as a literal header name.'
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.messaging.experimental.headers.excluded
+        env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_HEADERS_EXCLUDED
+        description: A comma-separated list of message header name patterns to exclude
+          from span attributes. Excluded patterns take precedence over included patterns.
+          Matching is case-sensitive. `?` matches one character and `*` matches zero
+          or more characters. If included is not configured, all non-excluded headers
+          are captured, which may expose sensitive information.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.messaging.experimental.headers.included
+        env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_HEADERS_INCLUDED
+        description: A comma-separated list of message header name patterns to capture
+          as span attributes. Matching is case-sensitive. `?` matches one character
+          and `*` matches zero or more characters.
         default: ''
         type: list
         category: instrumentation
@@ -6812,7 +8363,7 @@ instrumentations:
         env: OTEL_INSTRUMENTATION_SANITIZATION_URL_EXPERIMENTAL_SENSITIVE_QUERY_PARAMETERS
         description: List of URL query parameter names whose values are redacted in
           URL attributes. See https://opentelemetry.io/docs/specs/semconv/http/http-spans.
-        default: AWSAccessKeyId,Signature,sig,X-Goog-Signature
+        default: AWSAccessKeyId,Signature,X-Amz-Signature,X-Amz-Credential,X-Amz-Security-Token,sig,X-Goog-Signature
         type: list
         category: instrumentation
   - keys:
@@ -6869,6 +8420,67 @@ instrumentations:
               Duration of database client operations.
               This metric is disabled by default and can be enabled with `otel.semconv-stability.opt-in=database`.
             category_notes: Custom metric.
+  - keys:
+      - redisson-metrics-3.26
+    instrumented_components:
+      - name: Redisson
+        supported_versions: '[org.redisson:redisson:[3.26.0,)]'
+    description: This instrumentation enables database connection pool metrics for
+      Redisson.
+    stability: experimental
+    support: community
+    signals:
+      - metrics:
+          - metric_name: db.client.connections.idle.min
+            instrument: updowncounter
+            description: The minimum number of idle open connections allowed.
+            category_notes: Custom metric.
+          - metric_name: db.client.connections.max
+            instrument: updowncounter
+            description: The maximum number of open connections allowed.
+            category_notes: Custom metric.
+          - metric_name: db.client.connections.pending_requests
+            instrument: updowncounter
+            description: The number of pending requests for an open connection, cumulative
+              for the entire pool.
+            category_notes: Custom metric.
+          - metric_name: db.client.connections.usage
+            instrument: updowncounter
+            description: The number of connections that are currently in state described
+              by the state attribute.
+            category_notes: Custom metric.
+          - metric_name: db.client.connection.count
+            instrument: updowncounter
+            description: |-
+              The number of connections that are currently in state described by the state attribute.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.opt-in=database`.
+            category_notes: Custom metric.
+          - metric_name: db.client.connection.idle.min
+            instrument: updowncounter
+            description: |-
+              The minimum number of idle open connections allowed.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.opt-in=database`.
+            category_notes: Custom metric.
+          - metric_name: db.client.connection.max
+            instrument: updowncounter
+            description: |-
+              The maximum number of open connections allowed.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.opt-in=database`.
+            category_notes: Custom metric.
+          - metric_name: db.client.connection.pending_requests
+            instrument: updowncounter
+            description: |-
+              The number of current pending requests for an open connection.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.opt-in=database`.
+            category_notes: Custom metric.
+    settings:
+      - property: otel.semconv-stability.opt-in
+        env: OTEL_SEMCONV_STABILITY_OPT_IN
+        description: |
+          Opt-in to emit stable semantic conventions instead of the old experimental semantic conventions. Accepts a comma-separated list of semantic convention groups (e.g., `database`, `http`, `messaging`). Use `<group>/dup` to emit both old and new conventions simultaneously. Stable semantic conventions will become the default in version 3.0 of the agent.
+        default: ''
+        type: list
+        category: instrumentation
   - keys:
       - restlet-1.1
     instrumented_components:
@@ -6980,7 +8592,28 @@ instrumentations:
     settings:
       - property: otel.instrumentation.messaging.experimental.capture-headers
         env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_CAPTURE_HEADERS
-        description: A comma-separated list of header names to capture as span attributes.
+        description: 'Deprecated: use `otel.instrumentation.messaging.experimental.headers.included`
+          instead. A comma-separated list of header names to capture as span attributes.
+          It does not support glob patterns: an entry containing `*` or `?` is ignored
+          with a warning, and every other entry is matched as a literal header name.'
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.messaging.experimental.headers.excluded
+        env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_HEADERS_EXCLUDED
+        description: A comma-separated list of message header name patterns to exclude
+          from span attributes. Excluded patterns take precedence over included patterns.
+          Matching is case-sensitive. `?` matches one character and `*` matches zero
+          or more characters. If included is not configured, all non-excluded headers
+          are captured, which may expose sensitive information.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.messaging.experimental.headers.included
+        env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_HEADERS_INCLUDED
+        description: A comma-separated list of message header name patterns to capture
+          as span attributes. Matching is case-sensitive. `?` matches one character
+          and `*` matches zero or more characters.
         default: ''
         type: list
         category: instrumentation
@@ -7003,7 +8636,28 @@ instrumentations:
     settings:
       - property: otel.instrumentation.messaging.experimental.capture-headers
         env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_CAPTURE_HEADERS
-        description: A comma-separated list of header names to capture as span attributes.
+        description: 'Deprecated: use `otel.instrumentation.messaging.experimental.headers.included`
+          instead. A comma-separated list of header names to capture as span attributes.
+          It does not support glob patterns: an entry containing `*` or `?` is ignored
+          with a warning, and every other entry is matched as a literal header name.'
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.messaging.experimental.headers.excluded
+        env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_HEADERS_EXCLUDED
+        description: A comma-separated list of message header name patterns to exclude
+          from span attributes. Excluded patterns take precedence over included patterns.
+          Matching is case-sensitive. `?` matches one character and `*` matches zero
+          or more characters. If included is not configured, all non-excluded headers
+          are captured, which may expose sensitive information.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.messaging.experimental.headers.included
+        env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_HEADERS_INCLUDED
+        description: A comma-separated list of message header name patterns to capture
+          as span attributes. Matching is case-sensitive. `?` matches one character
+          and `*` matches zero or more characters.
         default: ''
         type: list
         category: instrumentation
@@ -7134,6 +8788,20 @@ instrumentations:
         default: 'false'
         type: boolean
         category: instrumentation
+      - property: otel.instrumentation.runtime-telemetry.experimental.jfr-metrics.excluded
+        env: OTEL_INSTRUMENTATION_RUNTIME_TELEMETRY_EXPERIMENTAL_JFR_METRICS_EXCLUDED
+        description: |
+          Excludes JVM runtime metrics from JFR on Java 17+ using exact names or glob patterns with * and ?. Excluded patterns take precedence over included patterns, including over shorthand and legacy selections. Configuring this property without included selects all metrics except those excluded.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.runtime-telemetry.experimental.jfr-metrics.included
+        env: OTEL_INSTRUMENTATION_RUNTIME_TELEMETRY_EXPERIMENTAL_JFR_METRICS_INCLUDED
+        description: |
+          Selects JVM runtime metrics to source from JFR on Java 17+. Supports exact names and glob patterns with * and ?. Configuring either JFR metric selector property activates JFR. Use * to select all metrics.
+        default: ''
+        type: list
+        category: instrumentation
       - property: otel.instrumentation.runtime-telemetry.experimental.package-emitter.enabled
         env: OTEL_INSTRUMENTATION_RUNTIME_TELEMETRY_EXPERIMENTAL_PACKAGE_EMITTER_ENABLED
         description: Enables creating events for JAR libraries used by the application.
@@ -7149,7 +8817,7 @@ instrumentations:
       - property: otel.instrumentation.runtime-telemetry.experimental.prefer-jfr
         env: OTEL_INSTRUMENTATION_RUNTIME_TELEMETRY_EXPERIMENTAL_PREFER_JFR
         description: |
-          Prefer JFR over JMX for metrics available from both sources, on Java 17+. When enabled, overlapping metrics are collected via JFR and the corresponding JMX metrics are suppressed.
+          Deprecated: use `otel.instrumentation.runtime-telemetry.experimental.jfr-metrics.included` instead. Prefer JFR over JMX for metrics available from both sources, on Java 17+.
         default: 'false'
         type: boolean
         category: instrumentation
@@ -7245,7 +8913,22 @@ instrumentations:
         category: instrumentation
       - property: otel.instrumentation.servlet.experimental.capture-request-parameters
         env: OTEL_INSTRUMENTATION_SERVLET_EXPERIMENTAL_CAPTURE_REQUEST_PARAMETERS
-        description: List of request parameter names to capture as span attributes.
+        description: |
+          Deprecated include-only alias for `otel.instrumentation.servlet.experimental.request-parameters.included`. It does not support glob patterns: an entry containing `*` or `?` is ignored with a warning, and every other entry is matched as a literal request parameter name. It may be removed in the next minor release.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.servlet.experimental.request-parameters.excluded
+        env: OTEL_INSTRUMENTATION_SERVLET_EXPERIMENTAL_REQUEST_PARAMETERS_EXCLUDED
+        description: |
+          A comma-separated list of case-sensitive request parameter name patterns to exclude from span attributes. `?` matches one character and `*` matches zero or more characters. Excluded patterns take precedence over included patterns. No request parameters are captured unless an included or excluded pattern is configured; configuring only excluded patterns captures all request parameters that do not match them, which may expose sensitive information.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.servlet.experimental.request-parameters.included
+        env: OTEL_INSTRUMENTATION_SERVLET_EXPERIMENTAL_REQUEST_PARAMETERS_INCLUDED
+        description: |
+          A comma-separated list of case-sensitive request parameter name patterns to capture as span attributes. `?` matches one character and `*` matches zero or more characters. Excluded patterns take precedence over included patterns. No request parameters are captured unless an included or excluded pattern is configured; configuring only excluded patterns captures all request parameters that do not match them, which may expose sensitive information.
         default: ''
         type: list
         category: instrumentation
@@ -7288,7 +8971,22 @@ instrumentations:
         category: instrumentation
       - property: otel.instrumentation.servlet.experimental.capture-request-parameters
         env: OTEL_INSTRUMENTATION_SERVLET_EXPERIMENTAL_CAPTURE_REQUEST_PARAMETERS
-        description: List of request parameter names to capture as span attributes.
+        description: |
+          Deprecated include-only alias for `otel.instrumentation.servlet.experimental.request-parameters.included`. It does not support glob patterns: an entry containing `*` or `?` is ignored with a warning, and every other entry is matched as a literal request parameter name. It may be removed in the next minor release.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.servlet.experimental.request-parameters.excluded
+        env: OTEL_INSTRUMENTATION_SERVLET_EXPERIMENTAL_REQUEST_PARAMETERS_EXCLUDED
+        description: |
+          A comma-separated list of case-sensitive request parameter name patterns to exclude from span attributes. `?` matches one character and `*` matches zero or more characters. Excluded patterns take precedence over included patterns. No request parameters are captured unless an included or excluded pattern is configured; configuring only excluded patterns captures all request parameters that do not match them, which may expose sensitive information.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.servlet.experimental.request-parameters.included
+        env: OTEL_INSTRUMENTATION_SERVLET_EXPERIMENTAL_REQUEST_PARAMETERS_INCLUDED
+        description: |
+          A comma-separated list of case-sensitive request parameter name patterns to capture as span attributes. `?` matches one character and `*` matches zero or more characters. Excluded patterns take precedence over included patterns. No request parameters are captured unless an included or excluded pattern is configured; configuring only excluded patterns captures all request parameters that do not match them, which may expose sensitive information.
         default: ''
         type: list
         category: instrumentation
@@ -7324,7 +9022,22 @@ instrumentations:
         category: instrumentation
       - property: otel.instrumentation.servlet.experimental.capture-request-parameters
         env: OTEL_INSTRUMENTATION_SERVLET_EXPERIMENTAL_CAPTURE_REQUEST_PARAMETERS
-        description: List of request parameter names to capture as span attributes.
+        description: |
+          Deprecated include-only alias for `otel.instrumentation.servlet.experimental.request-parameters.included`. It does not support glob patterns: an entry containing `*` or `?` is ignored with a warning, and every other entry is matched as a literal request parameter name. It may be removed in the next minor release.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.servlet.experimental.request-parameters.excluded
+        env: OTEL_INSTRUMENTATION_SERVLET_EXPERIMENTAL_REQUEST_PARAMETERS_EXCLUDED
+        description: |
+          A comma-separated list of case-sensitive request parameter name patterns to exclude from span attributes. `?` matches one character and `*` matches zero or more characters. Excluded patterns take precedence over included patterns. No request parameters are captured unless an included or excluded pattern is configured; configuring only excluded patterns captures all request parameters that do not match them, which may expose sensitive information.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.servlet.experimental.request-parameters.included
+        env: OTEL_INSTRUMENTATION_SERVLET_EXPERIMENTAL_REQUEST_PARAMETERS_INCLUDED
+        description: |
+          A comma-separated list of case-sensitive request parameter name patterns to capture as span attributes. `?` matches one character and `*` matches zero or more characters. Excluded patterns take precedence over included patterns. No request parameters are captured unless an included or excluded pattern is configured; configuring only excluded patterns captures all request parameters that do not match them, which may expose sensitive information.
         default: ''
         type: list
         category: instrumentation
@@ -7501,10 +9214,57 @@ instrumentations:
       for Spring Integration.
     stability: experimental
     support: community
+    signals:
+      - metrics:
+          - metric_name: messaging.client.consumed.messages
+            instrument: counter
+            description: |-
+              Number of messages that were delivered to the application.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: messaging.client.operation.duration
+            instrument: histogram
+            description: |-
+              Duration of messaging operation initiated by a producer or consumer client.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: messaging.client.sent.messages
+            instrument: counter
+            description: |-
+              Number of messages producer attempted to send to the broker.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
+          - metric_name: messaging.process.duration
+            instrument: histogram
+            description: |-
+              Duration of processing operation.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
     settings:
       - property: otel.instrumentation.messaging.experimental.capture-headers
         env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_CAPTURE_HEADERS
-        description: A comma-separated list of header names to capture as span attributes.
+        description: 'Deprecated: use `otel.instrumentation.messaging.experimental.headers.included`
+          instead. A comma-separated list of header names to capture as span attributes.
+          It does not support glob patterns: an entry containing `*` or `?` is ignored
+          with a warning, and every other entry is matched as a literal header name.'
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.messaging.experimental.headers.excluded
+        env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_HEADERS_EXCLUDED
+        description: A comma-separated list of message header name patterns to exclude
+          from span attributes. Excluded patterns take precedence over included patterns.
+          Matching is case-sensitive. `?` matches one character and `*` matches zero
+          or more characters. If included is not configured, all non-excluded headers
+          are captured, which may expose sensitive information.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.messaging.experimental.headers.included
+        env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_HEADERS_INCLUDED
+        description: A comma-separated list of message header name patterns to capture
+          as span attributes. Matching is case-sensitive. `?` matches one character
+          and `*` matches zero or more characters.
         default: ''
         type: list
         category: instrumentation
@@ -7533,7 +9293,28 @@ instrumentations:
     settings:
       - property: otel.instrumentation.messaging.experimental.capture-headers
         env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_CAPTURE_HEADERS
-        description: A comma-separated list of header names to capture as span attributes.
+        description: 'Deprecated: use `otel.instrumentation.messaging.experimental.headers.included`
+          instead. A comma-separated list of header names to capture as span attributes.
+          It does not support glob patterns: an entry containing `*` or `?` is ignored
+          with a warning, and every other entry is matched as a literal header name.'
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.messaging.experimental.headers.excluded
+        env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_HEADERS_EXCLUDED
+        description: A comma-separated list of message header name patterns to exclude
+          from span attributes. Excluded patterns take precedence over included patterns.
+          Matching is case-sensitive. `?` matches one character and `*` matches zero
+          or more characters. If included is not configured, all non-excluded headers
+          are captured, which may expose sensitive information.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.messaging.experimental.headers.included
+        env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_HEADERS_INCLUDED
+        description: A comma-separated list of message header name patterns to capture
+          as span attributes. Matching is case-sensitive. `?` matches one character
+          and `*` matches zero or more characters.
         default: ''
         type: list
         category: instrumentation
@@ -7556,7 +9337,28 @@ instrumentations:
     settings:
       - property: otel.instrumentation.messaging.experimental.capture-headers
         env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_CAPTURE_HEADERS
-        description: A comma-separated list of header names to capture as span attributes.
+        description: 'Deprecated: use `otel.instrumentation.messaging.experimental.headers.included`
+          instead. A comma-separated list of header names to capture as span attributes.
+          It does not support glob patterns: an entry containing `*` or `?` is ignored
+          with a warning, and every other entry is matched as a literal header name.'
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.messaging.experimental.headers.excluded
+        env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_HEADERS_EXCLUDED
+        description: A comma-separated list of message header name patterns to exclude
+          from span attributes. Excluded patterns take precedence over included patterns.
+          Matching is case-sensitive. `?` matches one character and `*` matches zero
+          or more characters. If included is not configured, all non-excluded headers
+          are captured, which may expose sensitive information.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.messaging.experimental.headers.included
+        env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_HEADERS_INCLUDED
+        description: A comma-separated list of message header name patterns to capture
+          as span attributes. Matching is case-sensitive. `?` matches one character
+          and `*` matches zero or more characters.
         default: ''
         type: list
         category: instrumentation
@@ -7579,7 +9381,28 @@ instrumentations:
     settings:
       - property: otel.instrumentation.messaging.experimental.capture-headers
         env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_CAPTURE_HEADERS
-        description: A comma-separated list of header names to capture as span attributes.
+        description: 'Deprecated: use `otel.instrumentation.messaging.experimental.headers.included`
+          instead. A comma-separated list of header names to capture as span attributes.
+          It does not support glob patterns: an entry containing `*` or `?` is ignored
+          with a warning, and every other entry is matched as a literal header name.'
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.messaging.experimental.headers.excluded
+        env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_HEADERS_EXCLUDED
+        description: A comma-separated list of message header name patterns to exclude
+          from span attributes. Excluded patterns take precedence over included patterns.
+          Matching is case-sensitive. `?` matches one character and `*` matches zero
+          or more characters. If included is not configured, all non-excluded headers
+          are captured, which may expose sensitive information.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.messaging.experimental.headers.included
+        env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_HEADERS_INCLUDED
+        description: A comma-separated list of message header name patterns to capture
+          as span attributes. Matching is case-sensitive. `?` matches one character
+          and `*` matches zero or more characters.
         default: ''
         type: list
         category: instrumentation
@@ -7609,7 +9432,28 @@ instrumentations:
     settings:
       - property: otel.instrumentation.messaging.experimental.capture-headers
         env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_CAPTURE_HEADERS
-        description: A comma-separated list of header names to capture as span attributes.
+        description: 'Deprecated: use `otel.instrumentation.messaging.experimental.headers.included`
+          instead. A comma-separated list of header names to capture as span attributes.
+          It does not support glob patterns: an entry containing `*` or `?` is ignored
+          with a warning, and every other entry is matched as a literal header name.'
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.messaging.experimental.headers.excluded
+        env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_HEADERS_EXCLUDED
+        description: A comma-separated list of message header name patterns to exclude
+          from span attributes. Excluded patterns take precedence over included patterns.
+          Matching is case-sensitive. `?` matches one character and `*` matches zero
+          or more characters. If included is not configured, all non-excluded headers
+          are captured, which may expose sensitive information.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.messaging.experimental.headers.included
+        env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_HEADERS_INCLUDED
+        description: A comma-separated list of message header name patterns to capture
+          as span attributes. Matching is case-sensitive. `?` matches one character
+          and `*` matches zero or more characters.
         default: ''
         type: list
         category: instrumentation
@@ -7636,10 +9480,39 @@ instrumentations:
       RabbitMQ listeners.
     stability: experimental
     support: community
+    signals:
+      - metrics:
+          - metric_name: messaging.process.duration
+            instrument: histogram
+            description: |-
+              Duration of processing operation.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.preview=messaging`.
+            category_notes: Custom metric.
     settings:
       - property: otel.instrumentation.messaging.experimental.capture-headers
         env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_CAPTURE_HEADERS
-        description: A comma-separated list of header names to capture as span attributes.
+        description: 'Deprecated: use `otel.instrumentation.messaging.experimental.headers.included`
+          instead. A comma-separated list of header names to capture as span attributes.
+          It does not support glob patterns: an entry containing `*` or `?` is ignored
+          with a warning, and every other entry is matched as a literal header name.'
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.messaging.experimental.headers.excluded
+        env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_HEADERS_EXCLUDED
+        description: A comma-separated list of message header name patterns to exclude
+          from span attributes. Excluded patterns take precedence over included patterns.
+          Matching is case-sensitive. `?` matches one character and `*` matches zero
+          or more characters. If included is not configured, all non-excluded headers
+          are captured, which may expose sensitive information.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.messaging.experimental.headers.included
+        env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_HEADERS_INCLUDED
+        description: A comma-separated list of message header name patterns to capture
+          as span attributes. Matching is case-sensitive. `?` matches one character
+          and `*` matches zero or more characters.
         default: ''
         type: list
         category: instrumentation
@@ -7768,6 +9641,13 @@ instrumentations:
       This instrumentation enriches HTTP server spans with route information for Spring WebFlux 5.0+. It also installs WebClient telemetry interceptors and enables controller spans (controller spans are disabled by default).
     stability: experimental
     support: community
+    signals:
+      - metrics:
+          - metric_name: http.client.request.duration
+            instrument: histogram
+            description: Duration of HTTP client requests.
+            category_notes: APM bundled, if data points for the metric contain `telemetry.sdk.language`
+              attribute.
     settings:
       - property: otel.instrumentation.common.experimental.controller-telemetry.enabled
         env: OTEL_INSTRUMENTATION_COMMON_EXPERIMENTAL_CONTROLLER_TELEMETRY_ENABLED
@@ -8007,7 +9887,22 @@ instrumentations:
         category: instrumentation
       - property: otel.instrumentation.servlet.experimental.capture-request-parameters
         env: OTEL_INSTRUMENTATION_SERVLET_EXPERIMENTAL_CAPTURE_REQUEST_PARAMETERS
-        description: List of request parameter names to capture as span attributes.
+        description: |
+          Deprecated include-only alias for `otel.instrumentation.servlet.experimental.request-parameters.included`. It does not support glob patterns: an entry containing `*` or `?` is ignored with a warning, and every other entry is matched as a literal request parameter name. It may be removed in the next minor release.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.servlet.experimental.request-parameters.excluded
+        env: OTEL_INSTRUMENTATION_SERVLET_EXPERIMENTAL_REQUEST_PARAMETERS_EXCLUDED
+        description: |
+          A comma-separated list of case-sensitive request parameter name patterns to exclude from span attributes. `?` matches one character and `*` matches zero or more characters. Excluded patterns take precedence over included patterns. No request parameters are captured unless an included or excluded pattern is configured; configuring only excluded patterns captures all request parameters that do not match them, which may expose sensitive information.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.servlet.experimental.request-parameters.included
+        env: OTEL_INSTRUMENTATION_SERVLET_EXPERIMENTAL_REQUEST_PARAMETERS_INCLUDED
+        description: |
+          A comma-separated list of case-sensitive request parameter name patterns to capture as span attributes. `?` matches one character and `*` matches zero or more characters. Excluded patterns take precedence over included patterns. No request parameters are captured unless an included or excluded pattern is configured; configuring only excluded patterns captures all request parameters that do not match them, which may expose sensitive information.
         default: ''
         type: list
         category: instrumentation
@@ -8064,7 +9959,83 @@ instrumentations:
         category: instrumentation
       - property: otel.instrumentation.servlet.experimental.capture-request-parameters
         env: OTEL_INSTRUMENTATION_SERVLET_EXPERIMENTAL_CAPTURE_REQUEST_PARAMETERS
-        description: List of request parameter names to capture as span attributes.
+        description: |
+          Deprecated include-only alias for `otel.instrumentation.servlet.experimental.request-parameters.included`. It does not support glob patterns: an entry containing `*` or `?` is ignored with a warning, and every other entry is matched as a literal request parameter name. It may be removed in the next minor release.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.servlet.experimental.request-parameters.excluded
+        env: OTEL_INSTRUMENTATION_SERVLET_EXPERIMENTAL_REQUEST_PARAMETERS_EXCLUDED
+        description: |
+          A comma-separated list of case-sensitive request parameter name patterns to exclude from span attributes. `?` matches one character and `*` matches zero or more characters. Excluded patterns take precedence over included patterns. No request parameters are captured unless an included or excluded pattern is configured; configuring only excluded patterns captures all request parameters that do not match them, which may expose sensitive information.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.servlet.experimental.request-parameters.included
+        env: OTEL_INSTRUMENTATION_SERVLET_EXPERIMENTAL_REQUEST_PARAMETERS_INCLUDED
+        description: |
+          A comma-separated list of case-sensitive request parameter name patterns to capture as span attributes. `?` matches one character and `*` matches zero or more characters. Excluded patterns take precedence over included patterns. No request parameters are captured unless an included or excluded pattern is configured; configuring only excluded patterns captures all request parameters that do not match them, which may expose sensitive information.
+        default: ''
+        type: list
+        category: instrumentation
+  - keys:
+      - tomcat-dbcp-8.0
+    instrumented_components:
+      - name: Tomcat DBCP
+        supported_versions: '[org.apache.tomcat:tomcat-dbcp:[8.0.3,)]'
+    description: |
+      This instrumentation enables database connection pool metrics for Tomcat DBCP.
+      The auto-instrumentation registers metrics when the connection pool is initialized (`BasicDataSource.startPoolMaintenance()`) or when `BasicDataSource.preRegister(...)` is invoked during MBean registration, whichever comes first, and unregisters them when the `BasicDataSource` is closed. JMX registration is not required. When a JMX `ObjectName` is available, its `name` property is used as the pool name; if the property is absent, the full `ObjectName` is used. Otherwise, the JDBC URL and connection properties are used to derive `server.address[:server.port][/db.namespace]`. If neither server address nor database namespace is available, `tomcat-dbcp` is used. A pool registered as an MBean after it has already started switches from the derived name to the `ObjectName`-based name.
+    stability: experimental
+    support: community
+    signals:
+      - metrics:
+          - metric_name: db.client.connections.idle.max
+            instrument: updowncounter
+            description: The maximum number of idle open connections allowed.
+            category_notes: Custom metric.
+          - metric_name: db.client.connections.idle.min
+            instrument: updowncounter
+            description: The minimum number of idle open connections allowed.
+            category_notes: Custom metric.
+          - metric_name: db.client.connections.max
+            instrument: updowncounter
+            description: The maximum number of open connections allowed.
+            category_notes: Custom metric.
+          - metric_name: db.client.connections.usage
+            instrument: updowncounter
+            description: The number of connections that are currently in state described
+              by the state attribute.
+            category_notes: Custom metric.
+          - metric_name: db.client.connection.count
+            instrument: updowncounter
+            description: |-
+              The number of connections that are currently in state described by the state attribute.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.opt-in=database`.
+            category_notes: Custom metric.
+          - metric_name: db.client.connection.idle.max
+            instrument: updowncounter
+            description: |-
+              The maximum number of idle open connections allowed.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.opt-in=database`.
+            category_notes: Custom metric.
+          - metric_name: db.client.connection.idle.min
+            instrument: updowncounter
+            description: |-
+              The minimum number of idle open connections allowed.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.opt-in=database`.
+            category_notes: Custom metric.
+          - metric_name: db.client.connection.max
+            instrument: updowncounter
+            description: |-
+              The maximum number of open connections allowed.
+              This metric is disabled by default and can be enabled with `otel.semconv-stability.opt-in=database`.
+            category_notes: Custom metric.
+    settings:
+      - property: otel.semconv-stability.opt-in
+        env: OTEL_SEMCONV_STABILITY_OPT_IN
+        description: |
+          Opt-in to emit stable semantic conventions instead of the old experimental semantic conventions. Accepts a comma-separated list of semantic convention groups (e.g., `database`, `http`, `messaging`). Use `<group>/dup` to emit both old and new conventions simultaneously. Stable semantic conventions will become the default in version 3.0 of the agent.
         default: ''
         type: list
         category: instrumentation
@@ -8073,8 +10044,8 @@ instrumentations:
     instrumented_components:
       - name: Tomcat JDBC
         supported_versions: '[org.apache.tomcat:tomcat-jdbc:[8.5.0,)]'
-    description: This instrumentation enables database connection pool metrics for
-      Tomcat JDBC.
+    description: |
+      This instrumentation enables database connection pool metrics for Tomcat JDBC. When no pool name is explicitly configured, the JDBC URL and connection properties are used to derive `server.address[:server.port][/db.namespace]`. If no server address or database namespace is available, `tomcat-jdbc` is used.
     stability: experimental
     support: community
     signals:
@@ -8289,7 +10260,7 @@ instrumentations:
         env: OTEL_INSTRUMENTATION_SANITIZATION_URL_EXPERIMENTAL_SENSITIVE_QUERY_PARAMETERS
         description: List of URL query parameter names whose values are redacted in
           URL attributes. See https://opentelemetry.io/docs/specs/semconv/http/http-spans.
-        default: AWSAccessKeyId,Signature,sig,X-Goog-Signature
+        default: AWSAccessKeyId,Signature,X-Amz-Signature,X-Amz-Credential,X-Amz-Security-Token,sig,X-Goog-Signature
         type: list
         category: instrumentation
   - keys:
@@ -8348,7 +10319,7 @@ instrumentations:
         env: OTEL_INSTRUMENTATION_SANITIZATION_URL_EXPERIMENTAL_SENSITIVE_QUERY_PARAMETERS
         description: List of URL query parameter names whose values are redacted in
           URL attributes. See https://opentelemetry.io/docs/specs/semconv/http/http-spans.
-        default: AWSAccessKeyId,Signature,sig,X-Goog-Signature
+        default: AWSAccessKeyId,Signature,X-Amz-Signature,X-Amz-Credential,X-Amz-Security-Token,sig,X-Goog-Signature
         type: list
         category: instrumentation
   - keys:
@@ -8407,7 +10378,7 @@ instrumentations:
         env: OTEL_INSTRUMENTATION_SANITIZATION_URL_EXPERIMENTAL_SENSITIVE_QUERY_PARAMETERS
         description: List of URL query parameter names whose values are redacted in
           URL attributes. See https://opentelemetry.io/docs/specs/semconv/http/http-spans.
-        default: AWSAccessKeyId,Signature,sig,X-Goog-Signature
+        default: AWSAccessKeyId,Signature,X-Amz-Signature,X-Amz-Credential,X-Amz-Security-Token,sig,X-Goog-Signature
         type: list
         category: instrumentation
   - keys:
@@ -8423,7 +10394,28 @@ instrumentations:
     settings:
       - property: otel.instrumentation.messaging.experimental.capture-headers
         env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_CAPTURE_HEADERS
-        description: A comma-separated list of header names to capture as span attributes.
+        description: 'Deprecated: use `otel.instrumentation.messaging.experimental.headers.included`
+          instead. A comma-separated list of header names to capture as span attributes.
+          It does not support glob patterns: an entry containing `*` or `?` is ignored
+          with a warning, and every other entry is matched as a literal header name.'
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.messaging.experimental.headers.excluded
+        env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_HEADERS_EXCLUDED
+        description: A comma-separated list of message header name patterns to exclude
+          from span attributes. Excluded patterns take precedence over included patterns.
+          Matching is case-sensitive. `?` matches one character and `*` matches zero
+          or more characters. If included is not configured, all non-excluded headers
+          are captured, which may expose sensitive information.
+        default: ''
+        type: list
+        category: instrumentation
+      - property: otel.instrumentation.messaging.experimental.headers.included
+        env: OTEL_INSTRUMENTATION_MESSAGING_EXPERIMENTAL_HEADERS_INCLUDED
+        description: A comma-separated list of message header name patterns to capture
+          as span attributes. Matching is case-sensitive. `?` matches one character
+          and `*` matches zero or more characters.
         default: ''
         type: list
         category: instrumentation
@@ -8550,7 +10542,7 @@ instrumentations:
       - name: Vibur DBCP
         supported_versions: '[org.vibur:vibur-dbcp:[11.0,)]'
     description: |
-      This instrumentation enables database connection pool metrics for Vibur DBCP data sources.
+      This instrumentation enables database connection pool metrics for Vibur DBCP data sources. When no pool name is explicitly configured, the JDBC URL and connection properties are used to derive `server.address[:server.port][/db.namespace]`. If no server address or database namespace is available, `vibur-dbcp` is used.
     stability: experimental
     support: community
     signals:
@@ -8688,7 +10680,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.30.0-alpha
+        version: 2.31.1-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.resources.HostIdResourceProvider
     description: Host id detector.
@@ -8700,7 +10692,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.30.0-alpha
+        version: 2.31.1-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.resources.HostResourceProvider
     description: Host detector.
@@ -8713,7 +10705,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.30.0-alpha
+        version: 2.31.1-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.resources.JarServiceNameDetector
     description: Jar service name detector.
@@ -8725,7 +10717,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.30.0-alpha
+        version: 2.31.1-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.resources.ManifestResourceProvider
     description: Manifest service name and version detector.
@@ -8738,7 +10730,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.30.0-alpha
+        version: 2.31.1-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.resources.OsResourceProvider
     description: Os detector.
@@ -8752,7 +10744,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.30.0-alpha
+        version: 2.31.1-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.resources.ProcessResourceProvider
     description: Process detector.
@@ -8767,7 +10759,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.30.0-alpha
+        version: 2.31.1-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.resources.ProcessRuntimeResourceProvider
     description: Process runtime detector.
@@ -8781,7 +10773,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/resources/library
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-resources
-        version: 2.30.0-alpha
+        version: 2.31.1-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.spring.resources.SpringBootServiceNameDetector
     description: Spring boot service name detector.
@@ -8793,7 +10785,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Spring Boot Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/spring/spring-boot-resources/javaagent
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-spring-boot-resources
-        version: 2.30.0-alpha
+        version: 2.31.1-alpha
         stability: experimental
   - key: io.opentelemetry.instrumentation.spring.resources.SpringBootServiceVersionDetector
     description: Spring boot service version detector.
@@ -8805,7 +10797,7 @@ resource_detectors:
       - name: OpenTelemetry Java Instrumentation Spring Boot Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/spring/spring-boot-resources/javaagent
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.instrumentation/opentelemetry-spring-boot-resources
-        version: 2.30.0-alpha
+        version: 2.31.1-alpha
         stability: experimental
   - key: io.opentelemetry.contrib.resourceproviders.AppServerServiceNameProvider
     description: Application server service name detector.
@@ -8817,7 +10809,7 @@ resource_detectors:
       - name: OpenTelemetry Java Contrib Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/tree/main/resource-providers
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-resource-providers
-        version: 1.58.0-alpha
+        version: 1.59.0-alpha
         stability: experimental
   - key: io.opentelemetry.contrib.aws.resource.BeanstalkResourceProvider
     description: Beanstalk detector.
@@ -8833,7 +10825,7 @@ resource_detectors:
       - name: OpenTelemetry AWS Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/aws-resources
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-aws-resources
-        version: 1.58.0-alpha
+        version: 1.59.0-alpha
         stability: experimental
   - key: io.opentelemetry.contrib.aws.resource.Ec2ResourceProvider
     description: Ec2 detector.
@@ -8853,7 +10845,7 @@ resource_detectors:
       - name: OpenTelemetry AWS Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/aws-resources
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-aws-resources
-        version: 1.58.0-alpha
+        version: 1.59.0-alpha
         stability: experimental
   - key: io.opentelemetry.contrib.aws.resource.EcsResourceProvider
     description: Ecs detector.
@@ -8879,7 +10871,7 @@ resource_detectors:
       - name: OpenTelemetry AWS Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/aws-resources
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-aws-resources
-        version: 1.58.0-alpha
+        version: 1.59.0-alpha
         stability: experimental
   - key: io.opentelemetry.contrib.aws.resource.EksResourceProvider
     description: Eks detector.
@@ -8894,7 +10886,7 @@ resource_detectors:
       - name: OpenTelemetry AWS Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/aws-resources
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-aws-resources
-        version: 1.58.0-alpha
+        version: 1.59.0-alpha
         stability: experimental
   - key: io.opentelemetry.contrib.aws.resource.LambdaResourceProvider
     description: Lambda detector.
@@ -8910,7 +10902,7 @@ resource_detectors:
       - name: OpenTelemetry AWS Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/aws-resources
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-aws-resources
-        version: 1.58.0-alpha
+        version: 1.59.0-alpha
         stability: experimental
   - key: io.opentelemetry.contrib.gcp.resource.GCPResourceProvider
     description: GCP detector.
@@ -8936,7 +10928,7 @@ resource_detectors:
       - name: OpenTelemetry GCP Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/gcp-resources
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-gcp-resources
-        version: 1.58.0-alpha
+        version: 1.59.0-alpha
         stability: experimental
   - key: io.opentelemetry.contrib.azure.resource.AzureAksResourceProvider
     description: AKS detector.
@@ -8950,7 +10942,7 @@ resource_detectors:
       - name: OpenTelemetry Azure Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/azure-resources
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-azure-resources
-        version: 1.58.0-alpha
+        version: 1.59.0-alpha
         stability: experimental
   - key: io.opentelemetry.contrib.azure.resource.AzureAppServiceResourceProvider
     description: App service detector.
@@ -8970,7 +10962,7 @@ resource_detectors:
       - name: OpenTelemetry Azure Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/azure-resources
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-azure-resources
-        version: 1.58.0-alpha
+        version: 1.59.0-alpha
         stability: experimental
   - key: io.opentelemetry.contrib.azure.resource.AzureContainersResourceProvider
     description: Container detector.
@@ -8986,7 +10978,7 @@ resource_detectors:
       - name: OpenTelemetry Azure Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/azure-resources
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-azure-resources
-        version: 1.58.0-alpha
+        version: 1.59.0-alpha
         stability: experimental
   - key: io.opentelemetry.contrib.azure.resource.AzureFunctionsResourceProvider
     description: Function detector.
@@ -9004,7 +10996,7 @@ resource_detectors:
       - name: OpenTelemetry Azure Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/azure-resources
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-azure-resources
-        version: 1.58.0-alpha
+        version: 1.59.0-alpha
         stability: experimental
   - key: io.opentelemetry.contrib.azure.resource.AzureVmResourceProvider
     description: Vm detector.
@@ -9026,5 +11018,5 @@ resource_detectors:
       - name: OpenTelemetry Azure Resource Providers
         source_href: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/azure-resources
         package_href: https://central.sonatype.com/artifact/io.opentelemetry.contrib/opentelemetry-azure-resources
-        version: 1.58.0-alpha
+        version: 1.59.0-alpha
         stability: experimental
