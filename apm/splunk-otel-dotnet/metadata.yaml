@@ -1,13 +1,13 @@
 component: Splunk Distribution of OpenTelemetry .NET
-version: 1.16.0
+version: 1.17.0
 dependencies:
   - name: OpenTelemetry .NET
     source_href: https://github.com/open-telemetry/opentelemetry-dotnet
-    version: 1.19.1
+    version: 1.20.1
     stability: stable
   - name: OpenTelemetry .NET Automatic Instrumentation
     source_href: https://github.com/open-telemetry/opentelemetry-dotnet-instrumentation
-    version: 1.17.0
+    version: 1.19.1
     stability: stable
 settings:
   - env: OTEL_DOTNET_AUTO_EXCLUDE_PROCESSES
@@ -356,8 +356,8 @@ settings:
     type: boolean
     category: instrumentation
   - env: OTEL_ATTRIBUTE_VALUE_LENGTH_LIMIT
-    description: Maximum length of strings for attribute values. Values larger than the limit are truncated. Default value is `1200`. Empty values are treated as infinity.
-    default: '1200'
+    description: Maximum length of strings for attribute values. Values larger than the limit are truncated. Default value is `12000`.
+    default: '12000'
     type: int
     category: otlp
   - env: OTEL_ATTRIBUTE_COUNT_LIMIT
@@ -371,18 +371,18 @@ settings:
     type: int
     category: otlp
   - env: OTEL_SPAN_ATTRIBUTE_COUNT_LIMIT
-    description: Maximum number of attributes per span. Default value is unlimited.
-    default: ''
+    description: Maximum number of attributes per span. Default value is `128`.
+    default: '128'
     type: int
     category: otlp
   - env: OTEL_SPAN_EVENT_COUNT_LIMIT
-    description: Maximum number of events per span. Default value is unlimited.
-    default: ''
+    description: Maximum number of events per span. Default value is `128`.
+    default: '128'
     type: int
     category: otlp
   - env: OTEL_SPAN_LINK_COUNT_LIMIT
-    description: Maximum number of links per span. Default value is `1000`.
-    default: '1000'
+    description: Maximum number of links per span. Default value is `128`.
+    default: '128'
     type: int
     category: otlp
   - env: OTEL_EVENT_ATTRIBUTE_COUNT_LIMIT
@@ -440,6 +440,11 @@ settings:
     default: 'https://localhost:4320/v1/opamp'
     type: string
     category: opamp
+  - env: SPLUNK_OPAMP_REMOTE_CONFIG
+    description: Enables OpAMP remote configuration for CPU profiler enablement. Requires OpAMP to be enabled.
+    default: 'false'
+    type: boolean
+    category: opamp
   - env: OTEL_DOTNET_AUTO_OPAMP_MAX_PENDING_CUSTOM_MESSAGES
     description: Maximum number of custom messages that may wait to be sent.
     default: '2048'
@@ -475,12 +480,12 @@ instrumentations:
       - name: ASP.NET Instrumentation for OpenTelemetry
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Instrumentation.AspNet
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.AspNet
-        version: 1.19.0
+        version: 1.20.3
         stability: release candidate
       - name: ASP.NET Telemetry HttpModule for OpenTelemetry
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Instrumentation.AspNet.TelemetryHttpModule
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.AspNet.TelemetryHttpModule
-        version: 1.19.0
+        version: 1.20.3
         stability: beta
     signals:
       - traces: []
@@ -517,7 +522,7 @@ instrumentations:
       - name: ASP.NET Core Instrumentation for OpenTelemetry .NET
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-ontrib/tree/main/src/OpenTelemetry.Instrumentation.AspNetCore
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.AspNetCore
-        version: 1.19.0
+        version: 1.20.2
         stability: beta
     signals:
       - traces: []
@@ -714,7 +719,7 @@ instrumentations:
       - name: EntityFrameworkCore Instrumentation for OpenTelemetry .NET
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Instrumentation.EntityFrameworkCore
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.EntityFrameworkCore
-        version: 1.19.0-beta.1
+        version: 1.20.2-beta.1
         stability: beta
     signals:
       - traces: []
@@ -745,7 +750,7 @@ instrumentations:
       - name: Grpc.Net.Client Instrumentation for OpenTelemetry
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Instrumentation.GrpcNetClient
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.GrpcNetClient
-        version: 1.19.1-beta.1
+        version: 1.20.1-beta.1
         stability: beta
     signals:
       - traces: []
@@ -773,7 +778,7 @@ instrumentations:
       - name: HttpClient and HttpWebRequest instrumentation for OpenTelemetry
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Instrumentation.Http
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.Http
-        version: 1.19.0
+        version: 1.20.2
         stability: beta
     signals:
       - traces: []
@@ -986,7 +991,7 @@ instrumentations:
       - name: QuartzNET Instrumentation for OpenTelemetry .NET
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Instrumentation.Quartz
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.Quartz
-        version: 1.19.0-beta.1
+        version: 1.20.1-beta.1
         stability: beta
     signals:
       - traces: []
@@ -1015,7 +1020,7 @@ instrumentations:
       - name: SqlClient instrumentation for OpenTelemetry .NET
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Instrumentation.SqlClient
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.SqlClient
-        version: 1.19.0
+        version: 1.20.2
         stability: stable
     signals:
       - traces: []
@@ -1051,7 +1056,7 @@ instrumentations:
       - name: StackExchange.Redis Instrumentation for OpenTelemetry
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Instrumentation.StackExchangeRedis
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.StackExchangeRedis
-        version: 1.19.0-beta.1
+        version: 1.20.1-beta.1
         stability: beta
     signals:
       - traces: []
@@ -1068,7 +1073,7 @@ instrumentations:
       - name: WCF Instrumentation for OpenTelemetry .NET
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Instrumentation.Wcf
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.Wcf
-        version: 1.19.1-beta.1
+        version: 1.20.1-beta.2
         stability: beta
     signals:
       - traces: []
@@ -1092,7 +1097,7 @@ instrumentations:
       - name: Runtime Instrumentation for OpenTelemetry .NET
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Instrumentation.Runtime
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.Runtime
-        version: 1.19.0
+        version: 1.20.1
         stability: stable
     signals:
       - metrics:
@@ -1246,7 +1251,7 @@ instrumentations:
       - name: Process Instrumentation for OpenTelemetry .NET
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Instrumentation.Process
         package_href: https://www.nuget.org/packages/OpenTelemetry.Instrumentation.Process
-        version: 1.19.0-rc.1
+        version: 1.20.1-rc.1
         stability: beta
     signals:
       - metrics:
@@ -1330,7 +1335,7 @@ resource_detectors:
       - name: Resource Detectors for Azure cloud environments
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Resources.Azure
         package_href: https://www.nuget.org/packages/OpenTelemetry.Resources.Azure
-        version: 1.19.1-beta.1
+        version: 1.20.2-beta.1
         stability: beta
   - key: AZURECONTAINERAPPS
     description: Azure Container Apps detector. Not supported on .NET Framework.
@@ -1346,7 +1351,7 @@ resource_detectors:
       - name: Resource Detectors for Azure cloud environments
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Resources.Azure
         package_href: https://www.nuget.org/packages/OpenTelemetry.Resources.Azure
-        version: 1.19.1-beta.1
+        version: 1.20.2-beta.1
         stability: beta
   - key: CONTAINER
     description: Container detector. For example, Docker or Podman containers. Not supported on .NET Framework.
@@ -1358,7 +1363,7 @@ resource_detectors:
       - name: Container Resource Detectors
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Resources.Container
         package_href: https://www.nuget.org/packages/OpenTelemetry.Resources.Container
-        version: 1.19.1-beta.1
+        version: 1.20.1-beta.1
         stability: beta
   - key: HOST
     description: Host detector.
@@ -1371,7 +1376,7 @@ resource_detectors:
       - name: Host Resource Detectors
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Resources.Host
         package_href: https://www.nuget.org/packages/OpenTelemetry.Resources.Host
-        version: 1.19.1-beta.1
+        version: 1.20.1-beta.1
         stability: beta
   - key: OPERATINGSYSTEM
     description: Operating System detector.
@@ -1387,7 +1392,7 @@ resource_detectors:
       - name: Operating System Detectors
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/blob/main/src/OpenTelemetry.Resources.OperatingSystem
         package_href: https://www.nuget.org/packages/OpenTelemetry.Resources.OperatingSystem
-        version: 1.19.1-beta.1
+        version: 1.20.1-beta.1
         stability: beta
   - key: PROCESS
     description: Process detector.
@@ -1401,7 +1406,7 @@ resource_detectors:
       - name: Process Resource Detectors
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Resources.Process
         package_href: https://www.nuget.org/packages/OpenTelemetry.Resources.Process
-        version: 1.19.1-rc.1
+        version: 1.20.1-rc.1
         stability: beta
   - key: PROCESSRUNTIME
     description: Process Runtime detector.
@@ -1415,5 +1420,5 @@ resource_detectors:
       - name: Process Runtime Resource Detectors
         source_href: https://github.com/open-telemetry/opentelemetry-dotnet-contrib/tree/main/src/OpenTelemetry.Resources.ProcessRuntime
         package_href: https://www.nuget.org/packages/OpenTelemetry.Resources.ProcessRuntime
-        version: 1.19.1-beta.1
+        version: 1.20.1-beta.1
         stability: beta
